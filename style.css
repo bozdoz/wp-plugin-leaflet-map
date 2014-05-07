@@ -1,0 +1,56 @@
+.h3 {
+	font-size: 1.3em;
+	margin: 1em 0;
+}
+
+label {
+	width:30%;
+}
+input {
+	width:70%;
+	padding:5px 10px;
+	box-sizing:border-box;
+	float:right;
+}
+
+p {
+	vertical-align: top;
+}
+
+.container {
+	width:100%;
+	max-width: 700px;
+	margin:15px 0;
+	clear:both;
+}
+.label {
+	font-weight: bold;
+	width:30%;
+	font-size:1.1em;
+}
+.input-group {
+	width:70%;
+	float:right;
+}
+.input-group .regular-text {
+	width:100%;
+}
+.helptext {
+	margin:20px 0 30px;
+	clear:both;
+	border-left: 3px solid #ccc;
+	padding-left:50px;
+}
+div.list-item {
+	width: 250px;
+	display: inline-block;
+	vertical-align: top;
+	padding: 15px;
+}
+
+
+@media screen and (max-width: 782px) {
+	.input-group {
+		float:none;
+	}
+}
