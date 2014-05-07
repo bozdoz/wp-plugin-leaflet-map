@@ -41,7 +41,7 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 
 == Frequently Asked Questions ==
 
-None yet.  Shoot me a question <a href="http://www.twitter.com/bozdoz/" target="_blank">@bozdoz</a>.
+None yet.  Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
 
