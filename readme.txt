@@ -32,6 +32,8 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 
 `[leaflet-map zoomcontrol="0"]`
 
+Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
+
 == Installation ==
 
 1. Choose to add a new plugin, then click upload
