@@ -160,10 +160,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 		scrollWheelZoom: {$scrollwheel}
                 	}).setView([{$lat}, {$lng}], {$zoom});";
 			
-			if ($tileurl === $this::$defaults['text']['leaflet_map_tile_url'] && $show_attr) {
-				/* add attribution to MapQuest */
-	            $content .= 'map_'.$leaflet_map_count.'.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");';
-			}
+			if ($show_attr) {
+                /* add attribution to MapQuest and OSM */
+                $content .= 'map_'.$leaflet_map_count.'.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");';
+                $content .= 'map_'.$leaflet_map_count.'.attributionControl.addAttribution("© <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors");';
+            }
+
             $content .= '
         	});
             </script>

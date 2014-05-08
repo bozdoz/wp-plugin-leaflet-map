@@ -7,8 +7,7 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest, shortcode
 Requires at least: 3.0.1
 Tested up to: 3.8.1
-Version: 1.0.0
-Stable tag: 1.0.0
+Stable tag: 1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,10 +51,10 @@ None yet.  Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0 =
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
 
-= 1.0.0 =
+= 1.0 =
 First Version. Tested with 3.8.1.
