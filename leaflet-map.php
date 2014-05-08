@@ -3,7 +3,7 @@
     Plugin Name: Leaflet Map
     Plugin URI: http://twitter.com/bozdoz/
     Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 0.1
+    Version: 1.0
     Author: Benjamin J DeLong
     Author URI: http://twitter.com/bozdoz/
     License: GPL2
