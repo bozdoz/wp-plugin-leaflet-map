@@ -15,6 +15,7 @@ input {
 
 p {
 	vertical-align: top;
+	word-wrap: break-word;
 }
 
 .container {

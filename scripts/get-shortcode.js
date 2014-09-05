@@ -5,7 +5,7 @@ jQuery(function () {
 	function update_marker () {
 		var latlng = marker_1.getLatLng();
 		marker_input.value = '[leaflet-marker lat=' +
-			latlng.lng +
+			latlng.lat +
 			' lng=' + 
 			latlng.lng + 
 			']';
@@ -14,7 +14,7 @@ jQuery(function () {
 	function update_map () {
 		var latlng = map_1.getCenter();
 		map_input.value = '[leaflet-map lat=' +
-			latlng.lng +
+			latlng.lat +
 			' lng=' + 
 			latlng.lng + 
 			' zoom=' +

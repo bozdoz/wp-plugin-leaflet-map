@@ -3,7 +3,7 @@
 	<div class="wrap">
 		<?php
 		echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 height=300 scrollwheel=1]');
-		echo do_shortcode('[leaflet-marker draggable=1]');
+		echo do_shortcode('[leaflet-marker draggable=1 message="Drag me!" visible="true"]');
 		?>
 		<div class="wrap">
 			<h2>Interactive Shortcodes:</h2>
@@ -13,29 +13,34 @@
 			<h2>Examples:</h2>
 			<?php
 			$examples = array(
-				array(
+				"Standard" => array(
 					'[leaflet-map zoom=12 lat=51.05 lng=-114.06]',
 					),
-				array(
+				"Many Markers!" => array(
 					'[leaflet-map zoom=10 lat=43.65 lng=-79.385]',
 					'[leaflet-marker]',
 					'[leaflet-marker lat=43.68 lng=-79.275]',
 					'[leaflet-marker lat=43.67 lng=-79.4]',
 					),
-				array(
+				"Draggable Marker" => array(
 					'[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel=1]',
 					'[leaflet-marker draggable=1]',
 					),
-				array(
+				"Zoom Buttons" => array(
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
-				array(
+				"Alternate Map Tiles" => array(
 					'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 tileurl=http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png subdomains=abc]',
+					),
+				"Marker Popup Messages" => array(
+					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
+					'[leaflet-marker message="OSLO!" visible="true"]',
 					),
 				);
 
-			foreach ($examples as $collection) {
+			foreach ($examples as $title => $collection) {
 				echo '<div class="list-item">';
+				echo "<h3>$title</h3>";
 				foreach ($collection as $shortcode) {
 					echo do_shortcode($shortcode);
 					echo "<p>$shortcode</p>";

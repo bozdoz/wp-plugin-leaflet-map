@@ -4,10 +4,11 @@ Author URI: http://www.twitter.com/bozdoz/
 Plugin URI: http://wordpress.org/plugins/leaflet-map/
 Contributors: bozdoz
 Donate link: https://www.gittip.com/bozdoz/
-Tags: leaflet, map, javascript, mapquest, shortcode
+Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
-Tested up to: 3.8.1
-Stable tag: 1.0
+Tested up to: 4.0
+Version: 1.1
+Stable tag: 1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +32,8 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 
 `[leaflet-map zoomcontrol="0"]`
 
+Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).
+
 Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
 
 == Installation ==
@@ -42,19 +45,29 @@ Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leafle
 
 == Frequently Asked Questions ==
 
-None yet.  Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
+* Can I add a message to a marker?
+
+Yes: [leaflet-marker message="Hello there!" visible="true"], where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
+
+Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
 
-1. Put the short code into the post.
-2. See the short code play out on the front end.
+1. Put the shortcode into the post.
+2. See the shortcode play out on the front end.
 
 == Changelog ==
+
+= 1.1 =
+* Added messages to markers. Fixed a problem with the interactive shortcode page showing lng and lng instead of lat and lng. :S
 
 = 1.0 =
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.1 =
+Added messages to markers. Tested with 4.0.
 
 = 1.0 =
 First Version. Tested with 3.8.1.
