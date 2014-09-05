@@ -98,16 +98,45 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function google_geocode ( $address ) {
+            
+            /* check if address exists in cookie */
+            $cookie_address = preg_replace('~[=,; \t\r\n\013\014]~', '', $address);
+            $address = urlencode($address);
+
+            if (isset($_COOKIE[$cookie_address])) {
+                $location = $_COOKIE[$cookie_address];
+                $location = explode(' ', $location);
+                return (Object) array('lat' => $location[0], 'lng' => $location[1]);
+            }
+
             /* try geocoding */
             $google_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-            $geocode_url = $google_geocode . urlencode($address);
+            $geocode_url = $google_geocode . $address;
             $json = file_get_contents($geocode_url);
             $json = json_decode($json);
 
             if ($json->{'status'} == 'OK') {
+                
+                $location = $json->{'results'}[0]->{'geometry'}->{'location'};
+
+                /* set cookie via ajax, since shortcodes
+                execute after headers are sent */
+
+                $cookie_url = WP_PLUGIN_URL . '/leaflet-map/set-cookie.php?';
+                $cookie_url .= 'address=' . $cookie_address;
+                $cookie_url .= '&location=' . $location->{'lat'} . '+' . $location->{'lng'};
+
+                echo "<script>
+                (function () {
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('GET', '$cookie_url', true);
+                    xmlhttp.send();
+                })();
+                </script>";
+
                 return $json->{'results'}[0]->{'geometry'}->{'location'};
             }
-            return array('lat' => 0, 'lng' => 0);
+            return (Object) array('lat' => 0, 'lng' => 0);
         }
 
         public function map_shortcode ( $atts ) {
