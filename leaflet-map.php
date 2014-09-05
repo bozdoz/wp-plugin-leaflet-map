@@ -3,7 +3,7 @@
     Plugin Name: Leaflet Map
     Plugin URI: http://twitter.com/bozdoz/
     Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.1
+    Version: 1.2
     Author: Benjamin J DeLong
     Author URI: http://twitter.com/bozdoz/
     License: GPL2
@@ -97,6 +97,19 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             include 'templates/find-on-map.php';
         }
 
+        public function google_geocode ( $address ) {
+            /* try geocoding */
+            $google_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+            $geocode_url = $google_geocode . urlencode($address);
+            $json = file_get_contents($geocode_url);
+            $json = json_decode($json);
+
+            if ($json->{'status'} == 'OK') {
+                return $json->{'results'}[0]->{'geometry'}->{'location'};
+            }
+            return array('lat' => 0, 'lng' => 0);
+        }
+
         public function map_shortcode ( $atts ) {
             
             if (!$this::$leaflet_map_count) {
@@ -126,9 +139,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             if ($atts) {
                 extract($atts);
             }
-            /* only really necessary $atts */
+
+            /* only really necessary $atts are the location variables */
+            if (!empty($address)) {
+                /* try geocoding */
+                $location = $this::google_geocode($address);
+                $lat = $location->{'lat'};
+                $lng = $location->{'lng'};
+            }
+
             $lat = empty($lat) ? '44.67' : $lat;
             $lng = empty($lng) ? '-63.61' : $lng;
+
 
             /* check more user defined $atts against defaults */
             $tileurl = empty($tileurl) ? $default_tileurl : $tileurl;
@@ -200,6 +222,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $draggable = empty($draggable) ? 'false' : $draggable;
             $visible = ($visible == 'true');
+
+            if (!empty($address)) {
+                $location = $this::google_geocode($address);
+                $lat = $location->{'lat'};
+                $lng = $location->{'lng'};
+            }
 
             if (empty($lat) && empty($lng)) {
             	/* add to previous map's center */
