@@ -26,6 +26,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_show_attribution' => '1',
                 'leaflet_show_zoom_controls' => '0',
                 'leaflet_scroll_wheel_zoom' => '0',
+                ),
+            'serialized' => array(
+                'leaflet_geocoded_locations' => ''
                 )
             );
 
@@ -64,10 +67,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
         
         public static function uninstall () {
+            
+            /* remove geocoded locations */
+            $locations = get_option('leaflet_geocoded_locations', array());
+
+            foreach ($locations as $address => $latlng) {
+                delete_option('leaflet_' + $address);
+            }
+
             /* remove values from db */
-            foreach(self::$defaults as $arrs) {
-            	foreach($arrs as $k=>$v) {
-            		delete_option($k);
+            foreach (self::$defaults as $arrs) {
+                foreach($arrs as $k=>$v) {
+                    delete_option($k);
             	}
             }
         }
@@ -99,14 +110,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function google_geocode ( $address ) {
             
-            /* check if address exists in cookie */
-            $cookie_address = preg_replace('~[=,; \t\r\n\013\014]~', '', $address);
             $address = urlencode($address);
+            $cached_address = 'leaflet_' . $address;
 
-            if (isset($_COOKIE[$cookie_address])) {
-                $location = $_COOKIE[$cookie_address];
-                $location = explode(' ', $location);
-                return (Object) array('lat' => $location[0], 'lng' => $location[1]);
+            /* retrieve cached geocoded location */
+            if (get_option($cached_address)) {
+                return get_option($cached_address);
             }
 
             /* try geocoding */
@@ -115,27 +124,23 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $json = file_get_contents($geocode_url);
             $json = json_decode($json);
 
+            /* found location */
             if ($json->{'status'} == 'OK') {
                 
                 $location = $json->{'results'}[0]->{'geometry'}->{'location'};
 
-                /* set cookie via ajax, since shortcodes
-                execute after headers are sent */
+                /* add location */
+                add_option($cached_address, $location);
 
-                $cookie_url = WP_PLUGIN_URL . '/leaflet-map/set-cookie.php?';
-                $cookie_url .= 'address=' . $cookie_address;
-                $cookie_url .= '&location=' . $location->{'lat'} . '+' . $location->{'lng'};
-
-                echo "<script>
-                (function () {
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open('GET', '$cookie_url', true);
-                    xmlhttp.send();
-                })();
-                </script>";
-
-                return $json->{'results'}[0]->{'geometry'}->{'location'};
+                /* add option key to locations for clean up purposes */
+                $locations = get_option('leaflet_geocoded_locations', array());
+                array_push($locations, $cached_address);
+                update_option('leaflet_geocoded_locations', $locations);
+                
+                return $location;
             }
+
+            /* else */
             return (Object) array('lat' => 0, 'lng' => 0);
         }
 
