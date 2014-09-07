@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.0
-Version: 1.3
-Stable tag: 1.3
+Version: 1.4
+Stable tag: 1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 1.4 =
+* Some fixes for Google geocoding, and switched cookies to db options.
+
 = 1.3 =
 * Added cookies for Google geocoding to cut back on requests.
 
@@ -75,6 +78,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.4 =
+Stable Google geocoding.
 
 = 1.3 =
 Added cookies for Google geocoding to cut back on requests.
