@@ -28,7 +28,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_scroll_wheel_zoom' => '0',
                 ),
             'serialized' => array(
-                'leaflet_geocoded_locations' => ''
+                'leaflet_geocoded_locations' => array()
                 )
             );
 
