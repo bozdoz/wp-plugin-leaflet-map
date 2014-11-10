@@ -168,6 +168,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             /* leaflet style and script */
             wp_enqueue_style('leaflet_stylesheet', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.css', false);
+            wp_enqueue_script('jquery');
             wp_enqueue_script('leaflet_js', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.js', false);
 
             if ($atts) {
@@ -205,27 +206,37 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $content .= "<script>
             var map_{$leaflet_map_count};
-            jQuery(function () {
-                var baseURL = '{$tileurl}';
-               
-                var base = L.tileLayer(baseURL, { 
-                   subdomains: '{$subdomains}'
-                   });
-                map_{$leaflet_map_count} = L.map('leaflet-wordpress-map-{$leaflet_map_count}', 
-                	{
-                		layers: [base],
-                		zoomControl: {$zoomcontrol},
-                		scrollWheelZoom: {$scrollwheel}
-                	}).setView([{$lat}, {$lng}], {$zoom});";
-			
-			if ($show_attr) {
-                /* add attribution to MapQuest and OSM */
-                $content .= 'map_'.$leaflet_map_count.'.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");';
-                $content .= 'map_'.$leaflet_map_count.'.attributionControl.addAttribution("© <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors");';
-            }
+            (function () {
+                var previous_onload = window.onload;
+                window.onload = function () {
 
-            $content .= '
-        	});
+                    if ( previous_onload ) {
+                        previous_onload();
+                    }
+
+                    var baseURL = '{$tileurl}';
+                   
+                    var base = L.tileLayer(baseURL, { 
+                       subdomains: '{$subdomains}'
+                       });
+                    map_{$leaflet_map_count} = L.map('leaflet-wordpress-map-{$leaflet_map_count}', 
+                        {
+                            layers: [base],
+                            zoomControl: {$zoomcontrol},
+                            scrollWheelZoom: {$scrollwheel}
+                        }).setView([{$lat}, {$lng}], {$zoom});";
+                    
+                    if ($show_attr) {
+                        /* add attribution to MapQuest and OSM */
+                        $content .= '
+                            map_'.$leaflet_map_count.'.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");';
+                        $content .= '
+                            map_'.$leaflet_map_count.'.attributionControl.addAttribution("© <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors");';
+                    }
+
+                    $content .= '
+                }
+            })();
             </script>
             ';
 
