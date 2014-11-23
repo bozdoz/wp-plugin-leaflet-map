@@ -271,7 +271,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             if (!empty($atts)) extract($atts);
 
             $draggable = empty($draggable) ? 'false' : $draggable;
-            $visible = empty($visible) ? true : ($visible == 'true');
+            $visible = empty($visible) ? false : ($visible == 'true');
 
             if (!empty($address)) {
                 $location = $this::google_geocode($address);
