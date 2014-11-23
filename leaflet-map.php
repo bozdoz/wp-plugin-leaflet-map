@@ -168,7 +168,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             /* leaflet style and script */
             wp_enqueue_style('leaflet_stylesheet', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.css', false);
-            wp_enqueue_script('jquery');
             wp_enqueue_script('leaflet_js', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.js', false);
 
             if ($atts) {
@@ -261,12 +260,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $content = "<script>
             var marker_{$leaflet_marker_count};
-            jQuery(function () {";
+            (function () {
+                var previous_onload = window.onload;
+                window.onload = function () {
+
+                    if ( previous_onload ) {
+                        previous_onload();
+                    }";
 
             if (!empty($atts)) extract($atts);
 
             $draggable = empty($draggable) ? 'false' : $draggable;
-            $visible = ($visible == 'true');
+            $visible = empty($visible) ? true : ($visible == 'true');
 
             if (!empty($address)) {
                 $location = $this::google_geocode($address);
@@ -310,7 +315,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
 
             $content .= "
-            });
+                };
+            })();
             </script>";
 
             return $content;

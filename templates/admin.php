@@ -1,5 +1,6 @@
 <?php
 $defaults = $this::$defaults;
+unset($defaults['serialized']);
 
 if (isset($_POST['submit'])) {
 	/* copy and overwrite $post for checkboxes */
