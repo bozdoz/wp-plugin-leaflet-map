@@ -4,7 +4,7 @@
     Plugin URI: http://twitter.com/bozdoz/
     Description: A plugin for creating a Leaflet JS map with a shortcode.
     Version: 1.5
-    Author: Benjamin J DeLong
+    Author: bozdoz
     Author URI: http://twitter.com/bozdoz/
     License: GPL2
     */
@@ -372,15 +372,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         previous_onload();
                     }
 
-                    var image_src = '$source';
+                    var image_src = '$source',
+                        img = new Image(),
+                        zoom = $zoom;
 
-                    // get image size
-                    var img = new Image();
                     img.onload = function() {
-                        var center_h = this.height / 16,
-                            center_w = this.width / 16;
+                        var center_h = this.height / (zoom * 4),
+                            center_w = this.width / (zoom * 4);
 
-                        map_{$leaflet_map_count}.setView([center_h, center_w], $zoom);
+                        map_{$leaflet_map_count}.setView([center_h, center_w], zoom);
 
                         L.imageOverlay( image_src, [[ center_h * 2, 0 ], [ 0, center_w * 2]] ).addTo( map_{$leaflet_map_count} );
                     }
@@ -389,7 +389,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         maxZoom: 10,
                         minZoom: 1,
                         crs: L.CRS.Simple
-                    }).setView([0, 0], $zoom)";
+                    }).setView([0, 0], zoom)";
 
             $content .= '
                 };
