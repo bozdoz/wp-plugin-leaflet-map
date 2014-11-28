@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.0.1
-Version: 1.7
-Stable tag: 1.7
+Version: 1.8
+Stable tag: 1.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,10 @@ Yes: `[leaflet-marker message="Hello there!" visible="true"]`, where visible des
 
 Yes: Use `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up. 
 
+* Can I use my own self-hosted Leaflet files?
+
+Yes: It's been added to the dashboard options! 
+
 Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
@@ -69,8 +73,12 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `source="http://lorempixel.com/1000/1000/"`.
 5. See the `[leaflet-image]` on the front end.
 6. If you use `[leaflet-marker draggable=true]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
+7. You can specify the URL of your leaflet files, if you don't want to use the CDN url.
 
 == Changelog ==
+
+= 1.8 =
+* Added ability to self-host leaflet files.
 
 = 1.7 =
 * Uploaded 1.6 to subversion incorrectly!
@@ -97,6 +105,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.8 =
+Added ability to self-host leaflet files.
 
 = 1.7 =
 Fix to the poor upload of 1.6

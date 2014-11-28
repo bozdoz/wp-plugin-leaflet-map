@@ -3,7 +3,7 @@
     Plugin Name: Leaflet Map
     Plugin URI: http://twitter.com/bozdoz/
     Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.7
+    Version: 1.8
     Author: bozdoz
     Author URI: http://twitter.com/bozdoz/
     License: GPL2
@@ -18,6 +18,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_map_tile_url' => 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
                 'leaflet_map_tile_url_subdomains' => '1234',
                 'leaflet_js_version' => '0.7.3',
+                'leaflet_js_url' => 'http://cdn.leafletjs.com/leaflet-%s/leaflet.js',
+                'leaflet_css_url' => 'http://cdn.leafletjs.com/leaflet-%s/leaflet.css',
                 'leaflet_default_zoom' => '16',
                 'leaflet_default_height' => '250',
                 'leaflet_default_width' => '100%',
@@ -36,6 +38,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_map_tile_url' => 'See some example tile URLs at <a href="http://developer.mapquest.com/web/products/open/map" target="_blank">MapQuest</a>.  Can be set per map with shortcode attribute <br/> <code>[leaflet-map tileurl="http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg"]</code>',
                 'leaflet_map_tile_url_subdomains' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
                 'leaflet_js_version' => '0.7.3 is newest as of this plugin\'s conception',
+                'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here: add a single "%s" to the url to specify where the version number goes, if necessary.',
+                'leaflet_css_url' => 'Same as above.',
                 'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
                 'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
                 'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
@@ -86,11 +90,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             /* defaults from db */
             $version = get_option('leaflet_js_version', $defaults['leaflet_js_version']);
+            $js_url = get_option('leaflet_js_url', $defaults['leaflet_js_url']);
+            $css_url = get_option('leaflet_css_url', $defaults['leaflet_css_url']);
+
+            $js_url = sprintf($js_url, $version);
+            $css_url = sprintf($css_url, $version);
 
             // add style to every page
-            wp_enqueue_style('leaflet_stylesheet', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.css', Array(), $version, false);
+            wp_enqueue_style('leaflet_stylesheet', $css_url, Array(), $version, false);
 
-            wp_register_script('leaflet_js', 'http://cdn.leafletjs.com/leaflet-'.$version.'/leaflet.js', Array(), $version, true);
+            wp_register_script('leaflet_js', $js_url, Array(), $version, true);
             
             /* run an init function because other wordpress plugins don't play well with their window.onload functions */
             wp_register_script('leaflet_map_init', plugins_url('scripts/init-leaflet-map.js', __FILE__), Array('leaflet_js'), '1.0', true);
