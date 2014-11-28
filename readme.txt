@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.0.1
-Version: 1.5
-Stable tag: 1.5
+Version: 1.6
+Stable tag: 1.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,8 +68,12 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 3. For `[leaflet-image]` upload an image, and copy the URL from the right-hand side
 4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `source="http://lorempixel.com/1000/1000/"`.
 5. See the `[leaflet-image]` on the front end.
+6. If you use `[leaflet-marker draggable=true]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
 
 == Changelog ==
+
+= 1.6 =
+* Important fix to conflicts with other plugins!
 
 = 1.5 =
 * Some helpful js fixes for multiple window onload functions, and added the `leaflet-image` shortcode!
@@ -90,6 +94,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.6 =
+Removed windows onload functions and created a construct and init js file for initiating the maps when Leaflet is ready (other plugins were overwriting windows.onload).
 
 = 1.5 =
 Improved stability for multiple plugins with windows onload functions.
