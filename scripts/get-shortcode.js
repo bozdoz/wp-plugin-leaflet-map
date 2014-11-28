@@ -1,5 +1,6 @@
 (function () {
 	var previous_onload = window.onload;
+
 	window.onload = function () {
 
 	    if ( previous_onload ) {
@@ -7,7 +8,9 @@
 	    }
 
 		var map_input = document.getElementById('map-shortcode'),
-			marker_input = document.getElementById('marker-shortcode');
+			marker_input = document.getElementById('marker-shortcode'),
+			map_1 = WPLeafletMapPlugin.maps[0],
+			marker_1 = WPLeafletMapPlugin.markers[0];
 		
 		function update_marker () {
 			var latlng = marker_1.getLatLng();

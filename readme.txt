@@ -7,12 +7,12 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.0.1
-Version: 1.8
-Stable tag: 1.8
+Version: 1.9
+Stable tag: 1.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A flexible plugin that adds three shortcodes: one for creating multiple basic leaflet maps, one for creating maps of images, and one for adding multiple markers to those leaflet maps.
+A flexible plugin that adds basic shortcodes for creating multiple Leaflet maps and adding multiple markers to those maps.
 
 == Description ==
 
@@ -36,7 +36,7 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 
 `[leaflet-map zoomcontrol="0"]`
 
-Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).
+Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).  Also, if you want to add a link to a marker popup, use `[leaflet-marker]Message here: click here[/leaflet-marker]` and add a link like you normally would with the WordPress editor.
 
 Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
@@ -63,6 +63,10 @@ Yes: Use `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 -
 
 Yes: It's been added to the dashboard options! 
 
+* How can I add a link to a marker?
+
+Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a hyperlink like you normally would with the WordPress editor.
+
 Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
@@ -76,6 +80,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 7. You can specify the URL of your leaflet files, if you don't want to use the CDN url.
 
 == Changelog ==
+
+= 1.9 =
+* Added ability to use hyperlinks in marker messages.
 
 = 1.8 =
 * Added ability to self-host leaflet files.
@@ -105,6 +112,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.9 =
+Added ability to use hyperlinks in marker messages.
 
 = 1.8 =
 Added ability to self-host leaflet files.

@@ -3,7 +3,7 @@
     Plugin Name: Leaflet Map
     Plugin URI: http://twitter.com/bozdoz/
     Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.8
+    Version: 1.9
     Author: bozdoz
     Author URI: http://twitter.com/bozdoz/
     License: GPL2
@@ -57,6 +57,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
 
             add_action( 'wp_enqueue_scripts', array(&$this, 'enqueue_and_register') );
+            add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_and_register') );
         }
 
         public static function activate () {
@@ -127,9 +128,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function shortcode_page () {
-
             wp_enqueue_style( 'leaflet_admin_stylesheet' );
-            wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', __FILE__), false);
+            wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', __FILE__), Array('leaflet_js'), false);
 
             include 'templates/find-on-map.php';
         }
@@ -343,7 +343,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $content;
         }
 
-        public function marker_shortcode ( $atts ) {
+        public function marker_shortcode ( $atts, $content = null ) {
 
             /* add to previous map */
             if (!$this::$leaflet_map_count) {
@@ -363,7 +363,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $lng = $location->{'lng'};
             }
 
-            $content = "<script>
+            $marker_script = "<script>
             WPLeafletMapPlugin.add(function () {
                 var marker,
                     map_count = {$leaflet_map_count},
@@ -379,13 +379,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
                 $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
-	            $content .= "
+	            $marker_script .= "
 	            marker = L.marker([{$lat}, {$lng}], { draggable : draggable });";
 
 
                 if (empty($lat) && empty($lng)) {
                     /* update lat lng to previous map's center */
-                    $content .= "
+                    $marker_script .= "
                     if ( is_image && 
                         !previous_image.is_loaded) {
                         previous_image_onload = previous_image.onload;
@@ -399,7 +399,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     ";
                 }
 
-            $content .= "
+            $marker_script .= "
             if (draggable) {
                 marker.on('dragend', function () {
                     var latlng = this.getLatLng(),
@@ -416,27 +416,29 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             marker.addTo( previous_map );
             ";
             
+            $message = empty($message) ? (empty($content) ? '' : $content) : $message;
+
             if (!empty($message)) {
 
-                $content .= "marker.bindPopup('$message')";
+                $marker_script .= "marker.bindPopup('$message')";
 
                 if ($visible) {
 
-                    $content .= ".openPopup()";                    
+                    $marker_script .= ".openPopup()";                    
 
                 }
 
-                $content .= ";
+                $marker_script .= ";
                 ";
 
             }
 
-            $content .= "
+            $marker_script .= "
                     WPLeafletMapPlugin.markers.push( marker );
             }); // end add function
             </script>";
 
-            return $content;
+            return $marker_script;
         }
 
     } /* end class */

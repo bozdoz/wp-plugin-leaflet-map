@@ -36,6 +36,10 @@
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
 					'[leaflet-marker message="OSLO!" visible="true"]',
 					),
+				"Links In Marker Messages" => array(
+					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
+					'[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
+					),
 				);
 
 			foreach ($examples as $title => $collection) {
