@@ -38,6 +38,8 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 
 Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).  Also, if you want to add a link to a marker popup, use `[leaflet-marker]Message here: click here[/leaflet-marker]` and add a link like you normally would with the WordPress editor.
 
+Add a line to the map by adding `[leaflet-line]`. You can specify the postion by using lat/lon like this : `[leaflet-line lat1=41 lng1=29 lat2=44 lng2=18]` or with addresses like this : `[leaflet-line address1="Istanbul" address2="Sarajevo"]`.
+
 Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
 Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!

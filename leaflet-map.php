@@ -54,6 +54,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             add_shortcode('leaflet-map', array(&$this, 'map_shortcode'));
             add_shortcode('leaflet-marker', array(&$this, 'marker_shortcode'));
+            add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
             add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
 
             add_action( 'wp_enqueue_scripts', array(&$this, 'enqueue_and_register') );
@@ -431,6 +432,58 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $marker_script .= "
                     WPLeafletMapPlugin.markers.push( marker );
             }); // end add function
+            </script>";
+
+            return $marker_script;
+        }
+
+      public function line_shortcode ( $atts, $content = null ) {
+
+            /* add to previous map */
+            if (!$this::$leaflet_map_count) {
+            	return '';
+            }
+
+            $leaflet_map_count = $this::$leaflet_map_count;
+
+            if (!empty($atts)) extract($atts);
+
+            if (!empty($address1)) {
+                $location = $this::google_geocode($address1);
+                $lat1 = $location->{'lat'};
+                $lng1 = $location->{'lng'};
+            }
+            if (!empty($address2)) {
+                $location = $this::google_geocode($address2);
+                $lat2 = $location->{'lat'};
+                $lng2 = $location->{'lng'};
+            }
+
+            $marker_script = "<script>
+            WPLeafletMapPlugin.add(function () {
+                var marker,
+                    map_count = {$leaflet_map_count},
+                    previous_map = WPLeafletMapPlugin.maps[ map_count - 1 ],
+                    is_image = previous_map.is_image_map,
+                    image_len = WPLeafletMapPlugin.images.length,
+                    previous_image = WPLeafletMapPlugin.images[ image_len - 1 ],
+                    previous_image_onload;
+                ";
+
+            	/* add to user contributed lat lng */
+                $lat1 = empty($lat1) ? ( empty($y) ? '0' : $y ) : $lat1;
+                $lng1 = empty($lng1) ? ( empty($x) ? '0' : $x ) : $lng1;
+                $lat2 = empty($lat2) ? ( empty($y) ? '0' : $y ) : $lat2;
+                $lng2 = empty($lng2) ? ( empty($x) ? '0' : $x ) : $lng2;
+                $color = empty($color) ? "green" : $color;
+
+	            $marker_script .= "
+	            line = L.polyline([[{$lat1}, {$lng1}], [{$lat2}, {$lng2}]], {color: '$color'});";
+
+
+            $marker_script .= "
+            line.addTo( previous_map );
+            });
             </script>";
 
             return $marker_script;
