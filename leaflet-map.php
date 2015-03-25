@@ -405,11 +405,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     var latlng = this.getLatLng(),
                         lat = latlng.lat,
                         lng = latlng.lng;
-                    if (is_image) {
-                        console.log('[leaflet-marker y=' + lat + ' x=' + lng + ']');
-                    } else {
-                        console.log('[leaflet-marker lat=' + lat + ' lng=' + lng + ']');
-                    }
                 });
             }
 
