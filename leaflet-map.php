@@ -416,6 +416,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             if (!empty($message)) {
 
+		$message = str_replace("\n", '', $message);
+
                 $marker_script .= "marker.bindPopup('$message')";
 
                 if ($visible) {
