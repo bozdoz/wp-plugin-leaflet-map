@@ -52,6 +52,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             add_shortcode('leaflet-map', array(&$this, 'map_shortcode'));
             add_shortcode('leaflet-marker', array(&$this, 'marker_shortcode'));
+            add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
             add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
             add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
 
@@ -406,11 +407,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     var latlng = this.getLatLng(),
                         lat = latlng.lat,
                         lng = latlng.lng;
-                    if (is_image) {
-                        console.log('[leaflet-marker y=' + lat + ' x=' + lng + ']');
-                    } else {
-                        console.log('[leaflet-marker lat=' + lat + ' lng=' + lng + ']');
-                    }
                 });
             }
 
@@ -420,6 +416,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $message = empty($message) ? (empty($content) ? '' : $content) : $message;
 
             if (!empty($message)) {
+
+		$message = str_replace("\n", '', $message);
 
                 $marker_script .= "marker.bindPopup('$message')";
 
@@ -499,6 +497,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             });
             </script>";
+
             return $marker_script;
         }
 
