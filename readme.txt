@@ -2,13 +2,13 @@
 Author: bozdoz
 Author URI: http://www.twitter.com/bozdoz/
 Plugin URI: http://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz
+Contributors: bozdoz, Remigr
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
-Tested up to: 4.0.1
-Version: 1.9
-Stable tag: 1.9
+Tested up to: 4.1.1
+Version: 1.10
+Stable tag: 1.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,8 @@ The zoom buttons can be large and annoying.  Enabled or disable per map in short
 `[leaflet-map zoomcontrol="0"]`
 
 Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).  Also, if you want to add a link to a marker popup, use `[leaflet-marker]Message here: click here[/leaflet-marker]` and add a link like you normally would with the WordPress editor.
+
+Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
 
 Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
@@ -67,6 +69,10 @@ Yes: It's been added to the dashboard options!
 
 Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a hyperlink like you normally would with the WordPress editor.
 
+* Can I add a line to the map?
+
+Use the line format `[leaflet-line]` with attributes `latlngs` or `addresses` separated by semi-colons to draw a line: `[leaflet-line addresses="Sayulita; Puerto Vallarta"]`.
+
 Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
@@ -80,6 +86,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 7. You can specify the URL of your leaflet files, if you don't want to use the CDN url.
 
 == Changelog ==
+
+= 1.10 =
+* Added lines to the map, thanks to [@Remigr](https://github.com/Remigr)!
 
 = 1.9 =
 * Added ability to use hyperlinks in marker messages.
@@ -112,6 +121,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.10 =
+Added lines to the map, thanks to [@Remigr](https://github.com/Remigr)!
 
 = 1.9 =
 Added ability to use hyperlinks in marker messages.

@@ -40,6 +40,14 @@
 					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
 					'[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
 					),
+				"Basic Lines w/Scrollwheel Zoom" => array(
+					'[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
+					'[leaflet-line latlngs="41, 29; 44, 18;"]'
+					),
+				"Fitted Colored Line on Addresses" => array(
+					'[leaflet-map]',
+					'[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline=1]'
+					),
 				);
 
 			foreach ($examples as $title => $collection) {

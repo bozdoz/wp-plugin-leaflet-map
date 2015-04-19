@@ -4,6 +4,7 @@ var WPLeafletMapPlugin = {
 	maps : [],
 	images : [],
 	markers : [],
+	lines : [],
 	init : function () {
 		// shortcodes incrementally add to this function
 	},
