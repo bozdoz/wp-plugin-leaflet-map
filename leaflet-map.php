@@ -1,11 +1,11 @@
 <?php
     /*
-    Plugin Name: Leaflet Map
-    Plugin URI: http://twitter.com/bozdoz/
-    Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.10
     Author: bozdoz
     Author URI: http://twitter.com/bozdoz/
+    Plugin URI: http://wordpress.org/plugins/leaflet-map/
+    Plugin Name: Leaflet Map
+    Description: A plugin for creating a Leaflet JS map with a shortcode.
+    Version: 1.11
     License: GPL2
     */
 
@@ -15,10 +15,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public static $defaults = array (
             'text' => array(
-                'leaflet_map_tile_url' => 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
+                'leaflet_map_tile_url' => '//otile{s}-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
                 'leaflet_map_tile_url_subdomains' => '1234',
-                'leaflet_js_url' => 'http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js',
-                'leaflet_css_url' => 'http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css',
+                'leaflet_js_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
+                'leaflet_css_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
                 'leaflet_default_zoom' => '16',
                 'leaflet_default_height' => '250',
                 'leaflet_default_width' => '100%',

@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.2
-Version: 1.10
-Stable tag: 1.10
+Version: 1.11
+Stable tag: 1.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 1.11 =
+* Added HTTPS support.
+
 = 1.10 =
 * Added lines to the map, thanks to [@Remigr](https://github.com/Remigr)!
 
@@ -121,6 +124,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.11 =
+Added HTTPS support.
 
 = 1.10 =
 Added lines to the map, thanks to [@Remigr](https://github.com/Remigr)!
