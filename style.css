@@ -33,7 +33,7 @@ p {
 	width:70%;
 	float:right;
 }
-.input-group .regular-text {
+.input-group .regular-text, .input-group .select {
 	width:100%;
 }
 .helptext {

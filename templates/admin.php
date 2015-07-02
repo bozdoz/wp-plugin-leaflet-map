@@ -1,6 +1,7 @@
 <?php
 $defaults = $this::$defaults;
 unset($defaults['serialized']);
+$choices = $this::$choices;
 
 if (isset($_POST['submit'])) {
 	/* copy and overwrite $post for checkboxes */
@@ -64,11 +65,23 @@ if (isset($_POST['submit'])) {
 			?>
 				<input class="checkbox" name="<?php echo $k; ?>" type="checkbox" id="<?php echo $k; ?>"<?php if (get_option($k, $v)) echo ' checked="checked"' ?> />
 			<?php
+			} elseif ($type === 'selects' && array_key_exists($k, $choices)) {
+			?>
+                <select class="select" name="<?php echo $k; ?>" id="<?php echo $k; ?>">
+                <?php
+                foreach ($choices[$k] as $o=>$n) {
+                ?>
+                    <option value="<?php echo $o; ?>"<?php if (get_option($k, $v) == $o) echo ' selected' ?>><?php echo $n; ?></option>
+                <?php
+                }
+                ?>
+                </select>
+			<?php
 			}
 			?>
 			</span>
 		</label>
-		<?php 
+		<?php
 		if (array_key_exists($k, $this::$helptext)) {
 		?>
 		<div class="helptext">
