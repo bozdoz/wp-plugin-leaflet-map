@@ -209,6 +209,45 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return (Object) array('lat' => 0, 'lng' => 0);
         }
 
+        public function osm_geocode ( $address ) {
+
+            $address = urlencode($address);
+            $cached_address = 'leaflet_' . $address;
+
+            /* retrieve cached geocoded location */
+            if (get_option($cached_address)) {
+                return (Object) get_option($cached_address);
+            }
+
+            /* try geocoding */
+            $osm_geocode = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
+            $geocode_url = $osm_geocode . $address;
+            $json = file_get_contents($geocode_url);
+            $json = json_decode($json);
+
+            /* found location */
+            if (count($json) > 0) {
+
+                $location = array(
+                    'lat' => $json[0]->{'lat'},
+                    'lng' => $json[0]->{'lon'},
+                );
+
+                /* add location */
+                add_option($cached_address, $location);
+
+                /* add option key to locations for clean up purposes */
+                $locations = get_option('leaflet_geocoded_locations', array());
+                array_push($locations, $cached_address);
+                update_option('leaflet_geocoded_locations', $locations);
+
+                return (Object) $location;
+            }
+
+            /* else */
+            return (Object) array('lat' => 0, 'lng' => 0);
+        }
+
         /* count map shortcodes to allow for multiple */
         public static $leaflet_map_count;
 
@@ -245,7 +284,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* only really necessary $atts are the location variables */
             if (!empty($address)) {
                 /* try geocoding */
-                $location = $this::dawa_geocode($address);
+                $location = $this::osm_geocode($address);
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -399,7 +438,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $visible = empty($visible) ? false : ($visible == 'true');
 
             if (!empty($address)) {
-                $location = $this::dawa_geocode($address);
+                $location = $this::osm_geocode($address);
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -502,7 +541,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $addresses = preg_split('/\s?[;|\/]\s?/', $addresses);
                 foreach ($addresses as $address) {
                     if (trim($address)) {
-                        $geocoded = $this::dawa_geocode($address);
+                        $geocoded = $this::osm_geocode($address);
                         $locations[] = Array($geocoded->{'lat'}, $geocoded->{'lng'});
                     }
                 }
