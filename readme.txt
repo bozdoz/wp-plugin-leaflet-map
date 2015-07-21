@@ -6,7 +6,7 @@ Contributors: bozdoz, Remigr
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
-Tested up to: 4.2
+Tested up to: 4.2.2
 Version: 1.11
 Stable tag: 1.11
 License: GPLv2
