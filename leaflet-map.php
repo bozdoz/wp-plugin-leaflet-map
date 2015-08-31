@@ -58,6 +58,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             add_action( 'wp_enqueue_scripts', array(&$this, 'enqueue_and_register') );
             add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_and_register') );
+
+            /* allow maps on excerpts */
+            add_filter('the_excerpt', 'do_shortcode');    
         }
 
         public static function activate () {
