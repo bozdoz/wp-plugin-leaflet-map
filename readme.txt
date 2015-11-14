@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
-Tested up to: 4.3
-Version: 1.12
-Stable tag: 1.12
+Tested up to: 4.3.1
+Version: 1.13
+Stable tag: 1.13
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 1.13 =
+* Added new geocoder options (thanks to [@nielsalstrup](https://github.com/nielsalstrup) for DAWA and [@jeromelebleu](https://github.com/nielsalstrup) for OSM)
+
 = 1.12 =
 * Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))
 
@@ -131,6 +134,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.13 =
+Added new geocoder options (thanks to [@nielsalstrup](https://github.com/nielsalstrup) for DAWA and [@jeromelebleu](https://github.com/nielsalstrup) for OSM)
 
 = 1.12 =
 Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))

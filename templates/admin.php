@@ -1,6 +1,7 @@
 <?php
 $defaults = $this::$defaults;
 unset($defaults['serialized']);
+$geocoders = $this::$geocoders;
 
 if (isset($_POST['submit'])) {
 	/* copy and overwrite $post for checkboxes */
@@ -9,7 +10,7 @@ if (isset($_POST['submit'])) {
 	foreach ($defaults as $type=>$arrs) {
 		foreach($arrs as $k=>$v) {
 			/* checkboxes don't get sent if not checked */
-			if ($type === 'checks') {
+			if ($type === 'checkbox') {
 				$form[$k] = isset($_POST[$k]) ? 1 : 0;
 			}
 			update_option($k, $form[$k]);
@@ -56,18 +57,34 @@ if (isset($_POST['submit'])) {
 			<span class="label"><?php option_label($k); ?></span>
 			<span class="input-group">
 			<?php
-			if ($type === 'text') {
+			if ($k === 'leaflet_geocoder') {
 			?>
-				<input class="regular-text" name="<?php echo $k; ?>" type="text" id="<?php echo $k; ?>" value="<?php echo htmlspecialchars( get_option($k, $v) ); ?>" />
+                <select id="<?php echo $k; ?>"
+                	name="<?php echo $k; ?>"
+                	class="full-width">
+                <?php
+                foreach ($geocoders as $o => $n) {
+                ?>
+                    <option value="<?php echo $o; ?>"<?php if (get_option('leaflet_geocoder') == $o) echo ' selected' ?>>
+                    	<?php echo $n; ?>
+                   	</option>
+                <?php
+                }
+                ?>
+                </select>
+			<?php
+			} elseif ($type === 'text') {
+			?>
+				<input class="full-width" name="<?php echo $k; ?>" type="text" id="<?php echo $k; ?>" value="<?php echo htmlspecialchars( get_option($k, $v) ); ?>" />
 			<?php
 			} elseif ($type === 'textarea') {
 			?>
 				<textarea 
 					id="<?php echo $k; ?>"
-					class="regular-text" 
+					class="full-width" 
 					name="<?php echo $k; ?>"><?php echo htmlspecialchars( get_option($k, $v) ); ?></textarea>
 			<?php
-			} elseif ($type === 'checks') {
+			} elseif ($type === 'checkbox') {
 			?>
 				<input class="checkbox" name="<?php echo $k; ?>" type="checkbox" id="<?php echo $k; ?>"<?php if (get_option($k, $v)) echo ' checked="checked"' ?> />
 			<?php
@@ -75,7 +92,7 @@ if (isset($_POST['submit'])) {
 			?>
 			</span>
 		</label>
-		<?php 
+		<?php
 		if (array_key_exists($k, $this::$helptext)) {
 		?>
 		<div class="helptext">
