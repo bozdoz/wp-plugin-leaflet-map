@@ -17,6 +17,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'text' => array(
                 'leaflet_map_tile_url' => '//otile{s}-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
                 'leaflet_map_tile_url_subdomains' => '1234',
+				'leaflet_map_tile_attribution' => 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a><img src="http://developer.mapquest.com/content/osm/mq_logo.png" />',
                 'leaflet_js_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
                 'leaflet_css_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
                 'leaflet_default_zoom' => '16',
@@ -36,12 +37,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public static $helptext = array(
                 'leaflet_map_tile_url' => 'See some example tile URLs at <a href="http://developer.mapquest.com/web/products/open/map" target="_blank">MapQuest</a>.  Can be set per map with shortcode attribute <br/> <code>[leaflet-map tileurl="http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg"]</code>',
                 'leaflet_map_tile_url_subdomains' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
-                'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
+                'leaflet_map_tile_attribution' => 'Most tile layers require to give attribution to the tile layer. You can change the attribution text and link here.',
+				'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
                 'leaflet_css_url' => 'Same as above.',
                 'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
                 'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
                 'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
-                'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
+                'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use. If you want to change the Tile URL, you may remove the attribution here or change it above.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
                 'leaflet_show_zoom_controls' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>',
                 'leaflet_scroll_wheel_zoom' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>',
             );
@@ -193,6 +195,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']);
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']);
             $default_show_attr = get_option('leaflet_show_attribution', $defaults['leaflet_show_attribution']);
+			$default_layer_attribution = get_option('leaflet_map_tile_attribution', $defaults['leaflet_map_tile_attribution']);
             $default_tileurl = get_option('leaflet_map_tile_url', $defaults['leaflet_map_tile_url']);
             $default_subdomains = get_option('leaflet_map_tile_url_subdomains', $defaults['leaflet_map_tile_url_subdomains']);
             $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']);
@@ -221,6 +224,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* check more user defined $atts against defaults */
             $tileurl = empty($tileurl) ? $default_tileurl : $tileurl;
             $show_attr = empty($show_attr) ? $default_show_attr : $show_attr;
+			$layer_attribution = empty($layer_attribution) ? $default_layer_attribution : $layer_attribution;
             $subdomains = empty($subdomains) ? $default_subdomains : $subdomains;
             $zoomcontrol = empty($zoomcontrol) ? $default_zoom_control : $zoomcontrol;
             $zoom = empty($zoom) ? $default_zoom : $zoom;
@@ -251,9 +255,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     }).setView([{$lat}, {$lng}], {$zoom});";
                 
                 if ($show_attr) {
-                    /* add attribution to MapQuest and OSM */
+                    /* add attribution to the tile vendor and to OSM */
                     $content .= '
-                        map.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");
+                        map.attributionControl.addAttribution("'.str_replace('"', '\"', $layer_attribution).'");
 
                         map.attributionControl.addAttribution("© <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors");';
                 }
