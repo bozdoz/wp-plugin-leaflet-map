@@ -36,6 +36,10 @@ p {
 .input-group .regular-text {
 	width:100%;
 }
+.input-group textarea {
+	height:7em;
+	padding:0.5em 1em;
+}
 .helptext {
 	margin:20px 0 30px;
 	clear:both;

@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.3
-Version: 1.11
-Stable tag: 1.11
+Version: 1.12
+Stable tag: 1.12
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,10 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 
 Use the line format `[leaflet-line]` with attributes `latlngs` or `addresses` separated by semi-colons to draw a line: `[leaflet-line addresses="Sayulita; Puerto Vallarta"]`.
 
+* Can I add my own attributions to custom tile layers?
+
+Yes: use the keyword `attribution` in your shortcode (semi-colon separated list of attributions): `[leaflet-map attribution="Tiles courtesy of MapBox; Locations contributed by viewers"]`
+
 Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Screenshots ==
@@ -86,6 +90,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 7. You can specify the URL of your leaflet files, if you don't want to use the CDN url.
 
 == Changelog ==
+
+= 1.12 =
+* Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))
 
 = 1.11 =
 * Added HTTPS support.
@@ -124,6 +131,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.12 =
+Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))
 
 = 1.11 =
 Added HTTPS support.
