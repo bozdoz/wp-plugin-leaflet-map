@@ -2,7 +2,7 @@
 Author: bozdoz
 Author URI: http://www.twitter.com/bozdoz/
 Plugin URI: http://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, Remigr
+Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
@@ -136,7 +136,7 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 == Upgrade Notice ==
 
 = 1.13 =
-Added new geocoder options (thanks to [@nielsalstrup](https://github.com/nielsalstrup) for DAWA and [@jeromelebleu](https://github.com/nielsalstrup) for OSM)
+Added new geocoder options (thanks to [@nielsalstrup](https://github.com/nielsalstrup) for DAWA and [@jeromelebleu](https://github.com/jeromelebleu) for OSM)
 
 = 1.12 =
 Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))
