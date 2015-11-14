@@ -58,7 +58,14 @@ if (isset($_POST['submit'])) {
 			<?php
 			if ($type === 'text') {
 			?>
-				<input class="regular-text" name="<?php echo $k; ?>" type="text" id="<?php echo $k; ?>" value="<?php echo get_option($k, $v); ?>" />
+				<input class="regular-text" name="<?php echo $k; ?>" type="text" id="<?php echo $k; ?>" value="<?php echo htmlspecialchars( get_option($k, $v) ); ?>" />
+			<?php
+			} elseif ($type === 'textarea') {
+			?>
+				<textarea 
+					id="<?php echo $k; ?>"
+					class="regular-text" 
+					name="<?php echo $k; ?>"><?php echo htmlspecialchars( get_option($k, $v) ); ?></textarea>
 			<?php
 			} elseif ($type === 'checks') {
 			?>

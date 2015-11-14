@@ -23,6 +23,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_default_height' => '250',
                 'leaflet_default_width' => '100%',
                 ),
+            'textarea' => array(
+                'leaflet_default_attribution' => 'Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />; © <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors',
+                ),
             'checks' => array(
                 'leaflet_show_attribution' => '1',
                 'leaflet_show_zoom_controls' => '0',
@@ -44,6 +47,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
                 'leaflet_show_zoom_controls' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>',
                 'leaflet_scroll_wheel_zoom' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>',
+                'leaflet_default_attribution' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.',
             );
 
         public function __construct() {
@@ -185,7 +189,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $leaflet_map_count = $this::$leaflet_map_count;
 
-            $defaults = array_merge($this::$defaults['text'], $this::$defaults['checks']);
+            $defaults = array_merge($this::$defaults['text'], $this::$defaults['textarea'], $this::$defaults['checks']);
 
             /* defaults from db */
             $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']);
@@ -196,6 +200,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $default_tileurl = get_option('leaflet_map_tile_url', $defaults['leaflet_map_tile_url']);
             $default_subdomains = get_option('leaflet_map_tile_url_subdomains', $defaults['leaflet_map_tile_url_subdomains']);
             $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']);
+            $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']);
 
             /* leaflet script */
             wp_enqueue_style('leaflet_stylesheet');
@@ -227,7 +232,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $scrollwheel = empty($scrollwheel) ? $default_scrollwheel : $scrollwheel;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
-            
+            $attribution = empty($attribution) ? $default_attribution : $attribution;
+
             /* allow percent, but add px for ints */
             $height .= is_numeric($height) ? 'px' : '';
             $width .= is_numeric($width) ? 'px' : '';   
@@ -250,12 +256,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         scrollWheelZoom: {$scrollwheel}
                     }).setView([{$lat}, {$lng}], {$zoom});";
                 
+
                 if ($show_attr) {
                     /* add attribution to MapQuest and OSM */
-                    $content .= '
-                        map.attributionControl.addAttribution("Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />");
+                    $attributions = explode(';', $attribution);
 
-                        map.attributionControl.addAttribution("© <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors");';
+                    foreach ($attributions as $a) {
+                        $content .= "
+                            map.attributionControl.addAttribution('{$a}');";
+                    }
                 }
 
                 $content .= '
