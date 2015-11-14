@@ -13,6 +13,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
     
     class Leaflet_Map_Plugin {
 
+        public static $geocoders = array(
+            'google' => 'Google Maps',
+            'osm' => 'OpenStreetMap Nominatim',
+            'dawa' => 'Danmarks Adressers'
+        );
+
         public static $defaults = array (
             'text' => array(
                 'leaflet_map_tile_url' => '//otile{s}-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
@@ -26,7 +32,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'textarea' => array(
                 'leaflet_default_attribution' => 'Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />; © <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors',
                 ),
-            'checks' => array(
+            'select' => array(
+                'leaflet_geocoder' => 'google',
+                ),
+            'checkbox' => array(
                 'leaflet_show_attribution' => '1',
                 'leaflet_show_zoom_controls' => '0',
                 'leaflet_scroll_wheel_zoom' => '0',
@@ -37,17 +46,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             );
 
         public static $helptext = array(
-                'leaflet_map_tile_url' => 'See some example tile URLs at <a href="http://developer.mapquest.com/web/products/open/map" target="_blank">MapQuest</a>.  Can be set per map with shortcode attribute <br/> <code>[leaflet-map tileurl="http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg"]</code>',
-                'leaflet_map_tile_url_subdomains' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
-                'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
-                'leaflet_css_url' => 'Same as above.',
-                'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
-                'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
-                'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
-                'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
-                'leaflet_show_zoom_controls' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>',
-                'leaflet_scroll_wheel_zoom' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>',
-                'leaflet_default_attribution' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.',
+            'leaflet_map_tile_url' => 'See some example tile URLs at <a href="http://developer.mapquest.com/web/products/open/map" target="_blank">MapQuest</a>.  Can be set per map with shortcode attribute <br/> <code>[leaflet-map tileurl="http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg"]</code>',
+            'leaflet_map_tile_url_subdomains' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
+            'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
+            'leaflet_css_url' => 'Same as above.',
+            'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
+            'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
+            'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
+            'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
+            'leaflet_show_zoom_controls' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>',
+            'leaflet_scroll_wheel_zoom' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>',
+            'leaflet_default_attribution' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.',
+            'leaflet_geocoder' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.',
             );
 
         public function __construct() {
@@ -141,19 +151,40 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             include 'templates/find-on-map.php';
         }
 
-        public function google_geocode ( $address ) {
-            
-            $address = urlencode($address);
-            $cached_address = 'leaflet_' . $address;
+        public function geocoder ( $address ) {
+
+            $address = urlencode( $address );
+
+            $default = $this::$defaults['select']['leaflet_geocoder'];
+
+            $geocoder = get_option('leaflet_geocoder', $default);
+
+            $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
             /* retrieve cached geocoded location */
-            if (get_option($cached_address)) {
+            if (get_option( $cached_address )) {
                 return get_option($cached_address);
             }
 
-            /* try geocoding */
-            $google_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-            $geocode_url = $google_geocode . $address;
+            $geocoding_method = $geocoder . '_geocode';
+            $location = (Object) $this::$geocoding_method( $address );
+
+            /* add location */
+            add_option($cached_address, $location);
+
+            /* add option key to locations for clean up purposes */
+            $locations = get_option('leaflet_geocoded_locations', array());
+            array_push($locations, $cached_address);
+            update_option('leaflet_geocoded_locations', $locations);
+
+            return $location;
+        }
+
+        public function google_geocode ( $address ) {
+            /* Google */
+            
+            $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+            $geocode_url .= $address;
             $json = file_get_contents($geocode_url);
             $json = json_decode($json);
 
@@ -162,14 +193,52 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 
                 $location = $json->{'results'}[0]->{'geometry'}->{'location'};
 
-                /* add location */
-                add_option($cached_address, $location);
+                return $location;
+            }
 
-                /* add option key to locations for clean up purposes */
-                $locations = get_option('leaflet_geocoded_locations', array());
-                array_push($locations, $cached_address);
-                update_option('leaflet_geocoded_locations', $locations);
-                
+            /* else */
+            return array('lat' => 0, 'lng' => 0);
+        }
+
+        public function osm_geocode ( $address ) {
+            /* OpenStreetMap Nominatim */
+
+            $osm_geocode = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
+            $geocode_url = $osm_geocode . $address;
+            $json = file_get_contents($geocode_url);
+            $json = json_decode($json);
+
+            /* found location */
+            if (count($json) > 0) {
+
+                $location = (Object) array(
+                    'lat' => $json[0]->{'lat'},
+                    'lng' => $json[0]->{'lon'},
+                    );
+
+                return $location;
+            }
+
+            /* else */
+            return (Object) array('lat' => 0, 'lng' => 0);
+        }
+
+        public function dawa_geocode ( $address ) {
+            /* Danish Addresses Web Application */
+
+            $dawa_geocode = 'https://dawa.aws.dk/adresser?format=json&q=';
+            $geocode_url = $dawa_geocode . $address;
+            $json = file_get_contents($geocode_url);
+            $json = json_decode($json);
+
+            /* found location */
+            if ($json && $json[0]->{'status'}==1) {
+
+                $location = (Object) array(
+                    'lat'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[1],
+                    'lng'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[0]
+                    );
+
                 return $location;
             }
 
@@ -189,7 +258,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $leaflet_map_count = $this::$leaflet_map_count;
 
-            $defaults = array_merge($this::$defaults['text'], $this::$defaults['textarea'], $this::$defaults['checks']);
+            $defaults = array_merge($this::$defaults['text'], $this::$defaults['textarea'], $this::$defaults['checkbox']);
 
             /* defaults from db */
             $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']);
@@ -214,7 +283,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* only really necessary $atts are the location variables */
             if (!empty($address)) {
                 /* try geocoding */
-                $location = $this::google_geocode($address);
+                $location = $this::geocoder( $address );
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -286,7 +355,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $leaflet_map_count = $this::$leaflet_map_count;
 
-            $defaults = array_merge($this::$defaults['text'], $this::$defaults['checks']);
+            $defaults = array_merge($this::$defaults['text'], $this::$defaults['checkbox']);
 
             /* defaults from db */
             $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']);
@@ -372,7 +441,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $visible = empty($visible) ? false : ($visible == 'true');
 
             if (!empty($address)) {
-                $location = $this::google_geocode($address);
+                $location = $this::geocoder( $address );
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -475,7 +544,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $addresses = preg_split('/\s?[;|\/]\s?/', $addresses);
                 foreach ($addresses as $address) {
                     if (trim($address)) {
-                        $geocoded = $this::google_geocode($address);
+                        $geocoded = $this::geocoder($address);
                         $locations[] = Array($geocoded->{'lat'}, $geocoded->{'lng'});
                     }
                 }
