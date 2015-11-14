@@ -5,6 +5,7 @@
 
 label {
 	width:30%;
+	padding:1em 2em;
 }
 input {
 	width:70%;
@@ -23,6 +24,7 @@ p {
 	max-width: 700px;
 	margin:15px 0;
 	clear:both;
+	min-height:50px;
 }
 .label {
 	font-weight: bold;
@@ -33,7 +35,7 @@ p {
 	width:70%;
 	float:right;
 }
-.input-group .regular-text {
+.input-group .full-width {
 	width:100%;
 }
 .input-group textarea {
