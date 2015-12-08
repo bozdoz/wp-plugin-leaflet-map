@@ -20,7 +20,7 @@
 					'[leaflet-map zoom=10 lat=43.65 lng=-79.385]',
 					'[leaflet-marker]',
 					'[leaflet-marker lat=43.68 lng=-79.275]',
-					'[leaflet-marker lat=43.67 lng=-85.4 ico-icon-url="//i.imgur.com/Q54ueuO.png" ico-icon-size="array(80, 50)" ico-popup-anchor="array(0, -25)"]
+					'[leaflet-marker lat=43.60 lng=-79.235 ico-icon-url="//i.imgur.com/Q54ueuO.png" ico-icon-size="array(80, 50)" ico-popup-anchor="array(0, -25)"]
 ',
 					),
 				"Draggable Marker" => array(

@@ -91,6 +91,13 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 1.14 =
+* Added heatmap
+* Added icon option for marker
+* Added more options for marker
+
+
+
 = 1.13 =
 * Added new geocoder options (thanks to [@nielsalstrup](https://github.com/nielsalstrup) for DAWA and [@jeromelebleu](https://github.com/nielsalstrup) for OSM)
 
