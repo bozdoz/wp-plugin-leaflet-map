@@ -16,11 +16,12 @@
 				"Standard" => array(
 					'[leaflet-map zoom=12 lat=51.05 lng=-114.06]',
 					),
-				"Many Markers!" => array(
+				"Many Markers and icon!" => array(
 					'[leaflet-map zoom=10 lat=43.65 lng=-79.385]',
 					'[leaflet-marker]',
 					'[leaflet-marker lat=43.68 lng=-79.275]',
-					'[leaflet-marker lat=43.67 lng=-79.4]',
+					'[leaflet-marker lat=43.60 lng=-79.235 ico-icon-url="//i.imgur.com/Q54ueuO.png" ico-icon-size="array(80, 50)" ico-popup-anchor="array(0, -25)"]
+',
 					),
 				"Draggable Marker" => array(
 					'[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel=1]',
@@ -31,6 +32,9 @@
 					),
 				"Alternate Map Tiles" => array(
 					'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 tileurl=http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png subdomains=abc]',
+					),
+				"Heat Map" => array(
+							'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 heatmap=1 heatmap-radius=20 heatmap-max-opacity=0.5]',
 					),
 				"Marker Popup Messages" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
