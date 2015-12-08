@@ -8,9 +8,6 @@ Description: A plugin for creating a Leaflet JS map with a shortcode.
 Version: 1.14
 License: GPL2
 */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 if (!class_exists('Leaflet_Map_Plugin')) {
 
     class Leaflet_Map_Plugin
