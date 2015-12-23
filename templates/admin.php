@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
 			if ($type === 'checkbox') {
 				$form[$k] = isset($_POST[$k]) ? 1 : 0;
 			}
-			update_option($k, $form[$k]);
+			update_option($k, stripslashes( $form[$k]) );
 		}
 	}
 ?>

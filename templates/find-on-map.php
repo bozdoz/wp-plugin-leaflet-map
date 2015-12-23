@@ -34,7 +34,7 @@
 					),
 				"Marker Popup Messages" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
-					'[leaflet-marker message="OSLO!" visible="true"]',
+					'[leaflet-marker visible="true"]OSLO![/leaflet-marker]',
 					),
 				"Links In Marker Messages" => array(
 					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',

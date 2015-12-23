@@ -30,7 +30,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_default_width' => '100%',
                 ),
             'textarea' => array(
-                'leaflet_default_attribution' => 'Tiles Courtesy of <a href=\"http://www.mapquest.com/\" target=\"_blank\">MapQuest</a> <img src=\"http://developer.mapquest.com/content/osm/mq_logo.png\" />; © <a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a> contributors',
+                'leaflet_default_attribution' => 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" />; © <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors',
                 ),
             'select' => array(
                 'leaflet_geocoder' => 'google',
