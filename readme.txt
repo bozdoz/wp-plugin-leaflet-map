@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
-Tested up to: 4.4
-Version: 1.14
-Stable tag: 1.14
+Tested up to: 4.4.2
+Version: 1.15
+Stable tag: 1.15
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 1.15 =
+* Removed shortcode brackets from leaflet-marker shortcode
+
 = 1.14 =
 * Fixed slashes in optional map attribution
 
@@ -137,6 +140,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.15 =
+Fixed incompatibility with plugins that execute recursive shortcodes
 
 = 1.14 =
 Fixed slashes in optional map attribution
