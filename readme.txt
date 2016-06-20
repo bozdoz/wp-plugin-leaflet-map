@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, mapquest
 Requires at least: 3.0.1
 Tested up to: 4.5.2
-Version: 1.15
-Stable tag: 1.15
+Version: 1.16
+Stable tag: 1.16
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,8 @@ Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` s
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
 
+Or you can add a geojson shape via a url (work in progress): `[leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]`
+
 Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
 Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
@@ -52,6 +54,10 @@ Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leafle
 4. Use the shortcodes in your pages or posts: e.g. `[leaflet-map]` and `[leaflet-marker]`
 
 == Frequently Asked Questions ==
+
+* Can I add geojson?
+
+Yes, just give it a source URL: `[leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]`
 
 * Can I add a message to a marker?
 
@@ -87,9 +93,12 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `source="http://lorempixel.com/1000/1000/"`.
 5. See the `[leaflet-image]` on the front end.
 6. If you use `[leaflet-marker draggable=true]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
-7. You can specify the URL of your leaflet files, if you don't want to use the CDN url.
+7. Add geojson via URL: `[leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]`
 
 == Changelog ==
+
+= 1.16 =
+* Added bare geojson support
 
 = 1.15 =
 * Removed shortcode brackets from leaflet-marker shortcode
@@ -140,6 +149,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 1.16 =
+Added bare geojson support
 
 = 1.15 =
 Fixed incompatibility with plugins that execute recursive shortcodes

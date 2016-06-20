@@ -5,7 +5,7 @@
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
     Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.15
+    Version: 1.16
     License: GPL2
     */
 
@@ -70,6 +70,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             add_shortcode('leaflet-marker', array(&$this, 'marker_shortcode'));
             add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
             add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
+            add_shortcode('leaflet-geojson', array(&$this, 'geojson_shortcode'));
 
             /* allow maps on excerpts */
             /* should be optional? */
@@ -118,8 +119,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             wp_register_style('leaflet_stylesheet', $css_url, Array(), $version, false);
             wp_register_script('leaflet_js', $js_url, Array(), $version, true);
             
+            // optional ajax geojson plugin
+            wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), '1.0', false);
+            
             /* run an init function because other wordpress plugins don't play well with their window.onload functions */
-            wp_register_script('leaflet_map_init', plugins_url('scripts/init-leaflet-map.js', __FILE__), Array('leaflet_js'), '1.0', true);
+            wp_register_script('leaflet_map_init', plugins_url('scripts/init-leaflet-map.js', __FILE__), Array('leaflet_js','leaflet_ajax_geojson_js'), '1.0', true);
 
             /* run a construct function in the document head for the init function to use */
             wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), '1.0', false);
@@ -423,6 +427,51 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             </script>";
 
             return $content;
+        }
+
+        public function geojson_shortcode ( $atts ) {
+            
+            $leaflet_map_count = $this::$leaflet_map_count;
+
+            wp_enqueue_script('leaflet_ajax_geojson_js');
+
+            if ($atts) {
+                extract($atts);
+            }
+
+            /* only required field for geojson */
+            $src = empty($src) ? 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson' : $src;
+
+            $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
+            $color = empty($color) ? 'purple' : $color;
+            $weight = empty($weight) ? 1 : $weight;
+            $opacity = empty($opacity) ? 0.7 : $opacity;
+
+            $geojson_script = "<script>
+                WPLeafletMapPlugin.add(function () {
+                    var map_count = {$leaflet_map_count},
+                        previous_map = WPLeafletMapPlugin.maps[ map_count - 1 ],
+                        src = '{$src}',
+                        color = '{$color}',
+                        weight = '{$weight}',
+                        opacity = '{$opacity}',
+                        layer = L.ajaxGeoJson( src, {
+                            color : color,
+                            weight : weight,
+                            opacity : opacity
+                        }),
+                        fitbounds = {$fitbounds};
+                            
+                    layer.addTo( previous_map );
+
+                    if (fitbounds) {
+                        layer.on('ready', function () {
+                            this.map.fitBounds( this.getBounds() );
+                        });
+                    }
+                });</script>";
+
+            return $geojson_script;
         }
 
         public function marker_shortcode ( $atts, $content = null ) {
