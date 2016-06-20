@@ -47,3 +47,4 @@ Wish List
 * A way to customize markers (likely a marker media library)
 * A map editor/shortcode generator (so users can see what they're adding to the page)
 * More shape options than just lines
+* Clustered marker messages (multiple, identical markers with some kind of joint popup)
