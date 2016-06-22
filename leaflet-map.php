@@ -26,6 +26,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_js_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
                 'leaflet_css_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
                 'leaflet_default_zoom' => '16',
+                'leaflet_default_min_zoom' => '1',
+                'leaflet_default_max_zoom' => '20',
                 'leaflet_default_height' => '250',
                 'leaflet_default_width' => '100%',
                 ),
@@ -51,6 +53,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
             'leaflet_css_url' => 'Same as above.',
             'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
+            'leaflet_default_min_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map min_zoom="1"]</code>',
+            'leaflet_default_max_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map max_zoom="10"]</code>',
             'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
             'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
             'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
@@ -265,6 +269,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             /* defaults from db */
             $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']);
+            $default_min_zoom = get_option('leaflet_default_min_zoom', $defaults['leaflet_default_min_zoom']);
+            $default_max_zoom = get_option('leaflet_default_max_zoom', $defaults['leaflet_default_max_zoom']);
             $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']);
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']);
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']);
@@ -301,6 +307,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $subdomains = empty($subdomains) ? $default_subdomains : $subdomains;
             $zoomcontrol = empty($zoomcontrol) ? $default_zoom_control : $zoomcontrol;
             $zoom = empty($zoom) ? $default_zoom : $zoom;
+            $min_zoom = empty($min_zoom) ? $default_min_zoom : $min_zoom;
+            $max_zoom = empty($max_zoom) ? $default_max_zoom : $max_zoom;
             $scrollwheel = empty($scrollwheel) ? $default_scrollwheel : $scrollwheel;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
@@ -323,6 +331,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 
                 map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', 
                     {
+                        maxZoom: {$max_zoom},
+                        minZoom: {$min_zoom},
                         layers: [base],
                         zoomControl: {$zoomcontrol},
                         scrollWheelZoom: {$scrollwheel}
