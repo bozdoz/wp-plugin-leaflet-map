@@ -26,7 +26,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'leaflet_js_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
                 'leaflet_css_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
                 'leaflet_default_zoom' => '16',
-                'leaflet_default_min_zoom' => '1',
+                'leaflet_default_min_zoom' => '0',
                 'leaflet_default_max_zoom' => '20',
                 'leaflet_default_height' => '250',
                 'leaflet_default_width' => '100%',
