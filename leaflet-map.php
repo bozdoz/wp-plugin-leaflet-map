@@ -127,7 +127,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public static function activate () {
             /* set default values to db */
             foreach(self::$defaults as $name=>$atts) {
-                $value = isset($atts['default']) && $atts['default'] || $atts;
+                $value = isset($atts['default']) ? $atts['default'] : $atts;
 
                 add_option($name, $value);
             }
@@ -154,7 +154,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $version = get_option('leaflet_js_version', '');
 
             /* defaults from db */
-            $defaults = $this::$defaults;
+            $defaults = self::$defaults;
             $js_url = get_option('leaflet_js_url', $defaults['leaflet_js_url']['default']);
             $css_url = get_option('leaflet_css_url', $defaults['leaflet_css_url']['default']);
 
@@ -214,7 +214,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $address = urlencode( $address );
 
-            $geocoder = get_option('leaflet_geocoder', $this::$defaults['leaflet_geocoder']['default']);
+            $geocoder = get_option('leaflet_geocoder', self::$defaults['leaflet_geocoder']['default']);
 
             $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
@@ -224,7 +224,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
 
             $geocoding_method = $geocoder . '_geocode';
-            $location = (Object) $this::$geocoding_method( $address );
+            $location = (Object) self::$geocoding_method( $address );
 
             /* add location */
             add_option($cached_address, $location);
@@ -308,15 +308,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function map_shortcode ( $atts ) {
             
-            if (!$this::$leaflet_map_count) {
-            	$this::$leaflet_map_count = 0;
+            if (!self::$leaflet_map_count) {
+            	self::$leaflet_map_count = 0;
             }
-            $this::$leaflet_map_count++;
+            self::$leaflet_map_count++;
 
-            $leaflet_map_count = $this::$leaflet_map_count;
+            $leaflet_map_count = self::$leaflet_map_count;
 
             /* defaults from db */
-            $defaults = $this::$defaults;
+            $defaults = self::$defaults;
             $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']['default']);
             $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']['default']);
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
@@ -333,7 +333,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* only really necessary $atts are the location variables */
             if (!empty($address)) {
                 /* try geocoding */
-                $location = $this::geocoder( $address );
+                $location = self::geocoder( $address );
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -416,15 +416,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public function image_shortcode ( $atts ) {
             
             /* get map count for unique id */
-            if (!$this::$leaflet_map_count) {
-                $this::$leaflet_map_count = 0;
+            if (!self::$leaflet_map_count) {
+                self::$leaflet_map_count = 0;
             }
-            $this::$leaflet_map_count++;
+            self::$leaflet_map_count++;
 
-            $leaflet_map_count = $this::$leaflet_map_count;
+            $leaflet_map_count = self::$leaflet_map_count;
 
             /* defaults from db */
-            $defaults = $this::$defaults;
+            $defaults = self::$defaults;
             $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']['default']);
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
@@ -495,7 +495,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function geojson_shortcode ( $atts ) {
             
-            $leaflet_map_count = $this::$leaflet_map_count;
+            $leaflet_map_count = self::$leaflet_map_count;
 
             wp_enqueue_script('leaflet_ajax_geojson_js');
 
@@ -541,11 +541,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public function marker_shortcode ( $atts, $content = null ) {
 
             /* add to previous map */
-            if (!$this::$leaflet_map_count) {
+            if (!self::$leaflet_map_count) {
             	return '';
             }
 
-            $leaflet_map_count = $this::$leaflet_map_count;
+            $leaflet_map_count = self::$leaflet_map_count;
             
             if (!empty($atts)) extract($atts);
 
@@ -553,7 +553,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $visible = empty($visible) ? false : ($visible == 'true');
 
             if (!empty($address)) {
-                $location = $this::geocoder( $address );
+                $location = self::geocoder( $address );
                 $lat = $location->{'lat'};
                 $lng = $location->{'lng'};
             }
@@ -636,10 +636,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function line_shortcode ( $atts, $content = null ) {
             /* add to previous map */
-            if (!$this::$leaflet_map_count) {
+            if (!self::$leaflet_map_count) {
                 return '';
             }
-            $leaflet_map_count = $this::$leaflet_map_count;
+            $leaflet_map_count = self::$leaflet_map_count;
             
             if (!empty($atts)) extract($atts);
             
@@ -652,7 +652,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $addresses = preg_split('/\s?[;|\/]\s?/', $addresses);
                 foreach ($addresses as $address) {
                     if (trim($address)) {
-                        $geocoded = $this::geocoder($address);
+                        $geocoded = self::geocoder($address);
                         $locations[] = Array($geocoded->{'lat'}, $geocoded->{'lng'});
                     }
                 }

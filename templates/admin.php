@@ -1,5 +1,5 @@
 <?php
-$defaults = $this::$defaults;
+$defaults = self::$defaults;
 unset($defaults['leaflet_geocoded_locations']);
 
 if (isset($_POST['submit'])) {
