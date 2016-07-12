@@ -1,12 +1,8 @@
 (function () {
-	var previous_onload = window.onload;
 
-	window.onload = function () {
+	WPLeafletMapPlugin.add( initAdminShortcodes );
 
-	    if ( previous_onload ) {
-	        previous_onload();
-	    }
-
+	function initAdminShortcodes () {
 		var map_input = document.getElementById('map-shortcode'),
 			marker_input = document.getElementById('marker-shortcode'),
 			map_1 = WPLeafletMapPlugin.maps[0],

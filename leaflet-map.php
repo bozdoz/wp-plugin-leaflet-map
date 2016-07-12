@@ -4,8 +4,8 @@
     Author URI: http://twitter.com/bozdoz/
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
-    Description: A plugin for creating a Leaflet JS map with a shortcode.
-    Version: 1.16
+    Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
+    Version: 2.0
     License: GPL2
     */
 
@@ -13,52 +13,89 @@ if (!class_exists('Leaflet_Map_Plugin')) {
     
     class Leaflet_Map_Plugin {
 
-        public static $geocoders = array(
-            'google' => 'Google Maps',
-            'osm' => 'OpenStreetMap Nominatim',
-            'dawa' => 'Danmarks Adressers'
+        public static $defaults = array(
+            /*
+            ordered admin fields and default values
+            */
+            'leaflet_default_tiling_service' => array(
+                'default' => 'other',
+                'type' => 'select',
+                'options' => array(
+                    'other' => 'I will provide my own map tile URL',
+                    'mapquest' => 'MapQuest (I have an app key)',
+                ),
+                'helptext' => 'Choose a tiling service or provide your own.'
+            ),
+            'leaflet_mapquest_appkey' => array(
+                'default' => 'supply-an-app-key-if-you-choose-mapquest',
+                'type' => 'text',
+                'noreset' => true,
+                'helptext' => 'If you choose MapQuest, you must provide an app key. <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank">Sign up</a>, then <a href="https://developer.mapquest.com/user/me/apps" target="_blank">Create a new app</a> then supply the "Consumer Key" here.'
+            ),
+            'leaflet_map_tile_url' => array(
+                'default'=>'//{s}.tile.osm.org/{z}/{x}/{y}.png',
+                'type' => 'text',
+                'helptext' => 'See more tile servers here: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">here</a>.  Please note(!): free tiles from MapQuest have been discontinued without use of an app key (free accounts available) (see <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank">blog post</a>).'
+            ),
+            'leaflet_map_tile_url_subdomains' => array(
+                'default'=>'abc',
+                'type' => 'text',
+                'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
+            ),
+            'leaflet_js_url' => array(
+                'default'=>'//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js',
+                'type' => 'text',
+                'helptext' => 'If you host your own Leaflet files, specify the URL here.'
+            ),
+            'leaflet_css_url' => array(
+                'default'=>'//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css',
+                'type' => 'text',
+                'helptext' => 'Save as above.'
+            ),
+            'leaflet_default_zoom' => array(
+                'default'=>'12',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>'
+            ),
+            'leaflet_default_height' => array(
+                'default'=>'250',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>'
+            ),
+            'leaflet_default_width' => array(
+                'default'=>'100%',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map width="100%"]</code>'
+            ),
+            'leaflet_default_attribution' => array(
+                'default' => "<a href=\"http://leafletjs.com\" title=\"A JS library for interactive maps\">Leaflet</a>; \r\n© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+                'type' => 'textarea',
+                'helptext' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.'
+            ),
+            'leaflet_geocoder' => array(
+                'default' => 'google',
+                'type' => 'select',
+                'options' => array(
+                    'google' => 'Google Maps',
+                    'osm' => 'OpenStreetMap Nominatim',
+                    'dawa' => 'Danmarks Adressers'
+                ),
+                'helptext' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.'
+            ),
+            'leaflet_show_zoom_controls' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>'
+            ),
+            'leaflet_scroll_wheel_zoom' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
+            ),
+
+            // not in admin
+            'leaflet_geocoded_locations' => array()
         );
-
-        public static $defaults = array (
-            'text' => array(
-                'leaflet_map_tile_url' => '//otile{s}-s.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg',
-                'leaflet_map_tile_url_subdomains' => '1234',
-                'leaflet_js_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
-                'leaflet_css_url' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
-                'leaflet_default_zoom' => '16',
-                'leaflet_default_height' => '250',
-                'leaflet_default_width' => '100%',
-                ),
-            'textarea' => array(
-                'leaflet_default_attribution' => 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" />; © <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                ),
-            'select' => array(
-                'leaflet_geocoder' => 'google',
-                ),
-            'checkbox' => array(
-                'leaflet_show_attribution' => '1',
-                'leaflet_show_zoom_controls' => '0',
-                'leaflet_scroll_wheel_zoom' => '0',
-                ),
-            'serialized' => array(
-                'leaflet_geocoded_locations' => array()
-                )
-            );
-
-        public static $helptext = array(
-            'leaflet_map_tile_url' => 'See some example tile URLs at <a href="http://developer.mapquest.com/web/products/open/map" target="_blank">MapQuest</a>.  Can be set per map with shortcode attribute <br/> <code>[leaflet-map tileurl="http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg"]</code>',
-            'leaflet_map_tile_url_subdomains' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
-            'leaflet_js_url' => 'If you host your own Leaflet files, specify the URL here.',
-            'leaflet_css_url' => 'Same as above.',
-            'leaflet_default_zoom' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>',
-            'leaflet_default_height' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
-            'leaflet_default_width' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>',
-            'leaflet_show_attribution' => 'The default URL requires attribution by its terms of use.  If you want to change the URL, you may remove the attribution.  Also, you can set this per map in the shortcode (1 for enabled and 0 for disabled): <br/> <code>[leaflet-map show_attr="1"]</code>',
-            'leaflet_show_zoom_controls' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>',
-            'leaflet_scroll_wheel_zoom' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>',
-            'leaflet_default_attribution' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.',
-            'leaflet_geocoder' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.',
-            );
 
         public function __construct() {
             add_action('admin_init', array(&$this, 'admin_init'));
@@ -79,10 +116,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public static function activate () {
             /* set default values to db */
-            foreach(self::$defaults as $arrs) {
-                foreach($arrs as $k=>$v) {
-                    add_option($k, $v);
-                }
+            foreach(self::$defaults as $name=>$atts) {
+                $value = isset($atts['default']) && $atts['default'] || $atts;
+
+                add_option($name, $value);
             }
         }
         
@@ -96,28 +133,37 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
 
             /* remove values from db */
-            foreach (self::$defaults as $arrs) {
-                foreach($arrs as $k=>$v) {
-                    delete_option($k);
-                }
+            foreach(self::$defaults as $name=>$atts) {
+                delete_option( $name );
             }
         }
 
         public function enqueue_and_register () {
-            $defaults = $this::$defaults['text'];
 
-            /* backwards compatible */
+            /* backwards compatible : leaflet_js_version */
             $version = get_option('leaflet_js_version', '');
 
             /* defaults from db */
-            $js_url = get_option('leaflet_js_url', $defaults['leaflet_js_url']);
-            $css_url = get_option('leaflet_css_url', $defaults['leaflet_css_url']);
+            $defaults = $this::$defaults;
+            $js_url = get_option('leaflet_js_url', $defaults['leaflet_js_url']['default']);
+            $css_url = get_option('leaflet_css_url', $defaults['leaflet_css_url']['default']);
 
             $js_url = sprintf($js_url, $version);
             $css_url = sprintf($css_url, $version);
 
             wp_register_style('leaflet_stylesheet', $css_url, Array(), $version, false);
             wp_register_script('leaflet_js', $js_url, Array(), $version, true);
+
+            // new required MapQuest javascript file
+            $tiling_service = get_option('leaflet_default_tiling_service','');
+
+            if ($tiling_service == 'mapquest') {
+                $mapquest_js_url = 'https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=%s';
+                $mq_appkey = get_option('leaflet_mapquest_appkey','');
+                $mapquest_js_url = sprintf($mapquest_js_url, $mq_appkey);
+
+                wp_register_script('leaflet_mapquest_plugin', $mapquest_js_url, Array('leaflet_js'), '2.0', true);
+            }
             
             // optional ajax geojson plugin
             wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), '1.0', false);
@@ -158,9 +204,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $address = urlencode( $address );
 
-            $default = $this::$defaults['select']['leaflet_geocoder'];
-
-            $geocoder = get_option('leaflet_geocoder', $default);
+            $geocoder = get_option('leaflet_geocoder', $this::$defaults['leaflet_geocoder']['default']);
 
             $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
@@ -261,23 +305,14 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $leaflet_map_count = $this::$leaflet_map_count;
 
-            $defaults = array_merge($this::$defaults['text'], $this::$defaults['textarea'], $this::$defaults['checkbox']);
-
             /* defaults from db */
-            $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']);
-            $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']);
-            $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']);
-            $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']);
-            $default_show_attr = get_option('leaflet_show_attribution', $defaults['leaflet_show_attribution']);
-            $default_tileurl = get_option('leaflet_map_tile_url', $defaults['leaflet_map_tile_url']);
-            $default_subdomains = get_option('leaflet_map_tile_url_subdomains', $defaults['leaflet_map_tile_url_subdomains']);
-            $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']);
-            $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']);
-
-            /* leaflet script */
-            wp_enqueue_style('leaflet_stylesheet');
-            wp_enqueue_script('leaflet_js');
-            wp_enqueue_script('leaflet_map_init');
+            $defaults = $this::$defaults;
+            $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']['default']);
+            $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']['default']);
+            $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
+            $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
+            $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']['default']);
+            $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']['default']);
 
             if ($atts) {
                 extract($atts);
@@ -296,15 +331,30 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
 
             /* check more user defined $atts against defaults */
-            $tileurl = empty($tileurl) ? $default_tileurl : $tileurl;
-            $show_attr = empty($show_attr) ? $default_show_attr : $show_attr;
-            $subdomains = empty($subdomains) ? $default_subdomains : $subdomains;
             $zoomcontrol = empty($zoomcontrol) ? $default_zoom_control : $zoomcontrol;
             $zoom = empty($zoom) ? $default_zoom : $zoom;
             $scrollwheel = empty($scrollwheel) ? $default_scrollwheel : $scrollwheel;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
             $attribution = empty($attribution) ? $default_attribution : $attribution;
+
+            $tileurl = empty($tileurl) ? '' : $tileurl;
+            $subdomains = empty($subdomains) ? '' : $subdomains;
+
+            /* leaflet script */
+            wp_enqueue_style('leaflet_stylesheet');
+            wp_enqueue_script('leaflet_js');
+            wp_enqueue_script('leaflet_map_init');
+
+            if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
+                // mapquest doesn't accept direct tile access as of July 11, 2016
+                wp_enqueue_script('leaflet_mapquest_plugin');
+            } else {
+                $default_tileurl = get_option('leaflet_map_tile_url', $defaults['leaflet_map_tile_url']['default']);
+                $default_subdomains = get_option('leaflet_map_tile_url_subdomains', $defaults['leaflet_map_tile_url_subdomains']['default']);
+                $tileurl = empty($tileurl) ? $default_tileurl : $tileurl;
+                $subdomains = empty($subdomains) ? $default_subdomains : $subdomains;
+            }
 
             /* allow percent, but add px for ints */
             $height .= is_numeric($height) ? 'px' : '';
@@ -315,27 +365,26 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $content .= "<script>
             WPLeafletMapPlugin.add(function () {
-                var map,
-                    baseURL = '{$tileurl}',
-                    base = L.tileLayer(baseURL, { 
+                var baseUrl = '{$tileurl}',
+                    base = (!baseUrl && window.MQ) ? MQ.mapLayer() : L.tileLayer(baseUrl, { 
                        subdomains: '{$subdomains}'
-                    });
-                
-                map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', 
-                    {
+                    }),
+                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', {
                         layers: [base],
                         zoomControl: {$zoomcontrol},
-                        scrollWheelZoom: {$scrollwheel}
+                        scrollWheelZoom: {$scrollwheel},
+                        attributionControl: false
                     }).setView([{$lat}, {$lng}], {$zoom});";
                 
-
-                if ($show_attr) {
+                if ($attribution) {
                     /* add attribution to MapQuest and OSM */
                     $attributions = explode(';', $attribution);
 
+                    $content .= "var attControl = L.control.attribution({prefix:false}).addTo(map);";
+
                     foreach ($attributions as $a) {
-                        $content .= "
-                            map.attributionControl.addAttribution('{$a}');";
+                        $a = trim($a);
+                        $content .= "attControl.addAttribution('{$a}');";
                     }
                 }
 
@@ -358,13 +407,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $leaflet_map_count = $this::$leaflet_map_count;
 
-            $defaults = array_merge($this::$defaults['text'], $this::$defaults['checkbox']);
-
             /* defaults from db */
-            $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']);
-            $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']);
-            $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']);
-            $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']);
+            $defaults = $this::$defaults;
+            $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']['default']);
+            $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
+            $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
+            $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']['default']);
 
             /* leaflet script */
             wp_enqueue_style('leaflet_stylesheet');

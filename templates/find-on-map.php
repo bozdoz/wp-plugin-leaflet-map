@@ -30,7 +30,7 @@
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
 				"Alternate Map Tiles" => array(
-					'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 tileurl=http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png subdomains=abc]',
+					'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]',
 					),
 				"Marker Popup Messages" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
