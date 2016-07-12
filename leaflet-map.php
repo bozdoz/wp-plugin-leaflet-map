@@ -92,6 +92,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'type' => 'checkbox',
                 'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
             ),
+            'leaflet_default_min_zoom' => array(
+                'default' => '0',
+                'type' => 'text',
+                'helptext' => 'Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map min_zoom="1"]</code>'
+            ),
+            'leaflet_default_max_zoom' => array(
+                'default' => '20',
+                'type' => 'text',
+                'helptext' => 'Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map max_zoom="10"]</code>'
+            ),
 
             // not in admin
             'leaflet_geocoded_locations' => array()
@@ -313,6 +323,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
             $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']['default']);
             $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']['default']);
+            $default_min_zoom = get_option('leaflet_default_min_zoom', $defaults['leaflet_default_min_zoom']['default']);
+            $default_max_zoom = get_option('leaflet_default_max_zoom', $defaults['leaflet_default_max_zoom']['default']);
 
             if ($atts) {
                 extract($atts);
@@ -333,6 +345,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* check more user defined $atts against defaults */
             $zoomcontrol = empty($zoomcontrol) ? $default_zoom_control : $zoomcontrol;
             $zoom = empty($zoom) ? $default_zoom : $zoom;
+            $min_zoom = empty($min_zoom) ? $default_min_zoom : $min_zoom;
+            $max_zoom = empty($max_zoom) ? $default_max_zoom : $max_zoom;
             $scrollwheel = empty($scrollwheel) ? $default_scrollwheel : $scrollwheel;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
@@ -370,6 +384,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                        subdomains: '{$subdomains}'
                     }),
                     map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', {
+                        maxZoom: {$max_zoom},
+                        minZoom: {$min_zoom},
                         layers: [base],
                         zoomControl: {$zoomcontrol},
                         scrollWheelZoom: {$scrollwheel},
