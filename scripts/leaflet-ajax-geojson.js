@@ -22,14 +22,12 @@ L.AjaxGeoJSON = L.GeoJSON.extend({
                 var data;
                 if (xhr.readyState === xhr.DONE &&
                     xhr.status === 200) {
-                    data = xhr.response;
+                    data = JSON.parse( xhr.responseText );
                     _this.json = data;
                     _this.layer.addData( data );
                     _this.fire('ready');
                 }
             };
-
-            xhr.responseType = 'json';
 
             xhr.open('get', this._url, true);
 

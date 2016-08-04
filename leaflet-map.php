@@ -5,7 +5,7 @@
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
-    Version: 2.0
+    Version: 2.0.1
     License: GPL2
     */
 
@@ -35,7 +35,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'leaflet_map_tile_url' => array(
                 'default'=>'//{s}.tile.osm.org/{z}/{x}/{y}.png',
                 'type' => 'text',
-                'helptext' => 'See more tile servers here: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">here</a>.  Please note(!): free tiles from MapQuest have been discontinued without use of an app key (free accounts available) (see <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank">blog post</a>).'
+                'helptext' => 'See more tile servers here: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">here</a>.  Please note(!): free tiles from MapQuest have been discontinued without use of an app key (free accounts available) (see <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank">blog post</a>). Can be set per map with the shortcode <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>'
             ),
             'leaflet_map_tile_url_subdomains' => array(
                 'default'=>'abc',

@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.5.4
-Version: 2.0
-Stable tag: 2.0
+Version: 2.0.1
+Stable tag: 2.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.0.1 =
+* Changed ajax request to be compatible with some versions of IE.
+
 = 2.0 =
 * Needed to add support for a MapQuest app key, since they discontinued the direct access of their tiles on July 11, 2016; added an alternate OpenStreetMap tile URL as the new default. Remember to reset options to default values!
 
@@ -157,6 +160,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+GeoJSON ajax requests now work with Internet Explorer (some versions)
 
 = 2.0 =
 MapQuest tiles will no longer work without an app key!
