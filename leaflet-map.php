@@ -653,7 +653,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 foreach ($addresses as $address) {
                     if (trim($address)) {
                         $geocoded = self::geocoder($address);
-                        $locations[] = Array($geocoded->{'lat'}, $geocoded->{'lng'});
+                        $locations[] = Array(floatval($geocoded->{'lat'}), floatval($geocoded->{'lng'}));
                     }
                 }
             } else if (!empty($latlngs)) {
