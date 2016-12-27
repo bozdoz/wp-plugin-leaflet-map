@@ -118,6 +118,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
             add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
             add_shortcode('leaflet-geojson', array(&$this, 'geojson_shortcode'));
+            add_shortcode('leaflet-kml', array(&$this, 'kml_shortcode'));
 
             /* allow maps on excerpts */
             /* should be optional? */
@@ -177,6 +178,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             
             // optional ajax geojson plugin
             wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), '1.0', false);
+
+            wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), '1.0', false);
+
+            wp_register_script('leaflet_ajax_kml_js', plugins_url('scripts/leaflet-ajax-kml.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js', 'leaflet_ajax_geojson_js'), '1.0', false);
             
             /* run an init function because other wordpress plugins don't play well with their window.onload functions */
             wp_register_script('leaflet_map_init', plugins_url('scripts/init-leaflet-map.js', __FILE__), Array('leaflet_js','leaflet_ajax_geojson_js'), '1.0', true);
@@ -493,18 +498,17 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $content;
         }
 
-        public function geojson_shortcode ( $atts ) {
-            
+        public function general_shape_shortcode ( $atts, $wp_script, $L_method, $default = '' ) {
             $leaflet_map_count = self::$leaflet_map_count;
 
-            wp_enqueue_script('leaflet_ajax_geojson_js');
+            wp_enqueue_script( $wp_script );
 
             if ($atts) {
                 extract($atts);
             }
 
             /* only required field for geojson */
-            $src = empty($src) ? 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson' : $src;
+            $src = empty($src) ? $default : $src;
 
             $style = array(
                 'color' => empty($color) ? false : $color,
@@ -535,7 +539,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                             'stroke-opacity' : 'opacity',
                             'stroke-width' : 'width',
                         },
-                        layer = L.ajaxGeoJson(src, {
+                        layer = L.{$L_method}(src, {
                             style : layerStyle,
                             onEachFeature : onEachFeature
                         }),
@@ -586,6 +590,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 </script>";
 
             return $geojson_script;
+        }
+
+        public function geojson_shortcode ( $atts ) {
+
+            return self::general_shape_shortcode( $atts, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');
+            
+        }
+
+        public function kml_shortcode ( $atts ) {
+            
+            return self::general_shape_shortcode( $atts, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
+            
         }
 
         public function marker_shortcode ( $atts, $content = null ) {
