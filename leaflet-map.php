@@ -5,7 +5,7 @@
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
-    Version: 2.0.2
+    Version: 2.1.0
     License: GPL2
     */
 
@@ -506,34 +506,69 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* only required field for geojson */
             $src = empty($src) ? 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson' : $src;
 
+            $style = array(
+                'color' => empty($color) ? false : $color,
+                'weight' => empty($weight) ? false : $weight,
+                'stroke' => empty($stroke) ? false : $stroke,
+                'opacity' => empty($opacity) ? false : $opacity,
+                'fillOpacity' => empty($fillopacity) ? false : $fillopacity,
+                'fillColor' => empty($fillcolor) ? false : $fillcolor,
+                );
+
+            $style_json = json_encode( array_filter( $style ) );
+
             $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
-            $color = empty($color) ? 'purple' : $color;
-            $weight = empty($weight) ? 1 : $weight;
-            $opacity = empty($opacity) ? 0.7 : $opacity;
 
             $geojson_script = "<script>
                 WPLeafletMapPlugin.add(function () {
                     var map_count = {$leaflet_map_count},
                         previous_map = WPLeafletMapPlugin.maps[ map_count - 1 ],
                         src = '{$src}',
-                        color = '{$color}',
-                        weight = '{$weight}',
-                        opacity = '{$opacity}',
-                        layer = L.ajaxGeoJson( src, {
-                            color : color,
-                            weight : weight,
-                            opacity : opacity
+                        default_style = {$style_json},
+                        rewrite_keys = {
+                            fill : 'fillColor',
+                            'fill-opacity' : 'fillOpacity',
+                            stroke : 'color',
+                            'stroke-opacity' : 'opacity',
+                            'stroke-width' : 'width',
+                        },
+                        layer = L.ajaxGeoJson(src, {
+                            style : layerStyle
                         }),
                         fitbounds = {$fitbounds};
                             
-                    layer.addTo( previous_map );
-
                     if (fitbounds) {
                         layer.on('ready', function () {
                             this.map.fitBounds( this.getBounds() );
                         });
                     }
-                });</script>";
+
+                    layer.addTo( previous_map );
+
+                    function layerStyle (feature) {
+                        var props = feature.properties || {},
+                            style = {};
+
+                        for (var key in props) {
+                            if (key.match('-')) {
+                                var camelcase = key.replace(/-(\w)/, function (_, first_letter) {
+                                    return first_letter.toUpperCase();
+                                });
+                                style[ camelcase ] = props[ key ];
+                            }
+                            // rewrite style keys from geojson.io
+                            if (rewrite_keys[ key ]) {
+                                style[ rewrite_keys[ key ] ] = props[ key ];
+                            }
+                        }
+
+                        style = L.Util.extend(style, default_style);
+
+                        return style;
+                    }                
+
+                });
+                </script>";
 
             return $geojson_script;
         }
