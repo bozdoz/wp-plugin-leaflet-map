@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.7
-Version: 2.3.0
-Stable tag: 2.3.0
+Version: 2.4.0
+Stable tag: 2.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.4.0 =
+* Added Leaflet 1.0.2 scripts by default (works!);
+
 = 2.3.0 =
 * Added KML support `[leaflet-kml]`;
 
@@ -176,6 +179,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.4.0 =
+Added Leaflet 1.0.2 scripts by default (works!);
 
 = 2.3.0 =
 Added KML support `[leaflet-kml]`;

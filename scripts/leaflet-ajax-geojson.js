@@ -51,6 +51,10 @@ L.AjaxGeoJSON = L.GeoJSON.extend({
 
     onRemove : function (map) {
         this.map.removeLayer( this.layer );        
+    },
+
+    getBounds : function () {
+        return this.layer.getBounds();
     }
 });
 

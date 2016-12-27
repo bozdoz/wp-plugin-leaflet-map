@@ -5,7 +5,7 @@
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
-    Version: 2.3.0
+    Version: 2.4.0
     License: GPL2
     */
 
@@ -43,12 +43,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
             ),
             'leaflet_js_url' => array(
-                'default'=>'//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js',
+                'default'=>'https://unpkg.com/leaflet@1.0.2/dist/leaflet.js',
                 'type' => 'text',
                 'helptext' => 'If you host your own Leaflet files, specify the URL here.'
             ),
             'leaflet_css_url' => array(
-                'default'=>'//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css',
+                'default'=>'https://unpkg.com/leaflet@1.0.2/dist/leaflet.css',
                 'type' => 'text',
                 'helptext' => 'Save as above.'
             ),

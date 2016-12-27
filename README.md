@@ -1,6 +1,8 @@
 Leaflet Map WordPress Plugin
 ========
 
+![Leaflet](http://img.shields.io/badge/leaflet-1.0.2-green.svg?style=flat)
+
 How to Use
 ----------
 
@@ -35,7 +37,7 @@ Alternatively, you could use a plain image for visitors to zoom and pan around w
 Installation
 ------------
 
-* Copy this repo into your WordPress plugins directory: /wp-content/plugins/
+* Copy this repo (or download a release of it) into your WordPress plugins directory: /wp-content/plugins/
 * Install via the WordPress plugins page on your WordPress site: /wp-admin/plugin-install.php (search Leaflet)
 
 Pull Requests
@@ -48,5 +50,3 @@ Wish List
 
 * A way to customize markers (likely a marker media library)
 * A map editor/shortcode generator (so users can see what they're adding to the page)
-* More shape options than just lines
-* Clustered marker messages (multiple, identical markers with some kind of joint popup)
