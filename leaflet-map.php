@@ -5,7 +5,7 @@
     Plugin URI: http://wordpress.org/plugins/leaflet-map/
     Plugin Name: Leaflet Map
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
-    Version: 2.1.0
+    Version: 2.2.0
     License: GPL2
     */
 
@@ -519,6 +519,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
+            $popup_text = empty($popup_text) ? '' : $popup_text;
+            $popup_property = empty($popup_property) ? '' : $popup_property;
+
             $geojson_script = "<script>
                 WPLeafletMapPlugin.add(function () {
                     var map_count = {$leaflet_map_count},
@@ -533,9 +536,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                             'stroke-width' : 'width',
                         },
                         layer = L.ajaxGeoJson(src, {
-                            style : layerStyle
+                            style : layerStyle,
+                            onEachFeature : onEachFeature
                         }),
-                        fitbounds = {$fitbounds};
+                        fitbounds = {$fitbounds},
+                        popup_text = '{$popup_text}',
+                        popup_property = '{$popup_property}';
                             
                     if (fitbounds) {
                         layer.on('ready', function () {
@@ -565,7 +571,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         style = L.Util.extend(style, default_style);
 
                         return style;
-                    }                
+                    }      
+
+                    function onEachFeature (feature, layer) {
+                        var props = feature.properties || {},
+                            text = popup_text || props[ popup_property ];
+
+                        if (text) {
+                            layer.bindPopup( text );
+                        }
+                    }          
 
                 });
                 </script>";

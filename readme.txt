@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.7
-Version: 2.1.0
-Stable tag: 2.1.0
+Version: 2.2.0
+Stable tag: 2.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,7 +61,7 @@ Yes. Update to the newest plugin version, and reset defaults in settings.  You c
 
 * Can I add geojson?
 
-Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles.
+Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]` or identify a geojson property with `popup_property`.
 
 * Can I add a message to a marker?
 
@@ -101,6 +101,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.2.0 =
+* Added popup_text and popup_property to leaflet-geojson to bind popups via a shortcode property or geojson properties
 
 = 2.1.0 =
 * Added Leaflet and GeoJSON.io styles to geojson shortcode
@@ -166,6 +169,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.2.0 =
+Added popup_text and popup_property to leaflet-geojson to bind popups via a shortcode property or geojson properties
 
 = 2.1.0 =
 Added Leaflet and GeoJSON.io styles to geojson shortcode
