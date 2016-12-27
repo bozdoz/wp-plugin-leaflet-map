@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Leaflet Map ===
 Author: bozdoz
 Author URI: http://www.twitter.com/bozdoz/
 Plugin URI: http://wordpress.org/plugins/leaflet-map/
