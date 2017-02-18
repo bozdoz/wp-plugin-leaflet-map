@@ -1,3 +1,15 @@
+<style>
+	.marching-ants {
+	  animation: dash 35s infinite linear;
+	}
+
+	@keyframes dash {
+	  to {
+	    stroke-dashoffset: -1000;
+	  }
+	}
+</style>
+
 <div class="wrap">
 	<h2>Shortcodes</h2>
 	<div class="wrap">
@@ -29,8 +41,8 @@
 				"Zoom Buttons" => array(
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
-				"Alternate Map Tiles" => array(
-					'[leaflet-map zoom=3 lat=-25.165 lng=-57.832 tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]',
+				"Alternate Map Tiles w/scrollwheel" => array(
+					'[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]',
 					),
 				"Marker Popup Messages" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
@@ -40,13 +52,20 @@
 					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
 					'[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
 					),
-				"Basic Lines w/Scrollwheel Zoom" => array(
+				"Basic Lines w/Scrollwheel" => array(
 					'[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
 					'[leaflet-line latlngs="41, 29; 44, 18;"]'
 					),
 				"Fitted Colored Line on Addresses" => array(
 					'[leaflet-map]',
 					'[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline=1]'
+					),
+				"More Crazy Line Attributes" => array(
+					'[leaflet-map]',
+					'[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants fitbounds=1]CSS makes me march![/leaflet-line]'
+					),
+				"Disable all Interaction" => array(
+					'[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0]',
 					),
 				);
 

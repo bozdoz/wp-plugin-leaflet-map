@@ -1,11 +1,11 @@
 <?php
     /*
     Plugin Name: Leaflet Map
-    Plugin URI: http://wordpress.org/plugins/leaflet-map/
+    Plugin URI: https://wordpress.org/plugins/leaflet-map/
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
-    Author URI: http://twitter.com/bozdoz/
-    Version: 2.4.0
+    Author URI: https://twitter.com/bozdoz/
+    Version: 2.5.0
     License: GPL2
     */
 
@@ -43,12 +43,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
             ),
             'leaflet_js_url' => array(
-                'default'=>'https://unpkg.com/leaflet@1.0.2/dist/leaflet.js',
+                'default'=>'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js',
                 'type' => 'text',
                 'helptext' => 'If you host your own Leaflet files, specify the URL here.'
             ),
             'leaflet_css_url' => array(
-                'default'=>'https://unpkg.com/leaflet@1.0.2/dist/leaflet.css',
+                'default'=>'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css',
                 'type' => 'text',
                 'helptext' => 'Save as above.'
             ),
@@ -311,6 +311,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         /* count map shortcodes to allow for multiple */
         public static $leaflet_map_count;
 
+        public function remove_null ($var) {
+            return $var !== null;
+        }
+
         public function map_shortcode ( $atts ) {
             
             if (!self::$leaflet_map_count) {
@@ -378,7 +382,32 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* allow percent, but add px for ints */
             $height .= is_numeric($height) ? 'px' : '';
             $width .= is_numeric($width) ? 'px' : '';   
+
+
+            /* allow a bunch of other options */
+            // http://leafletjs.com/reference-1.0.3.html#map-closepopuponclick
+            $more_options = array(
+                'closePopupOnClick' => isset($closepopuponclick) ? $closepopuponclick : NULL,
+                'trackResize' => isset($trackresize) ? $trackresize : NULL,
+                'boxZoom' => isset($boxzoom) ? $boxzoom : NULL,
+                'doubleClickZoom' => isset($doubleclickzoom) ? $doubleclickzoom : NULL,
+                'dragging' => isset($dragging) ? $dragging : NULL,
+                'keyboard' => isset($keyboard) ? $keyboard : NULL,
+                );
             
+            // filter out nulls
+            $more_options = array_filter( $more_options, 'self::remove_null' );
+            
+            // change string booleans to booleans
+            $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+            // wrap as JSON
+            if ($more_options) {
+                $more_options = json_encode( $more_options );
+            } else {
+                $more_options = '{}';
+            }
+
             /* should be iterated for multiple maps */
             $content = '<div id="leaflet-wordpress-map-'.$leaflet_map_count.'" class="leaflet-wordpress-map" style="height:'.$height.'; width:'.$width.';"></div>';
 
@@ -388,14 +417,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     base = (!baseUrl && window.MQ) ? MQ.mapLayer() : L.tileLayer(baseUrl, { 
                        subdomains: '{$subdomains}'
                     }),
-                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', {
+                    options = L.Util.extend({}, {
                         maxZoom: {$max_zoom},
                         minZoom: {$min_zoom},
                         layers: [base],
                         zoomControl: {$zoomcontrol},
                         scrollWheelZoom: {$scrollwheel},
                         attributionControl: false
-                    }).setView([{$lat}, {$lng}], {$zoom});";
+                    }, {$more_options}),
+                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});";
                 
                 if ($attribution) {
                     /* add attribution to MapQuest and OSM */
@@ -498,7 +528,56 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $content;
         }
 
-        public function general_shape_shortcode ( $atts, $wp_script, $L_method, $default = '' ) {
+        public function get_style_json ($atts) {
+            if ($atts) {
+                extract($atts);
+            }
+
+            // from http://leafletjs.com/reference-1.0.3.html#path
+            $style = array(
+                'stroke' => isset($stroke) ? $stroke : NULL,
+                'color' => isset($color) ? $color : NULL,
+                'weight' => isset($weight) ? $weight : NULL,
+                'opacity' => isset($opacity) ? $opacity : NULL,
+                'lineCap' => isset($linecap) ? $linecap : NULL,
+                'lineJoin' => isset($linejoin) ? $linejoin : NULL,
+                'dashArray' => isset($dasharray) ? $dasharray : NULL,
+                'dashOffset' => isset($dashoffset) ? $dashoffset : NULL,
+                'fill' => isset($fill) ? $fill : NULL,
+                'fillColor' => isset($fillcolor) ? $fillcolor : NULL,
+                'fillOpacity' => isset($fillopacity) ? $fillopacity : NULL,
+                'fillRule' => isset($fillrule) ? $fillrule : NULL,
+                'className' => isset($classname) ? $classname : NULL,
+                );
+
+            $args = array(
+                'stroke' => FILTER_VALIDATE_BOOLEAN,
+                'color' => FILTER_SANITIZE_STRING,
+                'weight' => FILTER_VALIDATE_FLOAT,
+                'opacity' => FILTER_VALIDATE_FLOAT,
+                'lineCap' => FILTER_SANITIZE_STRING,
+                'lineJoin' => FILTER_SANITIZE_STRING,
+                'dashArray' => FILTER_SANITIZE_STRING,
+                'dashOffset' => FILTER_SANITIZE_STRING,
+                'fill' => FILTER_VALIDATE_BOOLEAN,
+                'fillColor' => FILTER_SANITIZE_STRING,
+                'fillOpacity' => FILTER_VALIDATE_FLOAT,
+                'fillRule' => FILTER_SANITIZE_STRING,
+                'className' => FILTER_SANITIZE_STRING
+                );
+
+
+            // remove nulls
+            $style = array_filter( $style, 'self::remove_null' );
+
+            // sanitize output
+            $args = array_intersect_key($args, $style);
+            $style = filter_var_array($style, $args);
+
+            return json_encode( $style );
+        }
+
+        public function get_shape ( $atts, $wp_script, $L_method, $default = '' ) {
             $leaflet_map_count = self::$leaflet_map_count;
 
             wp_enqueue_script( $wp_script );
@@ -510,16 +589,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* only required field for geojson */
             $src = empty($src) ? $default : $src;
 
-            $style = array(
-                'color' => empty($color) ? false : $color,
-                'weight' => empty($weight) ? false : $weight,
-                'stroke' => empty($stroke) ? false : $stroke,
-                'opacity' => empty($opacity) ? false : $opacity,
-                'fillOpacity' => empty($fillopacity) ? false : $fillopacity,
-                'fillColor' => empty($fillcolor) ? false : $fillcolor,
-                );
-
-            $style_json = json_encode( array_filter( $style ) );
+            $style_json = self::get_style_json( $atts );
 
             $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
@@ -594,14 +664,37 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function geojson_shortcode ( $atts ) {
 
-            return self::general_shape_shortcode( $atts, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');
+            return self::get_shape( $atts, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');
             
         }
 
         public function kml_shortcode ( $atts ) {
             
-            return self::general_shape_shortcode( $atts, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
+            return self::get_shape( $atts, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
             
+        }
+
+        public function add_popup_to_shape ($atts, $content, $shape) {
+            if (!empty($atts)) extract($atts);
+
+            $message = empty($message) ? (empty($content) ? '' : $content) : $message;
+            $visible = empty($visible) ? false : ($visible == 'true');
+
+            $output = '';
+
+            if (!empty($message)) {
+                $message = str_replace("\n", '', $message);
+
+                $output .= "$shape.bindPopup('$message')";
+
+                if ($visible) {
+                    $output .= ".openPopup()";
+                }
+
+                $output .= ";";
+            }
+
+            return $output;
         }
 
         public function marker_shortcode ( $atts, $content = null ) {
@@ -616,7 +709,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             if (!empty($atts)) extract($atts);
 
             $draggable = empty($draggable) ? 'false' : $draggable;
-            $visible = empty($visible) ? false : ($visible == 'true');
 
             if (!empty($address)) {
                 $location = self::geocoder( $address );
@@ -673,24 +765,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             marker.addTo( previous_map );
             ";
             
-            $message = empty($message) ? (empty($content) ? '' : $content) : $message;
-
-            if (!empty($message)) {
-
-		$message = str_replace("\n", '', $message);
-
-                $marker_script .= "marker.bindPopup('$message')";
-
-                if ($visible) {
-
-                    $marker_script .= ".openPopup()";                    
-
-                }
-
-                $marker_script .= ";
-                ";
-
-            }
+            $marker_script .= self::add_popup_to_shape($atts, $content, 'marker');
 
             $marker_script .= "
                     WPLeafletMapPlugin.markers.push( marker );
@@ -709,8 +784,14 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             
             if (!empty($atts)) extract($atts);
             
-            $color = empty($color) ? "black" : $color;
-            $fitline = empty($fitline) ? 0 : $fitline;
+            $style_json = self::get_style_json( $atts );
+
+            $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
+
+            // backwards compatible `fitline`
+            if (!empty($fitline)) {
+                $fitbounds = $fitline;
+            }
 
             $locations = Array();
 
@@ -740,24 +821,26 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $location_json = json_encode($locations);
 
-            $marker_script = "<script>
+            $line_script = "<script>
             WPLeafletMapPlugin.add(function () {
                 var previous_map = WPLeafletMapPlugin.maps[ {$leaflet_map_count} - 1 ],
-                    line = L.polyline($location_json, { color : '$color'}),
-                    fitline = $fitline;
+                    line = L.polyline($location_json, {$style_json}),
+                    fitbounds = $fitbounds;
                 line.addTo( previous_map );
 
-                if (fitline) {
+                if (fitbounds) {
                     // zoom the map to the polyline
                     previous_map.fitBounds( line.getBounds() );
-                }
+                }";
 
+            $line_script .= self::add_popup_to_shape($atts, $content, 'line');
+
+            $line_script .= "
                 WPLeafletMapPlugin.lines.push( line );
-
             });
             </script>";
 
-            return $marker_script;
+            return $line_script;
         }
 
     } /* end class */

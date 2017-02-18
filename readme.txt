@@ -1,22 +1,22 @@
 === Leaflet Map ===
 Author: bozdoz
-Author URI: http://www.twitter.com/bozdoz/
-Plugin URI: http://wordpress.org/plugins/leaflet-map/
+Author URI: https://www.twitter.com/bozdoz/
+Plugin URI: https://wordpress.org/plugins/leaflet-map/
 Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
 Donate link: https://www.gittip.com/bozdoz/
-Tags: leaflet, map, javascript, openstreetmap, mapquest, interactive
+Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.7
-Version: 2.4.0
-Stable tag: 2.4.0
+Tested up to: 4.7.2
+Version: 2.5.0
+Stable tag: 2.5.0
 License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 A flexible plugin that adds basic shortcodes for creating multiple Leaflet maps and adding multiple markers to those maps.
 
 == Description ==
 
-Add a map generated with <a href="http://www.leafletjs.com/" target="_blank">leaflet JS</a>: a mobile friendly map application.  Map tiles are provided by default through OpenStreetMap and MapQuest (with an app key).  Can be set per map with shortcode attributes or through the dashboard settings.
+Add a map generated with <a href="http://www.leafletjs.com/" target="_blank">Leaflet JS</a>: a mobile friendly map application.  Map tiles are provided by default through OpenStreetMap and MapQuest (with an app key).  Can be set per map with shortcode attributes or through the dashboard settings.
 
 Some shortcode attributes:
 
@@ -55,6 +55,12 @@ Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leafle
 
 == Frequently Asked Questions ==
 
+* How do I change the style for lines/geojson?
+
+Pass the style attributes to the respective shortcodes (see all options on [LeafletJS](http://leafletjs.com/reference-1.0.3.html#path)):
+
+`[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants]`
+
 * My map now says direct tile access has been discontinued (July 11, 2016); can you fix it?
 
 Yes. Update to the newest plugin version, and reset defaults in settings.  You can choose to use MapQuest by signing up and supplying an app key, or use the default OpenStreetMap tiles (with attribution).  See Screenshot 8.
@@ -91,7 +97,7 @@ Use the line format `[leaflet-line]` with attributes `latlngs` or `addresses` se
 
 Yes: use the keyword `attribution` in your shortcode (semi-colon separated list of attributions): `[leaflet-map attribution="Tiles courtesy of MapBox; Locations contributed by viewers"]`
 
-Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
+Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Screenshots ==
 
@@ -105,6 +111,13 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.5.0 =
+* Some improvements to the codebase; 
+* added the same styling options for lines as there are for geojson; 
+* added popups to lines, as there are for markers;
+* added an example to the shortcode admin page for the style attributes on lines;
+* added code and another example for disabling all map interactions (all zooms, keyboard, etc);
 
 = 2.4.0 =
 * Added Leaflet 1.0.2 scripts by default (works!);
@@ -179,6 +192,9 @@ Shoot me a question [@bozdoz](http://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.5.0 =
+Some improvements to the codebase; added the same styling options for lines as there are for geojson; added popups to lines, as there are for markers; added more interaction options to map;
 
 = 2.4.0 =
 Added Leaflet 1.0.2 scripts by default (works!);
