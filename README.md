@@ -20,6 +20,8 @@ Available Shortcodes
 
 ### [leaflet-map]
 
+![Alternate map tiles](http://imgur.com/oURcNiX.jpg)
+
 Height, width, latitude, longitude and zoom are the basic attributes: 
 
 ```
@@ -48,13 +50,20 @@ Alternatively, you could use a plain image for visitors to zoom and pan around w
 
 ### [leaflet-marker]
 
+![Markers with HTML within a popup](http://imgur.com/ap38lwe.jpg)
+
 Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).  Also, if you want to add a link to a marker popup, use `[leaflet-marker]Message here: click here[/leaflet-marker]` and add a link like you normally would with the WordPress editor.
 
+
 ### [leaflet-line]
+
+![Fitted Colored Line](http://imgur.com/dixNDtF.jpg)
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
 
 ### [leaflet-geojson]
+
+[![Random GeoJSON created by me](http://imgur.com/fJktgtI.jpg)](https://gist.github.com/bozdoz/064a7101b95a324e8852fe9381ab9a18)
 
 Or you can add a geojson shape via a url: 
 
@@ -62,9 +71,11 @@ Or you can add a geojson shape via a url:
 [leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]
 ```
 
+Check it out [here](https://gist.github.com/bozdoz/064a7101b95a324e8852fe9381ab9a18).
+
 ### [leaflet-kml]
 
-Same idea as geojson (above)
+Same idea as geojson (above), but takes KML files and loads [Mapbox's togeojson library](https://github.com/mapbox/togeojson)
 
 Pull Requests
 -------------
