@@ -42,13 +42,13 @@
 					),
 				"Marker Icon" => array(
 					'[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel=1]',
-					'[leaflet-marker iconUrl="http://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
+					'[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
 					),
 				"Zoom Buttons" => array(
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
 				"Alternate Map Tiles w/scrollwheel" => array(
-					'[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]',
+					'[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=abcd attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
 					),
 				"Marker Popup Messages (on click)" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
@@ -73,6 +73,10 @@
 				"Disable all Interaction" => array(
 					'[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0]',
 					),
+				"Add GeoJSON by URL (with popups)" => array(
+					'[leaflet-map doubleClickZoom=true scrollwheel=true]',
+					'[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds=1 popup_property="popup-text"]'
+					)
 				);
 
 			foreach ($examples as $title => $collection) {

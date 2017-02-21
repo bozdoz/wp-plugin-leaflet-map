@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.0
+    Version: 2.7.1
     License: GPL2
     */
 
@@ -585,8 +585,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function get_shape ( $atts, $wp_script, $L_method, $default = '' ) {
-            $leaflet_map_count = self::$leaflet_map_count;
-
             wp_enqueue_script( $wp_script );
 
             if ($atts) {
@@ -605,8 +603,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $geojson_script = "<script>
                 WPLeafletMapPlugin.add(function () {
-                    var map_count = {$leaflet_map_count},
-                        previous_map = WPLeafletMapPlugin.getCurrentMap(),
+                    var previous_map = WPLeafletMapPlugin.getCurrentMap(),
                         src = '{$src}',
                         default_style = {$style_json},
                         rewrite_keys = {
@@ -836,12 +833,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function line_shortcode ( $atts, $content = null ) {
-            /* add to previous map */
-            if (!self::$leaflet_map_count) {
-                return '';
-            }
-            $leaflet_map_count = self::$leaflet_map_count;
-            
             if (!empty($atts)) extract($atts);
             
             $style_json = self::get_style_json( $atts );
