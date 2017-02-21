@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.1
+    Version: 2.7.2
     License: GPL2
     */
 
@@ -620,19 +620,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         fitbounds = {$fitbounds},
                         popup_text = '{$popup_text}',
                         popup_property = '{$popup_property}';
-                            
                     if (fitbounds) {
                         layer.on('ready', function () {
                             this.map.fitBounds( this.getBounds() );
                         });
                     }
-
                     layer.addTo( previous_map );
-
                     function layerStyle (feature) {
                         var props = feature.properties || {},
                             style = {};
-
                         for (var key in props) {
                             if (key.match('-')) {
                                 var camelcase = key.replace(/-(\w)/, function (_, first_letter) {
@@ -645,21 +641,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                                 style[ rewrite_keys[ key ] ] = props[ key ];
                             }
                         }
-
                         style = L.Util.extend(style, default_style);
-
                         return style;
                     }      
-
                     function onEachFeature (feature, layer) {
                         var props = feature.properties || {},
                             text = popup_text || props[ popup_property ];
-
                         if (text) {
                             layer.bindPopup( text );
                         }
                     }          
-
                 });
                 </script>";
 
@@ -766,7 +757,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 var marker_options = (function () {
                         var _options = {$options},
                             iconArrays = ['iconSize', 'iconAnchor', 'shadowSize', 'shadowAnchor'];
-
                         if (_options.iconUrl) {
                             // arrays are strings, unfortunately...
                             for (var i = 0, len = iconArrays.length; i < len; i++) {
@@ -877,9 +867,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 var previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     line = L.polyline($location_json, {$style_json}),
                     fitbounds = $fitbounds;
-                
                 line.addTo( previous_map );
-
                 if (fitbounds) {
                     // zoom the map to the polyline
                     previous_map.fitBounds( line.getBounds() );
