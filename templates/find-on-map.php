@@ -14,7 +14,7 @@
 	<h2>Shortcodes</h2>
 	<div class="wrap">
 		<?php
-		echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 height=300 scrollwheel=1]');
+		echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 doubleClickZoom=1 height=300 scrollwheel=1]');
 		echo do_shortcode('[leaflet-marker draggable=1 message="Drag me!" visible="true"]');
 		?>
 		<div class="wrap">

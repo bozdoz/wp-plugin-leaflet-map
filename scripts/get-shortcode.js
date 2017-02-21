@@ -34,12 +34,24 @@
 		update_map();
 		update_marker();
 
-		map_input.addEventListener('click', function () {
-			this.select();
-		});
+		if (map_input.addEventListener) {
+			map_input.addEventListener('click', function () {
+				this.select();
+			});
 
-		marker_input.addEventListener('click', function () {
-			this.select();
-		});
+			marker_input.addEventListener('click', function () {
+				this.select();
+			});
+		} else {
+			// IE 8
+			map_input.attachEvent('onclick', function () {
+				map_input.select();
+			});
+
+			marker_input.attachEvent('onclick', function () {
+				marker_input.select();
+			});
+		}
+
 	};
 })();

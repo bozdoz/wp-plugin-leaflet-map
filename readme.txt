@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.7.2
-Version: 2.5.0
-Stable tag: 2.5.0
+Version: 2.6.0
+Stable tag: 2.6.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,11 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.6.0 =
+* Changes to map creation which may solve an occasional marker creation JavaScript error 
+* Added more attributes to marker shortcode (draggable, title, alt, opacity)
+* Added doubleClickZoom global, database option to globally disable double click zooming (by default), because it's more inline with disabling scroll zooming by default. Box zooming on the other hand is more intentional
+
 = 2.5.0 =
 * Some improvements to the codebase; 
 * added the same styling options for lines as there are for geojson; 
@@ -192,6 +197,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.6.0 =
+* Changes to map creation which may solve an occasional marker creation JavaScript error 
 
 = 2.5.0 =
 Some improvements to the codebase; added the same styling options for lines as there are for geojson; added popups to lines, as there are for markers; added more interaction options to map;

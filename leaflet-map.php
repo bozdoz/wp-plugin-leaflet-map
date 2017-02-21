@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.5.0
+    Version: 2.6.0
     License: GPL2
     */
 
@@ -33,7 +33,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'helptext' => 'If you choose MapQuest, you must provide an app key. <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank">Sign up</a>, then <a href="https://developer.mapquest.com/user/me/apps" target="_blank">Create a new app</a> then supply the "Consumer Key" here.'
             ),
             'leaflet_map_tile_url' => array(
-                'default'=>'//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'default'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'type' => 'text',
                 'helptext' => 'See more tile servers here: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">here</a>.  Please note(!): free tiles from MapQuest have been discontinued without use of an app key (free accounts available) (see <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank">blog post</a>). Can be set per map with the shortcode <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>'
             ),
@@ -90,7 +90,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'leaflet_scroll_wheel_zoom' => array(
                 'default' => '0',
                 'type' => 'checkbox',
-                'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
+                'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
+            ),
+            'leaflet_double_click_zoom' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map doubleClickZoom=false]</code>'
             ),
             'leaflet_default_min_zoom' => array(
                 'default' => '0',
@@ -182,11 +187,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), '1.0', false);
 
             wp_register_script('leaflet_ajax_kml_js', plugins_url('scripts/leaflet-ajax-kml.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js', 'leaflet_ajax_geojson_js'), '1.0', false);
-            
-            /* run an init function because other wordpress plugins don't play well with their window.onload functions */
-            wp_register_script('leaflet_map_init', plugins_url('scripts/init-leaflet-map.js', __FILE__), Array('leaflet_js','leaflet_ajax_geojson_js'), '1.0', true);
 
-            /* run a construct function in the document head for the init function to use */
+            /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
             wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), '1.0', false);
 
         }
@@ -331,6 +333,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
             $default_scrollwheel = get_option('leaflet_scroll_wheel_zoom', $defaults['leaflet_scroll_wheel_zoom']['default']);
+            $default_doubleclickzoom = get_option('leaflet_double_click_zoom', $defaults['leaflet_double_click_zoom']['default']);
             $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']['default']);
             $default_min_zoom = get_option('leaflet_default_min_zoom', $defaults['leaflet_default_min_zoom']['default']);
             $default_max_zoom = get_option('leaflet_default_max_zoom', $defaults['leaflet_default_max_zoom']['default']);
@@ -357,6 +360,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $min_zoom = empty($min_zoom) ? $default_min_zoom : $min_zoom;
             $max_zoom = empty($max_zoom) ? $default_max_zoom : $max_zoom;
             $scrollwheel = empty($scrollwheel) ? $default_scrollwheel : $scrollwheel;
+            $doubleclickzoom = empty($doubleclickzoom) ? $default_doubleclickzoom : $doubleclickzoom;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
             $attribution = empty($attribution) ? $default_attribution : $attribution;
@@ -423,6 +427,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         layers: [base],
                         zoomControl: {$zoomcontrol},
                         scrollWheelZoom: {$scrollwheel},
+                        doubleClickZoom: {$doubleclickzoom},
                         attributionControl: false
                     }, {$more_options}),
                     map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});";
@@ -439,11 +444,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     }
                 }
 
-                $content .= '
+                $content .= "
                 WPLeafletMapPlugin.maps.push(map);
             }); // end add
-            </script>
-            ';
+            </script>";
 
             return $content;
         }
@@ -528,6 +532,17 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $content;
         }
 
+        public function json_sanitize ($arr, $args) {
+            // remove nulls
+            $arr = array_filter( $arr, 'self::remove_null' );
+
+            // sanitize output
+            $args = array_intersect_key($args, $arr);
+            $arr = filter_var_array($arr, $args);
+
+            return json_encode( $arr );
+        }
+
         public function get_style_json ($atts) {
             if ($atts) {
                 extract($atts);
@@ -566,15 +581,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'className' => FILTER_SANITIZE_STRING
                 );
 
-
-            // remove nulls
-            $style = array_filter( $style, 'self::remove_null' );
-
-            // sanitize output
-            $args = array_intersect_key($args, $style);
-            $style = filter_var_array($style, $args);
-
-            return json_encode( $style );
+            return self::json_sanitize($style, $args);
         }
 
         public function get_shape ( $atts, $wp_script, $L_method, $default = '' ) {
@@ -599,7 +606,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $geojson_script = "<script>
                 WPLeafletMapPlugin.add(function () {
                     var map_count = {$leaflet_map_count},
-                        previous_map = WPLeafletMapPlugin.maps[ map_count - 1 ],
+                        previous_map = WPLeafletMapPlugin.getCurrentMap(),
                         src = '{$src}',
                         default_style = {$style_json},
                         rewrite_keys = {
@@ -699,16 +706,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function marker_shortcode ( $atts, $content = null ) {
 
-            /* add to previous map */
-            if (!self::$leaflet_map_count) {
-            	return '';
-            }
-
-            $leaflet_map_count = self::$leaflet_map_count;
-            
             if (!empty($atts)) extract($atts);
-
-            $draggable = empty($draggable) ? 'false' : $draggable;
 
             if (!empty($address)) {
                 $location = self::geocoder( $address );
@@ -716,30 +714,52 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $lng = $location->{'lng'};
             }
 
-        	/* add to user contributed lat lng */
+            /* add to user contributed lat lng */
             $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
             $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
+            $options = array(
+                'draggable' => isset($draggable) ? $draggable : NULL,
+                'title' => isset($title) ? $title : NULL,
+                'alt' => isset($alt) ? $alt : NULL,
+                'zIndexOffset' => isset($zindexoffset) ? $zindexoffset : NULL,
+                'opacity' => isset($opacity) ? $opacity : NULL
+                );
+
+            $args = array(
+                'draggable' => FILTER_VALIDATE_BOOLEAN,
+                'title' => FILTER_SANITIZE_STRING,
+                'alt' => FILTER_SANITIZE_STRING,
+                'zIndexOffset' => FILTER_VALIDATE_INT,
+                'opacity' => FILTER_VALIDATE_FLOAT
+                );
+
+            $options = self::json_sanitize($options, $args);
+            
+            if ($options === '[]') {
+                $options = '{}';
+            }
+
             $marker_script = "<script>
             WPLeafletMapPlugin.add(function () {
-                var map_count = {$leaflet_map_count},
-                    draggable = {$draggable},
-                    marker = L.marker([{$lat}, {$lng}], { draggable : draggable }),
-                    previous_map = WPLeafletMapPlugin.maps[ map_count - 1 ],
+                var marker_options = {$options},
+                    draggable = marker_options.draggable,
+                    marker = L.marker([{$lat}, {$lng}], marker_options),
+                    previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     is_image = previous_map.is_image_map,
-                    image_len = WPLeafletMapPlugin.images.length,
-                    previous_image = WPLeafletMapPlugin.images[ image_len - 1 ],
-                    previous_image_onload;
+                    previous_map_onload;
                 ";
 
                 if (empty($lat) && empty($lng)) {
                     /* update lat lng to previous map's center */
                     $marker_script .= "
                     if ( is_image && 
-                        !previous_image.is_loaded) {
-                        previous_image_onload = previous_image.onload;
-                        previous_image.onload = function () {
-                            previous_image_onload();
+                        !previous_map.is_loaded) {
+                        previous_map_onload = previous_map.onload;
+                        previous_map.onload = function () {
+                            if (typeof(previous_map_onload) === 'function') {
+                                previous_map_onload();
+                            }
                             marker.setLatLng( previous_map.getCenter() );
                         };
                     } else {
@@ -823,9 +843,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $line_script = "<script>
             WPLeafletMapPlugin.add(function () {
-                var previous_map = WPLeafletMapPlugin.maps[ {$leaflet_map_count} - 1 ],
+                var previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     line = L.polyline($location_json, {$style_json}),
                     fitbounds = $fitbounds;
+                
                 line.addTo( previous_map );
 
                 if (fitbounds) {
