@@ -15,8 +15,8 @@ Installation
 * (needlessly complicated) Copy this repo (or download a release of it) into your WordPress plugins directory: `/wp-content/plugins/`
 
 
-Some Shortcode Attributes
--------------------------
+Available Shortcodes
+--------------------
 
 ### [leaflet-map]
 
@@ -61,6 +61,10 @@ Or you can add a geojson shape via a url:
 ```
 [leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]
 ```
+
+### [leaflet-kml]
+
+Same idea as geojson (above)
 
 Pull Requests
 -------------
