@@ -1,7 +1,7 @@
 Leaflet Map WordPress Plugin
 ========
 
-![Leaflet](http://img.shields.io/badge/leaflet-1.0.2-green.svg?style=flat)
+![Leaflet](http://img.shields.io/badge/leaflet-1.0.3-green.svg?style=flat)
 
 How to Use
 ----------
