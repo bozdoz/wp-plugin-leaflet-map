@@ -11,17 +11,19 @@
 </style>
 
 <div class="wrap">
-	<h2>Shortcodes</h2>
+	<h2>Shortcode Helper</h2>
 	<div class="wrap">
 		<?php
 		echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 doubleClickZoom=1 height=300 scrollwheel=1]');
 		echo do_shortcode('[leaflet-marker draggable=1 message="Drag me!" visible="true"]');
 		?>
 		<div class="wrap">
+			<hr>
 			<h2>Interactive Shortcodes:</h2>
 			<p class="description">Move the map and the marker to generate shortcodes below:</p>
 			<p><label class="h3" for="map-shortcode">Map Shortcode</label> <input type="text" id="map-shortcode" readonly="readonly" /></p>
 			<p><label class="h3" for="marker-shortcode">Marker Shortcode</label> <input type="text" id="marker-shortcode" readonly="readonly" /></p>
+			<hr>
 			<h2>Examples:</h2>
 			<?php
 			$examples = array(
@@ -38,17 +40,21 @@
 					'[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel=1]',
 					'[leaflet-marker draggable=1]',
 					),
+				"Marker Icon" => array(
+					'[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel=1]',
+					'[leaflet-marker iconUrl="http://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
+					),
 				"Zoom Buttons" => array(
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
 				"Alternate Map Tiles w/scrollwheel" => array(
 					'[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]',
 					),
-				"Marker Popup Messages" => array(
+				"Marker Popup Messages (on click)" => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
-					'[leaflet-marker visible="true"]OSLO![/leaflet-marker]',
+					'[leaflet-marker]OSLO![/leaflet-marker]',
 					),
-				"Links In Marker Messages" => array(
+				"Links In Marker Messages (visible)" => array(
 					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
 					'[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
 					),

@@ -48,5 +48,4 @@ I believe the purpose of this plugin is to provide simple creation of maps on th
 Wish List
 ---------
 
-* A way to customize markers (likely a marker media library)
 * A map editor/shortcode generator (so users can see what they're adding to the page)

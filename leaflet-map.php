@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.6.0
+    Version: 2.7.0
     License: GPL2
     */
 
@@ -200,7 +200,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public function admin_menu () {
             add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', "leaflet-map", array(&$this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
             add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array(&$this, "settings_page"));
-            add_submenu_page("leaflet-map", "Shortcodes", "Shortcodes", 'manage_options', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
+            add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'manage_options', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
         }
 
         public function settings_page () {
@@ -723,7 +723,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'title' => isset($title) ? $title : NULL,
                 'alt' => isset($alt) ? $alt : NULL,
                 'zIndexOffset' => isset($zindexoffset) ? $zindexoffset : NULL,
-                'opacity' => isset($opacity) ? $opacity : NULL
+                'opacity' => isset($opacity) ? $opacity : NULL,
+                'iconUrl' => isset($iconurl) ? $iconurl : NULL,
+                'iconSize' => isset($iconsize) ? $iconsize : NULL,
+                'iconAnchor' => isset($iconanchor) ? $iconanchor : NULL,
+                'shadowUrl' => isset($shadowurl) ? $shadowurl : NULL,
+                'shadowSize' => isset($shadowsize) ? $shadowsize : NULL,
+                'shadowAnchor' => isset($shadowanchor) ? $shadowanchor : NULL
                 );
 
             $args = array(
@@ -731,7 +737,25 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'title' => FILTER_SANITIZE_STRING,
                 'alt' => FILTER_SANITIZE_STRING,
                 'zIndexOffset' => FILTER_VALIDATE_INT,
-                'opacity' => FILTER_VALIDATE_FLOAT
+                'opacity' => FILTER_VALIDATE_FLOAT,
+                'iconUrl' => FILTER_SANITIZE_URL,
+                'shadowUrl' => FILTER_SANITIZE_URL,
+                'iconSize' => array(
+                    'filter' => FILTER_SANITIZE_STRING,
+                    'flags' => FILTER_FORCE_ARRAY
+                    ),
+                'iconAnchor' => array(
+                    'filter' => FILTER_SANITIZE_STRING,
+                    'flags' => FILTER_FORCE_ARRAY
+                    ),
+                'shadowSize' => array(
+                    'filter' => FILTER_SANITIZE_STRING,
+                    'flags' => FILTER_FORCE_ARRAY
+                    ),
+                'shadowAnchor' => array(
+                    'filter' => FILTER_SANITIZE_STRING,
+                    'flags' => FILTER_FORCE_ARRAY
+                    )
                 );
 
             $options = self::json_sanitize($options, $args);
@@ -742,7 +766,23 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $marker_script = "<script>
             WPLeafletMapPlugin.add(function () {
-                var marker_options = {$options},
+                var marker_options = (function () {
+                        var _options = {$options},
+                            iconArrays = ['iconSize', 'iconAnchor', 'shadowSize', 'shadowAnchor'];
+
+                        if (_options.iconUrl) {
+                            // arrays are strings, unfortunately...
+                            for (var i = 0, len = iconArrays.length; i < len; i++) {
+                                var option_name = iconArrays[i],
+                                    option = _options[ option_name ];
+                                if (option) {
+                                    _options[ option_name ] = option.join('').split(',');
+                                }
+                            }
+                            _options.icon = new L.Icon( _options );
+                        }
+                        return _options;
+                    })(),
                     draggable = marker_options.draggable,
                     marker = L.marker([{$lat}, {$lng}], marker_options),
                     previous_map = WPLeafletMapPlugin.getCurrentMap(),
