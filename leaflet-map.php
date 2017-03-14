@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.2
+    Version: 2.7.3
     License: GPL2
     */
 

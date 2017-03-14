@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
 Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.7.2
-Version: 2.7.2
-Stable tag: 2.7.2
+Tested up to: 4.7.3
+Version: 2.7.3
+Stable tag: 2.7.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.7.3 =
+* Fix to array_filter on some PHP versions.
+
 = 2.7.2 =
 * Fix to possible JavaScript error "Unexpected token <"; only happened when a plugin/theme used `wpautop`; fix was to remove spaces.
 
@@ -206,6 +209,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.7.3 =
+* Fixed array_filter on some older PHP versions
 
 = 2.7.2 =
 * Fixed possible JavaScript error "Unexpected token <"; fix was to remove spaces
