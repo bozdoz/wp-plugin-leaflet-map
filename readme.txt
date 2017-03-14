@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.7.3
-Version: 2.7.4
-Stable tag: 2.7.4
+Version: 2.7.5
+Stable tag: 2.7.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.7.5 =
+* fixed filter_var_array throwing errors in old PHP too
+
 = 2.7.4 =
 * Added settings link to plugins page
 
@@ -212,6 +215,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.7.5 =
+fixed filter_var_array throwing errors in old PHP
 
 = 2.7.4 =
 Added settings link to plugins page

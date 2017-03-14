@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.4
+    Version: 2.7.5
     License: GPL2
     */
 
@@ -412,7 +412,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $more_options = self::filter_null( $more_options );
             
             // change string booleans to booleans
-            $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN);
 
             // wrap as JSON
             if ($more_options) {
