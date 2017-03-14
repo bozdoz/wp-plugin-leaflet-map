@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.3
+    Version: 2.7.4
     License: GPL2
     */
 
@@ -128,6 +128,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* allow maps on excerpts */
             /* should be optional? */
             add_filter('the_excerpt', 'do_shortcode');
+
+            /* add settings to plugin page */
+            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'plugin_action_links'));
         }
 
         public static function activate () {
@@ -887,6 +890,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             </script>";
 
             return $line_script;
+        }
+
+        public function plugin_action_links ( $links ) {
+            $links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=leaflet-map') ) .'">Settings</a>';
+            return $links;
         }
 
     } /* end class */

@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.7.3
-Version: 2.7.3
-Stable tag: 2.7.3
+Version: 2.7.4
+Stable tag: 2.7.4
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Changelog ==
 
+= 2.7.4 =
+* Added settings link to plugins page
+
 = 2.7.3 =
 * Fix to array_filter on some PHP versions.
 
@@ -210,11 +213,14 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Upgrade Notice ==
 
+= 2.7.4 =
+Added settings link to plugins page
+
 = 2.7.3 =
-* Fixed array_filter on some older PHP versions
+Fixed array_filter on some older PHP versions
 
 = 2.7.2 =
-* Fixed possible JavaScript error "Unexpected token <"; fix was to remove spaces
+Fixed possible JavaScript error "Unexpected token <"; fix was to remove spaces
 
 = 2.7.1 =
 Removed unnecessary map counts
