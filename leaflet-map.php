@@ -313,8 +313,14 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         /* count map shortcodes to allow for multiple */
         public static $leaflet_map_count;
 
-        public function remove_null ($var) {
-            return $var !== null;
+        public function filter_null ($arr) {
+            if (!function_exists('remove_null')) {
+                function remove_null ($var) {
+                    return $var !== null;
+                }
+            }
+
+            return array_filter($arr, 'remove_null');
         }
 
         public function map_shortcode ( $atts ) {
@@ -400,7 +406,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 );
             
             // filter out nulls
-            $more_options = array_filter( $more_options, 'self::remove_null' );
+            $more_options = self::filter_null( $more_options );
             
             // change string booleans to booleans
             $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -534,7 +540,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function json_sanitize ($arr, $args) {
             // remove nulls
-            $arr = array_filter( $arr, 'self::remove_null' );
+            $arr = self::filter_null( $arr );
 
             // sanitize output
             $args = array_intersect_key($args, $arr);
