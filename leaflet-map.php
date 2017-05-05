@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.5
+    Version: 2.7.6
     License: GPL2
     */
 
@@ -247,12 +247,33 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $location;
         }
 
+        public function get_url( $url ) {
+            if (ini_get('allow_url_fopen')) {
+                return file_get_contents( $url );
+            } else if (in_array('curl', get_loaded_extensions())) {
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+
+                $data = curl_exec($ch);
+                curl_close($ch);
+
+                return $data;
+            } else {
+                echo 'Could not get url: ' . $url;
+            }
+        }
+
         public function google_geocode ( $address ) {
             /* Google */
             
             $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
             $geocode_url .= $address;
-            $json = file_get_contents($geocode_url);
+            $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
             /* found location */
@@ -272,7 +293,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $osm_geocode = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
             $geocode_url = $osm_geocode . $address;
-            $json = file_get_contents($geocode_url);
+            $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
             /* found location */
@@ -295,7 +316,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $dawa_geocode = 'https://dawa.aws.dk/adresser?format=json&q=';
             $geocode_url = $dawa_geocode . $address;
-            $json = file_get_contents($geocode_url);
+            $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
             /* found location */
