@@ -263,9 +263,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 curl_close($ch);
 
                 return $data;
-            } else {
-                echo 'Could not get url: ' . $url;
             }
+
+            /* else */
+            $error_msg = 'Could not get url: ' . $url;
+            echo $error_msg;
+            return json_encode( (Object) array( 'error' => $error_msg ) );
         }
 
         public function google_geocode ( $address ) {
@@ -297,18 +300,14 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $json = json_decode($json);
 
             /* found location */
-            if (count($json) > 0) {
-
-                $location = (Object) array(
+            try {
+                return (Object) array(
                     'lat' => $json[0]->{'lat'},
                     'lng' => $json[0]->{'lon'},
-                    );
-
-                return $location;
+                );
+            } finally {
+                return (Object) array('lat' => 0, 'lng' => 0);
             }
-
-            /* else */
-            return (Object) array('lat' => 0, 'lng' => 0);
         }
 
         public function dawa_geocode ( $address ) {
@@ -319,19 +318,19 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
-            /* found location */
-            if ($json && $json[0]->{'status'}==1) {
+            try {
+                if ($json[0]->{'status'}==1) {
+                    /* found location */
+                    $location = (Object) array(
+                        'lat'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[1],
+                        'lng'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[0]
+                        );
 
-                $location = (Object) array(
-                    'lat'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[1],
-                    'lng'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[0]
-                    );
-
-                return $location;
+                    return $location;
+                }
+            } finally {
+                return (Object) array('lat' => 0, 'lng' => 0);
             }
-
-            /* else */
-            return (Object) array('lat' => 0, 'lng' => 0);
         }
 
         /* count map shortcodes to allow for multiple */
