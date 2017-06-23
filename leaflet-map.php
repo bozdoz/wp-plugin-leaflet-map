@@ -201,9 +201,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function admin_menu () {
-            add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', "leaflet-map", array(&$this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
+            if (current_user_can('manage_options')) {
+                $main_link = 'leaflet-map';
+            } else {
+                $main_link = 'leaflet-get-shortcode';
+            }
+
+            add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', $main_link, array(&$this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
             add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array(&$this, "settings_page"));
-            add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'manage_options', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
+            add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
         }
 
         public function settings_page () {
@@ -248,9 +254,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         }
 
         public function get_url( $url ) {
-            if (ini_get('allow_url_fopen')) {
-                return file_get_contents( $url );
-            } else if (in_array('curl', get_loaded_extensions())) {
+            if (in_array('curl', get_loaded_extensions())) {
+                /* try curl */
                 $ch = curl_init();
 
                 curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
@@ -263,6 +268,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 curl_close($ch);
 
                 return $data;
+            } else if (ini_get('allow_url_fopen')) {
+                /* try file get contents */
+                return file_get_contents( $url );
             }
 
             /* else */
@@ -284,11 +292,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 
                 $location = $json->{'results'}[0]->{'geometry'}->{'location'};
 
-                return $location;
+                return (Object) $location;
             }
 
             /* else */
-            return array('lat' => 0, 'lng' => 0);
+            return (Object) array('lat' => 0, 'lng' => 0);
         }
 
         public function osm_geocode ( $address ) {
@@ -299,13 +307,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
-            /* found location */
-            try {
+            if (is_array($json) && 
+                is_object($json[0]) &&
+                $json[0]->{'lat'}) {
+                // found location
                 return (Object) array(
                     'lat' => $json[0]->{'lat'},
                     'lng' => $json[0]->{'lon'},
                 );
-            } finally {
+            } else {
+                // not found
                 return (Object) array('lat' => 0, 'lng' => 0);
             }
         }
@@ -318,17 +329,17 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $json = self::get_url($geocode_url);
             $json = json_decode($json);
 
-            try {
-                if ($json[0]->{'status'}==1) {
-                    /* found location */
-                    $location = (Object) array(
-                        'lat'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[1],
-                        'lng'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[0]
-                        );
+            if (is_array($json) && 
+                is_object($json[0]) &&
+                $json[0]->{'status'} == 1) {
+                /* found location */
+                $location = (Object) array(
+                    'lat'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[1],
+                    'lng'=>$json[0]->{'adgangsadresse'}->{'adgangspunkt'}->{'koordinater'}[0]
+                    );
 
-                    return $location;
-                }
-            } finally {
+                return $location;
+            } else {
                 return (Object) array('lat' => 0, 'lng' => 0);
             }
         }
