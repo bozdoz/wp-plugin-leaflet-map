@@ -7,8 +7,8 @@ Donate link: https://www.gittip.com/bozdoz/
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.8
-Version: 2.7.6
-Stable tag: 2.7.6
+Version: 2.7.7
+Stable tag: 2.7.7
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.7.7 =
+* added default lat/lngs in the admin; and reordered admin fields to be more user friendly
 
 = 2.7.6 =
 * added optional cURL to get geolocations if file_get_contents is not allowed on a server (note: cURL needs to be enabled, obviously)
@@ -218,6 +221,9 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.7.7 =
+added default lat/lngs in the admin; and reordered admin fields to be more user friendly
 
 = 2.7.6 =
 added optional cURL to get geolocations if file_get_contents is not allowed on a server (note: cURL needs to be enabled, obviously)

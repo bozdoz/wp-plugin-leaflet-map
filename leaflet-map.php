@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.6
+    Version: 2.7.7
     License: GPL2
     */
 
@@ -17,6 +17,56 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /*
             ordered admin fields and default values
             */
+            'leaflet_default_lat' => array(
+                'default'=>'44.67',
+                'type' => 'text',
+                'helptext' => 'Default latitude for maps or adjust for each map like so: <br /> <code>[leaflet-map lng="44.67"]</code>'
+            ),
+            'leaflet_default_lng' => array(
+                'default'=>'-63.61',
+                'type' => 'text',
+                'helptext' => 'Default longitude for maps or adjust for each map like so: <br /> <code>[leaflet-map lng="-63.61"]</code>'
+            ),
+            'leaflet_default_zoom' => array(
+                'default'=>'12',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>'
+            ),
+            'leaflet_default_height' => array(
+                'default'=>'250',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>'
+            ),
+            'leaflet_default_width' => array(
+                'default'=>'100%',
+                'type' => 'text',
+                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map width="100%"]</code>'
+            ),
+            'leaflet_show_zoom_controls' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>'
+            ),
+            'leaflet_scroll_wheel_zoom' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
+            ),
+            'leaflet_double_click_zoom' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map doubleClickZoom=false]</code>'
+            ),
+            'leaflet_default_min_zoom' => array(
+                'default' => '0',
+                'type' => 'text',
+                'helptext' => 'Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map min_zoom="1"]</code>'
+            ),
+            'leaflet_default_max_zoom' => array(
+                'default' => '20',
+                'type' => 'text',
+                'helptext' => 'Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map max_zoom="10"]</code>'
+            ),
             'leaflet_default_tiling_service' => array(
                 'default' => 'other',
                 'type' => 'select',
@@ -52,21 +102,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'type' => 'text',
                 'helptext' => 'Save as above.'
             ),
-            'leaflet_default_zoom' => array(
-                'default'=>'12',
-                'type' => 'text',
-                'helptext' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>'
-            ),
-            'leaflet_default_height' => array(
-                'default'=>'250',
-                'type' => 'text',
-                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>'
-            ),
-            'leaflet_default_width' => array(
-                'default'=>'100%',
-                'type' => 'text',
-                'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map width="100%"]</code>'
-            ),
             'leaflet_default_attribution' => array(
                 'default' => "<a href=\"http://leafletjs.com\" title=\"A JS library for interactive maps\">Leaflet</a>; \r\n© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
                 'type' => 'textarea',
@@ -82,32 +117,6 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 ),
                 'helptext' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.'
             ),
-            'leaflet_show_zoom_controls' => array(
-                'default' => '0',
-                'type' => 'checkbox',
-                'helptext' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>'
-            ),
-            'leaflet_scroll_wheel_zoom' => array(
-                'default' => '0',
-                'type' => 'checkbox',
-                'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
-            ),
-            'leaflet_double_click_zoom' => array(
-                'default' => '0',
-                'type' => 'checkbox',
-                'helptext' => 'If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map doubleClickZoom=false]</code>'
-            ),
-            'leaflet_default_min_zoom' => array(
-                'default' => '0',
-                'type' => 'text',
-                'helptext' => 'Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map min_zoom="1"]</code>'
-            ),
-            'leaflet_default_max_zoom' => array(
-                'default' => '20',
-                'type' => 'text',
-                'helptext' => 'Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map max_zoom="10"]</code>'
-            ),
-
             // not in admin
             'leaflet_geocoded_locations' => array()
         );
@@ -369,6 +378,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             /* defaults from db */
             $defaults = self::$defaults;
             $default_zoom = get_option('leaflet_default_zoom', $defaults['leaflet_default_zoom']['default']);
+            $default_lat = get_option('leaflet_default_lat', $defaults['leaflet_default_lat']['default']);
+            $default_lng = get_option('leaflet_default_lng', $defaults['leaflet_default_lng']['default']);
             $default_zoom_control = get_option('leaflet_show_zoom_controls', $defaults['leaflet_show_zoom_controls']['default']);
             $default_height = get_option('leaflet_default_height', $defaults['leaflet_default_height']['default']);
             $default_width = get_option('leaflet_default_width', $defaults['leaflet_default_width']['default']);
@@ -390,11 +401,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $lng = $location->{'lng'};
             }
 
-            $lat = empty($lat) ? '44.67' : $lat;
-            $lng = empty($lng) ? '-63.61' : $lng;
-
-
-            /* check more user defined $atts against defaults */
+            /* 
+                check more user defined $atts against defaults 
+            */
+            $lat = empty($lat) ? $default_lat : $lat;
+            $lng = empty($lng) ? $default_lng : $lng;
             $zoomcontrol = empty($zoomcontrol) ? $default_zoom_control : $zoomcontrol;
             $zoom = empty($zoom) ? $default_zoom : $zoom;
             $min_zoom = empty($min_zoom) ? $default_min_zoom : $min_zoom;
