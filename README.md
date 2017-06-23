@@ -2,7 +2,7 @@ Leaflet Map WordPress Plugin
 ========
 
 ![Leaflet](http://img.shields.io/badge/leaflet-1.0.3-green.svg?style=flat)
-![WordPress](http://img.shields.io/badge/wordpress-4.7.3-green.svg?style=flat)
+![WordPress](http://img.shields.io/badge/wordpress-4.8-green.svg?style=flat)
 
 Add a map generated with <a href="http://www.leafletjs.com/" target="_blank">Leaflet JS</a>: a mobile friendly map application.  Map tiles are provided by default through OpenStreetMap, or MapQuest (built-in support(?!) with an app key).  Can be set per map with shortcode attributes or through the dashboard settings.
 
