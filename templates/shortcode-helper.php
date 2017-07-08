@@ -71,7 +71,7 @@
 					'[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants fitbounds=1]CSS makes me march![/leaflet-line]'
 					),
 				"Disable all Interaction" => array(
-					'[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0]',
+					'[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0 attribution=0]',
 					),
 				"Add GeoJSON by URL (with popups)" => array(
 					'[leaflet-map doubleClickZoom=true scrollwheel=true]',

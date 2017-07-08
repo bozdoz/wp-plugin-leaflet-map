@@ -5,18 +5,38 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.7
+    Version: 2.7.8
     License: GPL2
+
+    Leaflet Map is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    any later version.
+     
+    Leaflet Map is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+     
+    You should have received a copy of the GNU General Public License
+    along with Leaflet Map. If not, see https://github.com/bozdoz/wp-plugin-leaflet-map/blob/master/LICENSE.
     */
 
 if (!class_exists('Leaflet_Map_Plugin')) {
     
     class Leaflet_Map_Plugin {
 
+        /*
+        * Number of maps on page
+        * @var int $leaflet_map_count
+        */
+        public static $leaflet_map_count;
+
+        /*
+        * Default values and admin form information
+        * @var array $defaults
+        */
         public static $defaults = array(
-            /*
-            ordered admin fields and default values
-            */
             'leaflet_default_lat' => array(
                 'default'=>'44.67',
                 'type' => 'text',
@@ -93,12 +113,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
             ),
             'leaflet_js_url' => array(
-                'default'=>'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js',
+                'default'=>'https://unpkg.com/leaflet@1.1.0/dist/leaflet.js',
                 'type' => 'text',
                 'helptext' => 'If you host your own Leaflet files, specify the URL here.'
             ),
             'leaflet_css_url' => array(
-                'default'=>'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css',
+                'default'=>'https://unpkg.com/leaflet@1.1.0/dist/leaflet.css',
                 'type' => 'text',
                 'helptext' => 'Save as above.'
             ),
@@ -121,6 +141,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'leaflet_geocoded_locations' => array()
         );
 
+        /*
+        *
+        * Initialize plugin
+        *
+        */
+
         public function __construct() {
             add_action('admin_init', array(&$this, 'admin_init'));
             add_action('admin_menu', array(&$this, 'admin_menu'));
@@ -135,12 +161,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             add_shortcode('leaflet-kml', array(&$this, 'kml_shortcode'));
 
             /* allow maps on excerpts */
-            /* should be optional? */
+            /* should be optional somehow (admin setting?) */
             add_filter('the_excerpt', 'do_shortcode');
 
             /* add settings to plugin page */
             add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'plugin_action_links'));
         }
+
+        /*
+        *
+        * Triggered when user activates plugin
+        *
+        */
 
         public static function activate () {
             /* set default values to db */
@@ -151,8 +183,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
         }
         
-        public static function uninstall () {
-            
+        /*
+        *
+        * Triggered when user uninstalls/removes plugin
+        *
+        */
+
+        public static function uninstall () {            
             /* remove geocoded locations */
             $locations = get_option('leaflet_geocoded_locations', array());
 
@@ -166,8 +203,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
         }
 
-        public function enqueue_and_register () {
+        /*
+        *
+        * Enqueue and register styles and scripts (called in __construct)
+        *
+        */
 
+        public function enqueue_and_register () {
             /* backwards compatible : leaflet_js_version */
             $version = get_option('leaflet_js_version', '');
 
@@ -202,12 +244,48 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
             wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), '1.0', false);
-
         }
+
+        /*
+        *
+        * Admin init registers styles
+        *
+        * todo: candidate for separate class
+        *
+        */
         
         public function admin_init () {
             wp_register_style('leaflet_admin_stylesheet', plugins_url('style.css', __FILE__));
         }
+
+        /*
+        *
+        * Main settings page includes form inputs
+        *
+        */
+
+        public function settings_page () {
+            wp_enqueue_style( 'leaflet_admin_stylesheet' );
+            include 'templates/admin.php';
+        }
+
+        /*
+        *
+        * Shortcode page shows example shortcodes and an interactive generator
+        *
+        */
+        public function shortcode_page () {
+            wp_enqueue_style( 'leaflet_admin_stylesheet' );
+            wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', __FILE__), Array('leaflet_js'), false);
+
+            include 'templates/shortcode-helper.php';
+        }
+
+        /*
+        *
+        * Add admin menu page when user in admin area
+        *
+        */
 
         public function admin_menu () {
             if (current_user_can('manage_options')) {
@@ -221,19 +299,27 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
         }
 
-        public function settings_page () {
-
-            wp_enqueue_style( 'leaflet_admin_stylesheet' );
-
-            include 'templates/admin.php';
+        /*
+        *
+        * Add settings link to the plugin on Installed Plugins page
+        *
+        */
+        public function plugin_action_links ( $links ) {
+            $links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=leaflet-map') ) .'">Settings</a>';
+            return $links;
         }
 
-        public function shortcode_page () {
-            wp_enqueue_style( 'leaflet_admin_stylesheet' );
-            wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', __FILE__), Array('leaflet_js'), false);
-
-            include 'templates/find-on-map.php';
-        }
+        /*
+        *
+        * Geocoder
+        *
+        * calls the specific geocoder function (chosen in admin or default: google_geocode)
+        *
+        * todo: candidate for separate class
+        *
+        * @param string $address    the requested address to look up
+        * @return object or null latitude and longitude
+        */
 
         public function geocoder ( $address ) {
 
@@ -244,23 +330,39 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
             /* retrieve cached geocoded location */
-            if (get_option( $cached_address )) {
-                return get_option($cached_address);
+            $found_cache = get_option( $cached_address );
+
+            if ( $found_cache ) {
+                return $found_cache;
             }
 
             $geocoding_method = $geocoder . '_geocode';
-            $location = (Object) self::$geocoding_method( $address );
 
-            /* add location */
-            add_option($cached_address, $location);
+            try {
+                $location = (Object) self::$geocoding_method( $address );
+                /* add location */
+                add_option($cached_address, $location);
 
-            /* add option key to locations for clean up purposes */
-            $locations = get_option('leaflet_geocoded_locations', array());
-            array_push($locations, $cached_address);
-            update_option('leaflet_geocoded_locations', $locations);
+                /* add option key to locations for clean up purposes */
+                $locations = get_option('leaflet_geocoded_locations', array());
+                array_push($locations, $cached_address);
+                update_option('leaflet_geocoded_locations', $locations);
 
-            return $location;
+                return $location;
+            } catch (Exception $e) {
+                return null;
+            }
         }
+
+        /*
+        *
+        * Used by geocoders to make requests via curl or file_get_contents
+        *
+        * includes a try/catch
+        *
+        * @param string $url    the urlencoded request url
+        * @return varies object from API or null (failed)
+        */
 
         public function get_url( $url ) {
             if (in_array('curl', get_loaded_extensions())) {
@@ -282,11 +384,17 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 return file_get_contents( $url );
             }
 
-            /* else */
             $error_msg = 'Could not get url: ' . $url;
-            echo $error_msg;
-            return json_encode( (Object) array( 'error' => $error_msg ) );
+            throw new Exception( $error_msg );
         }
+
+        /*
+        *
+        * Google geocoder (https://developers.google.com/maps/documentation/geocoding/start)
+        *
+        * @param string $address    the urlencoded address to look up
+        * @return varies object from API or null (failed)
+        */
 
         public function google_geocode ( $address ) {
             /* Google */
@@ -294,19 +402,28 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
             $geocode_url .= $address;
             $json = self::get_url($geocode_url);
-            $json = json_decode($json);
 
-            /* found location */
-            if ($json->{'status'} == 'OK') {
-                
-                $location = $json->{'results'}[0]->{'geometry'}->{'location'};
+            if ($json) {
+                $json = json_decode($json);
+                /* found location */
+                if ($json->{'status'} == 'OK') {
+                    
+                    $location = $json->{'results'}[0]->{'geometry'}->{'location'};
 
-                return (Object) $location;
+                    return (Object) $location;
+                }
             }
 
-            /* else */
-            return (Object) array('lat' => 0, 'lng' => 0);
+            return null;
         }
+
+        /*
+        *
+        * OpenStreetMap geocoder Nominatim (https://nominatim.openstreetmap.org/)
+        *
+        * @param string $address    the urlencoded address to look up
+        * @return varies object from API or null (failed)
+        */
 
         public function osm_geocode ( $address ) {
             /* OpenStreetMap Nominatim */
@@ -330,6 +447,14 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             }
         }
 
+        /*
+        *
+        * DAWA geocoder (https://dawa.aws.dk)
+        *
+        * @param string $address    the urlencoded address to look up
+        * @return varies object from API or null (failed)
+        */
+
         public function dawa_geocode ( $address ) {
             /* Danish Addresses Web Application */
 
@@ -348,13 +473,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     );
 
                 return $location;
-            } else {
-                return (Object) array('lat' => 0, 'lng' => 0);
-            }
+            } 
+
+            return (Object) array('lat' => 0, 'lng' => 0);
         }
 
-        /* count map shortcodes to allow for multiple */
-        public static $leaflet_map_count;
+        /*
+        *
+        * Filter for removing nulls from array
+        *
+        * @param array $arr
+        * @return array with nulls removed
+        */
 
         public function filter_null ($arr) {
             if (!function_exists('remove_null')) {
@@ -365,6 +495,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return array_filter($arr, 'remove_null');
         }
+
+        /*
+        *
+        * Map Shortcode
+        *
+        * Displays map with [leaflet-map ...atts] 
+        *
+        * JavaScript equivalent : L.map("id");
+        *
+        * @param array $atts
+        * @return string $content produced by adding atts to JavaScript
+        */
 
         public function map_shortcode ( $atts ) {
             
@@ -414,7 +556,12 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $doubleclickzoom = empty($doubleclickzoom) ? $default_doubleclickzoom : $doubleclickzoom;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
-            $attribution = empty($attribution) ? $default_attribution : $attribution;
+            
+            /* need to allow 0 or empty for removal of attribution */
+            if (!$atts ||
+                !array_key_exists('attribution', (array) $atts)) {
+                $attribution = $default_attribution;
+            }
 
             $tileurl = empty($tileurl) ? '' : $tileurl;
             $subdomains = empty($subdomains) ? '' : $subdomains;
@@ -484,7 +631,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});";
                 
                 if ($attribution) {
-                    /* add attribution to MapQuest and OSM */
+                    /* add any attributions, semi-colon-separated */
                     $attributions = explode(';', $attribution);
 
                     $content .= "var attControl = L.control.attribution({prefix:false}).addTo(map);";
@@ -502,6 +649,18 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return $content;
         }
+
+        /*
+        *
+        * Image Shortcode
+        *
+        * Displays map with [leaflet-image source="path/to/image.jpg"] 
+        *
+        * JavaScript equivalent : L.imageOverlay('path/to/image.jpg');
+        *
+        * @param array $atts
+        * @return string $content produced by adding atts to JavaScript
+        */
 
         public function image_shortcode ( $atts ) {
             
@@ -583,6 +742,17 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $content;
         }
 
+        /*
+        *
+        * Sanitize JSON
+        *
+        * Takes options for filtering/correcting inputs for use in JavaScript
+        *
+        * @param array $arr     user-input array
+        * @param array $args    array with key-value definitions on how to convert values
+        * @return array corrected for JavaScript
+        */
+
         public function json_sanitize ($arr, $args) {
             // remove nulls
             $arr = self::filter_null( $arr );
@@ -593,6 +763,16 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return json_encode( $arr );
         }
+
+        /*
+        *
+        * Get Style JSON for map shapes/geojson (svg or canvas)
+        *
+        * Takes atts for creating shapes on the map
+        *
+        * @param array $atts    user-input array
+        * @return array corrected for JavaScript
+        */
 
         public function get_style_json ($atts) {
             if ($atts) {
@@ -634,6 +814,19 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return self::json_sanitize($style, $args);
         }
+
+        /*
+        *
+        * Get Shape
+        *
+        * Used for generating shapes from GeoJSON or KML/KMZ
+        *
+        * @param array $atts        user-input array
+        * @param string $wp_script  script to enqueue (varies)
+        * @param string $L_method   which private function to call
+        * @param string $default    test/example URL (if src is not present in $atts)
+        * @return string JavaScript
+        */
 
         public function get_shape ( $atts, $wp_script, $L_method, $default = '' ) {
             wp_enqueue_script( $wp_script );
@@ -708,17 +901,46 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $geojson_script;
         }
 
+        /*
+        *
+        * GeoJSON Shortcode
+        *
+        * Uses get_shape above
+        *
+        * @param array $atts        user-input array
+        * @return string JavaScript
+        */
         public function geojson_shortcode ( $atts ) {
 
             return self::get_shape( $atts, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');
             
         }
 
+        /*
+        *
+        * KML/KMZ Shortcode
+        *
+        * Uses get_shape above
+        *
+        * @param array $atts        user-input array
+        * @return string JavaScript
+        */
+
         public function kml_shortcode ( $atts ) {
             
             return self::get_shape( $atts, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
             
         }
+
+        /*
+        *
+        * Add Popups to Shapes
+        *
+        * @param array $atts        user-input array
+        * @param string $content    text to display
+        * @param string $shape      JavaScript variable for shape
+        * @return string JavaScript
+        */
 
         public function add_popup_to_shape ($atts, $content, $shape) {
             if (!empty($atts)) extract($atts);
@@ -742,6 +964,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return $output;
         }
+
+        /*
+        *
+        * Marker Shortcode
+        *
+        * @param array $atts        user-input array
+        * @param string $content    user-input content (allows HTML)
+        * @return string content for post/page
+        */
 
         public function marker_shortcode ( $atts, $content = null ) {
 
@@ -873,6 +1104,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             return $marker_script;
         }
 
+        /*
+        *
+        * Line Shortcode
+        *
+        * @param array $atts        user-input array
+        * @param string $content    user-input content (allows HTML)
+        * @return string content for post/page
+        */
+
         public function line_shortcode ( $atts, $content = null ) {
             if (!empty($atts)) extract($atts);
             
@@ -933,13 +1173,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return $line_script;
         }
-
-        public function plugin_action_links ( $links ) {
-            $links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=leaflet-map') ) .'">Settings</a>';
-            return $links;
-        }
-
-    } /* end class */
+    }
 
     register_activation_hook( __FILE__, array('Leaflet_Map_Plugin', 'activate'));
     register_uninstall_hook( __FILE__, array('Leaflet_Map_Plugin', 'uninstall') );
