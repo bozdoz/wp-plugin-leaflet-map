@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.7.8
+    Version: 2.8.0
     License: GPL2
 
     Leaflet Map is free software: you can redistribute it and/or modify
@@ -22,15 +22,18 @@
     along with Leaflet Map. If not, see https://github.com/bozdoz/wp-plugin-leaflet-map/blob/master/LICENSE.
     */
 
-if (!class_exists('Leaflet_Map_Plugin')) {
-    
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; 
+
+if ( !class_exists('Leaflet_Map_Plugin') ) {
+
     class Leaflet_Map_Plugin {
 
         /*
         * Number of maps on page
         * @var int $leaflet_map_count
         */
-        public static $leaflet_map_count;
+        public $leaflet_map_count = 0;
 
         /*
         * Default values and admin form information
@@ -61,6 +64,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 'default'=>'100%',
                 'type' => 'text',
                 'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map width="100%"]</code>'
+            ),
+            'leaflet_fit_markers' => array(
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => 'If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map.  You can also change this per map in the shortcode: e.g. <br /> <code>[leaflet-map fit_markers="1"]</code>'
             ),
             'leaflet_show_zoom_controls' => array(
                 'default' => '0',
@@ -141,31 +149,48 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             'leaflet_geocoded_locations' => array()
         );
 
+        /**
+         * @var Leaflet_Map_Plugin
+         **/
+        private static $instance = null;
+
+        /**
+         * Singleton
+         * @static
+         */
+        public static function init() {
+            if ( ! self::$instance ) {
+                self::$instance = new Leaflet_Map_Plugin;
+            }
+
+            return self::$instance;
+        }
+
         /*
         *
         * Initialize plugin
         *
         */
 
-        public function __construct() {
-            add_action('admin_init', array(&$this, 'admin_init'));
-            add_action('admin_menu', array(&$this, 'admin_menu'));
-            add_action( 'wp_enqueue_scripts', array(&$this, 'enqueue_and_register') );
-            add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_and_register') );
+        private function __construct() {
+            add_action('admin_init', array($this, 'admin_init'));
+            add_action('admin_menu', array($this, 'admin_menu'));
+            add_action( 'wp_enqueue_scripts', array($this, 'enqueue_and_register') );
+            add_action( 'admin_enqueue_scripts', array($this, 'enqueue_and_register') );
 
-            add_shortcode('leaflet-map', array(&$this, 'map_shortcode'));
-            add_shortcode('leaflet-marker', array(&$this, 'marker_shortcode'));
-            add_shortcode('leaflet-line', array(&$this, 'line_shortcode'));
-            add_shortcode('leaflet-image', array(&$this, 'image_shortcode'));
-            add_shortcode('leaflet-geojson', array(&$this, 'geojson_shortcode'));
-            add_shortcode('leaflet-kml', array(&$this, 'kml_shortcode'));
+            add_shortcode('leaflet-map', array($this, 'map_shortcode'));
+            add_shortcode('leaflet-marker', array($this, 'marker_shortcode'));
+            add_shortcode('leaflet-line', array($this, 'line_shortcode'));
+            add_shortcode('leaflet-image', array($this, 'image_shortcode'));
+            add_shortcode('leaflet-geojson', array($this, 'geojson_shortcode'));
+            add_shortcode('leaflet-kml', array($this, 'kml_shortcode'));
 
             /* allow maps on excerpts */
             /* should be optional somehow (admin setting?) */
             add_filter('the_excerpt', 'do_shortcode');
 
             /* add settings to plugin page */
-            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'plugin_action_links'));
+            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'plugin_action_links'));
         }
 
         /*
@@ -266,7 +291,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
         public function settings_page () {
             wp_enqueue_style( 'leaflet_admin_stylesheet' );
-            include 'templates/admin.php';
+            include 'admin/settings.php';
         }
 
         /*
@@ -294,9 +319,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 $main_link = 'leaflet-get-shortcode';
             }
 
-            add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', $main_link, array(&$this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
-            add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array(&$this, "settings_page"));
-            add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-get-shortcode", array(&$this, "shortcode_page"));
+            add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', $main_link, array($this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
+            add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array($this, "settings_page"));
+            add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-get-shortcode", array($this, "shortcode_page"));
         }
 
         /*
@@ -509,13 +534,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         */
 
         public function map_shortcode ( $atts ) {
-            
-            if (!self::$leaflet_map_count) {
-            	self::$leaflet_map_count = 0;
-            }
-            self::$leaflet_map_count++;
 
-            $leaflet_map_count = self::$leaflet_map_count;
+            $this->leaflet_map_count++;
+
+            $leaflet_map_count = $this->leaflet_map_count;
 
             /* defaults from db */
             $defaults = self::$defaults;
@@ -530,6 +552,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $default_attribution = get_option('leaflet_default_attribution', $defaults['leaflet_default_attribution']['default']);
             $default_min_zoom = get_option('leaflet_default_min_zoom', $defaults['leaflet_default_min_zoom']['default']);
             $default_max_zoom = get_option('leaflet_default_max_zoom', $defaults['leaflet_default_max_zoom']['default']);
+            $default_fit_markers = get_option('leaflet_fit_markers', $defaults['leaflet_fit_markers']['default']);
 
             if ($atts) {
                 extract($atts);
@@ -556,6 +579,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
             $doubleclickzoom = empty($doubleclickzoom) ? $default_doubleclickzoom : $doubleclickzoom;
             $height = empty($height) ? $default_height : $height;
             $width = empty($width) ? $default_width : $width;
+            $fit_markers = empty($fit_markers) ? $default_fit_markers : $fit_markers;
             
             /* need to allow 0 or empty for removal of attribution */
             if (!$atts ||
@@ -628,7 +652,11 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                         doubleClickZoom: {$doubleclickzoom},
                         attributionControl: false
                     }, {$more_options}),
-                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});";
+                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});
+                if ({$fit_markers}) {
+                    map.fit_markers = true;
+                }
+                ";
                 
                 if ($attribution) {
                     /* add any attributions, semi-colon-separated */
@@ -665,12 +693,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         public function image_shortcode ( $atts ) {
             
             /* get map count for unique id */
-            if (!self::$leaflet_map_count) {
-                self::$leaflet_map_count = 0;
-            }
-            self::$leaflet_map_count++;
+            $this->leaflet_map_count++;
 
-            $leaflet_map_count = self::$leaflet_map_count;
+            $leaflet_map_count = $this->leaflet_map_count;
 
             /* defaults from db */
             $defaults = self::$defaults;
@@ -821,14 +846,15 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         *
         * Used for generating shapes from GeoJSON or KML/KMZ
         *
-        * @param array $atts        user-input array
+        * @param array $atts        user-input attribute array
+        * @param string $content    user-input HTML
         * @param string $wp_script  script to enqueue (varies)
         * @param string $L_method   which private function to call
         * @param string $default    test/example URL (if src is not present in $atts)
         * @return string JavaScript
         */
 
-        public function get_shape ( $atts, $wp_script, $L_method, $default = '' ) {
+        public function get_shape ( $atts, $content, $wp_script, $L_method, $default = '' ) {
             wp_enqueue_script( $wp_script );
 
             if ($atts) {
@@ -842,7 +868,13 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
+            // shortcode content becomes popup text
+            $content_text = empty($content) ? '' : $content;
+            // alternatively, the popup_text attribute works as popup text
             $popup_text = empty($popup_text) ? '' : $popup_text;
+            // choose which one takes priority (content_text)
+            $popup_text = empty($content_text) ? $popup_text : $content_text;
+
             $popup_property = empty($popup_property) ? '' : $popup_property;
 
             $geojson_script = "<script>
@@ -890,7 +922,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     }      
                     function onEachFeature (feature, layer) {
                         var props = feature.properties || {},
-                            text = popup_text || props[ popup_property ];
+                            text = popup_property && props[ popup_property ] || popup_text;
                         if (text) {
                             layer.bindPopup( text );
                         }
@@ -910,10 +942,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         * @param array $atts        user-input array
         * @return string JavaScript
         */
-        public function geojson_shortcode ( $atts ) {
-
-            return self::get_shape( $atts, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');
-            
+        public function geojson_shortcode ( $atts, $content = null ) {
+            return self::get_shape( $atts, $content, 'leaflet_ajax_geojson_js', 'ajaxGeoJson', 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson');       
         }
 
         /*
@@ -926,9 +956,9 @@ if (!class_exists('Leaflet_Map_Plugin')) {
         * @return string JavaScript
         */
 
-        public function kml_shortcode ( $atts ) {
+        public function kml_shortcode ( $atts, $content = null ) {
             
-            return self::get_shape( $atts, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
+            return self::get_shape( $atts, $content, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
             
         }
 
@@ -1056,7 +1086,8 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                     marker = L.marker([{$lat}, {$lng}], marker_options),
                     previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     is_image = previous_map.is_image_map,
-                    previous_map_onload;
+                    previous_map_onload,
+                    markergroup = WPLeafletMapPlugin.getCurrentMarkerGroup();
                 ";
 
                 if (empty($lat) && empty($lng)) {
@@ -1091,7 +1122,7 @@ if (!class_exists('Leaflet_Map_Plugin')) {
                 });
             }
 
-            marker.addTo( previous_map );
+            marker.addTo( markergroup );
             ";
             
             $marker_script .= self::add_popup_to_shape($atts, $content, 'marker');
@@ -1173,11 +1204,10 @@ if (!class_exists('Leaflet_Map_Plugin')) {
 
             return $line_script;
         }
-    }
+    } // end class
+} // end if 
 
-    register_activation_hook( __FILE__, array('Leaflet_Map_Plugin', 'activate'));
-    register_uninstall_hook( __FILE__, array('Leaflet_Map_Plugin', 'uninstall') );
+register_activation_hook( __FILE__, array('Leaflet_Map_Plugin', 'activate'));
+register_uninstall_hook( __FILE__, array('Leaflet_Map_Plugin', 'uninstall') );
 
-    $leaflet_map_plugin = new Leaflet_Map_Plugin();
-}
-?>
+Leaflet_Map_Plugin::init();
