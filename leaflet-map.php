@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.8.0
+    Version: 2.8.1
     License: GPL2
 
     Leaflet Map is free software: you can redistribute it and/or modify
@@ -635,47 +635,51 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
             }
 
             /* should be iterated for multiple maps */
-            $content = '<div id="leaflet-wordpress-map-'.$leaflet_map_count.'" class="leaflet-wordpress-map" style="height:'.$height.'; width:'.$width.';"></div>';
-
-            $content .= "<script>
+            ob_start(); ?>
+            <div 
+                id="leaflet-wordpress-map-<?php echo $leaflet_map_count; ?>" 
+                class="leaflet-wordpress-map" 
+                style="height:<?php echo $height; ?>; width:<?php echo $width; ?>;"></div>
+            <script>
             WPLeafletMapPlugin.add(function () {
-                var baseUrl = '{$tileurl}',
+                var baseUrl = '<?php echo $tileurl; ?>',
                     base = (!baseUrl && window.MQ) ? MQ.mapLayer() : L.tileLayer(baseUrl, { 
-                       subdomains: '{$subdomains}'
+                       subdomains: '<?php echo $subdomains; ?>'
                     }),
                     options = L.Util.extend({}, {
-                        maxZoom: {$max_zoom},
-                        minZoom: {$min_zoom},
+                        maxZoom: <?php echo $max_zoom; ?>,
+                        minZoom: <?php echo $min_zoom; ?>,
                         layers: [base],
-                        zoomControl: {$zoomcontrol},
-                        scrollWheelZoom: {$scrollwheel},
-                        doubleClickZoom: {$doubleclickzoom},
+                        zoomControl: <?php echo $zoomcontrol; ?>,
+                        scrollWheelZoom: <?php echo $scrollwheel; ?>,
+                        doubleClickZoom: <?php echo $doubleclickzoom; ?>,
                         attributionControl: false
-                    }, {$more_options}),
-                    map = L.map('leaflet-wordpress-map-{$leaflet_map_count}', options).setView([{$lat}, {$lng}], {$zoom});
-                if ({$fit_markers}) {
+                    }, <?php echo $more_options; ?>),
+                    map = L.map('leaflet-wordpress-map-<?php echo $leaflet_map_count; ?>', options).setView([<?php echo $lat . ',' . $lng . '],' . $zoom; ?>);
+                if (<?php echo $fit_markers; ?>) {
                     map.fit_markers = true;
                 }
-                ";
-                
+            <?php
                 if ($attribution) {
                     /* add any attributions, semi-colon-separated */
                     $attributions = explode(';', $attribution);
 
-                    $content .= "var attControl = L.control.attribution({prefix:false}).addTo(map);";
+                    ?>
+                    var attControl = L.control.attribution({prefix:false}).addTo(map);
+                    <?php
 
                     foreach ($attributions as $a) {
-                        $a = trim($a);
-                        $content .= "attControl.addAttribution('{$a}');";
+                        ?>
+                        attControl.addAttribution('<?php echo trim($a); ?>');
+                        <?php
                     }
                 }
-
-                $content .= "
-                WPLeafletMapPlugin.maps.push(map);
+            ?>
+            WPLeafletMapPlugin.maps.push(map);
             }); // end add
-            </script>";
+            </script> <?php
 
-            return $content;
+            return ob_get_clean();
         }
 
         /*
@@ -727,15 +731,18 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
             $height .= is_numeric($height) ? 'px' : '';
             $width .= is_numeric($width) ? 'px' : '';   
             
-            $content = '<div id="leaflet-wordpress-image-'.$leaflet_map_count.'" class="leaflet-wordpress-map" style="height:'.$height.'; width:'.$width.';"></div>';
-
-            $content .= "<script>
+            ob_start();
+            ?>
+            <div 
+                id="leaflet-wordpress-image-<?php echo leaflet_map_count; ?>" 
+                class="leaflet-wordpress-map" 
+                style="height:<?php echo height; ?>; width:<?php echo width; ?>;"></div>
+            <script>
             WPLeafletMapPlugin.add(function () {
                 var map,
-                    image_src = '$source',
+                    image_src = '<?php echo $source; ?>',
                     img = new Image(),
-                    zoom = $zoom;
-
+                    zoom = <?php echo $zoom; ?>;
                 img.onload = function() {
                     var center_h = img.height / (zoom * 4),
                         center_w = img.width / (zoom * 4);
@@ -747,13 +754,12 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                     img.is_loaded = true;
                 };
                 img.src = image_src;
-
-                map = L.map('leaflet-wordpress-image-{$leaflet_map_count}', {
+                map = L.map('leaflet-wordpress-image-<?php echo $leaflet_map_count; ?>', {
                     maxZoom: 10,
                     minZoom: 1,
                     crs: L.CRS.Simple,
-                    zoomControl: {$zoomcontrol},
-                    scrollWheelZoom: {$scrollwheel}
+                    zoomControl: <?php echo $zoomcontrol ?>,
+                    scrollWheelZoom: <?php echo $scrollwheel ?>
                 }).setView([0, 0], zoom);
 
                 // make it known that it is an image map
@@ -762,9 +768,9 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                 WPLeafletMapPlugin.maps.push( map );
                 WPLeafletMapPlugin.images.push( img );
             }); // end add
-            </script>";
-
-            return $content;
+            </script>
+            <?php
+            return ob_get_clean();
         }
 
         /*
@@ -861,6 +867,10 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                 extract($atts);
             }
 
+            if ($content) {
+                $content = htmlspecialchars($content);
+            }
+
             /* only required field for geojson */
             $src = empty($src) ? $default : $src;
 
@@ -877,11 +887,15 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
 
             $popup_property = empty($popup_property) ? '' : $popup_property;
 
-            $geojson_script = "<script>
+            $popup_text = trim($popup_text);
+
+            ob_start();
+            ?>
+            <script>
                 WPLeafletMapPlugin.add(function () {
                     var previous_map = WPLeafletMapPlugin.getCurrentMap(),
-                        src = '{$src}',
-                        default_style = {$style_json},
+                        src = '<?php echo $src; ?>',
+                        default_style = <?php echo $style_json; ?>,
                         rewrite_keys = {
                             fill : 'fillColor',
                             'fill-opacity' : 'fillOpacity',
@@ -889,13 +903,13 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                             'stroke-opacity' : 'opacity',
                             'stroke-width' : 'width',
                         },
-                        layer = L.{$L_method}(src, {
+                        layer = L.<?php echo $L_method; ?>(src, {
                             style : layerStyle,
                             onEachFeature : onEachFeature
                         }),
-                        fitbounds = {$fitbounds},
-                        popup_text = '{$popup_text}',
-                        popup_property = '{$popup_property}';
+                        fitbounds = <?php echo $fitbounds; ?>,
+                        popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
+                        popup_property = '<?php echo $popup_property; ?>';
                     if (fitbounds) {
                         layer.on('ready', function () {
                             this.map.fitBounds( this.getBounds() );
@@ -928,9 +942,10 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                         }
                     }          
                 });
-                </script>";
+            </script>
+            <?php
 
-            return $geojson_script;
+            return ob_get_clean();
         }
 
         /*
@@ -957,9 +972,7 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
         */
 
         public function kml_shortcode ( $atts, $content = null ) {
-            
             return self::get_shape( $atts, $content, 'leaflet_ajax_kml_js', 'ajaxKML', 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml');
-            
         }
 
         /*
@@ -969,30 +982,29 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
         * @param array $atts        user-input array
         * @param string $content    text to display
         * @param string $shape      JavaScript variable for shape
-        * @return string JavaScript
+        * @return null
         */
 
         public function add_popup_to_shape ($atts, $content, $shape) {
             if (!empty($atts)) extract($atts);
 
             $message = empty($message) ? (empty($content) ? '' : $content) : $message;
+            $message = htmlspecialchars($message);
             $visible = empty($visible) ? false : ($visible == 'true');
 
-            $output = '';
-
             if (!empty($message)) {
+                /* 
                 $message = str_replace("\n", '', $message);
+                */
 
-                $output .= "$shape.bindPopup('$message')";
+                echo "{$shape}.bindPopup(WPLeafletMapPlugin.unescape('{$message}'))";
 
                 if ($visible) {
-                    $output .= ".openPopup()";
+                    echo ".openPopup()";
                 }
 
-                $output .= ";";
+                echo ";";
             }
-
-            return $output;
         }
 
         /*
@@ -1063,12 +1075,14 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
             if ($options === '[]') {
                 $options = '{}';
             }
-
-            $marker_script = "<script>
+            ob_start();
+            ?>
+            <script>
             WPLeafletMapPlugin.add(function () {
                 var marker_options = (function () {
-                        var _options = {$options},
-                            iconArrays = ['iconSize', 'iconAnchor', 'shadowSize', 'shadowAnchor'];
+                        var _options = <?php echo $options; ?>,
+                            iconArrays = ['iconSize', 'iconAnchor', 
+                                'shadowSize', 'shadowAnchor'];
                         if (_options.iconUrl) {
                             // arrays are strings, unfortunately...
                             for (var i = 0, len = iconArrays.length; i < len; i++) {
@@ -1083,17 +1097,16 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                         return _options;
                     })(),
                     draggable = marker_options.draggable,
-                    marker = L.marker([{$lat}, {$lng}], marker_options),
+                    marker = L.marker([<?php echo $lat . ',' . $lng; ?>], marker_options),
                     previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     is_image = previous_map.is_image_map,
                     previous_map_onload,
                     markergroup = WPLeafletMapPlugin.getCurrentMarkerGroup();
-                ";
-
+            <?php
                 if (empty($lat) && empty($lng)) {
                     /* update lat lng to previous map's center */
-                    $marker_script .= "
-                    if ( is_image && 
+            ?>
+                    if (is_image && 
                         !previous_map.is_loaded) {
                         previous_map_onload = previous_map.onload;
                         previous_map.onload = function () {
@@ -1105,34 +1118,32 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
                     } else {
                         marker.setLatLng( previous_map.getCenter() );
                     }
-                    ";
+            <?php
+                }
+            ?>
+                if (draggable) {
+                    marker.on('dragend', function () {
+                        var latlng = this.getLatLng(),
+                            lat = latlng.lat,
+                            lng = latlng.lng;
+                        if (is_image) {
+                            console.log('leaflet-marker y=' + lat + ' x=' + lng);
+                        } else {
+                            console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
+                        }
+                    });
                 }
 
-            $marker_script .= "
-            if (draggable) {
-                marker.on('dragend', function () {
-                    var latlng = this.getLatLng(),
-                        lat = latlng.lat,
-                        lng = latlng.lng;
-                    if (is_image) {
-                        console.log('leaflet-marker y=' + lat + ' x=' + lng);
-                    } else {
-                        console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
-                    }
-                });
-            }
-
-            marker.addTo( markergroup );
-            ";
-            
-            $marker_script .= self::add_popup_to_shape($atts, $content, 'marker');
-
-            $marker_script .= "
-                    WPLeafletMapPlugin.markers.push( marker );
+                marker.addTo( markergroup );
+            <?php
+                self::add_popup_to_shape($atts, $content, 'marker');
+            ?>
+                WPLeafletMapPlugin.markers.push( marker );
             }); // end add function
-            </script>";
+            </script>
+            <?php
 
-            return $marker_script;
+            return ob_get_clean();
         }
 
         /*
@@ -1183,26 +1194,27 @@ if ( !class_exists('Leaflet_Map_Plugin') ) {
             }
 
             $location_json = json_encode($locations);
-
-            $line_script = "<script>
+            ob_start();
+            ?>
+            <script>
             WPLeafletMapPlugin.add(function () {
                 var previous_map = WPLeafletMapPlugin.getCurrentMap(),
-                    line = L.polyline($location_json, {$style_json}),
-                    fitbounds = $fitbounds;
+                    line = L.polyline(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
+                    fitbounds = <?php echo $fitbounds; ?>;
                 line.addTo( previous_map );
                 if (fitbounds) {
                     // zoom the map to the polyline
                     previous_map.fitBounds( line.getBounds() );
-                }";
-
-            $line_script .= self::add_popup_to_shape($atts, $content, 'line');
-
-            $line_script .= "
+                }
+            <?php
+                self::add_popup_to_shape($atts, $content, 'line');
+            ?>
                 WPLeafletMapPlugin.lines.push( line );
             });
-            </script>";
+            </script>
+            <?php
 
-            return $line_script;
+            return ob_get_clean();
         }
     } // end class
 } // end if 

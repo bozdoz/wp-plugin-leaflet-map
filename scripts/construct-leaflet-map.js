@@ -1,6 +1,6 @@
-(function () {
+(function() {
     // holds a function queue to call once page is loaded
-    function Main () {
+    function Main() {
         var init_functions = [];
 
         // this function iterates all map creation functions
@@ -24,25 +24,25 @@
         this.getCurrentMarkerGroup = function() {
             // marker groups are mapid -> feature group
             var mapid = this.maps.length;
-            if (!this.markergroups[ mapid ]) {
-                this.markergroups[ mapid ] = this.newMarkerGroup(this.maps[mapid - 1]);
-            } 
-            return this.markergroups[ mapid ];
+            if (!this.markergroups[mapid]) {
+                this.markergroups[mapid] = this.newMarkerGroup(this.maps[mapid - 1]);
+            }
+            return this.markergroups[mapid];
         };
 
-        this.newMarkerGroup = function (map) {
-            var mg = new L.FeatureGroup().addTo( map );
+        this.newMarkerGroup = function(map) {
+            var mg = new L.FeatureGroup().addTo(map);
 
             mg.timeout = null;
 
             // custom attribute
             if (map.fit_markers) {
-                mg.on('layeradd', function (d) {
+                mg.on('layeradd', function(d) {
                     // needs a timeout so that it doesn't 
                     // opt out of a bound change
                     window.clearTimeout(this.timeout);
-                    this.timeout = window.setTimeout(function () {
-                        map.fitBounds( mg.getBounds() );
+                    this.timeout = window.setTimeout(function() {
+                        map.fitBounds(mg.getBounds());
                     }, 100);
                 }, mg);
             }
@@ -57,6 +57,12 @@
         this.markers = [];
         this.lines = [];
     }
+
+    Main.prototype.unescape = function(str) {
+        var div = document.createElement('div');
+        div.innerHTML = str;
+        return div.innerText;
+    };
 
     window.WPLeafletMapPlugin = new Main();
 
