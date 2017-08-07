@@ -32,7 +32,7 @@ class Leaflet_Geocoder {
 
 		$geocoder = $settings->get('geocoder');
 
-		$cached_address = 'leaflet_' . $geocoder . '_' . $address;
+		$cached_address = 'leaflet_' . $address;
 
 		/* retrieve cached geocoded location */
 		$found_cache = get_option( $cached_address );

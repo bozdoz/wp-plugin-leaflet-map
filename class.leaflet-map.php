@@ -150,13 +150,11 @@ class Leaflet_Map {
         $locations = get_option('leaflet_geocoded_locations', array());
 
         foreach ($locations as $address => $latlng) {
-            delete_option('leaflet_' + $address);
+            delete_option('leaflet_' . $address);
         }
 
-        /* remove values from db */
-        foreach(self::$defaults as $name=>$atts) {
-            delete_option( $name );
-        }
+        $settings = Leaflet_Map_Plugin_Settings::init();
+        $settings->reset();
     }
 
     /**
