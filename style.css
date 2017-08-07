@@ -1,24 +1,3 @@
-.h3 {
-	font-size: 1.3em;
-	margin: 1em 0;
-}
-
-label {
-	width:30%;
-	padding:1em 2em;
-}
-input {
-	width:70%;
-	padding:5px 10px;
-	box-sizing:border-box;
-	float:right;
-}
-
-p {
-	vertical-align: top;
-	word-wrap: break-word;
-}
-
 .container {
 	width:100%;
 	max-width: 700px;
@@ -26,11 +5,29 @@ p {
 	clear:both;
 	min-height:50px;
 }
-.label {
+
+.container label {
+	width:30%;
+}
+
+.container .label {
+	line-height: 2.4em;
 	font-weight: bold;
 	width:30%;
 	font-size:1.1em;
 }
+
+.container input {
+	float:right;
+	margin:0;
+}
+
+.container input[type="text"] {
+	width:70%;
+	padding:7px 12px;
+	box-sizing:border-box;
+}
+
 .input-group {
 	width:70%;
 	float:right;
@@ -42,21 +39,28 @@ p {
 	height:7em;
 	padding:0.5em 1em;
 }
-.helptext {
-	margin:20px 0 30px;
-	clear:both;
-	border-left: 3px solid #ccc;
-	padding-left:50px;
-}
-div.list-item {
-	width: 250px;
-	display: inline-block;
+
+p {
 	vertical-align: top;
-	padding: 15px;
+	word-wrap: break-word;
 }
 
+.helptext {
+	margin: 0;
+	padding: 0.2em 0;
+	clear:both;
+	color:#666;
+}
 
-@media screen and (max-width: 782px) {
+.helptext p.description {
+	font-size:14px;
+	line-height: 1.618;
+	letter-spacing: -0.001em;
+	word-spacing: 0.01em;
+	margin:1em 0 0;
+}
+
+@media screen and (max-width: 770px) {
 	.input-group {
 		float:none;
 	}

@@ -1,126 +1,86 @@
 <?php
-$defaults = self::$defaults;
-unset($defaults['leaflet_geocoded_locations']);
+$title = $plugin_data['Name'];
+$description = $plugin_data['Description'];
 
+function option_label ($opt) {
+    $opt = explode('_', $opt);
+    
+    foreach($opt as &$v) {
+        $v = ucfirst($v);
+    }
+    echo implode(' ', $opt);
+}
+?>
+<div class="wrap">
+	<h1><?php echo $title; ?></h1>
+	<p><?php echo $description; ?></p>
+<?php
 if (isset($_POST['submit'])) {
 	/* copy and overwrite $post for checkboxes */
 	$form = $_POST;
 
-	foreach ($defaults as $name=>$atts) {
-		$type = isset($atts['type']) ? $atts['type'] : '';
+	foreach ($settings->options as $name => $option) {
+		if (!$option->type) continue;
 
 		/* checkboxes don't get sent if not checked */
-		if ($type === 'checkbox') {
-			$form[$name] = isset($_POST[$name]) ? 1 : 0;
+		if ($option->type === 'checkbox') {
+			$form[$name] = isset($_POST[ $name ]) ? 1 : 0;
 		}
-		update_option($name, stripslashes( $form[$name]) );
+
+		$settings->set($name, stripslashes( $form[$name]));
 	}
 ?>
-<div class="updated">
-   <p>Options Updated!</p>
+<div class="notice notice-success is-dismissible">
+	<p>Options Updated!</p>
 </div>
 <?php
 } elseif (isset($_POST['reset'])) {
-	foreach ($defaults as $name=>$atts) {
-		if (isset($atts['default']) && !isset($atts['noreset'])) {
-			update_option($name, $atts['default']);
-		}
-	}
+	$settings->reset();
 ?>
-<div class="updated">
-   <p>Options have been reset to default values!</p>
+<div class="notice notice-success is-dismissible">
+	<p>Options have been reset to default values!</p>
 </div>
 <?php
 }
 ?>
-
 <div class="wrap">
-	<h2>Leaflet Map Plugin</h2>
 	<div class="wrap">
 	<form method="post">
+		<div class="container">
+			<h2>Settings</h2>
+			<hr>
+		</div>
 	<?php
-	function option_label ($opt = 'leaflet_map_tile_url') {
-	    $opt = explode('_', $opt);
-	    array_shift($opt);
-	    foreach($opt as &$v) {
-	        $v = ucfirst($v);
-	    }
-	    echo implode(' ', $opt);
-	}
-
-	foreach ($defaults as $name=>$atts) {
-		$type = isset($atts['type']) ? $atts['type'] : '';
+	foreach ($settings->options as $name => $option) {
+		if (!$option->type) continue;
 	?>
 	<div class="container">
 		<label>
 			<span class="label"><?php option_label($name); ?></span>
 			<span class="input-group">
 			<?php
-			if ($type === 'select') {
-			?>
-                <select id="<?php echo $name; ?>"
-                	name="<?php echo $name; ?>"
-                	class="full-width">
-                <?php
-                foreach ($atts['options'] as $o => $n) {
-                ?>
-                    <option value="<?php echo $o; ?>"<?php if (get_option($name) == $o) echo ' selected' ?>>
-                    	<?php echo $n; ?>
-                   	</option>
-                <?php
-                }
-                ?>
-                </select>
-			<?php
-			} elseif ($type === 'text') {
-			?>
-				<input 
-					class="full-width" 
-					name="<?php echo $name; ?>" 
-					type="text" 
-					id="<?php echo $name; ?>" 
-					value="<?php echo htmlspecialchars( get_option($name, $atts['default']) ); ?>" 
-					/>
-			<?php
-			} elseif ($type === 'textarea') {
-			?>
-				<textarea 
-					id="<?php echo $name; ?>"
-					class="full-width" 
-					name="<?php echo $name; ?>"><?php echo htmlspecialchars( get_option($name, $atts['default']) ); ?></textarea>
-			<?php
-			} elseif ($type === 'checkbox') {
-			?>
-				<input 
-					class="checkbox" 
-					name="<?php echo $name; ?>" 
-					type="checkbox" 
-					id="<?php echo $name; ?>"
-					<?php if (get_option($name, $atts['default'])) echo ' checked="checked"' ?> 
-					/>
-			<?php
-			}
+			$option->widget($name, $settings->get($name));
 			?>
 			</span>
 		</label>
+
 		<?php
-		if (isset($atts['helptext'])) {
-			?>
+		if ($option->helptext) {
+		?>
 		<div class="helptext">
-			<p class="description"><?php echo $atts['helptext']; ?></p>
+			<p class="description"><?php 
+				echo $option->helptext; 
+			?></p>
 		</div>
-			<?php
+		<?php
 		}
 		?>
 	</div>
 	<?php
 	}
 	?>
-
-	<div class="container">
+	<div class="submit">
 		<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
-	</div>
-	<div class="container">
 		<input type="submit" name="reset" id="reset" class="button button-secondary" value="Reset to Defaults">
 	</div>
 
