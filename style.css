@@ -1,7 +1,22 @@
+/*
+
+styles for both admin settings and shortcode page
+
+*/
+
+h1 small {
+	color: #999;
+	margin: 1em;
+	font-size:0.65em;
+}
+.h3 {
+	font-size: 1.3em;
+	margin: 1em 0;
+}
 .container {
 	width:100%;
 	max-width: 700px;
-	margin:15px 0;
+	margin:35px 0;
 	clear:both;
 	min-height:50px;
 }
@@ -40,11 +55,6 @@
 	padding:0.5em 1em;
 }
 
-p {
-	vertical-align: top;
-	word-wrap: break-word;
-}
-
 .helptext {
 	margin: 0;
 	padding: 0.2em 0;
@@ -57,7 +67,45 @@ p {
 	line-height: 1.618;
 	letter-spacing: -0.001em;
 	word-spacing: 0.01em;
-	margin:1em 0 0;
+	margin:0.5em 0 0;
+}
+
+.flex, 
+.examples {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+}
+
+.flex > label {
+	flex: 0 1 200px;
+}
+.flex > input {
+	flex: 1 1 400px;
+}
+
+.examples .list-item {
+	flex: 1 1 250px;
+}
+
+p {
+	vertical-align: top;
+	word-wrap: break-word;
+}
+
+.list-item {
+	width: 250px;
+	display:inline-block;
+	vertical-align: top;
+	padding:15px;
+}
+
+.list-item p {
+	font-size:1.2em;
 }
 
 @media screen and (max-width: 770px) {

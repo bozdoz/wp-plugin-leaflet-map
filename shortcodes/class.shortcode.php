@@ -1,13 +1,12 @@
 <?php
 /**
-* Map Shortcode
+* Abstract Shortcode Class
 *
-* Displays map with [leaflet-map ...atts] 
+* Use with add_shortcode('leaflet-map', array('Leaflet_Shortcode', 'shortcode'))
+* extend and manipulate __construct
 *
-* JavaScript equivalent : L.map("id");
-*
-* @param array $atts
-* @return string $content produced by adding atts to JavaScript
+* @var array $atts
+* @var string $content
 */
 abstract class Leaflet_Shortcode {
 	protected $LM;
@@ -23,8 +22,7 @@ abstract class Leaflet_Shortcode {
 	abstract protected function getHTML($atts, $content);
 
 	/**
-	* Use with add_shortcode('leaflet-map', array('Leaflet_Shortcode', 'shortcode'))
-	* extend and manipulate __construct
+	* Instantiate class and get HTML for shortcode
 	* @var array $atts
 	* @var string $content
 	*/

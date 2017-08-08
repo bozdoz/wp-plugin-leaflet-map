@@ -18,19 +18,13 @@ class Leaflet_Map {
     * This plugin version
     * @var string major minor patch version
     */
-    public $version = '2.8.0';
+    public $version = '2.8.2';
 
     /**
     * Number of maps on page; used for unique map ids
     * @var int $map_count
     */
     public $map_count = 0;
-
-    /**
-    * Holder for WordPress's get_plugin_data
-    * @var object $plugin_data
-    */
-    public $plugin_data;
 
     /**
     * Files to include upon init
@@ -146,15 +140,13 @@ class Leaflet_Map {
     */
 
     public static function uninstall () {            
-        /* remove geocoded locations */
-        $locations = get_option('leaflet_geocoded_locations', array());
-
-        foreach ($locations as $address => $latlng) {
-            delete_option('leaflet_' . $address);
-        }
-
+        // remove settings in db
         $settings = Leaflet_Map_Plugin_Settings::init();
         $settings->reset();
+
+        // remove geocoder locations in db
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
+        Leaflet_Geocoder::remove_caches();
     }
 
     /**
@@ -173,11 +165,11 @@ class Leaflet_Map {
         wp_register_script('leaflet_js', $js_url, Array(), $this->leaflet_version, true);
 
         // new required MapQuest javascript file
-        $tiling_service = get_option('leaflet_default_tiling_service','');
+        $tiling_service = $settings->get('default_tiling_service');
 
         if ($tiling_service == 'mapquest') {
             $mapquest_js_url = 'https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=%s';
-            $mq_appkey = get_option('leaflet_mapquest_appkey','');
+            $mq_appkey = $settings->get('mapquest_appkey');
             $mapquest_js_url = sprintf($mapquest_js_url, $mq_appkey);
 
             wp_register_script('leaflet_mapquest_plugin', $mapquest_js_url, Array('leaflet_js'), '2.0', true);
@@ -203,8 +195,6 @@ class Leaflet_Map {
     
     public function admin_init () {
         wp_register_style('leaflet_admin_stylesheet', plugins_url('style.css', __FILE__));
-        
-        $this->plugin_data = get_plugin_data( LEAFLET_MAP__PLUGIN_FILE );
     }
 
     /**
@@ -217,7 +207,7 @@ class Leaflet_Map {
 
         $settings = Leaflet_Map_Plugin_Settings::init();
         $plugin_data = get_plugin_data(LEAFLET_MAP__PLUGIN_FILE);
-        include 'admin/settings.php';
+        include 'templates/settings.php';
     }
 
     /**

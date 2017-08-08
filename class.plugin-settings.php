@@ -112,12 +112,12 @@ class Leaflet_Map_Plugin_Settings {
             'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
         ),
         'js_url' => array(
-            'default'=>'https://unpkg.com/leaflet@#version#/dist/leaflet.js',
+            'default'=>'https://unpkg.com/leaflet@%s/dist/leaflet.js',
             'type' => 'text',
             'helptext' => 'If you host your own Leaflet files, specify the URL here.'
         ),
         'css_url' => array(
-            'default'=>'https://unpkg.com/leaflet@#version#/dist/leaflet.css',
+            'default'=>'https://unpkg.com/leaflet@%s/dist/leaflet.css',
             'type' => 'text',
             'helptext' => 'Save as above.'
         ),
@@ -135,10 +135,7 @@ class Leaflet_Map_Plugin_Settings {
                 'dawa' => 'Danmarks Adressers'
             ),
             'helptext' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.'
-        ),
-        // not in admin; geocoder uses this
-        // so it needs to be here to be deleted on uninstall
-        'geocoded_locations' => array()
+        )
     );
 
 	/**
@@ -159,8 +156,8 @@ class Leaflet_Map_Plugin_Settings {
         $LM = Leaflet_Map::init();
         $leaflet_version = $LM->leaflet_version;
 
-        $this->options['js_url']['default'] = str_replace('#version#', $leaflet_version, $this->options['js_url']['default']);
-        $this->options['css_url']['default'] = str_replace('#version#', $leaflet_version, $this->options['css_url']['default']);
+        $this->options['js_url']['default'] = sprintf($this->options['js_url']['default'], $leaflet_version);
+        $this->options['css_url']['default'] = sprintf($this->options['css_url']['default'], $leaflet_version);
 
 		foreach ($this->options as $name => $details) {
 			$this->options[ $name ] = new Leaflet_Map_Plugin_Option( $details );

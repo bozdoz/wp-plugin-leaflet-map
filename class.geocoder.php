@@ -4,9 +4,6 @@
 *
 * calls the specific geocoder function (chosen in admin or default: google_geocode)
 *
-* todo: candidate for separate class
-*
-* @param string $address    the requested address to look up
 */
 
 class Leaflet_Geocoder {
@@ -26,39 +23,61 @@ class Leaflet_Geocoder {
 	*/
 	public $lng = 0;
 
+	/**
+	* new Geocoder from address
+	*
+	* handles url encoding and caching
+	*
+	* @param string $address the requested address to look up
+	* @return NOTHING
+	*/
 	public function __construct ($address) {
 		$settings = Leaflet_Map_Plugin_Settings::init();
 		$address = urlencode( $address );
 
 		$geocoder = $settings->get('geocoder');
 
-		$cached_address = 'leaflet_' . $address;
+		$cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
 		/* retrieve cached geocoded location */
 		$found_cache = get_option( $cached_address );
 
 		if ( $found_cache ) {
-		    return $found_cache;
+			$location = $found_cache;
+		} else {
+			// try geocoding
+			$geocoding_method = $geocoder . '_geocode';
+
+			try {
+			    $location = (Object) $this->$geocoding_method( $address );
+
+			    /* add location */
+			    add_option($cached_address, $location);
+
+			    /* add option key to locations for clean up purposes */
+			    $locations = get_option('leaflet_geocoded_locations', array());
+			    array_push($locations, $cached_address);
+			    update_option('leaflet_geocoded_locations', $locations);
+			} catch (Exception $e) {
+				// failed
+			    $location = $this->not_found;
+			}
 		}
 
-		$geocoding_method = $geocoder . '_geocode';
-
-		try {
-		    $location = (Object) $this->$geocoding_method( $address );
-
-		    /* add location */
-		    add_option($cached_address, $location);
-
-		    /* add option key to locations for clean up purposes */
-		    $locations = get_option('leaflet_geocoded_locations', array());
-		    array_push($locations, $cached_address);
-		    update_option('leaflet_geocoded_locations', $locations);
-		} catch (Exception $e) {
-		    $location = $this->not_found;
-		}
 		// set variables
 		$this->lat = $location->lat;
 		$this->lng = $location->lng;
+	}
+
+	/**
+	* Removes location caches
+	*/
+	public static function remove_caches () {
+		$addresses = get_option('leaflet_geocoded_locations', array());
+		foreach ($addresses as $address) {
+			delete_option($address);
+		}
+		delete_option('leaflet_geocoded_locations');
 	}
 
 	/**

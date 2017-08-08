@@ -105,17 +105,11 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
             if (empty($lat) && empty($lng)) {
                 /* update lat lng to previous map's center */
         ?>
-                if (is_image && 
-                    !previous_map.is_loaded) {
-                    previous_map_onload = previous_map.onload;
-                    previous_map.onload = function () {
-                        if (typeof(previous_map_onload) === 'function') {
-                            previous_map_onload();
-                        }
-                        marker.setLatLng( previous_map.getCenter() );
-                    };
-                } else {
+                if (!is_image) {
                     marker.setLatLng( previous_map.getCenter() );
+                } else {
+                    console.warn("hello");
+                    marker.setLatLng( [0, 0] );
                 }
         <?php
             }

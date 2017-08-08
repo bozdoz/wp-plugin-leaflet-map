@@ -5,7 +5,7 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.8.1
+    Version: 2.8.2
     License: GPL2
 
     Leaflet Map is free software: you can redistribute it and/or modify
@@ -35,4 +35,3 @@ include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.leaflet-map.php');
 register_uninstall_hook( __FILE__, array('Leaflet_Map', 'uninstall') );
 
 add_action('init', array('Leaflet_Map', 'init'));
-Leaflet_Map::init();

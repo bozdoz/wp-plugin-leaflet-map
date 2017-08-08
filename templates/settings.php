@@ -1,6 +1,7 @@
 <?php
 $title = $plugin_data['Name'];
 $description = $plugin_data['Description'];
+$version = $plugin_data['Version'];
 
 function option_label ($opt) {
     $opt = explode('_', $opt);
@@ -12,7 +13,7 @@ function option_label ($opt) {
 }
 ?>
 <div class="wrap">
-	<h1><?php echo $title; ?></h1>
+	<h1><?php echo $title; ?> <small>version: <?php echo $version; ?></small></h1>
 	<p><?php echo $description; ?></p>
 <?php
 if (isset($_POST['submit'])) {
@@ -39,6 +40,14 @@ if (isset($_POST['submit'])) {
 ?>
 <div class="notice notice-success is-dismissible">
 	<p>Options have been reset to default values!</p>
+</div>
+<?php
+} elseif (isset($_POST['clear-geocoder-cache'])) {
+	include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
+	Leaflet_Geocoder::remove_caches();
+?>
+<div class="notice notice-success is-dismissible">
+	<p>Location caches have been cleared!</p>
 </div>
 <?php
 }
@@ -82,6 +91,11 @@ if (isset($_POST['submit'])) {
 	<div class="submit">
 		<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
 		<input type="submit" name="reset" id="reset" class="button button-secondary" value="Reset to Defaults">
+		<input type="submit" 
+			name="clear-geocoder-cache" 
+			id="clear-geocoder-cache" 
+			class="button button-secondary" 
+			value="Clear Geocoder Cache">
 	</div>
 
 	</form>

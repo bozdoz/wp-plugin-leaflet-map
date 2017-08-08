@@ -21,10 +21,11 @@
 			<hr>
 			<h2>Interactive Shortcodes:</h2>
 			<p class="description">Move the map and the marker to generate shortcodes below:</p>
-			<p><label class="h3" for="map-shortcode">Map Shortcode</label> <input type="text" id="map-shortcode" readonly="readonly" /></p>
-			<p><label class="h3" for="marker-shortcode">Marker Shortcode</label> <input type="text" id="marker-shortcode" readonly="readonly" /></p>
+			<div class="flex"><label class="h3" for="map-shortcode">Map Shortcode</label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
+			<div class="flex"><label class="h3" for="marker-shortcode">Marker Shortcode</label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
 			<hr>
 			<h2>Examples:</h2>
+			<div class="examples">
 			<?php
 			$examples = array(
 				"Standard" => array(
@@ -76,6 +77,10 @@
 				"Add GeoJSON by URL (with popups)" => array(
 					'[leaflet-map doubleClickZoom=true scrollwheel=true]',
 					'[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds=1 popup_property="popup-text"]'
+					),
+				"Test Image Map" => array(
+					'[leaflet-image min_zoom=-2 max_zoom=15 zoom=1 zoomcontrol=1 scrollwheelzoom=1]',
+					'[leaflet-marker]'
 					)
 				);
 
@@ -89,6 +94,7 @@
 				echo '</div>';
 			}
 			?>	
+			</div>
 		</div>
 	</div>
 </div>

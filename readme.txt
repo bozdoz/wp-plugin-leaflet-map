@@ -3,12 +3,12 @@ Author: bozdoz
 Author URI: https://www.twitter.com/bozdoz/
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
 Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
-Donate link: https://www.gittip.com/bozdoz/
+Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.8
-Version: 2.7.8
-Stable tag: 2.7.8
+Tested up to: 4.8.1
+Version: 2.8.2
+Stable tag: 2.8.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,7 +77,7 @@ Yes. Update to the newest plugin version, and reset defaults in settings.  You c
 
 = Can I add geojson? =
 
-Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]` or identify a geojson property with `popup_property`.
+Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]`, or add HTML by adding it to the content of the shortcode: `[leaflet-geojson]<a href="#">Link here</a>[/leaflet-geojson]` or identify a geojson property with `popup_property`, and each shape will use its own popup text if available.
 
 = Can I add kml? =
 
@@ -119,6 +119,19 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.8.2 =
+* Fix to image maps
+* Fixes to geocoder
+* Added multi-line popups to markers and geojson/kml
+
+= 2.8.1 =
+* Code cleanup
+* Added server-side and client-side methods to prevent WordPress from adding paragraph tags within shortcode tags
+
+= 2.8.0 =
+* Added Fit Markers to settings and map shortcode: [leaflet-map fit_markers=1]
+* Moved geojson/kml popup text to the shortcode content instead of a property so that you can use links or other HTML
 
 = 2.7.8 =
 * update default Leaflet version (1.1.0 from 1.0.3)
@@ -232,6 +245,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.8.2 =
+Fixed issues with image maps and geocoder addresses
 
 = 2.7.6 =
 added optional cURL to get geolocations if file_get_contents is not allowed on a server (cURL needs to be enabled, obviously)
