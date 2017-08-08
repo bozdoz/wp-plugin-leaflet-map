@@ -34,6 +34,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
 		wp_enqueue_script( $this->wp_script );
 
         if ($content) {
+            $content = str_replace(array("\r\n", "\n", "\r"), '<br>', $content);
             $content = htmlspecialchars($content);
         }
 

@@ -360,6 +360,7 @@ class Leaflet_Map {
         if (!empty($atts)) extract($atts);
 
         $message = empty($message) ? (empty($content) ? '' : $content) : $message;
+        $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = htmlspecialchars($message);
         $visible = empty($visible) ? false : ($visible == 'true');
 
