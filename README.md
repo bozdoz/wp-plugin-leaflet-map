@@ -4,6 +4,8 @@ Leaflet Map WordPress Plugin
 ![Leaflet](https://img.shields.io/badge/leaflet-1.1.0-green.svg?style=flat)
 ![WordPress](https://img.shields.io/badge/wordpress-4.8.1-green.svg?style=flat)
 
+![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
+
 Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source JavaScript library for mobile-friendly interactive maps. Map tiles are provided by default through [OpenStreetMap](http://www.openstreetmap.org/), or [MapQuest](https://www.mapquest.ca/) (with an app key).  Can be set per map with shortcode attributes or through the dashboard settings.
 
 ![Admin Screenshot](https://imgur.com/W4BGTif.jpg)
@@ -13,7 +15,7 @@ Installation
 
 * (simple) Install via the WordPress plugins page on your WordPress site: `/wp-admin/plugin-install.php` (search Leaflet)
 
-* (needlessly complicated) Copy this repo (or download a release of it) into your WordPress plugins directory: `/wp-content/plugins/`
+* (needlessly complicated) Copy this repo (or download a release of it) into your WordPress plugins directory: `/wp-content/plugins/`. You might also need to name the directory 'leaflet-map', like so: `git clone https://github.com/bozdoz/wp-plugin-leaflet-map.git leaflet-map`
 
 
 Available Shortcodes
@@ -94,4 +96,4 @@ Wish List
 
 * A map editor/shortcode generator (so users can see what they're adding to the page)
 * Make the plugin extendable (add hooks/filters/actions)
-* Separate plugin into separate dependency-oriented classes
+* ~~Separate plugin into separate dependency-oriented classes~~
