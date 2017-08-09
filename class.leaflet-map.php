@@ -12,13 +12,7 @@ class Leaflet_Map {
     * Leaflet version
     * @var string major minor patch version
     */
-    public $leaflet_version = '1.1.0';
-
-    /**
-    * This plugin version
-    * @var string major minor patch version
-    */
-    public $version = '2.8.2';
+    public $leaflet_version = '1.2.0';
 
     /**
     * Number of maps on page; used for unique map ids
@@ -141,6 +135,9 @@ class Leaflet_Map {
 
     public static function uninstall () {            
         // remove settings in db
+        // think it needs to be included again (because __construct 
+        // won't need to execute)
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
         $settings = Leaflet_Map_Plugin_Settings::init();
         $settings->reset();
 

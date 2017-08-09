@@ -21,13 +21,17 @@ abstract class Leaflet_Shortcode {
 	*/
 	abstract protected function getHTML($atts, $content);
 
+	public static function getClass () {
+		return function_exists( 'get_called_class' ) ? get_called_class() : __CLASS__;
+	}
+
 	/**
 	* Instantiate class and get HTML for shortcode
 	* @var array $atts
 	* @var string $content
 	*/
 	public static function shortcode ($atts, $content = null) {
-		$class = function_exists( 'get_called_class' ) ? get_called_class() : __CLASS__;
+		$class = self::getClass();
 		$instance = new $class($atts, $content);
 
 		return $instance->getHTML($atts, $content);

@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Version: 2.8.2
-Stable tag: 2.8.2
+Version: 2.8.3
+Stable tag: 2.8.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,7 +50,7 @@ Or you can add a geojson shape via a url (work in progress): `[leaflet-geojson s
 
 = Image Maps =
 
-Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
+Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image src="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
 Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
 
@@ -89,7 +89,7 @@ Yes: `[leaflet-marker message="Hello there!" visible="true"]`, where visible des
 
 = Can I use your plugin with a picture instead of a map? =
 
-Yes: Use `[leaflet-image source="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up. 
+Yes: Use `[leaflet-image src="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up. 
 
 = Can I use my own self-hosted Leaflet files? =
 
@@ -112,13 +112,17 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 1. Put the shortcode into the post.
 2. See the shortcode play out on the front end.
 3. For `[leaflet-image]` upload an image, and copy the URL from the right-hand side
-4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `source="http://lorempixel.com/1000/1000/"`.
+4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `src="http://lorempixel.com/1000/1000/"`.
 5. See the `[leaflet-image]` on the front end.
 6. If you use `[leaflet-marker draggable=true]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
 7. Add geojson via URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]`
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.8.3 =
+* Fix to [leaflet-kml]
+* Standardized `src` in leaflet-image and leaflet-geojson/kml
 
 = 2.8.2 =
 * Fix to image maps
@@ -245,6 +249,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.8.3 =
+Fixed issues with leaflet-kml
 
 = 2.8.2 =
 Fixed issues with image maps and geocoder addresses

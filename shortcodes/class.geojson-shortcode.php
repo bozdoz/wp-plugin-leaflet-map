@@ -17,29 +17,34 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
 	/**
 	* @var string $wp_script to enqueue
 	*/
-	private $wp_script = 'leaflet_ajax_geojson_js';
+	public static $wp_script = 'leaflet_ajax_geojson_js';
 	/**
 	* @var string $L_method how leaflet renders the src
 	*/
-	private $L_method = 'ajaxGeoJson';
+	public static $L_method = 'ajaxGeoJson';
 	/**
 	* @var string $default_src default src
 	*/
-	private $default_src = 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson';
+	public static $default_src = 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson';
 
 	protected function getHTML ($atts, $content) {
+
+        // need to get the called class to extend above variables
+        $class = self::getClass();
         
         if ($atts) extract($atts);
 
-		wp_enqueue_script( $this->wp_script );
+		wp_enqueue_script( $class::$wp_script );
 
         if ($content) {
             $content = str_replace(array("\r\n", "\n", "\r"), '<br>', $content);
             $content = htmlspecialchars($content);
         }
 
-        /* only required field for geojson */
-        $src = empty($src) ? $this->default_src : $src;
+        /* only required field for geojson; accept either src or source */
+        $source = empty($source) ? '' : $source;
+        $src = empty($src) ? $class::$default_src : $src;
+        $src = empty($source) ? $src : $source;
 
         $style_json = $this->LM->get_style_json( $atts );
 
@@ -70,7 +75,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                         'stroke-opacity' : 'opacity',
                         'stroke-width' : 'width',
                     },
-                    layer = L.<?php echo $this->L_method; ?>(src, {
+                    layer = L.<?php echo $class::$L_method; ?>(src, {
                         style : layerStyle,
                         onEachFeature : onEachFeature
                     }),

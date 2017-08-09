@@ -2,7 +2,7 @@
 /**
 * Image Shortcode
 *
-* Displays map with [leaflet-image source="path/to/image.jpg"] 
+* Displays map with [leaflet-image src="path/to/image.jpg"] 
 *
 * JavaScript equivalent : L.imageOverlay('path/to/image.jpg');
 *
@@ -22,8 +22,10 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode {
 	protected function getHTML ($atts, $content) {
 		extract($this->getAtts($atts));
 
-		/* only required field for image map */
+		/* only required field for image map (src/source) */
+        $src = empty($src) ? '' : $src;
 		$source = empty($source) ? 'https://lorempixel.com/1000/1000/' : $source;
+        $source = empty($src) ? $source : $src;
 
 		ob_start();
         ?>
@@ -38,10 +40,10 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode {
                 img = new Image(),
                 zoom = <?php echo $zoom; ?>;
             img.onload = function() {
-                var h = img.height * 2;
-                var w = img.width * 2;
-                var southWest = map.unproject([-h/2, h/2], zoom);
-                var northEast = map.unproject([w/2, -w/2], zoom);
+                var h = img.height;
+                var w = img.width;
+                var southWest = map.unproject([-h, h], zoom);
+                var northEast = map.unproject([w, -w], zoom);
                 var bounds = new L.LatLngBounds(southWest, northEast);
                 L.imageOverlay( image_src, bounds ).addTo( map );
                 map.setMaxBounds(bounds);
