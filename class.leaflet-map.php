@@ -9,10 +9,17 @@ if ( !defined( 'ABSPATH' ) ) exit;
 class Leaflet_Map {
 
     /**
+    * Version of this plugin
+    * Used for asset file cache-busting
+    * @var string major minor patch version
+    */
+    public static $version = '2.8.4';
+
+    /**
     * Leaflet version
     * @var string major minor patch version
     */
-    public $leaflet_version = '1.2.0';
+    public static $leaflet_version = '1.2.0';
 
     /**
     * Number of maps on page; used for unique map ids
@@ -88,6 +95,8 @@ class Leaflet_Map {
     private function includes() {
         // Leaflet_Map_Plugin_Settings
         include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
+        // Leaflet_Map_Admin
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php');
     }
 
     /**
@@ -97,15 +106,10 @@ class Leaflet_Map {
     */
     private function init_hooks() {
         
-        // get these details above
-        add_action('admin_init', array($this, 'admin_init'));
-        add_action('admin_menu', array($this, 'admin_menu'));
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_and_register'));
-
-        /* add settings to plugin page */
-        add_filter('plugin_action_links_' . plugin_basename(LEAFLET_MAP__PLUGIN_FILE), array($this, 'plugin_action_links'));
+        // init admin
+        Leaflet_Map_Admin::init();
         
-        add_action( 'wp_enqueue_scripts', array($this, 'enqueue_and_register') );
+        add_action( 'wp_enqueue_scripts', array('Leaflet_Map', 'enqueue_and_register') );
 
         /* 
         allows maps on excerpts 
@@ -151,15 +155,15 @@ class Leaflet_Map {
     *
     */
 
-    public function enqueue_and_register () {
+    public static function enqueue_and_register () {
         /* defaults from db */
         $settings = Leaflet_Map_Plugin_Settings::init();
 
         $js_url = $settings->get('js_url');
         $css_url = $settings->get('css_url');
 
-        wp_register_style('leaflet_stylesheet', $css_url, Array(), $this->leaflet_version, false);
-        wp_register_script('leaflet_js', $js_url, Array(), $this->leaflet_version, true);
+        wp_register_style('leaflet_stylesheet', $css_url, Array(), null, false);
+        wp_register_script('leaflet_js', $js_url, Array(), null, true);
 
         // new required MapQuest javascript file
         $tiling_service = $settings->get('default_tiling_service');
@@ -173,75 +177,14 @@ class Leaflet_Map {
         }
         
         // optional ajax geojson plugin
-        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), '1.0', false);
+        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), self::$version, false);
 
-        wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), '1.0', false);
+        wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), self::$version, false);
 
-        wp_register_script('leaflet_ajax_kml_js', plugins_url('scripts/leaflet-ajax-kml.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js', 'leaflet_ajax_geojson_js'), '1.0', false);
+        wp_register_script('leaflet_ajax_kml_js', plugins_url('scripts/leaflet-ajax-kml.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js', 'leaflet_ajax_geojson_js'), self::$version, false);
 
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), '1.0', false);
-    }
-
-    /**
-    * Admin init registers styles
-    *
-    * todo: candidate for separate class
-    *
-    */
-    
-    public function admin_init () {
-        wp_register_style('leaflet_admin_stylesheet', plugins_url('style.css', __FILE__));
-    }
-
-    /**
-    * Main settings page includes form inputs
-    *
-    */
-
-    public function settings_page () {
-        wp_enqueue_style( 'leaflet_admin_stylesheet' );
-
-        $settings = Leaflet_Map_Plugin_Settings::init();
-        $plugin_data = get_plugin_data(LEAFLET_MAP__PLUGIN_FILE);
-        include 'templates/settings.php';
-    }
-
-    /**
-    * Shortcode page shows example shortcodes and an interactive generator
-    *
-    */
-    public function shortcode_page () {
-        wp_enqueue_style( 'leaflet_admin_stylesheet' );
-        wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', __FILE__), Array('leaflet_js'), false);
-
-        include 'templates/shortcode-helper.php';
-    }
-
-    /**
-    * Add admin menu page when user in admin area
-    *
-    */
-
-    public function admin_menu () {
-        if (current_user_can('manage_options')) {
-            $main_link = 'leaflet-map';
-        } else {
-            $main_link = 'leaflet-get-shortcode';
-        }
-
-        add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', $main_link, array($this, "settings_page"), plugins_url('images/leaf.png', __FILE__));
-        add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array($this, "settings_page"));
-        add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-get-shortcode", array($this, "shortcode_page"));
-    }
-
-    /**
-    * Add settings link to the plugin on Installed Plugins page
-    *
-    */
-    public function plugin_action_links ( $links ) {
-        $links[] = '<a href="'. esc_url( get_admin_url(null, 'admin.php?page=leaflet-map') ) .'">Settings</a>';
-        return $links;
+        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), self::$version, false);
     }
 
     /**

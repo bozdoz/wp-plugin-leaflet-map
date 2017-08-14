@@ -33,7 +33,6 @@ abstract class Leaflet_Shortcode {
 	public static function shortcode ($atts, $content = null) {
 		$class = self::getClass();
 		$instance = new $class($atts, $content);
-
 		return $instance->getHTML($atts, $content);
 	}
 

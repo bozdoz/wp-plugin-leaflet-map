@@ -153,8 +153,7 @@ class Leaflet_Map_Plugin_Settings {
 	private function __construct () {
 
         /* update leaflet version from main class */
-        $LM = Leaflet_Map::init();
-        $leaflet_version = $LM->leaflet_version;
+        $leaflet_version = Leaflet_Map::$leaflet_version;
 
         $this->options['js_url']['default'] = sprintf($this->options['js_url']['default'], $leaflet_version);
         $this->options['css_url']['default'] = sprintf($this->options['css_url']['default'], $leaflet_version);

@@ -108,7 +108,6 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
                 if (!is_image) {
                     marker.setLatLng( previous_map.getCenter() );
                 } else {
-                    console.warn("hello");
                     marker.setLatLng( [0, 0] );
                 }
         <?php
