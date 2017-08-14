@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Version: 2.8.4
-Stable tag: 2.8.4
+Version: 2.8.5
+Stable tag: 2.8.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.8.5 =
+* Added missing files from 2.8.4
 
 = 2.8.4 =
 * Fixed issues with css and js CDN; removed version from querystring
@@ -253,6 +256,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.8.5 =
+Fix to missing files in 2.8.4
 
 = 2.8.4 =
 Fixed issues with css and js CDN; removed version from querystring
