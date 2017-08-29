@@ -29,24 +29,40 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
 		$this->map_id = $this->LM->map_count;
 	}
 
-	protected function getAtts ($atts, $content = null) {
-		if ($atts) extract($atts);
+	/**
+	* Merge shortcode options with default options
+	*
+	* @param array|string $atts key value pairs from shortcode 
+	* @param string $content 	inner text in shortcode
+	* @return array 			new atts, which is actually an array
+	*/
+
+	protected function getAtts ($atts = '', $content = null) {
+		$atts = (array) $atts;
+		extract($atts);
 
 		$settings = Leaflet_Map_Plugin_Settings::init();
 
-		$atts['zoom'] = empty($zoom) ? $settings->get('default_zoom') : $zoom;
+		$atts['zoom'] = array_key_exists('zoom', $atts) ? $zoom : $settings->get('default_zoom');
 		$atts['height'] = empty($height) ? $settings->get('default_height') : $height;
 		$atts['width'] = empty($width) ? $settings->get('default_width') : $width;
-		$atts['zoomcontrol'] = empty($zoomcontrol) ? $settings->get('show_zoom_controls') : $zoomcontrol;
-		$atts['min_zoom'] = empty($min_zoom) ? $settings->get('default_min_zoom') : $min_zoom;
+		$atts['zoomcontrol'] = array_key_exists('zoomcontrol', $atts) ? $zoomcontrol : $settings->get('show_zoom_controls');
+		$atts['min_zoom'] = array_key_exists('min_zoom', $atts) ? $min_zoom : $settings->get('default_min_zoom');
 		$atts['max_zoom'] = empty($max_zoom) ? $settings->get('default_max_zoom') : $max_zoom;
-		$atts['scrollwheel'] = empty($scrollwheel) ? $settings->get('scroll_wheel_zoom') : $scrollwheel;
-		$atts['doubleclickzoom'] = empty($doubleclickzoom) ? $settings->get('double_click_zoom') : $doubleclickzoom;
-		$atts['fit_markers'] = empty($fit_markers) ? $settings->get('fit_markers') : $fit_markers;
+		$atts['scrollwheel'] = array_key_exists('scrollwheel', $atts) ? $scrollwheel : $settings->get('scroll_wheel_zoom');
+		$atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? $doubleclickzoom : $settings->get('double_click_zoom');
+		$atts['fit_markers'] = array_key_exists('fit_markers', $atts) ? $fit_markers : $settings->get('fit_markers');
 
 		/* allow percent, but add px for ints */
 		$atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
 		$atts['width'] .= is_numeric($atts['width']) ? 'px' : '';   
+
+		/* 
+		need to allow 0 or empty for removal of attribution 
+		*/
+		if (!array_key_exists('attribution', $atts)) {
+		    $atts['attribution'] = $settings->get('default_attribution');
+		}
 
 		/* allow a bunch of other options */
 		// http://leafletjs.com/reference-1.0.3.html#map-closepopuponclick
@@ -106,14 +122,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
 		*/
 		$lat = empty($lat) ? $settings->get('default_lat') : $lat;
 		$lng = empty($lng) ? $settings->get('default_lng') : $lng;
-
-		/* 
-		need to allow 0 or empty for removal of attribution 
-		*/
-		if (!$atts ||
-		    !array_key_exists('attribution', (array) $atts)) {
-		    $attribution = $settings->get('default_attribution');
-		}
 
 		/*
 		mapquest doesn't need tile urls

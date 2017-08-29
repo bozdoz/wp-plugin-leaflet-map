@@ -36,7 +36,7 @@ class Leaflet_Map_Plugin_Option {
 		}
 
 		$option_filter = array(
-			'default' 	=> 	FILTER_SANITIZE_STRING,
+			'default' 	=> 	null,
 			'type' 		=> 	FILTER_SANITIZE_STRING,
 			'options' 	=> 	array(
 				'filter'	=> FILTER_SANITIZE_STRING,

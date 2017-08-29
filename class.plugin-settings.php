@@ -119,7 +119,7 @@ class Leaflet_Map_Plugin_Settings {
         'css_url' => array(
             'default'=>'https://unpkg.com/leaflet@%s/dist/leaflet.css',
             'type' => 'text',
-            'helptext' => 'Save as above.'
+            'helptext' => 'Same as above.'
         ),
         'default_attribution' => array(
             'default' => "<a href=\"http://leafletjs.com\" title=\"A JS library for interactive maps\">Leaflet</a>; \r\n© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",

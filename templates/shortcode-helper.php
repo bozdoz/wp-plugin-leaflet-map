@@ -79,7 +79,7 @@
 					'[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds=1 popup_property="popup-text"]'
 					),
 				"Test Image Map" => array(
-					'[leaflet-image min_zoom=-2 max_zoom=15 zoom=1 zoomcontrol=1 scrollwheelzoom=1]',
+					'[leaflet-image zoom=1 zoomcontrol=1 scrollwheelzoom=1 attribution=0]',
 					'[leaflet-marker]'
 					)
 				);
