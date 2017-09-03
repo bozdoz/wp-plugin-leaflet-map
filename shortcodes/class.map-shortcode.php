@@ -41,6 +41,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
 		$atts = (array) $atts;
 		extract($atts);
 
+		settype( $atts, 'array' );
+		
 		$settings = Leaflet_Map_Plugin_Settings::init();
 
 		$atts['zoom'] = array_key_exists('zoom', $atts) ? $zoom : $settings->get('default_zoom');
