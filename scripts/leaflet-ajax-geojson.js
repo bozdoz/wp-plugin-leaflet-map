@@ -1,5 +1,7 @@
 L.AjaxGeoJSON = L.GeoJSON.extend({
-    options : {},
+    options : {
+        type: 'json' // 'json|kml|gpx'
+    },
 
     initialize : function (url, options) {
         L.setOptions(this, options);
@@ -9,6 +11,7 @@ L.AjaxGeoJSON = L.GeoJSON.extend({
 
     onAdd : function (map) {
         var _this = this,
+            type = this.options.type,
             xhr;
 
         this.map = map;
@@ -22,7 +25,11 @@ L.AjaxGeoJSON = L.GeoJSON.extend({
                 var data;
                 if (xhr.readyState === xhr.DONE &&
                     xhr.status === 200) {
-                    data = JSON.parse( xhr.responseText );
+                    if (type === 'json') {
+                        data = JSON.parse( xhr.responseText );
+                    } else if (['kml', 'gpx'].indexOf(type) !== -1) {
+                        data = window.toGeoJSON[ type ]( xhr.responseXML );
+                    }
                     _this.json = data;
                     _this.layer.addData( data );
                     _this.fire('ready');

@@ -15,13 +15,9 @@ include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.geojson-shortcode.php')
 
 class Leaflet_Kml_Shortcode extends Leaflet_Geojson_Shortcode {
 	/**
-	* @var string $wp_script to enqueue
+	* @var string $type how leaflet renders the src
 	*/
-	public static $wp_script = 'leaflet_ajax_kml_js';
-	/**
-	* @var string $L_method how leaflet renders the src
-	*/
-	public static $L_method = 'ajaxKML';
+	public static $type = 'kml';
 	/**
 	* @var string $default_src default src
 	*/

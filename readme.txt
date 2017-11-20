@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.8.1
-Version: 2.8.6
-Stable tag: 2.8.6
+Tested up to: 4.9
+Version: 2.9
+Stable tag: 2.9
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,9 +79,9 @@ Yes. Update to the newest plugin version, and reset defaults in settings.  You c
 
 Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]`, or add HTML by adding it to the content of the shortcode: `[leaflet-geojson]<a href="#">Link here</a>[/leaflet-geojson]` or identify a geojson property with `popup_property`, and each shape will use its own popup text if available.
 
-= Can I add kml? =
+= Can I add kml/gpx? =
 
-Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet-kml]` shortcode.
+Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet-kml]` or `[leaflet-gpx]` shortcode.
 
 = Can I add a message to a marker? =
 
@@ -119,6 +119,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.8.6 =
+* Added [leaflet-gpx] for GPX format
 
 = 2.8.6 =
 * Fix image shortcode ratio
@@ -259,6 +262,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.8.6 =
+Added [leaflet-gpx] for GPX format
 
 = 2.8.6 =
 Fix image shortcode ratio

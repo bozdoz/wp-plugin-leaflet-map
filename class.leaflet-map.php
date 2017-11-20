@@ -44,6 +44,10 @@ class Leaflet_Map {
             'file' => 'class.kml-shortcode.php',
             'class' => 'Leaflet_Kml_Shortcode'
         ),
+        'leaflet-gpx' => array(
+            'file' => 'class.gpx-shortcode.php',
+            'class' => 'Leaflet_Gpx_Shortcode'
+        ),
         'leaflet-line' => array(
             'file' => 'class.line-shortcode.php',
             'class' => 'Leaflet_Line_Shortcode'
@@ -177,12 +181,10 @@ class Leaflet_Map {
         }
         
         // optional ajax geojson plugin
-        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('leaflet_js',), self::$version, false);
-
         wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), self::$version, false);
 
-        wp_register_script('leaflet_ajax_kml_js', plugins_url('scripts/leaflet-ajax-kml.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js', 'leaflet_ajax_geojson_js'), self::$version, false);
-
+        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), self::$version, false);
+        
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
         wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), self::$version, false);
     }
