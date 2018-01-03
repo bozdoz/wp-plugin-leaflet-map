@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
 
 class Leaflet_Line_Shortcode extends Leaflet_Shortcode {
-	protected function getHTML ($atts, $content) {
+	protected function getHTML ($atts='', $content=null) {
         if (!empty($atts)) extract($atts);
         
         $style_json = $this->LM->get_style_json( $atts );

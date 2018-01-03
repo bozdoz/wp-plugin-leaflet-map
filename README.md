@@ -96,4 +96,3 @@ Wish List
 
 * A map editor/shortcode generator (so users can see what they're adding to the page)
 * Make the plugin extendable (add hooks/filters/actions)
-* ~~Separate plugin into separate dependency-oriented classes~~

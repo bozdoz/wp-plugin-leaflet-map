@@ -1,0 +1,23 @@
+{
+  "name": "leaflet-map",
+  "version": "1.0.0",
+  "description": "Leaflet Map WordPress Plugin",
+  "main": "index.js",
+  "scripts": {
+    "minify": "for file in scripts/*.js; do minify $file > ./scripts/$(basename $file .js).min.js; done",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bozdoz/wp-plugin-leaflet-map.git"
+  },
+  "author": "Benjamin J DeLong <howaboutben@gmail.com> (https://bozdoz.com)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/bozdoz/wp-plugin-leaflet-map/issues"
+  },
+  "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
+  "devDependencies": {
+    "minify": "^3.0.2"
+  }
+}

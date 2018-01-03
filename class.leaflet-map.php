@@ -13,7 +13,7 @@ class Leaflet_Map {
     * Used for asset file cache-busting
     * @var string major minor patch version
     */
-    public static $version = '2.8.4';
+    public static $version = '2.9.1';
 
     /**
     * Leaflet version
@@ -183,10 +183,10 @@ class Leaflet_Map {
         // optional ajax geojson plugin
         wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), self::$version, false);
 
-        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), self::$version, false);
+        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.min.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), self::$version, false);
         
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.js', __FILE__), Array(), self::$version, false);
+        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.min.js', __FILE__), Array(), self::$version, false);
     }
 
     /**

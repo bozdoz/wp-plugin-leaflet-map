@@ -80,7 +80,7 @@ class Leaflet_Map_Admin {
     */
     public function shortcode_page () {
         wp_enqueue_style( 'leaflet_admin_stylesheet' );
-        wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.js', LEAFLET_MAP__PLUGIN_FILE), Array('leaflet_js'), false);
+        wp_enqueue_script('custom_plugin_js', plugins_url('scripts/get-shortcode.min.js', LEAFLET_MAP__PLUGIN_FILE), Array('leaflet_js'), false);
 
         include 'templates/shortcode-helper.php';
     }

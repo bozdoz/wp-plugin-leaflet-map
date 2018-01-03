@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
 Tested up to: 4.9
-Version: 2.9
-Stable tag: 2.9
+Version: 2.9.1
+Stable tag: 2.9.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.9.1 =
+* Fixes for PHP 7.2: made all method arguments identical 
+* Added minified JavaScript files for site speed
 
 = 2.8.6 =
 * Added [leaflet-gpx] for GPX format
@@ -262,6 +266,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.9.1 =
+Fix for PHP7.2; added minified JavaScript files
 
 = 2.8.6 =
 Added [leaflet-gpx] for GPX format

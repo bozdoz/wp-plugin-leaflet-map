@@ -24,7 +24,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
     */
     public static $type = 'json';
 
-	protected function getHTML ($atts, $content) {
+	protected function getHTML ($atts='', $content=null) {
 
         // need to get the called class to extend above variables
         $class = self::getClass();

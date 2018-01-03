@@ -19,7 +19,7 @@ abstract class Leaflet_Shortcode {
 	* @var string $content
 	* @return HTML
 	*/
-	abstract protected function getHTML($atts, $content);
+	abstract protected function getHTML($atts='', $content=null);
 
 	public static function getClass () {
 		return function_exists( 'get_called_class' ) ? get_called_class() : __CLASS__;
