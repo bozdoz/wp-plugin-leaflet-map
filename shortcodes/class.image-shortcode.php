@@ -19,7 +19,7 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode {
     * @param array $atts
     * @return string $content produced by adding atts to JavaScript
     */
-	protected function getHTML ($atts, $content) {
+	protected function getHTML ($atts, $content = null) {
 		extract($this->getAtts($atts));
 
 		/* only required field for image map (src/source) */
