@@ -2,7 +2,7 @@
 Author: bozdoz
 Author URI: https://www.twitter.com/bozdoz/
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu
+Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
@@ -77,7 +77,7 @@ Yes. Update to the newest plugin version, and reset defaults in settings.  You c
 
 = Can I add geojson? =
 
-Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]`, or add HTML by adding it to the content of the shortcode: `[leaflet-geojson]<a href="#">Link here</a>[/leaflet-geojson]` or identify a geojson property with `popup_property`, and each shape will use its own popup text if available.
+Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]`, or add HTML by adding it to the content of the shortcode: `[leaflet-geojson]<a href="#">Link here, or use text from a feature property, like {title}</a>[/leaflet-geojson]` or identify a geojson property with `popup_property`, and each shape will use its own popup text if available.
 
 = Can I add kml/gpx? =
 
@@ -119,6 +119,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.10.0 =
+* Added functions for translating text
+* Added string interpolation for GeoJSON popups to use feature properties (thanks to [@geraldo](https://github.com/geraldo))
 
 = 2.9.1 =
 * Fixes for PHP 7.2: made all method arguments identical 
