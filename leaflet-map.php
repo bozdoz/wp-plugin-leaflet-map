@@ -5,7 +5,9 @@
     Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
     Author: bozdoz
     Author URI: https://twitter.com/bozdoz/
-    Version: 2.9.1
+    Text Domain: leaflet-map
+    Domain Path: /languages/
+    Version: 2.10.0
     License: GPL2
 
     Leaflet Map is free software: you can redistribute it and/or modify

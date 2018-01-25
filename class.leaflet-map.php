@@ -13,13 +13,13 @@ class Leaflet_Map {
     * Used for asset file cache-busting
     * @var string major minor patch version
     */
-    public static $version = '2.9.1';
+    public static $version = '2.10.0';
 
     /**
     * Leaflet version
     * @var string major minor patch version
     */
-    public static $leaflet_version = '1.2.0';
+    public static $leaflet_version = '1.3.1';
 
     /**
     * Number of maps on page; used for unique map ids
@@ -83,7 +83,6 @@ class Leaflet_Map {
      * Leaflet_Map Constructor
      */
     private function __construct() {
-        $this->includes();
         $this->init_hooks();
         $this->add_shortcodes();
 
@@ -93,25 +92,17 @@ class Leaflet_Map {
 
     /**
     *
-    * include classes
-    *
-    */
-    private function includes() {
-        // Leaflet_Map_Plugin_Settings
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
-        // Leaflet_Map_Admin
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php');
-    }
-
-    /**
-    *
     * add actions and filters
     *
     */
     private function init_hooks() {
+        // Leaflet_Map_Admin
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php');
         
         // init admin
         Leaflet_Map_Admin::init();
+
+        add_action( 'plugins_loaded', array('Leaflet_Map', 'load_text_domain' ));
         
         add_action( 'wp_enqueue_scripts', array('Leaflet_Map', 'enqueue_and_register') );
 
@@ -155,12 +146,22 @@ class Leaflet_Map {
     }
 
     /**
+    * Loads Translations
+    *
+    */
+    public static function load_text_domain() {
+        load_plugin_textdomain( 'leaflet-map', false, dirname( plugin_basename( LEAFLET_MAP__PLUGIN_FILE ) ) . '/languages/' );
+    }
+
+    /**
     * Enqueue and register styles and scripts (called in __construct)
     *
     */
 
     public static function enqueue_and_register () {
         /* defaults from db */
+        // Leaflet_Map_Plugin_Settings
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
         $settings = Leaflet_Map_Plugin_Settings::init();
 
         $js_url = $settings->get('js_url');

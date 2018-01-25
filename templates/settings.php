@@ -1,16 +1,7 @@
 <?php
 $title = $plugin_data['Name'];
-$description = $plugin_data['Description'];
+$description = __('A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.', 'leaflet-map');
 $version = $plugin_data['Version'];
-
-function option_label ($opt) {
-    $opt = explode('_', $opt);
-    
-    foreach($opt as &$v) {
-        $v = ucfirst($v);
-    }
-    echo implode(' ', $opt);
-}
 ?>
 <div class="wrap">
 	<h1><?php echo $title; ?> <small>version: <?php echo $version; ?></small></h1>
@@ -32,14 +23,14 @@ if (isset($_POST['submit'])) {
 	}
 ?>
 <div class="notice notice-success is-dismissible">
-	<p>Options Updated!</p>
+	<p><?php _e('Options Updated!', 'leaflet-map'); ?></p>
 </div>
 <?php
 } elseif (isset($_POST['reset'])) {
 	$settings->reset();
 ?>
 <div class="notice notice-success is-dismissible">
-	<p>Options have been reset to default values!</p>
+	<p><?php _e('Options have been reset to default values!', 'leaflet-map'); ?></p>
 </div>
 <?php
 } elseif (isset($_POST['clear-geocoder-cache'])) {
@@ -47,7 +38,7 @@ if (isset($_POST['submit'])) {
 	Leaflet_Geocoder::remove_caches();
 ?>
 <div class="notice notice-success is-dismissible">
-	<p>Location caches have been cleared!</p>
+	<p><?php _e('Location caches have been cleared!', 'leaflet-map'); ?></p>
 </div>
 <?php
 }
@@ -56,7 +47,7 @@ if (isset($_POST['submit'])) {
 	<div class="wrap">
 	<form method="post">
 		<div class="container">
-			<h2>Settings</h2>
+			<h2><?php _e('Settings', 'leaflet-map'); ?></h2>
 			<hr>
 		</div>
 	<?php
@@ -65,7 +56,7 @@ if (isset($_POST['submit'])) {
 	?>
 	<div class="container">
 		<label>
-			<span class="label"><?php option_label($name); ?></span>
+			<span class="label"><?php echo $option->display_name; ?></span>
 			<span class="input-group">
 			<?php
 			$option->widget($name, $settings->get($name));
@@ -77,9 +68,7 @@ if (isset($_POST['submit'])) {
 		if ($option->helptext) {
 		?>
 		<div class="helptext">
-			<p class="description"><?php 
-				echo $option->helptext; 
-			?></p>
+			<p class="description"><?php echo $option->helptext; ?></p>
 		</div>
 		<?php
 		}
@@ -89,13 +78,21 @@ if (isset($_POST['submit'])) {
 	}
 	?>
 	<div class="submit">
-		<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
-		<input type="submit" name="reset" id="reset" class="button button-secondary" value="Reset to Defaults">
+		<input type="submit" 
+			name="submit" 
+			id="submit" 
+			class="button button-primary" 
+			value="<?php _e('Save Changes', 'leaflet-map'); ?>">
+		<input type="submit" 
+			name="reset" 
+			id="reset" 
+			class="button button-secondary" 
+			value="<?php _e('Reset to Defaults', 'leaflet-map'); ?>">
 		<input type="submit" 
 			name="clear-geocoder-cache" 
 			id="clear-geocoder-cache" 
 			class="button button-secondary" 
-			value="Clear Geocoder Cache">
+			value="<?php _e('Clear Geocoder Cache', 'leaflet-map'); ?>">
 	</div>
 
 	</form>

@@ -27,116 +27,12 @@ class Leaflet_Map_Plugin_Settings {
     private static $instance = null;
 
 	/**
-	* Default values and admin form information
+    * Default values and admin form information
+	* Needs to be created within __construct
+    * in order to use a function such as __()
 	* @var array $options
 	*/
-	public $options = array(
-        'default_lat' => array(
-            'default'=>'44.67',
-            'type' => 'text',
-            'helptext' => 'Default latitude for maps or adjust for each map like so: <br /> <code>[leaflet-map lng="44.67"]</code>'
-        ),
-        'default_lng' => array(
-            'default'=>'-63.61',
-            'type' => 'text',
-            'helptext' => 'Default longitude for maps or adjust for each map like so: <br /> <code>[leaflet-map lng="-63.61"]</code>'
-        ),
-        'default_zoom' => array(
-            'default'=>'12',
-            'type' => 'text',
-            'helptext' => 'Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map zoom="5"]</code>'
-        ),
-        'default_height' => array(
-            'default'=>'250',
-            'type' => 'text',
-            'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map height="250"]</code>'
-        ),
-        'default_width' => array(
-            'default'=>'100%',
-            'type' => 'text',
-            'helptext' => 'Can set per map in shortcode or adjust for all maps here. Values can include "px" but it is not necessary.  Can also be %; e.g. <br/> <code>[leaflet-map width="100%"]</code>'
-        ),
-        'fit_markers' => array(
-            'default' => '0',
-            'type' => 'checkbox',
-            'helptext' => 'If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map.  You can also change this per map in the shortcode: e.g. <br /> <code>[leaflet-map fit_markers="1"]</code>'
-        ),
-        'show_zoom_controls' => array(
-            'default' => '0',
-            'type' => 'checkbox',
-            'helptext' => 'The zoom buttons can be large and annoying.  Enabled or disable per map in shortcode: <br/> <code>[leaflet-map zoomcontrol="0"]</code>'
-        ),
-        'scroll_wheel_zoom' => array(
-            'default' => '0',
-            'type' => 'checkbox',
-            'helptext' => 'Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map scrollwheel="0"]</code>'
-        ),
-        'double_click_zoom' => array(
-            'default' => '0',
-            'type' => 'checkbox',
-            'helptext' => 'If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.  Enable or disable per map in shortcode: <br/> <code>[leaflet-map doubleClickZoom=false]</code>'
-        ),
-        'default_min_zoom' => array(
-            'default' => '0',
-            'type' => 'text',
-            'helptext' => 'Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map min_zoom="1"]</code>'
-        ),
-        'default_max_zoom' => array(
-            'default' => '20',
-            'type' => 'text',
-            'helptext' => 'Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here; e.g. <br /> <code>[leaflet-map max_zoom="10"]</code>'
-        ),
-        'default_tiling_service' => array(
-            'default' => 'other',
-            'type' => 'select',
-            'options' => array(
-                'other' => 'I will provide my own map tile URL',
-                'mapquest' => 'MapQuest (I have an app key)',
-            ),
-            'helptext' => 'Choose a tiling service or provide your own.'
-        ),
-        'mapquest_appkey' => array(
-            'default' => 'supply-an-app-key-if-you-choose-mapquest',
-            'type' => 'text',
-            'noreset' => true,
-            'helptext' => 'If you choose MapQuest, you must provide an app key. <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank">Sign up</a>, then <a href="https://developer.mapquest.com/user/me/apps" target="_blank">Create a new app</a> then supply the "Consumer Key" here.'
-        ),
-        'map_tile_url' => array(
-            'default'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            'type' => 'text',
-            'helptext' => 'See more tile servers here: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">here</a>.  Please note(!): free tiles from MapQuest have been discontinued without use of an app key (free accounts available) (see <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank">blog post</a>). Can be set per map with the shortcode <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>'
-        ),
-        'map_tile_url_subdomains' => array(
-            'default'=>'abc',
-            'type' => 'text',
-            'helptext' => 'Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4; can be set per map with the shortcode <br/> <code>[leaflet-map subdomains="1234"]</code>',
-        ),
-        'js_url' => array(
-            'default'=>'https://unpkg.com/leaflet@%s/dist/leaflet.js',
-            'type' => 'text',
-            'helptext' => 'If you host your own Leaflet files, specify the URL here.'
-        ),
-        'css_url' => array(
-            'default'=>'https://unpkg.com/leaflet@%s/dist/leaflet.css',
-            'type' => 'text',
-            'helptext' => 'Same as above.'
-        ),
-        'default_attribution' => array(
-            'default' => "<a href=\"http://leafletjs.com\" title=\"A JS library for interactive maps\">Leaflet</a>; \r\n© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
-            'type' => 'textarea',
-            'helptext' => 'Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.'
-        ),
-        'geocoder' => array(
-            'default' => 'google',
-            'type' => 'select',
-            'options' => array(
-                'google' => 'Google Maps',
-                'osm' => 'OpenStreetMap Nominatim',
-                'dawa' => 'Danmarks Adressers'
-            ),
-            'helptext' => 'Select the Geocoding provider to use to retrieve addresses defined in shortcode.'
-        )
-    );
+	public $options = array();
 
 	/**
 	 * Singleton
@@ -155,10 +51,191 @@ class Leaflet_Map_Plugin_Settings {
         /* update leaflet version from main class */
         $leaflet_version = Leaflet_Map::$leaflet_version;
 
-        $this->options['js_url']['default'] = sprintf($this->options['js_url']['default'], $leaflet_version);
-        $this->options['css_url']['default'] = sprintf($this->options['css_url']['default'], $leaflet_version);
+        $foreachmap = __('You can also change this for each map');
 
-		foreach ($this->options as $name => $details) {
+        /* 
+        * initiate options using internationalization! 
+        */
+        $this->options = array(
+            'default_lat' => array(
+                'display_name'=>__('Default Latitude', 'leaflet-map'),
+                'default'=>'44.67',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map lat="44.67"]</code>', 
+                    __('Default latitude for maps.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_lng' => array(
+                'display_name'=>__('Default Longitude', 'leaflet-map'),
+                'default'=>'-63.61',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map lng="-63.61"]</code>', 
+                    __('Default longitude for maps.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_zoom' => array(
+                'display_name'=>__('Default Zoom', 'leaflet-map'),
+                'default'=>'12',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map zoom="5"]</code>', 
+                    __('Default zoom for maps.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_height' => array(
+                'display_name'=>__('Default Height', 'leaflet-map'),
+                'default'=>'250',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map height="250"]</code>', 
+                    __('Default height for maps. Values can include "px" but it is not necessary. Can also be "%". ', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_width' => array(
+                'display_name'=>__('Default Width', 'leaflet-map'),
+                'default'=>'100%',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map width="100%"]</code>', 
+                    __('Default width for maps. Values can include "px" but it is not necessary.  Can also be "%".', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'fit_markers' => array(
+                'display_name'=>__('Fit Markers', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map fit_markers="1"]</code>', 
+                    __('If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'show_zoom_controls' => array(
+                'display_name'=>__('Show Zoom Controls', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map zoomcontrol="0"]</code>', 
+                    __('The zoom buttons can be large and annoying.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'scroll_wheel_zoom' => array(
+                'display_name'=>__('Scroll Wheel Zoom', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map scrollwheel="0"]</code>', 
+                    __('Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'double_click_zoom' => array(
+                'display_name'=>__('Double Click Zoom', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map doubleClickZoom=false]</code>', 
+                    __('If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_min_zoom' => array(
+                'display_name'=>__('Default Min Zoom', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map min_zoom="1"]</code>', 
+                    __('Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'default_max_zoom' => array(
+                'display_name'=>__('Default Max Zoom', 'leaflet-map'),
+                'default' => '20',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2%s <br /> <code>%3$s</code>', 
+                    __('Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here', 'leaflet-map'),
+                    $foreachmap,
+                    '[leaflet-map max_zoom="10"]'
+                )
+            ),
+            'default_tiling_service' => array(
+                'display_name'=>__('Default Tiling Service', 'leaflet-map'),
+                'default' => 'other',
+                'type' => 'select',
+                'options' => array(
+                    'other' => __('I will provide my own map tile URL', 'leaflet-map'),
+                    'mapquest' => __('MapQuest (I have an app key)', 'leaflet-map'),
+                ),
+                'helptext' => __('Choose a tiling service or provide your own.', 'leaflet-map')
+            ),
+            'mapquest_appkey' => array(
+                'display_name'=>__('MapQuest App Key', 'leaflet-map'),
+                'default' => __('Supply an app key if you choose MapQuest', 'leaflet-map'),
+                'type' => 'text',
+                'noreset' => true,
+                'helptext' => sprintf('%1$s <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank"> %2$s </a>, %3$s <a href="https://developer.mapquest.com/user/me/apps" target="_blank"> %4$s </a> %5$s',
+                    __('If you choose MapQuest, you must provide an app key.', 'leaflet-map'),
+                    __('Sign up', 'leaflet-map'),
+                    __('then', 'leaflet-map'),
+                    __('Create a new app', 'leaflet-map'),
+                    __('then supply the "Consumer Key" here.', 'leaflet-map')
+                )
+            ),
+            'map_tile_url' => array(
+                'display_name'=>__('Map Tile URL', 'leaflet-map'),
+                'default'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank"> %2$s </a>. %3$s: <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank"> %4$s </a>. %5$s <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>',
+                    __('See more tile servers', 'leaflet-map'),
+                    __('here', 'leaflet-map'),
+                    __('Please note: free tiles from MapQuest have been discontinued without use of an app key', 'leaflet-map'),
+                    __('blog post', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'map_tile_url_subdomains' => array(
+                'display_name'=>__('Map Tile URL Subdomains', 'leaflet-map'),
+                'default'=>'abc',
+                'type' => 'text',
+                'helptext' => sprintf('%1$s %2$s <br/> <code>[leaflet-map subdomains="1234"]</code>',
+                    __('Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'js_url' => array(
+                'display_name'=>__('JavaScript URL', 'leaflet-map'),
+                'default' => sprintf('https://unpkg.com/leaflet@%s/dist/leaflet.js', $leaflet_version),
+                'type' => 'text',
+                'helptext' => __('If you host your own Leaflet files, then paste the URL here.', 'leaflet-map')
+            ),
+            'css_url' => array(
+                'display_name'=>__('CSS URL', 'leaflet-map'),
+                'default' => sprintf('https://unpkg.com/leaflet@%s/dist/leaflet.css', $leaflet_version),
+                'type' => 'text',
+                'helptext' => __('Same as above.', 'leaflet-map')
+            ),
+            'default_attribution' => array(
+                'display_name'=>__('Default Attribution', 'leaflet-map'),
+                'default' => sprintf('<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; \r\n© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
+                        __("A JS library for interactive maps", 'leaflet-map'),
+                        __("contributors", 'leaflet-map')
+                    ),
+                'type' => 'textarea',
+                'helptext' => __('Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.', 'leaflet-map')
+            ),
+            'geocoder' => array(
+                'display_name'=>__('Geocoder', 'leaflet-map'),
+                'default' => 'google',
+                'type' => 'select',
+                'options' => array(
+                    'google' => __('Google Maps', 'leaflet-map'),
+                    'osm' => __('OpenStreetMap Nominatim', 'leaflet-map'),
+                    'dawa' => __('Denmark Addresses', 'leaflet-map')
+                ),
+                'helptext' => __('Select the Geocoding provider to use to retrieve addresses defined in shortcode.', 'leaflet-map')
+            )
+        );
+
+        foreach ($this->options as $name => $details) {
 			$this->options[ $name ] = new Leaflet_Map_Plugin_Option( $details );
 		}
 	}

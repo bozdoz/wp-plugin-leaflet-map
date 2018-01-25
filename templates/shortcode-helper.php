@@ -14,71 +14,75 @@
 	<h2>Shortcode Helper</h2>
 	<div class="wrap">
 		<?php
+		$drag = __('Drag Me', 'leaflet-map');
+
 		echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 doubleClickZoom=1 height=300 scrollwheel=1]');
-		echo do_shortcode('[leaflet-marker draggable=1 message="Drag me!" visible="true"]');
+		echo do_shortcode(sprintf('[leaflet-marker draggable=1 visible="true"] %s [/leaflet-marker]',
+			$drag
+		));
 		?>
 		<div class="wrap">
 			<hr>
-			<h2>Interactive Shortcodes:</h2>
-			<p class="description">Move the map and the marker to generate shortcodes below:</p>
-			<div class="flex"><label class="h3" for="map-shortcode">Map Shortcode</label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
-			<div class="flex"><label class="h3" for="marker-shortcode">Marker Shortcode</label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
+			<h2><?php _e('Interactive Shortcodes:', 'leaflet-map'); ?></h2>
+			<p class="description"><?php _e('Move the map and the marker to generate shortcodes below:', 'leaflet-map'); ?></p>
+			<div class="flex"><label class="h3" for="map-shortcode"><?php _e('Map Shortcode', 'leaflet-map'); ?></label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
+			<div class="flex"><label class="h3" for="marker-shortcode"><?php _e('Marker Shortcode', 'leaflet-map'); ?></label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
 			<hr>
-			<h2>Examples:</h2>
+			<h2><?php _e('Examples', 'leaflet-map'); ?>:</h2>
 			<div class="examples">
 			<?php
 			$examples = array(
-				"Standard" => array(
+				__("Standard", 'leaflet-map') => array(
 					'[leaflet-map zoom=12 lat=51.05 lng=-114.06]',
 					),
-				"Many Markers!" => array(
+				__("Many Markers!", 'leaflet-map') => array(
 					'[leaflet-map zoom=10 lat=43.65 lng=-79.385]',
 					'[leaflet-marker]',
 					'[leaflet-marker lat=43.68 lng=-79.275]',
 					'[leaflet-marker lat=43.67 lng=-79.4]',
 					),
-				"Draggable Marker" => array(
+				__("Draggable Marker", 'leaflet-map') => array(
 					'[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel=1]',
 					'[leaflet-marker draggable=1]',
 					),
-				"Marker Icon" => array(
+				__("Marker Icon", 'leaflet-map') => array(
 					'[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel=1]',
 					'[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
 					),
-				"Zoom Buttons" => array(
+				__("Zoom Buttons", 'leaflet-map') => array(
 					'[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
 					),
-				"Alternate Map Tiles w/scrollwheel" => array(
+				__("Alternate Map Tiles w/scrollwheel", 'leaflet-map') => array(
 					'[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=abcd attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
 					),
-				"Marker Popup Messages (on click)" => array(
+				__("Marker Popup Messages (on click)", 'leaflet-map') => array(
 					'[leaflet-map lat=59.913 lng=10.739 zoom=12]',
 					'[leaflet-marker]OSLO![/leaflet-marker]',
 					),
-				"Links In Marker Messages (visible)" => array(
+				__("Links In Marker Messages (visible)", 'leaflet-map') => array(
 					'[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
 					'[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
 					),
-				"Basic Lines w/Scrollwheel" => array(
+				__("Basic Lines w/Scrollwheel", 'leaflet-map') => array(
 					'[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
 					'[leaflet-line latlngs="41, 29; 44, 18;"]'
 					),
-				"Fitted Colored Line on Addresses" => array(
+				__("Fitted Colored Line on Addresses", 'leaflet-map') => array(
 					'[leaflet-map]',
 					'[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline=1]'
 					),
-				"More Crazy Line Attributes" => array(
+				__("More Crazy Line Attributes", 'leaflet-map') => array(
 					'[leaflet-map]',
-					'[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants fitbounds=1]CSS makes me march![/leaflet-line]'
+					'[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants fitbounds=1]'
 					),
-				"Disable all Interaction" => array(
+				__("Disable all Interaction", 'leaflet-map') => array(
 					'[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0 attribution=0]',
 					),
-				"Add GeoJSON by URL (with popups)" => array(
+				__("Add GeoJSON by URL (with popups)", 'leaflet-map') => array(
 					'[leaflet-map doubleClickZoom=true scrollwheel=true]',
 					'[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds=1 popup_property="popup-text"]'
 					),
-				"Test Image Map" => array(
+				__("Test Image Map", 'leaflet-map') => array(
 					'[leaflet-image zoom=1 zoomcontrol=1 scrollwheelzoom=1 attribution=0]',
 					'[leaflet-marker]'
 					)
