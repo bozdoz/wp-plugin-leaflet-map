@@ -9,13 +9,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 class Leaflet_Map {
 
     /**
-    * Version of this plugin
-    * Used for asset file cache-busting
-    * @var string major minor patch version
-    */
-    public static $version = '2.10.0';
-
-    /**
     * Leaflet version
     * @var string major minor patch version
     */
@@ -186,12 +179,12 @@ class Leaflet_Map {
         }
         
         // optional ajax geojson plugin
-        wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), self::$version, false);
+        wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
-        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.min.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), self::$version, false);
+        wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.min.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
         
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.min.js', __FILE__), Array(), self::$version, false);
+        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.min.js', __FILE__), Array(), LEAFLET_MAP__PLUGIN_VERSION, false);
     }
 
     /**
