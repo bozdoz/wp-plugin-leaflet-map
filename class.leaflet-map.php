@@ -96,6 +96,10 @@ class Leaflet_Map {
     *
     */
     private function init_hooks() {
+
+        // Leaflet_Map_Plugin_Settings
+        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
+
         // Leaflet_Map_Admin
         include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php');
         
