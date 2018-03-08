@@ -122,14 +122,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     }
                     if (iconUrl) {
                         // create the legend entities for the feature names, assumes the filename pattern is *-[iconColor].*
-                        legendVals[featureName] = iconUrl.slice(iconUrl.lastIndexOf("-")+1, iconUrl.lastIndexOf("."));
+                        legendVals[featureName] = iconUrl.slice(iconUrl.lastIndexOf("-") + 1, iconUrl.lastIndexOf("."));
                     }
                 }
                 layer.on('ready', function () {
                     if('<?php echo $legend; ?>' && JSON.stringify(legendVals) !== JSON.stringify({})) {
                         // add a legend for the icons
                         var legend = L.control({position: 'bottomright'});
-                        legend.onAdd = function (previous_map) {
+                        legend.onAdd = function (previousMap) {
                             var div = L.DomUtil.create('div', 'info legend');
 
                             // loop through our legend items and generate a label with a colored square for each distinct feature name
