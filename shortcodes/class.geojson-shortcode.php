@@ -81,7 +81,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                         pointToLayer: function(feature, latlng) {
                             return feature.properties.iconUrl ? new L.Marker(latlng, {icon: L.icon({
                                 iconUrl: feature.properties.iconUrl,
-                                iconSize: [40, 40], // size of the icon
+                                iconSize: feature.properties.iconSize ? feature.properties.iconSize : [25, 41], // size of the icon
                             })}) : new L.Marker(latlng);
                         }
                     }),
@@ -115,26 +115,28 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {},
                         text = popup_property && props[ popup_property ] || template(popup_text, feature.properties),
-                        species = feature.properties.name,
+                        featureName = feature.properties.name,
                         iconUrl = feature.properties.iconUrl;
                     if (text) {
                         layer.bindPopup( text );
                     }
-                    // create the legend entities for the species names, assumes the filename pattern is *-[iconColor].png
-                    legendVals[species] = iconUrl.slice(iconUrl.lastIndexOf("-")+1, iconUrl.length-4);
+                    if (iconUrl) {
+                        // create the legend entities for the feature names, assumes the filename pattern is *-[iconColor].*
+                        legendVals[featureName] = iconUrl.slice(iconUrl.lastIndexOf("-")+1, iconUrl.lastIndexOf("."));
+                    }
                 }
                 layer.on('ready', function () {
-                    if('<?php echo $legend; ?>') {
+                    if('<?php echo $legend; ?>' && JSON.stringify(legendVals) !== JSON.stringify({})) {
                         // add a legend for the icons
                         var legend = L.control({position: 'bottomright'});
                         legend.onAdd = function (previous_map) {
                             var div = L.DomUtil.create('div', 'info legend');
 
-                           // loop through our legend items and generate a label with a colored square for each species
-                           for (var key in legendVals) {
-                               div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
-                           }
-                           return div;
+                            // loop through our legend items and generate a label with a colored square for each distinct feature name
+                            for (var key in legendVals) {
+                                div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
+                            }
+                            return div;
                        };
                        legend.addTo(previous_map);
                     }
