@@ -62,6 +62,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
         ?>
         <script>
             WPLeafletMapPlugin.add(function () {
+                var legendVals = new Object();
                 var previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     src = '<?php echo $src; ?>',
                     default_style = <?php echo $style_json; ?>,
@@ -75,7 +76,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     layer = L.ajaxGeoJson(src, {
                         type: '<?php echo $class::$type; ?>',
                         style : layerStyle,
-                        onEachFeature : onEachFeature
+                        onEachFeature : onEachFeature,
+                        /* function to add custom icons when defined in feature.properties */
+                        pointToLayer: function(feature, latlng) {
+                            return feature.properties.iconUrl ? new L.Marker(latlng, {icon: L.icon({
+                                iconUrl: feature.properties.iconUrl,
+                                iconSize: [40, 40], // size of the icon
+                            })}) : new L.Marker(latlng);
+                        }
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
                     popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
@@ -106,21 +114,31 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                 }      
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {},
-                        text = popup_property && props[ popup_property ] || template(popup_text, feature.properties);
+                        text = popup_property && props[ popup_property ] || template(popup_text, feature.properties),
+                        species = feature.properties.name,
+                        iconUrl = feature.properties.iconUrl;
                     if (text) {
                         layer.bindPopup( text );
                     }
+                    // create the legend entities for the species names, assumes the filename pattern is *-[iconColor].png
+                    legendVals[species] = iconUrl.slice(iconUrl.lastIndexOf("-")+1, iconUrl.length-4);
                 }
-                var templateRe = /\{ *([\w_-]+) *\}/g;
-                function template(str, data) {
-                    return str.replace(templateRe, function (match, key) {
-                        var value = data[key];
-                        if (value === undefined) {
-                            return match;
-                        }
-                        return value;
-                    });
-                }  
+                layer.on('ready', function () {
+                    if('<?php echo $legend; ?>') {
+                        // add a legend for the icons
+                        var legend = L.control({position: 'bottomright'});
+                        legend.onAdd = function (previous_map) {
+                            var div = L.DomUtil.create('div', 'info legend');
+
+                           // loop through our legend items and generate a label with a colored square for each species
+                           for (var key in legendVals) {
+                               div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
+                           }
+                           return div;
+                       };
+                       legend.addTo(previous_map);
+                    }
+                });
             });
         </script>
         <?php
