@@ -62,7 +62,6 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
         ?>
         <script>
             WPLeafletMapPlugin.add(function () {
-                var legendVals = new Object();
                 var previous_map = WPLeafletMapPlugin.getCurrentMap(),
                     src = '<?php echo $src; ?>',
                     default_style = <?php echo $style_json; ?>,
@@ -87,7 +86,8 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
                     popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
-                    popup_property = '<?php echo $popup_property; ?>';
+                    popup_property = '<?php echo $popup_property; ?>',
+                    legendVals = {};
                 if (fitbounds) {
                     layer.on('ready', function () {
                         this.map.fitBounds( this.getBounds() );
