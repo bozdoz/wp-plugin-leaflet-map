@@ -126,7 +126,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     }
                 }
                 layer.on('ready', function () {
-                    if('<?php echo $legend; ?>' && JSON.stringify(legendVals) !== JSON.stringify({})) {
+                    if(<?php echo isset($legend) ? $legend : 'false'; ?> && JSON.stringify(legendVals) !== JSON.stringify({})) {
                         // add a legend for the icons
                         var legend = L.control({position: 'bottomright'});
                         legend.onAdd = function (previousMap) {
