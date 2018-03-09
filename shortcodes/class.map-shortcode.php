@@ -52,6 +52,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
 		$atts['scrollwheel'] = array_key_exists('scrollwheel', $atts) ? $scrollwheel : $settings->get('scroll_wheel_zoom');
 		$atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? $doubleclickzoom : $settings->get('double_click_zoom');
 		$atts['fit_markers'] = array_key_exists('fit_markers', $atts) ? $fit_markers : $settings->get('fit_markers');
+		$atts['legend'] = array_key_exists('legend', $atts) ? $legend : false;
 
 		/* allow percent, but add px for ints */
 		$atts['height'] .= is_numeric($atts['height']) ? 'px' : '';

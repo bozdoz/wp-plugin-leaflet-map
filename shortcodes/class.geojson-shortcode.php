@@ -75,11 +75,19 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     layer = L.ajaxGeoJson(src, {
                         type: '<?php echo $class::$type; ?>',
                         style : layerStyle,
-                        onEachFeature : onEachFeature
+                        onEachFeature : onEachFeature,
+                        /* function to add custom icons when defined in feature.properties */
+                        pointToLayer: function(feature, latlng) {
+                            return feature.properties.iconUrl ? new L.Marker(latlng, {icon: L.icon({
+                                iconUrl: feature.properties.iconUrl,
+                                iconSize: feature.properties.iconSize ? feature.properties.iconSize : [25, 41], // size of the icon
+                            })}) : new L.Marker(latlng);
+                        }
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
                     popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
-                    popup_property = '<?php echo $popup_property; ?>';
+                    popup_property = '<?php echo $popup_property; ?>',
+                    legendVals = {};
                 if (fitbounds) {
                     layer.on('ready', function () {
                         this.map.fitBounds( this.getBounds() );
@@ -106,21 +114,33 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                 }      
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {},
-                        text = popup_property && props[ popup_property ] || template(popup_text, feature.properties);
+                        text = popup_property && props[ popup_property ] || template(popup_text, feature.properties),
+                        featureName = feature.properties.name,
+                        iconUrl = feature.properties.iconUrl;
                     if (text) {
                         layer.bindPopup( text );
                     }
+                    if (iconUrl) {
+                        // create the legend entities for the feature names, assumes the filename pattern is *-[iconColor].*
+                        legendVals[featureName] = iconUrl.slice(iconUrl.lastIndexOf("-") + 1, iconUrl.lastIndexOf("."));
+                    }
                 }
-                var templateRe = /\{ *([\w_-]+) *\}/g;
-                function template(str, data) {
-                    return str.replace(templateRe, function (match, key) {
-                        var value = data[key];
-                        if (value === undefined) {
-                            return match;
-                        }
-                        return value;
-                    });
-                }  
+                layer.on('ready', function () {
+                    if(<?php echo isset($legend) ? $legend : 'false'; ?> && JSON.stringify(legendVals) !== JSON.stringify({})) {
+                        // add a legend for the icons
+                        var legend = L.control({position: 'bottomright'});
+                        legend.onAdd = function (previousMap) {
+                            var div = L.DomUtil.create('div', 'info legend');
+
+                            // loop through our legend items and generate a label with a colored square for each distinct feature name
+                            for (var key in legendVals) {
+                                div.innerHTML += '<i style="background: ' + legendVals[key] + '"></i>' + key + '<br>';
+                            }
+                            return div;
+                       };
+                       legend.addTo(previous_map);
+                    }
+                });
             });
         </script>
         <?php
