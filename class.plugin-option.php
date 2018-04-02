@@ -1,128 +1,157 @@
 <?php
 /** 
-* 
-* Leaflet_Map_Plugin_Option
-* 
-* store values; render widgets
-* @param array $details array of option details
-**/
+ * Leaflet_Map_Plugin_Option
+ * 
+ * Store values; render widgets
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-class Leaflet_Map_Plugin_Option {
-	/**
-	* @var $default default value
-	* either string or int/boolean?
-	*/
-	public $default = '';
-	/**
-	* @var $type input type
-	* ex: ('text', 'select', 'checkbox')
-	*/
-	public $type;
-	/**
-	* @var $options  optional
-	* used for select; maybe checkbox/radio
-	*/
-	public $options = array();
-	public $helptext = '';
+/**
+ * Leaflet_Map_Plugin_Option
+ */
+class Leaflet_Map_Plugin_Option
+{
+    /**
+     * Default Value
+     * 
+     * @var varies $default
+     */
+    public $default = '';
+    
+    /**
+     * Input type ex: ('text', 'select', 'checkbox')
+     * 
+     * @var string $type 
+     */
+    public $type;
+    
+    /**
+     * Optional used for select; maybe checkbox/radio
+     * 
+     * @var array $options
+     */
+    public $options = array();
 
-	function __construct ($details = array()) {
-		if (!$details) {
-			// just an empty db entry (for now)
-			// nothing to store, nothing to render
-			return;
-		}
+    /**
+     * Optional used for label under input
+     * 
+     * @var string $helptext
+     */
+    public $helptext = '';
 
-		$option_filter = array(
-			'display_name' 	=> 	FILTER_SANITIZE_STRING,
-			'default' 		=> 	null,
-			'type' 			=> 	FILTER_SANITIZE_STRING,
-			'options' 		=> 	array(
-								'filter' => FILTER_SANITIZE_STRING,
-				                'flags'	 => FILTER_FORCE_ARRAY
-				            ),
-			'helptext' 		=> 	FILTER_SANITIZE_STRING
-		);
+    /**
+     * Instantiate class
+     * 
+     * @param array $details A list of options
+     */
+    function __construct($details = array())
+    {
+        if (!$details) {
+            // just an empty db entry (for now)
+            // nothing to store, nothing to render
+            return;
+        }
 
-		// get matching keys only
-		$details = array_intersect_key($details, $option_filter);
+        $option_filter = array(
+            'display_name'     =>     FILTER_SANITIZE_STRING,
+            'default'          =>     null,
+            'type'             =>     FILTER_SANITIZE_STRING,
+            'options'          =>     array(
+                'filter' => FILTER_SANITIZE_STRING,
+                'flags'  => FILTER_FORCE_ARRAY
+            ),
+            'helptext'         =>     FILTER_SANITIZE_STRING
+        );
 
-		// apply filter
-		$details = filter_var_array($details, $option_filter);
+        // get matching keys only
+        $details = array_intersect_key($details, $option_filter);
 
-		foreach ($details as $key => $value) {
-			$this->$key = $value;
-		}
-	}
+        // apply filter
+        $details = filter_var_array($details, $option_filter);
 
-	/**
-	* Renders a widget
-	* @param value required chosen value
-	* @return HTML
-	*/
-	function widget ($name, $value) {
-		switch ($this->type) {
-			case 'text':
-				?>
-		<input 
-			class="full-width" 
-			name="<?php echo $name; ?>" 
-			type="text" 
-			id="<?php echo $name; ?>" 
-			value="<?php echo htmlspecialchars( $value ); ?>" 
-			/>
-				<?php
-				break;
-			
-			case 'textarea':
-			?>
+        foreach ($details as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 
-		<textarea 
-			id="<?php echo $name; ?>"
-			class="full-width" 
-			name="<?php echo $name; ?>"><?php echo htmlspecialchars( $value ); ?></textarea>
+    /**
+     * Renders a widget
+     * 
+     * @param string $name  widget name
+     * @param varies $value widget value
+     * 
+     * @return HTML
+     */
+    function widget ($name, $value) 
+    {
+        switch ($this->type) {
+        case 'text':
+            ?>
+        <input 
+            class="full-width" 
+            name="<?php echo $name; ?>" 
+            type="text" 
+            id="<?php echo $name; ?>" 
+            value="<?php echo htmlspecialchars($value); ?>" 
+            />
+            <?php
+            break;
+            
+        case 'textarea':
+            ?>
 
-				<?php
-				break;
+        <textarea 
+            id="<?php echo $name; ?>"
+            class="full-width" 
+            name="<?php echo $name; ?>"><?php echo htmlspecialchars($value); ?></textarea>
 
-			case 'checkbox':
-			?>
+            <?php
+            break;
 
-		<input 
-			class="checkbox" 
-			name="<?php echo $name; ?>" 
-			type="checkbox" 
-			id="<?php echo $name; ?>"
-			<?php if ($value) echo ' checked="checked"' ?> 
-			/>
-			
-				<?php
-				break;
+        case 'checkbox':
+            ?>
 
-			case 'select':
-			?>
-		<select id="<?php echo $name; ?>"
-			name="<?php echo $name; ?>"
-			class="full-width">
-		<?php
-		foreach ($this->options as $o => $n) {
-		?>
-		    <option value="<?php echo $o; ?>"<?php if ($value == $o) echo ' selected' ?>>
-		    	<?php echo $n; ?>
-		   	</option>
-		<?php
-		}
-		?>
-		</select>
-				<?php
-				break;
-			default:
-				?>
-		<div>No option type chosen for <?php echo $name; ?> with value <?php echo htmlspecialchars($value); ?></div>
-				<?php
-				break;
-		}
-	}
+        <input 
+            class="checkbox" 
+            name="<?php echo $name; ?>" 
+            type="checkbox" 
+            id="<?php echo $name; ?>"
+            <?php if ($value) echo ' checked="checked"' ?> 
+            />
+            <?php
+            break;
+
+        case 'select':
+            ?>
+        <select id="<?php echo $name; ?>"
+            name="<?php echo $name; ?>"
+            class="full-width">
+        <?php
+        foreach ($this->options as $o => $n) {
+        ?>
+            <option value="<?php echo $o; ?>"<?php if ($value == $o) echo ' selected' ?>>
+                <?php echo $n; ?>
+            </option>
+        <?php
+        }
+        ?>
+        </select>
+                <?php
+            break;
+        default:
+            ?>
+        <div>No option type chosen for <?php echo $name; ?> with value <?php echo htmlspecialchars($value); ?></div>
+            <?php
+            break;
+        }
+    }
 }

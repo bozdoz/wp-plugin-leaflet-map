@@ -1,6 +1,6 @@
 {
   "name": "leaflet-map",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "Leaflet Map WordPress Plugin",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/bozdoz/wp-plugin-leaflet-map.git"
   },
-  "author": "Benjamin J DeLong <howaboutben@gmail.com> (https://bozdoz.com)",
+  "author": "Benjamin J DeLong <ben@bozdoz.com> (https://bozdoz.com)",
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/bozdoz/wp-plugin-leaflet-map/issues"

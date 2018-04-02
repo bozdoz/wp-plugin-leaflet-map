@@ -1,24 +1,42 @@
 <?php
 /**
-* Line Shortcode
-*
-* Use with [leaflet-line ...]
-*
-* @param array $atts        user-input array
-* @param string $content    user-input content (allows HTML)
-* @return string content for post/page
-*/
+ * Line Shortcode
+ *
+ * Use with [leaflet-line ...]
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
-class Leaflet_Line_Shortcode extends Leaflet_Shortcode {
-	protected function getHTML ($atts='', $content=null) {
-        if (!empty($atts)) extract($atts);
+/**
+ * Leaflet Line Shortcode Class
+ */
+class Leaflet_Line_Shortcode extends Leaflet_Shortcode
+{
+    /**
+     * Get Script for Shortcode
+     * 
+     * @param string $atts    shortcode attributes
+     * @param string $content optional
+     * 
+     * @return string HTML
+     */
+    protected function getHTML($atts='', $content=null)
+    {
+        if (!empty($atts)) {
+            extract($atts);
+        }
         
-        $style_json = $this->LM->get_style_json( $atts );
+        $style_json = $this->LM->get_style_json($atts);
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
@@ -30,11 +48,11 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode {
         $locations = Array();
 
         if (!empty($addresses)) {
-            include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
             $addresses = preg_split('/\s?[;|\/]\s?/', $addresses);
             foreach ($addresses as $address) {
                 if (trim($address)) {
-                    $location = new Leaflet_Geocoder( $address );
+                    $location = new Leaflet_Geocoder($address);
                     $locations[] = Array($location->lat, $location->lng);
                 }
             }
@@ -74,7 +92,6 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode {
         });
         </script>
         <?php
-
         return ob_get_clean();
-	}
+    }
 }

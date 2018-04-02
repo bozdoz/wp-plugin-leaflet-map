@@ -1,30 +1,51 @@
 <?php
 /**
-* GeoJSON Shortcode
-*
-* Use with [leaflet-geojson src="..."]
-*
-* @param array $atts        user-input array
-* @return string JavaScript
-*/
+ * GeoJSON Shortcode
+ *
+ * Use with [leaflet-geojson src="..."]
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
-class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
+/**
+ * GeoJSON Shortcode Class
+ */
+class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
+{
     /**
-    * @var string $default_src default src
-    */
+     * Default src for geoJSON
+     * 
+     * @var string $default_src
+     */
     public static $default_src = 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson';
 
     /**
-    * @var string $type how leaflet renders the src
-    */
+     * How leaflet renders the src
+     * 
+     * @var string $type 
+     */
     public static $type = 'json';
 
-    protected function getHTML ($atts='', $content=null) {
+    /**
+     * Get Script for Shortcode
+     * 
+     * @param string $atts    could be an array
+     * @param string $content could be an array
+     * 
+     * @return string HTML
+     */
+    protected function getHTML($atts='', $content=null)
+    {
 
         // need to get the called class to extend above variables
         $class = self::getClass();
@@ -45,7 +66,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
         $src = empty($src) ? $class::$default_src : $src;
         $src = empty($source) ? $src : $source;
 
-        $style_json = $this->LM->get_style_json( $atts );
+        $style_json = $this->LM->get_style_json($atts);
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
@@ -89,13 +110,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                 }
                 layer.addTo( previous_map );
                 function layerStyle (feature) {
-                    var props = feature.properties || {},
-                        style = {};
+                    var props = feature.properties || {};
+                    var style = {};
+                    var camelFun = function camelFun (_, first_letter) {
+                        return first_letter.toUpperCase();
+                    };
                     for (var key in props) {
                         if (key.match('-')) {
-                            var camelcase = key.replace(/-(\w)/, function (_, first_letter) {
-                                return first_letter.toUpperCase();
-                            });
+                            var camelcase = key.replace(/-(\w)/, camelFun);
                             style[ camelcase ] = props[ key ];
                         }
                         // rewrite style keys from geojson.io
@@ -107,8 +129,9 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
                     return style;
                 }      
                 function onEachFeature (feature, layer) {
-                    var props = feature.properties || {},
-                        text = popup_property && props[ popup_property ] || template(popup_text, feature.properties);
+                    var props = feature.properties || {};
+                    var text = popup_property && props[ popup_property ] || 
+                        template(popup_text, feature.properties);
                     if (text) {
                         layer.bindPopup( text );
                     }

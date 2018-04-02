@@ -5,6 +5,11 @@
  * Displays map with [leaflet-map ...atts] 
  *
  * JavaScript equivalent : L.map("id");
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
 
 // Exit if accessed directly
@@ -12,31 +17,49 @@ if (!defined('ABSPATH')) {
     exit;
 } 
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
-class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
+/**
+ * Leaflet_Map_Shortcode Class
+ */
+class Leaflet_Map_Shortcode extends Leaflet_Shortcode
+{
+    /**
+     * Unique ID for a map
+     * 
+     * @var int $map_id
+     */
     protected $map_id = 0;
 
-    public function __construct ($atts) {
+    /**
+     * Instantiate class
+     */
+    public function __construct()
+    {
         parent::__construct();
         $this->enqueue();
         $this->incrementMap();
     }
 
-    protected function incrementMap () {
+    /**
+     * Increment the map count
+     */
+    protected function incrementMap()
+    {
         $this->LM->map_count++;
         $this->map_id = $this->LM->map_count;
     }
 
     /**
-    * Merge shortcode options with default options
-    *
-    * @param array|string $atts key value pairs from shortcode 
-    * @param string $content     inner text in shortcode
-    * @return array             new atts, which is actually an array
-    */
-
-    protected function getAtts ($atts='', $content=null) {
+     * Merge shortcode options with default options
+     *
+     * @param array|string $atts    key value pairs from shortcode 
+     * @param string       $content inner text in shortcode
+     * 
+     * @return array new atts, which is actually an array
+     */
+    protected function getAtts($atts='', $content=null)
+    {
         $atts = (array) $atts;
         extract($atts);
 
@@ -107,7 +130,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
      * 
      * @return null
      */
-    protected function enqueue () {
+    protected function enqueue()
+    {
         wp_enqueue_style('leaflet_stylesheet');
         wp_enqueue_script('leaflet_js');
         wp_enqueue_script('leaflet_map_init');
@@ -129,13 +153,14 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
      * 
      * @return string HTML
      */
-    protected function getHTML ($atts='', $content=null) {
+    protected function getHTML($atts='', $content=null)
+    {
         extract($this->getAtts($atts));
 
         if (!empty($address)) {
             /* try geocoding */
-            include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
-            $location = new Leaflet_Geocoder( $address );
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+            $location = new Leaflet_Geocoder($address);
             $lat = $location->lat;
             $lng = $location->lng;
         }

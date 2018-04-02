@@ -1,52 +1,72 @@
 <?php
 /**
-* 
-* Used to get and set values
-* 
-* Features:
-* * Add prefixes to db options
-* * built-in admin settings page method
-* 
-*/
+ * Class for getting and setting db/default values
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Admin
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-option.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-option.php';
 
-class Leaflet_Map_Plugin_Settings {
-	/**
-    * Prefix for options, for unique db entries
-    * @var string $prefix
-    */
-    public $prefix = 'leaflet_';
-	
+/**
+ * Used to get and set values
+ * 
+ * Features:
+ * * Add prefixes to db options
+ * * built-in admin settings page method
+ */
+class Leaflet_Map_Plugin_Settings
+{
     /**
+     * Prefix for options, for unique db entries
+     * 
+     * @var string $prefix
+     */
+    public $prefix = 'leaflet_';
+    
+    /**
+     * Singleton instance
+     * 
      * @var Leaflet_Map_Plugin_Settings
      **/
-    private static $instance = null;
+    private static $_instance = null;
 
-	/**
-    * Default values and admin form information
-	* Needs to be created within __construct
-    * in order to use a function such as __()
-	* @var array $options
-	*/
-	public $options = array();
+    /**
+     * Default values and admin form information
+     * Needs to be created within __construct
+     * in order to use a function such as __()
+     * 
+     * @var array $options
+     */
+    public $options = array();
 
-	/**
-	 * Singleton
-	 * @static
-	 */
-	public static function init() {
-	    if ( !self::$instance ) {
-	        self::$instance = new self;
-	    }
+    /**
+     * Singleton
+     * 
+     * @static
+     * 
+     * @return Leaflet_Map_Plugin_Settings
+     */
+    public static function init() {
+        if ( !self::$_instance ) {
+            self::$_instance = new self;
+        }
 
-	    return self::$instance;
-	}
+        return self::$_instance;
+    }
 
-	private function __construct () {
+    /**
+     * Instantiate the class
+     */
+    private function __construct() 
+    {
 
         /* update leaflet version from main class */
         $leaflet_version = Leaflet_Map::$leaflet_version;
@@ -61,7 +81,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Latitude', 'leaflet-map'),
                 'default'=>'44.67',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map lat="44.67"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map lat="44.67"]</code>', 
                     __('Default latitude for maps.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -70,7 +91,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Longitude', 'leaflet-map'),
                 'default'=>'-63.61',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map lng="-63.61"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map lng="-63.61"]</code>', 
                     __('Default longitude for maps.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -79,7 +101,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Zoom', 'leaflet-map'),
                 'default'=>'12',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map zoom="5"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map zoom="5"]</code>', 
                     __('Default zoom for maps.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -88,7 +111,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Height', 'leaflet-map'),
                 'default'=>'250',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map height="250"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map height="250"]</code>', 
                     __('Default height for maps. Values can include "px" but it is not necessary. Can also be "%". ', 'leaflet-map'),
                     $foreachmap
                 )
@@ -97,7 +121,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Width', 'leaflet-map'),
                 'default'=>'100%',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map width="100%"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map width="100%"]</code>', 
                     __('Default width for maps. Values can include "px" but it is not necessary.  Can also be "%".', 'leaflet-map'),
                     $foreachmap
                 )
@@ -106,7 +131,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Fit Markers', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'checkbox',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map fit_markers="1"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map fit_markers="1"]</code>', 
                     __('If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -115,7 +141,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Show Zoom Controls', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'checkbox',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map zoomcontrol="0"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map zoomcontrol="0"]</code>', 
                     __('The zoom buttons can be large and annoying.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -124,7 +151,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Scroll Wheel Zoom', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'checkbox',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map scrollwheel="0"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map scrollwheel="0"]</code>', 
                     __('Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -133,7 +161,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Double Click Zoom', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'checkbox',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map doubleClickZoom=false]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map doubleClickZoom=false]</code>', 
                     __('If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -142,7 +171,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Min Zoom', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br /> <code>[leaflet-map min_zoom="1"]</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map min_zoom="1"]</code>', 
                     __('Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -151,7 +181,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Default Max Zoom', 'leaflet-map'),
                 'default' => '20',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2%s <br /> <code>%3$s</code>', 
+                'helptext' => sprintf(
+                    '%1$s %2%s <br /> <code>%3$s</code>', 
                     __('Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here', 'leaflet-map'),
                     $foreachmap,
                     '[leaflet-map max_zoom="10"]'
@@ -172,7 +203,8 @@ class Leaflet_Map_Plugin_Settings {
                 'default' => __('Supply an app key if you choose MapQuest', 'leaflet-map'),
                 'type' => 'text',
                 'noreset' => true,
-                'helptext' => sprintf('%1$s <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank"> %2$s </a>, %3$s <a href="https://developer.mapquest.com/user/me/apps" target="_blank"> %4$s </a> %5$s',
+                'helptext' => sprintf(
+                    '%1$s <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank"> %2$s </a>, %3$s <a href="https://developer.mapquest.com/user/me/apps" target="_blank"> %4$s </a> %5$s',
                     __('If you choose MapQuest, you must provide an app key.', 'leaflet-map'),
                     __('Sign up', 'leaflet-map'),
                     __('then', 'leaflet-map'),
@@ -184,7 +216,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Map Tile URL', 'leaflet-map'),
                 'default'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank"> %2$s </a>. %3$s: <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank"> %4$s </a>. %5$s <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>',
+                'helptext' => sprintf(
+                    '%1$s: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank"> %2$s </a>. %3$s: <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank"> %4$s </a>. %5$s <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>',
                     __('See more tile servers', 'leaflet-map'),
                     __('here', 'leaflet-map'),
                     __('Please note: free tiles from MapQuest have been discontinued without use of an app key', 'leaflet-map'),
@@ -196,7 +229,8 @@ class Leaflet_Map_Plugin_Settings {
                 'display_name'=>__('Map Tile URL Subdomains', 'leaflet-map'),
                 'default'=>'abc',
                 'type' => 'text',
-                'helptext' => sprintf('%1$s %2$s <br/> <code>[leaflet-map subdomains="1234"]</code>',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br/> <code>[leaflet-map subdomains="1234"]</code>',
                     __('Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4', 'leaflet-map'),
                     $foreachmap
                 )
@@ -214,11 +248,12 @@ class Leaflet_Map_Plugin_Settings {
                 'helptext' => __('Same as above.', 'leaflet-map')
             ),
             'default_attribution' => array(
-                'display_name'=>__('Default Attribution', 'leaflet-map'),
-                'default' => sprintf('<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; \r\n© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
-                        __("A JS library for interactive maps", 'leaflet-map'),
-                        __("contributors", 'leaflet-map')
-                    ),
+                'display_name' => __('Default Attribution', 'leaflet-map'),
+                'default' => sprintf(
+                    '<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; \r\n© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
+                    __("A JS library for interactive maps", 'leaflet-map'),
+                    __("contributors", 'leaflet-map')
+                ),
                 'type' => 'textarea',
                 'helptext' => __('Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.', 'leaflet-map')
             ),
@@ -236,64 +271,61 @@ class Leaflet_Map_Plugin_Settings {
         );
 
         foreach ($this->options as $name => $details) {
-			$this->options[ $name ] = new Leaflet_Map_Plugin_Option( $details );
-		}
-	}
+            $this->options[ $name ] = new Leaflet_Map_Plugin_Option($details);
+        }
+    }
 
-	/*
-	* wrapper for WordPress get_options (adds prefix to default options)
-	*
-	* @param string $key                
-	* @param varies $default   default value if not found in db
-	* @return varies
-	*/
+    /**
+     * Wrapper for WordPress get_options (adds prefix to default options)
+     *
+     * @param string $key                
+     * 
+     * @return varies
+     */
+    public function get($key) 
+    {
+        $default = $this->options[ $key ]->default;
+        $key = $this->prefix . $key;
+        return get_option($key, $default);
+    }
 
-	public function get ($key) {
-		$default = $this->options[ $key ]->default;
-		$key = $this->prefix . $key;
-		return get_option($key, $default);
-	}
+    /**
+     * Wrapper for WordPress update_option (adds prefix to default options)
+     *
+     * @param string $key   Unique db key
+     * @param varies $value Value to insert
+     * 
+     * @return Leaflet_Map_Plugin_Settings
+     */
+    public function set ($key, $value) {
+        $key = $this->prefix . $key;
+        update_option($key, $value);
+        return $this;
+    }
 
-	/*
-	* wrapper for WordPress update_option (adds prefix to default options)
-	*
-	* @param string $key
-	* @param varies $value
-	* @param varies $default   default value if not found in db
-	* @return varies
-	*/
+    /**
+     * Wrapper for WordPress delete_option (adds prefix to default options)
+     *
+     * @param string $key Unique db key
+     * 
+     * @return boolean
+     */
+    public function delete($key) 
+    {
+        $key = $this->prefix . $key;
+        return delete_option($key);
+    }
 
-	public function set ($key, $value) {
-		$key = $this->prefix . $key;
-		update_option($key, $value);
-		return $this;
-	}
-
-	/*
-	* wrapper for WordPress delete_option (adds prefix to default options)
-	*
-	* @param string $key
-	* @param varies $default   default value if not found in db
-	* @return varies
-	*/
-
-	public function delete ($key) {
-		$key = $this->prefix . $key;
-		return delete_option($key);
-	}
-
-	/*
-	* wrapper for WordPress delete_option (adds prefix to default options)
-	*
-	* @param string $key
-	* @param varies $default   default value if not found in db
-	* @return varies
-	*/
-
-	public function reset () {
-		foreach ($this->options as $name => $option) {
-			$this->delete( $name );
-		}
-		return $this;
-	}
+    /**
+     * Delete all options
+     *
+     * @return Leaflet_Map_Plugin_Settings
+     */
+    public function reset()
+    {
+        foreach ($this->options as $name => $option) {
+            $this->delete($name);
+        }
+        return $this;
+    }
 }

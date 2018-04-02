@@ -1,30 +1,44 @@
 <?php
-/*
-Leaflet Map Class
-*/
+/**
+ * Leaflet Map Class File
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Admin
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-class Leaflet_Map {
+/**
+ * Leaflet Map Class
+ */
+class Leaflet_Map
+{
 
     /**
-    * Leaflet version
-    * @var string major minor patch version
-    */
+     * Leaflet version
+     * 
+     * @var string major minor patch version
+     */
     public static $leaflet_version = '1.3.1';
 
     /**
-    * Number of maps on page; used for unique map ids
-    * @var int $map_count
-    */
+     * Number of maps on page; used for unique map ids
+     * 
+     * @var int $map_count
+     */
     public $map_count = 0;
 
     /**
-    * Files to include upon init
-    * @var array $shortcodes
-    */
-    private $shortcodes = array(
+     * Files to include upon init
+     * 
+     * @var array $_shortcodes
+     */
+    private $_shortcodes = array(
         'leaflet-geojson' => array(
             'file' => 'class.geojson-shortcode.php',
             'class' => 'Leaflet_Geojson_Shortcode'
@@ -56,12 +70,15 @@ class Leaflet_Map {
     );
 
     /**
+     * Singleton Instance of Leaflet Map
+     * 
      * @var Leaflet_Map
      **/
     private static $instance = null;
 
     /**
-     * Singleton
+     * Singleton init Function
+     * 
      * @static
      */
     public static function init() {
@@ -84,17 +101,16 @@ class Leaflet_Map {
     }
 
     /**
-    *
-    * add actions and filters
-    *
-    */
-    private function init_hooks() {
+     * Add actions and filters
+     */
+    private function init_hooks()
+    {
 
         // Leaflet_Map_Plugin_Settings
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php';
 
         // Leaflet_Map_Admin
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php');
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php';
         
         // init admin
         Leaflet_Map_Admin::init();
@@ -111,54 +127,52 @@ class Leaflet_Map {
     }
 
     /**
-    *
-    * includes and adds shortcodes
-    *
-    */
-    private function add_shortcodes () {
+     * Includes and adds shortcodes
+     */
+    private function add_shortcodes()
+    {
         // shortcodes
         $shortcode_dir = LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/';
         
-        foreach ($this->shortcodes as $shortcode => $details) {
-            include_once($shortcode_dir . $details['file']);
+        foreach ($this->_shortcodes as $shortcode => $details) {
+            include_once $shortcode_dir . $details['file'];
             add_shortcode($shortcode, array($details['class'], 'shortcode'));
         }
     }
 
     /**
-    * Triggered when user uninstalls/removes plugin
-    */
-
-    public static function uninstall () {            
+     * Triggered when user uninstalls/removes plugin
+     */
+    public static function uninstall()
+    {
         // remove settings in db
         // think it needs to be included again (because __construct 
         // won't need to execute)
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php';
         $settings = Leaflet_Map_Plugin_Settings::init();
         $settings->reset();
 
         // remove geocoder locations in db
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
         Leaflet_Geocoder::remove_caches();
     }
 
     /**
-    * Loads Translations
-    *
-    */
-    public static function load_text_domain() {
+     * Loads Translations
+     */
+    public static function load_text_domain()
+    {
         load_plugin_textdomain( 'leaflet-map', false, dirname( plugin_basename( LEAFLET_MAP__PLUGIN_FILE ) ) . '/languages/' );
     }
 
     /**
-    * Enqueue and register styles and scripts (called in __construct)
-    *
-    */
-
-    public static function enqueue_and_register () {
+     * Enqueue and register styles and scripts (called in __construct)
+     */
+    public static function enqueue_and_register()
+    {
         /* defaults from db */
         // Leaflet_Map_Plugin_Settings
-        include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php');
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php';
         $settings = Leaflet_Map_Plugin_Settings::init();
 
         $js_url = $settings->get('js_url');
@@ -190,13 +204,14 @@ class Leaflet_Map {
     }
 
     /**
-    * Filter for removing nulls from array
-    *
-    * @param array $arr
-    * @return array with nulls removed
-    */
-
-    public function filter_null ($arr) {
+     * Filter for removing nulls from array
+     *
+     * @param array $arr
+     * 
+     * @return array with nulls removed
+     */
+    public function filter_null($arr)
+    {
         if (!function_exists('remove_null')) {
             function remove_null ($var) {
                 return $var !== null;
@@ -207,55 +222,56 @@ class Leaflet_Map {
     }
 
     /**
-    * Sanitize JSON
-    *
-    * Takes options for filtering/correcting inputs for use in JavaScript
-    *
-    * @param array $arr     user-input array
-    * @param array $args    array with key-value definitions on how to convert values
-    * @return array corrected for JavaScript
-    */
-
-    public function json_sanitize ($arr, $args) {
+     * Sanitize JSON
+     *
+     * Takes options for filtering/correcting inputs for use in JavaScript
+     *
+     * @param array $arr     user-input array
+     * @param array $args    array with key-value definitions on how to convert values
+     * @return array corrected for JavaScript
+     */
+    public function json_sanitize($arr, $args)
+    {
         // remove nulls
-        $arr = self::filter_null( $arr );
+        $arr = self::filter_null($arr);
 
         // sanitize output
         $args = array_intersect_key($args, $arr);
         $arr = filter_var_array($arr, $args);
 
-        return json_encode( $arr );
+        return json_encode($arr);
     }
 
     /**
-    * Get Style JSON for map shapes/geojson (svg or canvas)
-    *
-    * Takes atts for creating shapes on the map
-    *
-    * @param array $atts    user-input array
-    * @return array corrected for JavaScript
-    */
-
-    public function get_style_json ($atts) {
+     * Get Style JSON for map shapes/geojson (svg or canvas)
+     *
+     * Takes atts for creating shapes on the map
+     *
+     * @param array $atts    user-input array
+     * 
+     * @return array corrected for JavaScript
+     */
+    public function get_style_json($atts)
+    {
         if ($atts) {
             extract($atts);
         }
 
         // from http://leafletjs.com/reference-1.0.3.html#path
         $style = array(
-            'stroke' => isset($stroke) ? $stroke : NULL,
-            'color' => isset($color) ? $color : NULL,
-            'weight' => isset($weight) ? $weight : NULL,
-            'opacity' => isset($opacity) ? $opacity : NULL,
-            'lineCap' => isset($linecap) ? $linecap : NULL,
-            'lineJoin' => isset($linejoin) ? $linejoin : NULL,
-            'dashArray' => isset($dasharray) ? $dasharray : NULL,
-            'dashOffset' => isset($dashoffset) ? $dashoffset : NULL,
-            'fill' => isset($fill) ? $fill : NULL,
-            'fillColor' => isset($fillcolor) ? $fillcolor : NULL,
-            'fillOpacity' => isset($fillopacity) ? $fillopacity : NULL,
-            'fillRule' => isset($fillrule) ? $fillrule : NULL,
-            'className' => isset($classname) ? $classname : NULL,
+            'stroke' => isset($stroke) ? $stroke : null,
+            'color' => isset($color) ? $color : null,
+            'weight' => isset($weight) ? $weight : null,
+            'opacity' => isset($opacity) ? $opacity : null,
+            'lineCap' => isset($linecap) ? $linecap : null,
+            'lineJoin' => isset($linejoin) ? $linejoin : null,
+            'dashArray' => isset($dasharray) ? $dasharray : null,
+            'dashOffset' => isset($dashoffset) ? $dashoffset : null,
+            'fill' => isset($fill) ? $fill : null,
+            'fillColor' => isset($fillcolor) ? $fillcolor : null,
+            'fillOpacity' => isset($fillopacity) ? $fillopacity : null,
+            'fillRule' => isset($fillrule) ? $fillrule : null,
+            'className' => isset($classname) ? $classname : null,
             );
 
         $args = array(
@@ -288,8 +304,8 @@ class Leaflet_Map {
      *
      * @return null
      */
-
-    public function add_popup_to_shape ($atts, $content, $shape) {
+    public function add_popup_to_shape($atts, $content, $shape)
+    {
         if (!empty($atts)) {
             extract($atts);
         }

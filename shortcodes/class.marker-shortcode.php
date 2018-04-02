@@ -6,11 +6,11 @@
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
 class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
     protected function getHTML ($atts='', $content=null) {
@@ -19,7 +19,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
         }
 
         if (!empty($address)) {
-            include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
             $location = new Leaflet_Geocoder( $address );
             $lat = $location->lat;
             $lng = $location->lng;

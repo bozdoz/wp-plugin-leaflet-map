@@ -1,38 +1,56 @@
 <?php
 /**
-* Image Shortcode
-*
-* Displays map with [leaflet-image src="path/to/image.jpg"] 
-*
-* JavaScript equivalent : L.imageOverlay('path/to/image.jpg');
-*
-*/
+ * Image Shortcode
+ *
+ * Displays map with [leaflet-image src="path/to/image.jpg"] 
+ *
+ * JavaScript equivalent : L.imageOverlay('path/to/image.jpg');
+ *
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.map-shortcode.php');
+require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.map-shortcode.php';
 
-class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode {
+/**
+ * Leaflet Image Shortcode Class
+ */
+class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
+{
     /**
-    * Get HTML for shortcode
-    * @param array $atts
-    * @return string $content produced by adding atts to JavaScript
-    */
-	protected function getHTML ($atts='', $content=null) {
-		extract($this->getAtts($atts));
+     * Get HTML for shortcode
+     * 
+     * @param string $atts    or Array
+     * @param string $content produced by adding atts to JavaScript
+     * 
+     * @return string HTML script
+     */
+    protected function getHTML($atts='', $content=null)
+    {
+        extract($this->getAtts($atts));
 
-		/* only required field for image map (src/source) */
+        /* only required field for image map (src/source) */
         $src = empty($src) ? '' : $src;
-		$source = empty($source) ? 'https://lorempixel.com/1000/1000/' : $source;
+        $source = empty($source) ? 'https://lorempixel.com/1000/1000/' : $source;
         $source = empty($src) ? $source : $src;
 
-		ob_start();
+        ob_start();
         ?>
         <div 
             id="leaflet-map-image-<?php echo $this->map_id; ?>" 
             class="leaflet-map" 
-            style="height:<?php echo $height; ?>; width:<?php echo $width; ?>;"></div>
+            style="height:<?php 
+                echo $height; 
+            ?>; width:<?php 
+                echo $width; 
+            ?>;"></div>
         <script>
         WPLeafletMapPlugin.add(function () {
             var map,
@@ -86,5 +104,5 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode {
         </script>
         <?php
         return ob_get_clean();
-	}
+    }
 }
