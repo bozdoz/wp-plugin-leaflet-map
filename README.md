@@ -1,8 +1,8 @@
 Leaflet Map WordPress Plugin
 ========
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.2.0-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-4.8.1-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.3.1-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-4.9.4-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -95,4 +95,3 @@ Wish List
 ---------
 
 * A map editor/shortcode generator (so users can see what they're adding to the page)
-* Make the plugin extendable (add hooks/filters/actions)

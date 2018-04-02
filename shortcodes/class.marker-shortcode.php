@@ -3,6 +3,11 @@
  * Marker Shortcode
  *
  * Use with [leaflet-marker ...]
+ * 
+ * PHP Version 5.5
+ * 
+ * @category Shortcode
+ * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
 
 // Exit if accessed directly
@@ -12,8 +17,21 @@ if (!defined('ABSPATH')) {
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
-class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
-    protected function getHTML ($atts='', $content=null) {
+/**
+ * Leaflet Marker Shortcode Class
+ */
+class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
+{
+    /**
+     * Get Script for Shortcode
+     * 
+     * @param string $atts    could be an array
+     * @param string $content optional
+     * 
+     * @return null
+     */
+    protected function getHTML($atts='', $content=null)
+    {
         if (!empty($atts)) {
             extract($atts);
         }

@@ -6,7 +6,7 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.9
+Tested up to: 4.9.4
 Version: 2.11.0
 Stable tag: 2.11.0
 License: GPLv2
@@ -65,6 +65,10 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Frequently Asked Questions ==
 
+= Can I have an SVG Marker? =
+
+Yes! Convert the default marker into an svg with a shortcode like this: `[leaflet-marker svg="true" color="white" iconClass="fab fa-wordpress-simple" background="red"]` The `iconClass` is perfect for adding a [font-awesome](https://fontawesome.com/icons?d=gallery) icon.
+
 = How do I change the style for lines/geojson? =
 
 Pass the style attributes to the respective shortcodes (see all options on [LeafletJS](http://leafletjs.com/reference-1.0.3.html#path)):
@@ -119,6 +123,11 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.11.0 =
+* Added Popup Anchor for custom markers
+* Added SVG Markers
+* Added actions and filters
 
 = 2.10.1 =
 * Fix for plugin settings not being included (somehow)
