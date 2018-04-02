@@ -80,7 +80,7 @@ class Leaflet_Map {
         $this->add_shortcodes();
 
         // loaded
-        do_action('leaflet-map-loaded');
+        do_action('leaflet_map_loaded');
     }
 
     /**
@@ -182,9 +182,11 @@ class Leaflet_Map {
         wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
         wp_register_script('leaflet_ajax_geojson_js', plugins_url('scripts/leaflet-ajax-geojson.min.js', __FILE__), Array('tmcw_togeojson', 'leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
+
+        wp_register_script('leaflet_svg_icon_js', plugins_url('scripts/leaflet-svg-icon.min.js', __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
         
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_enqueue_script('leaflet_map_construct', plugins_url('scripts/construct-leaflet-map.min.js', __FILE__), Array(), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_enqueue_script('wp_leaflet_map', plugins_url('scripts/construct-leaflet-map.min.js', __FILE__), Array(), LEAFLET_MAP__PLUGIN_VERSION, false);
     }
 
     /**
@@ -276,35 +278,33 @@ class Leaflet_Map {
     }
 
     /**
-    * Add Popups to Shapes
-    *
-    * used by leaflet-marker and leaflet-line
-    *
-    * @param array $atts        user-input array
-    * @param string $content    text to display
-    * @param string $shape      JavaScript variable for shape
-    * @return null
-    */
+     * Add Popups to Shapes
+     *
+     * used by leaflet-marker and leaflet-line
+     *
+     * @param array  $atts    user-input array
+     * @param string $content text to display
+     * @param string $shape   JavaScript variable for shape
+     *
+     * @return null
+     */
 
     public function add_popup_to_shape ($atts, $content, $shape) {
-        if (!empty($atts)) extract($atts);
+        if (!empty($atts)) {
+            extract($atts);
+        }
 
-        $message = empty($message) ? (empty($content) ? '' : $content) : $message;
+        $message = empty($message) ? 
+            (empty($content) ? '' : $content) : $message;
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = htmlspecialchars($message);
         $visible = empty($visible) ? false : ($visible == 'true');
 
         if (!empty($message)) {
-            /* 
-            $message = str_replace("\n", '', $message);
-            */
-
             echo "{$shape}.bindPopup(WPLeafletMapPlugin.unescape('{$message}'))";
-
             if ($visible) {
                 echo ".openPopup()";
             }
-
             echo ";";
         }
     }

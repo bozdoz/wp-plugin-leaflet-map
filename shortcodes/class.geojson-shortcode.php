@@ -14,24 +14,26 @@ if ( !defined( 'ABSPATH' ) ) exit;
 include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
 
 class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
-	/**
-	* @var string $default_src default src
-	*/
-	public static $default_src = 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson';
+    /**
+    * @var string $default_src default src
+    */
+    public static $default_src = 'https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson';
 
     /**
     * @var string $type how leaflet renders the src
     */
     public static $type = 'json';
 
-	protected function getHTML ($atts='', $content=null) {
+    protected function getHTML ($atts='', $content=null) {
 
         // need to get the called class to extend above variables
         $class = self::getClass();
         
-        if ($atts) extract($atts);
+        if ($atts) {
+            extract($atts);
+        } 
 
-		wp_enqueue_script( 'leaflet_ajax_geojson_js' );
+        wp_enqueue_script('leaflet_ajax_geojson_js');
 
         if ($content) {
             $content = str_replace(array("\r\n", "\n", "\r"), '<br>', $content);
@@ -125,5 +127,5 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
         </script>
         <?php
         return ob_get_clean();
-	}
+    }
 }

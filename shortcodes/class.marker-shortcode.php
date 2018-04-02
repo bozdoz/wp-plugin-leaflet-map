@@ -1,22 +1,22 @@
 <?php
 /**
-* Marker Shortcode
-*
-* Use with [leaflet-marker ...]
-*
-* @param array $atts        user-input array
-* @param string $content    user-input content (allows HTML)
-* @return string content for post/page
-*/
+ * Marker Shortcode
+ *
+ * Use with [leaflet-marker ...]
+ */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 include_once(LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php');
 
 class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
-	protected function getHTML ($atts='', $content=null) {
-        if (!empty($atts)) extract($atts);
+    protected function getHTML ($atts='', $content=null) {
+        if (!empty($atts)) {
+            extract($atts);
+        }
 
         if (!empty($address)) {
             include_once(LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php');
@@ -29,18 +29,36 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
         $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
+        $default_marker = 'L.marker';
+
+        if (isset($svg)) {
+            $svg = filter_var($svg, FILTER_VALIDATE_BOOLEAN);
+            if ($svg) {
+                wp_enqueue_script('leaflet_svg_icon_js');
+                $default_marker = 'new L.SVGMarker';
+            }
+        }
+
+        // optional pluggable marker
+        $default_marker = apply_filters('leaflet_map_marker', $default_marker);
+
         $options = array(
-            'draggable' => isset($draggable) ? $draggable : NULL,
-            'title' => isset($title) ? $title : NULL,
-            'alt' => isset($alt) ? $alt : NULL,
-            'zIndexOffset' => isset($zindexoffset) ? $zindexoffset : NULL,
-            'opacity' => isset($opacity) ? $opacity : NULL,
-            'iconUrl' => isset($iconurl) ? $iconurl : NULL,
-            'iconSize' => isset($iconsize) ? $iconsize : NULL,
-            'iconAnchor' => isset($iconanchor) ? $iconanchor : NULL,
-            'shadowUrl' => isset($shadowurl) ? $shadowurl : NULL,
-            'shadowSize' => isset($shadowsize) ? $shadowsize : NULL,
-            'shadowAnchor' => isset($shadowanchor) ? $shadowanchor : NULL
+            'draggable' => isset($draggable) ? $draggable : null,
+            'title' => isset($title) ? $title : null,
+            'alt' => isset($alt) ? $alt : null,
+            'zIndexOffset' => isset($zindexoffset) ? $zindexoffset : null,
+            'opacity' => isset($opacity) ? $opacity : null,
+            'iconUrl' => isset($iconurl) ? $iconurl : null,
+            'iconSize' => isset($iconsize) ? $iconsize : null,
+            'iconAnchor' => isset($iconanchor) ? $iconanchor : null,
+            'shadowUrl' => isset($shadowurl) ? $shadowurl : null,
+            'shadowSize' => isset($shadowsize) ? $shadowsize : null,
+            'shadowAnchor' => isset($shadowanchor) ? $shadowanchor : null,
+            'popupAnchor' => isset($popupanchor) ? $popupanchor : null,
+            'svg' => isset($svg) ? $svg : null,
+            'background' => isset($background) ? $background : null,
+            'iconClass' => isset($iconclass) ? $iconclass : null,
+            'color' => isset($color) ? $color : null
         );
 
         $args = array(
@@ -54,19 +72,27 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
             'iconSize' => array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags' => FILTER_FORCE_ARRAY
-                ),
+            ),
             'iconAnchor' => array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags' => FILTER_FORCE_ARRAY
-                ),
+            ),
             'shadowSize' => array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags' => FILTER_FORCE_ARRAY
-                ),
+            ),
             'shadowAnchor' => array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags' => FILTER_FORCE_ARRAY
-                )
+            ),
+            'popupAnchor' => array(
+                'filter' => FILTER_SANITIZE_STRING,
+                'flags' => FILTER_FORCE_ARRAY
+            ),
+            'svg' => FILTER_VALIDATE_BOOLEAN,
+            'background' => FILTER_SANITIZE_STRING,
+            'iconClass' => FILTER_SANITIZE_STRING,
+            'color' => FILTER_SANITIZE_STRING
         );
 
         $options = $this->LM->json_sanitize($options, $args);
@@ -74,44 +100,67 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
         if ($options === '[]') {
             $options = '{}';
         }
-        ob_start();
-        ?>
-        <script>
+        ob_start(); ?><script>
         WPLeafletMapPlugin.add(function () {
             var marker_options = (function () {
-                    var _options = <?php echo $options; ?>,
-                        iconArrays = ['iconSize', 'iconAnchor', 
-                            'shadowSize', 'shadowAnchor'];
+                    var _options = <?php echo $options; ?>;
+                    var iconArrays = [
+                            'iconSize', 
+                            'iconAnchor', 
+                            'shadowSize', 
+                            'shadowAnchor',
+                            'popupAnchor'
+                        ];
+                    var default_icon = L.Icon.Default.prototype.options;
                     if (_options.iconUrl) {
                         // arrays are strings, unfortunately...
                         for (var i = 0, len = iconArrays.length; i < len; i++) {
                             var option_name = iconArrays[i],
                                 option = _options[ option_name ];
+                            // convert "1,2" to [1, 2];
                             if (option) {
                                 _options[ option_name ] = option.join('').split(',');
                             }
                         }
+                        // default popupAnchor
+                        if (!_options.popupAnchor) {
+                            // set (roughly) to size of icon
+                            _options.popupAnchor = (function (i_size) {
+                                // copy array
+                                i_size = i_size.slice();
+                                
+                                // inverse coordinates
+                                i_size[0] = 0;
+                                i_size[1] *= -1;
+                                // bottom position on popup is 7px
+                                i_size[1] -= 3;
+                                return i_size;
+                            })(_options.iconSize || default_icon.iconSize);
+                        }
+
                         _options.icon = new L.Icon( _options );
                     }
                     return _options;
                 })(),
                 draggable = marker_options.draggable,
-                marker = L.marker([<?php echo $lat . ',' . $lng; ?>], marker_options),
-                previous_map = WPLeafletMapPlugin.getCurrentMap(),
-                is_image = previous_map.is_image_map,
-                previous_map_onload,
+                marker = <?php echo $default_marker ?>(
+                    [<?php echo $lat . ',' . $lng; ?>], 
+                    marker_options
+                ),
+                map = WPLeafletMapPlugin.getCurrentMap(),
+                is_image = map.is_image_map,
                 markergroup = WPLeafletMapPlugin.getCurrentMarkerGroup();
         <?php
-            if (empty($lat) && empty($lng)) {
-                /* update lat lng to previous map's center */
+        if (empty($lat) && empty($lng)) {
+            /* update lat lng to previous map's center */
         ?>
                 if (!is_image) {
-                    marker.setLatLng( previous_map.getCenter() );
+                    marker.setLatLng( map.getCenter() );
                 } else {
                     marker.setLatLng( [0, 0] );
                 }
         <?php
-            }
+        }
         ?>
             if (draggable) {
                 marker.on('dragend', function () {
@@ -132,9 +181,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
         ?>
             WPLeafletMapPlugin.markers.push( marker );
         }); // end add function
-        </script>
-        <?php
-
+        </script><?php
         return ob_get_clean();
-	}
+    }
 }

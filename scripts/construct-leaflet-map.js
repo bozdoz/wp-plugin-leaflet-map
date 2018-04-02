@@ -30,8 +30,12 @@
             return this.markergroups[mapid];
         };
 
+        this.getGroup = function (map) {
+            return new L.FeatureGroup().addTo(map);
+        };
+
         this.newMarkerGroup = function(map) {
-            var mg = new L.FeatureGroup().addTo(map);
+            var mg = this.getGroup(map);
 
             mg.timeout = null;
 
