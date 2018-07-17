@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.9.4
-Version: 2.11.0
-Stable tag: 2.11.0
+Tested up to: 4.9.7
+Version: 2.11.1
+Stable tag: 2.11.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.11.1 =
+* Added Dockerfiles to github
+* Made OpenStreetMap default geocoder in light of new Google API payment plans
 
 = 2.11.0 =
 * Added Popup Anchor for custom markers

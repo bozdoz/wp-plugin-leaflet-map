@@ -18,7 +18,8 @@
 		}
 
 		function update_map () {
-			var latlng = map_1.getCenter();
+			var bounds = map_1.getBounds();
+			var latlng = bounds.getCenter();
 			map_input.value = '[leaflet-map lat=' +
 				latlng.lat +
 				' lng=' + 
@@ -26,6 +27,12 @@
 				' zoom=' +
 				map_1.getZoom() +
 				']';
+
+			// update marker if outside of bounds
+			if (!bounds.contains(marker_1.getLatLng())) {
+				// move marker to center
+				marker_1.setLatLng(latlng);
+			}
 		}
 
 		marker_1.on('drag', update_marker);

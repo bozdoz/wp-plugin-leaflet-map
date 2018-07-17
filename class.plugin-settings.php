@@ -259,11 +259,11 @@ class Leaflet_Map_Plugin_Settings
             ),
             'geocoder' => array(
                 'display_name'=>__('Geocoder', 'leaflet-map'),
-                'default' => 'google',
+                'default' => 'osm',
                 'type' => 'select',
                 'options' => array(
-                    'google' => __('Google Maps', 'leaflet-map'),
                     'osm' => __('OpenStreetMap Nominatim', 'leaflet-map'),
+                    'google' => __('Google Maps', 'leaflet-map'),
                     'dawa' => __('Denmark Addresses', 'leaflet-map')
                 ),
                 'helptext' => __('Select the Geocoding provider to use to retrieve addresses defined in shortcode.', 'leaflet-map')

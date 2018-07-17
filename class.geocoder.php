@@ -95,7 +95,8 @@ class Leaflet_Geocoder {
 
 	        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
 	        curl_setopt($ch, CURLOPT_HEADER, 0);
-	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_REFERER, get_site_url());
 	        curl_setopt($ch, CURLOPT_URL, $url);
 	        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
@@ -133,9 +134,9 @@ class Leaflet_Geocoder {
 
 	            return (Object) $location;
 	        }
-	    }
-
-	    return $this->not_found;
+		}
+		
+		throw new Exception('No Address Found');
 	}
 
 	/**
@@ -149,8 +150,8 @@ class Leaflet_Geocoder {
 	    $geocode_url = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
 	    $geocode_url .= $address;
 	    $json = $this->get_url($geocode_url);
-        $json = json_decode($json);
-
+		$json = json_decode($json);
+		
         if (is_array($json) && 
             is_object($json[0]) &&
             $json[0]->lat) {
@@ -161,7 +162,7 @@ class Leaflet_Geocoder {
             );
         }
 
-	    return $this->not_found;
+	    throw new Exception('No Address Found');
 	}
 
 	/**
@@ -190,6 +191,6 @@ class Leaflet_Geocoder {
 	        return $location;
 	    } 
 
-	    return $this->not_found;
+	    throw new Exception('No Address Found');
 	}
 }
