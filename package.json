@@ -1,10 +1,11 @@
 {
   "name": "leaflet-map",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "description": "Leaflet Map WordPress Plugin",
   "main": "index.js",
   "scripts": {
-    "minify": "for file in scripts/*.js; do minify $file > ./scripts/$(basename $file .js).min.js; done",
+    "start": "docker-compose up",
+    "minify": "npm run clean && for file in scripts/*.js; do minify $file > ./scripts/$(basename $file .js).min.js; done",
     "clean": "rm scripts/*.min.js",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
     "svn": "cd ./svn/trunk && git pull && cd .. && svn cp trunk/ tags/2.10.0",
