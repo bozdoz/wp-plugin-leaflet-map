@@ -93,7 +93,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                         'fill-opacity' : 'fillOpacity',
                         stroke : 'color',
                         'stroke-opacity' : 'opacity',
-                        'stroke-width' : 'width',
+                        'stroke-width' : 'weight',
                     },
                     layer = L.ajaxGeoJson(src, {
                         type: '<?php echo $class::$type; ?>',
