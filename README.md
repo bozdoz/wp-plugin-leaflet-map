@@ -1,8 +1,8 @@
 Leaflet Map WordPress Plugin
 ========
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.3.1-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-4.9.4-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.3.4-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-4.9.7-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -31,31 +31,20 @@ Height, width, latitude, longitude and zoom are the basic attributes:
 [leaflet-map height=250 width=250 lat=44.67 lng=-63.61 zoom=5]
 ```
 
-However, you can also just give it an address, and Google will look it up for you:
+However, you can also just give it an address, and the chosen geocoder (default: Nominatum) will look it up for you:
 
 ```
 [leaflet-map address="Oslo, Norway"]
 ```
 
-The default URL requires attribution by its terms of use.  If you want to change the URL, you may define a new attribution, or remove the attribution.  You can define this site-wide in the admin, or you can set this per map in the shortcode (0 for disabled):
+#### [leaflet-map] Options:
 
-```
-[leaflet-map attribution=0]
-```
 
-OR 
-
-```
-[leaflet-map attribution="Copyright @bozdoz"]
-```
-
-The zoom buttons can be large and annoying.  Enable or disable per map in shortcode: 
-
-```
-[leaflet-map zoomcontrol="0"]
-```
-
-Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.
+Option | Default
+--- | ---
+height | TBD
+width | TBD
+zoom | TBD
 
 ### [leaflet-marker]
 
