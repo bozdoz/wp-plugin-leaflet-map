@@ -24,7 +24,7 @@ class Leaflet_Map
      * 
      * @var string major minor patch version
      */
-    public static $leaflet_version = '1.3.1';
+    public static $leaflet_version = '1.3.4';
 
     /**
      * Number of maps on page; used for unique map ids
