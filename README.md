@@ -42,9 +42,25 @@ However, you can also just give it an address, and the chosen geocoder (default:
 
 Option | Default
 --- | ---
-height | TBD
-width | TBD
-zoom | TBD
+`lat` and `lng` or `address` | 44.67, -63.61
+`zoom` | 12
+`height` | 250
+`width` | 100%
+`fit_markers` | 0 (false)
+zoomcontrol | 0 (false)
+scrollwheel | 0 (false)
+doubleclickzoom | 0 (false)
+min_zoom | 0
+max_zoom | 20
+subdomains | abc
+attribution | ©Leaflet ©OpenStreetMap
+closepopuponclick | false
+trackresize | false
+boxzoom | true
+dragging | true
+keyboard | true
+
+---
 
 ### [leaflet-marker]
 
