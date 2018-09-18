@@ -24,7 +24,7 @@ class Leaflet_Map
      * 
      * @var string major minor patch version
      */
-    public static $leaflet_version = '1.3.1';
+    public static $leaflet_version = '1.3.4';
 
     /**
      * Number of maps on page; used for unique map ids
@@ -58,6 +58,10 @@ class Leaflet_Map
         'leaflet-line' => array(
             'file' => 'class.line-shortcode.php',
             'class' => 'Leaflet_Line_Shortcode'
+        ),
+        'leaflet-circle' => array(
+            'file' => 'class.circle-shortcode.php',
+            'class' => 'Leaflet_Circle_Shortcode'
         ),
         'leaflet-map' => array(
             'file' => 'class.map-shortcode.php',
@@ -296,7 +300,7 @@ class Leaflet_Map
     /**
      * Add Popups to Shapes
      *
-     * used by leaflet-marker and leaflet-line
+     * used by leaflet-marker, leaflet-line and leaflet-circle
      *
      * @param array  $atts    user-input array
      * @param string $content text to display

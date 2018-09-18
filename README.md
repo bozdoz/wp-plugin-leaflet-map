@@ -1,8 +1,8 @@
 Leaflet Map WordPress Plugin
 ========
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.3.1-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-4.9.4-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.3.4-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-4.9.7-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -31,31 +31,36 @@ Height, width, latitude, longitude and zoom are the basic attributes:
 [leaflet-map height=250 width=250 lat=44.67 lng=-63.61 zoom=5]
 ```
 
-However, you can also just give it an address, and Google will look it up for you:
+However, you can also just give it an address, and the chosen geocoder (default: Nominatum) will look it up for you:
 
 ```
 [leaflet-map address="Oslo, Norway"]
 ```
 
-The default URL requires attribution by its terms of use.  If you want to change the URL, you may define a new attribution, or remove the attribution.  You can define this site-wide in the admin, or you can set this per map in the shortcode (0 for disabled):
+#### [leaflet-map] Options:
 
-```
-[leaflet-map attribution=0]
-```
 
-OR 
+Option | Default
+--- | ---
+`lat` and `lng` or `address` | 44.67, -63.61
+`zoom` | 12
+`height` | 250
+`width` | 100%
+`fit_markers` | 0 (false)
+zoomcontrol | 0 (false)
+scrollwheel | 0 (false)
+doubleclickzoom | 0 (false)
+min_zoom | 0
+max_zoom | 20
+subdomains | abc
+attribution | ©Leaflet ©OpenStreetMap
+closepopuponclick | false
+trackresize | false
+boxzoom | true
+dragging | true
+keyboard | true
 
-```
-[leaflet-map attribution="Copyright @bozdoz"]
-```
-
-The zoom buttons can be large and annoying.  Enable or disable per map in shortcode: 
-
-```
-[leaflet-map zoomcontrol="0"]
-```
-
-Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image source="path/to/image/file.jpg"]`.
+---
 
 ### [leaflet-marker]
 
@@ -69,6 +74,10 @@ Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` s
 ![Fitted Colored Line](https://imgur.com/dixNDtF.jpg)
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
+
+### [leaflet-circle]
+
+Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
 ### [leaflet-geojson]
 
