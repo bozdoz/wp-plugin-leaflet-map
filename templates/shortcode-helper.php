@@ -77,7 +77,7 @@
                     '[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
                     '[leaflet-line latlngs="41, 29; 44, 18;"]'
                     ),
-                __("Basic Circle w/Scrollwheel", 'leaflet-map') => array(
+                __("Basic Circle", 'leaflet-map') => array(
                     '[leaflet-map lat=52 lng=5 zoom=9]',
                     '[leaflet-circle lat=52 lng=5 radius=17500]'
                     ),
