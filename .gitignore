@@ -1,3 +1,5 @@
 assets/
 svn/
 node_modules/
+# - ./themes:/var/www/html/wp-content/themes in docker-compose
+themes/

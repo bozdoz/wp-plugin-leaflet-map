@@ -1,24 +1,6 @@
 (function() {
-    /**
-    * window.WPLeafletMapPlugin can be used, by saving arguments, before it 
-    * is officially initialized
-    */
-    var original = window.WPLeafletMapPlugin;
-
     // holds a function queue to call once page is loaded
     function Main() {
-        /**
-         * this function executes any functions 
-         * that were added before the plugin was initialized
-         */
-        this.init = function () {
-            if (!!original) {
-                for (var i = 0, len = original.length; i < len; i++) {
-                    this.push(original[i]);
-                }
-            }
-        };
-
         /**
          * this function mirrors the array appending function
          * so that we can at least append functions to a global array
@@ -27,6 +9,8 @@
          * All shortcodes should execute the following:
          *      var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
          *      WPLeafletMapPlugin.push(function () {
+         * 
+         * Think of it as a whenReady callback
          */
         this.push = function(fnc) {
             fnc();
@@ -86,15 +70,25 @@
         this.lines = [];
     }
 
-    window.WPLeafletMapPlugin = new Main();
+    function init () {
+        /**
+         * window.WPLeafletMapPlugin can be used, by saving arguments, 
+         * before it is officially initialized
+         */
+        var original = window.WPLeafletMapPlugin;
+        window.WPLeafletMapPlugin = new Main();
+
+        if (!!original) {
+            for (var i = 0, len = original.length; i < len; i++) {
+                window.WPLeafletMapPlugin.push(original[i]);
+            }
+        }
+    }
 
     // initialize the function
     if (window.addEventListener) {
-        window.addEventListener('load', window.WPLeafletMapPlugin.init, false);
+        window.addEventListener('load', init, false);
     } else if (window.attachEvent) {
-        window.attachEvent('onload', function() {
-            // hopefully this helps any references to `this`
-            window.WPLeafletMapPlugin.init();
-        });
+        window.attachEvent('onload', init);
     }
 })();
