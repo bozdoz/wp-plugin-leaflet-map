@@ -1,27 +1,45 @@
 (function() {
+    /**
+    * window.WPLeafletMapPlugin can be used, by saving arguments, before it 
+    * is officially initialized
+    */
+    var original = window.WPLeafletMapPlugin;
+
     // holds a function queue to call once page is loaded
     function Main() {
-        var init_functions = [];
-
-        // this function iterates all map creation functions
-        this.init = function() {
-            for (var i = 0, len = init_functions.length; i < len; i++) {
-                var fnc = init_functions[i];
-                fnc();
+        /**
+         * this function executes any functions 
+         * that were added before the plugin was initialized
+         */
+        this.init = function () {
+            if (!!original) {
+                for (var i = 0, len = original.length; i < len; i++) {
+                    this.push(original[i]);
+                }
             }
         };
 
-        // this is the function we use to create all map objects
-        this.add = function(fnc) {
-            init_functions.push(fnc);
+        /**
+         * this function mirrors the array appending function
+         * so that we can at least append functions to a global array
+         * before the maps are ready to be rendered
+         * 
+         * All shortcodes should execute the following:
+         *      var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+         *      WPLeafletMapPlugin.push(function () {
+         */
+        this.push = function(fnc) {
+            fnc();
         };
 
-        this.getCurrentMap = function() {
-            // maps are created iteratively, so the last map is the current map
+        /**
+         * maps are created iteratively, so the last map is the current map
+         */
+        this.getCurrentMap = function () {
             return this.maps[this.maps.length - 1];
         };
 
-        this.getCurrentMarkerGroup = function() {
+        this.getCurrentMarkerGroup = function () {
             // marker groups are mapid -> feature group
             var mapid = this.maps.length;
             if (!this.markergroups[mapid]) {
@@ -34,14 +52,14 @@
             return new L.FeatureGroup().addTo(map);
         };
 
-        this.newMarkerGroup = function(map) {
+        this.newMarkerGroup = function (map) {
             var mg = this.getGroup(map);
 
             mg.timeout = null;
 
             // custom attribute
             if (map.fit_markers) {
-                mg.on('layeradd', function(d) {
+                mg.on('layeradd', function (d) {
                     // needs a timeout so that it doesn't 
                     // opt out of a bound change
                     window.clearTimeout(this.timeout);
@@ -54,6 +72,12 @@
             return mg;
         };
 
+        this.unescape = function (str) {
+            var div = document.createElement('div');
+            div.innerHTML = str;
+            return div.innerText;
+        };
+
         // these accessible properties hold map objects
         this.maps = [];
         this.images = [];
@@ -61,12 +85,6 @@
         this.markers = [];
         this.lines = [];
     }
-
-    Main.prototype.unescape = function(str) {
-        var div = document.createElement('div');
-        div.innerHTML = str;
-        return div.innerText;
-    };
 
     window.WPLeafletMapPlugin = new Main();
 

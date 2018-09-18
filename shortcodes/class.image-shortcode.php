@@ -52,7 +52,8 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
                 echo $width; 
             ?>;"></div>
         <script>
-        WPLeafletMapPlugin.add(function () {
+        var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        WPLeafletMapPlugin.push(function () {
             var map,
                 options = L.Util.extend({}, {
                     maxZoom: <?php echo $max_zoom; ?>,
@@ -98,8 +99,8 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
                 }
             }
             ?>
-            WPLeafletMapPlugin.maps.push( map );
-            WPLeafletMapPlugin.images.push( img );
+            window.WPLeafletMapPlugin.maps.push( map );
+            window.WPLeafletMapPlugin.images.push( img );
         }); // end add
         </script>
         <?php

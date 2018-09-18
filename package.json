@@ -1,6 +1,6 @@
 {
   "name": "leaflet-map",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "description": "Leaflet Map WordPress Plugin",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,6 @@
     "minify": "npm run clean && for file in scripts/*.js; do minify $file > ./scripts/$(basename $file .js).min.js; done",
     "clean": "rm scripts/*.min.js",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
-    "svn": "cd ./svn/trunk && git pull && cd .. && svn cp trunk/ tags/2.10.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

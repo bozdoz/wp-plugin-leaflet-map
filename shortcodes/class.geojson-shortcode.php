@@ -84,8 +84,9 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
         <script>
-            WPLeafletMapPlugin.add(function () {
-                var previous_map = WPLeafletMapPlugin.getCurrentMap(),
+            var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+            WPLeafletMapPlugin.push(function () {
+                var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                     src = '<?php echo $src; ?>',
                     default_style = <?php echo $style_json; ?>,
                     rewrite_keys = {
@@ -101,7 +102,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                         onEachFeature : onEachFeature
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
-                    popup_text = WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
+                    popup_text = window.WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
                     popup_property = '<?php echo $popup_property; ?>';
                 if (fitbounds) {
                     layer.on('ready', function () {

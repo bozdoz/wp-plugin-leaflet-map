@@ -317,7 +317,7 @@ class Leaflet_Map
         $visible = empty($visible) ? false : ($visible == 'true');
 
         if (!empty($message)) {
-            echo "{$shape}.bindPopup(WPLeafletMapPlugin.unescape('{$message}'))";
+            echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
             if ($visible) {
                 echo ".openPopup()";
             }
