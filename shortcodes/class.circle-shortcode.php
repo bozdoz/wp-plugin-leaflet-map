@@ -40,18 +40,35 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
-        /* add to user contributed lat lng */
+        if (!empty($address)) {
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+            $location = new Leaflet_Geocoder( $address );
+            $lat = $location->lat;
+            $lng = $location->lng;
+        }
+
         $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
-        $radius = empty($radius) ? '0' : $radius;
+        $radius = empty($radius) ? '1000' : $radius;
 
         ob_start();
         ?>
         <script>
         WPLeafletMapPlugin.add(function () {
             var previous_map = WPLeafletMapPlugin.getCurrentMap(),
-                circle = L.circle([<?php echo $lat . ', ' . $lng . '], {radius: ' . $radius . '}'; ?>),
-                fitbounds = <?php echo $fitbounds; ?>;
+                fitbounds = <?php echo $fitbounds; ?>,
+                is_image = previous_map.is_image_map,
+                lat = <?php echo $lat; ?>,
+                lng = <?php echo $lng; ?>,
+                radius = <?php echo $radius; ?>;
+
+            // update lat lng to previous map's center
+            if (!lat && !lng && !is_image) {
+                var map_center = previous_map.getCenter();
+                lat = map_center.lat;
+                lng = map_center.lng;
+            }
+            var circle = L.circle([lat, lng], {radius: radius});
             circle.setStyle(<?php echo $style_json; ?>);
             circle.addTo( previous_map );
             if (fitbounds) {
