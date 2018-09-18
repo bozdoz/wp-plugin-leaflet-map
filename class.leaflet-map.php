@@ -59,6 +59,10 @@ class Leaflet_Map
             'file' => 'class.line-shortcode.php',
             'class' => 'Leaflet_Line_Shortcode'
         ),
+        'leaflet-circle' => array(
+            'file' => 'class.circle-shortcode.php',
+            'class' => 'Leaflet_Circle_Shortcode'
+        ),
         'leaflet-map' => array(
             'file' => 'class.map-shortcode.php',
             'class' => 'Leaflet_Map_Shortcode'
@@ -296,7 +300,7 @@ class Leaflet_Map
     /**
      * Add Popups to Shapes
      *
-     * used by leaflet-marker and leaflet-line
+     * used by leaflet-marker, leaflet-line and leaflet-circle
      *
      * @param array  $atts    user-input array
      * @param string $content text to display
