@@ -2,11 +2,11 @@
 Author: bozdoz
 Author URI: https://www.twitter.com/bozdoz/
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital
+Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.9.7
+Tested up to: 4.9.8
 Version: 2.11.2
 Stable tag: 2.11.2
 License: GPLv2
@@ -124,8 +124,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 
 == Changelog ==
 
-= 2.11.1 =
+= 2.11.2 =
 * Allow scripts to be deferred, and still render maps reliably
+* Add a circle to the map by adding `[leaflet-circle]`
 
 = 2.11.1 =
 * Added Dockerfiles to github
