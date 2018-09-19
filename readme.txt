@@ -2,13 +2,13 @@
 Author: bozdoz
 Author URI: https://www.twitter.com/bozdoz/
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital
+Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.9.7
-Version: 2.11.1
-Stable tag: 2.11.1
+Tested up to: 4.9.8
+Version: 2.11.2
+Stable tag: 2.11.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,8 @@ Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` s
 = Lines and other Shapes =
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
+
+Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
 Or you can add a geojson shape via a url (work in progress): `[leaflet-geojson src="https://example.com/path/to.geojson"]`
 
@@ -123,6 +125,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.11.2 =
+* Allow scripts to be deferred, and still render maps reliably
+* Add a circle to the map by adding `[leaflet-circle]`
 
 = 2.11.1 =
 * Added Dockerfiles to github

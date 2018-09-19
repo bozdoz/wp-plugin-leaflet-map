@@ -77,6 +77,10 @@
                     '[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
                     '[leaflet-line latlngs="41, 29; 44, 18;"]'
                     ),
+                __("Basic Circle", 'leaflet-map') => array(
+                    '[leaflet-map lat=52 lng=5 zoom=9]',
+                    '[leaflet-circle lat=52 lng=5 radius=17500]'
+                    ),
                 __("Fitted Colored Line on Addresses", 'leaflet-map') => array(
                     '[leaflet-map]',
                     '[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline=1]'

@@ -76,8 +76,9 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
         <script>
-        WPLeafletMapPlugin.add(function () {
-            var previous_map = WPLeafletMapPlugin.getCurrentMap(),
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
+            var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                 line = L.polyline(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
                 fitbounds = <?php echo $fitbounds; ?>;
             line.addTo( previous_map );
@@ -85,10 +86,10 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
                 // zoom the map to the polyline
                 previous_map.fitBounds( line.getBounds() );
             }
-        <?php
-            $this->LM->add_popup_to_shape($atts, $content, 'line');
-        ?>
-            WPLeafletMapPlugin.lines.push( line );
+            <?php
+                $this->LM->add_popup_to_shape($atts, $content, 'line');
+            ?>
+            window.WPLeafletMapPlugin.lines.push( line );
         });
         </script>
         <?php

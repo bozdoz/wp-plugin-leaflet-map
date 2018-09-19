@@ -115,6 +115,9 @@ Option | Usage
 `fitbounds` | Fit the map to the bounds of the line (instead of whatever center you gave the map originally)
 
 ---
+### [leaflet-circle]
+
+Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
 ### [leaflet-geojson]
 
@@ -125,8 +128,6 @@ Or you can add a geojson shape via a url:
 ```
 [leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]
 ```
-
-Check it out [here](https://gist.github.com/bozdoz/064a7101b95a324e8852fe9381ab9a18).
 
 #### [leaflet-geojson] Options
 

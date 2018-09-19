@@ -118,8 +118,11 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         if ($options === '[]') {
             $options = '{}';
         }
-        ob_start(); ?><script>
-        WPLeafletMapPlugin.add(function () {
+        ob_start();
+        ?>
+        <script>
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
             var marker_options = (function () {
                     var _options = <?php echo $options; ?>;
                     var iconArrays = [
@@ -161,25 +164,25 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
                     return _options;
                 })(),
                 draggable = marker_options.draggable,
-                marker = <?php echo $default_marker ?>(
+                marker = <?php echo $default_marker; ?>(
                     [<?php echo $lat . ',' . $lng; ?>], 
                     marker_options
                 ),
-                map = WPLeafletMapPlugin.getCurrentMap(),
+                map = window.WPLeafletMapPlugin.getCurrentMap(),
                 is_image = map.is_image_map,
-                markergroup = WPLeafletMapPlugin.getCurrentMarkerGroup();
-        <?php
-        if (empty($lat) && empty($lng)) {
-            /* update lat lng to previous map's center */
-        ?>
+                markergroup = window.WPLeafletMapPlugin.getCurrentMarkerGroup();
+            <?php
+            if (empty($lat) && empty($lng)) {
+                /* update lat lng to previous map's center */
+            ?>
                 if (!is_image) {
                     marker.setLatLng( map.getCenter() );
                 } else {
                     marker.setLatLng( [0, 0] );
                 }
-        <?php
-        }
-        ?>
+            <?php
+            }
+            ?>
             if (draggable) {
                 marker.on('dragend', function () {
                     var latlng = this.getLatLng(),
@@ -194,12 +197,13 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
             }
 
             marker.addTo( markergroup );
-        <?php
-            $this->LM->add_popup_to_shape($atts, $content, 'marker');
-        ?>
-            WPLeafletMapPlugin.markers.push( marker );
+            <?php
+                $this->LM->add_popup_to_shape($atts, $content, 'marker');
+            ?>
+            window.WPLeafletMapPlugin.markers.push( marker );
         }); // end add function
-        </script><?php
+        </script>
+        <?php
         return ob_get_clean();
     }
 }
