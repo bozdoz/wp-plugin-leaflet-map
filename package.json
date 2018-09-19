@@ -9,6 +9,7 @@
     "minify": "npm run clean && for file in scripts/*.js; do minify $file > ./scripts/$(basename $file .js).min.js; done",
     "clean": "rm scripts/*.min.js",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
+    "tag": "git tag v$VERSION && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
