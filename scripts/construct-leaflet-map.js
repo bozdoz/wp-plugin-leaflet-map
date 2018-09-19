@@ -7,8 +7,8 @@
          * before the maps are ready to be rendered
          * 
          * All shortcodes should execute the following:
-         *      var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-         *      WPLeafletMapPlugin.push(function () {
+         *      window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+         *      window.WPLeafletMapPlugin.push(function () {
          * 
          * Think of it as a whenReady callback
          */

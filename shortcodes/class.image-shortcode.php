@@ -52,8 +52,8 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
                 echo $width; 
             ?>;"></div>
         <script>
-        var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        WPLeafletMapPlugin.push(function () {
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
             var map,
                 options = L.Util.extend({}, {
                     maxZoom: <?php echo $max_zoom; ?>,

@@ -18,6 +18,7 @@ services:
       - db
     volumes:
       - wordpress:/var/www/html
+      # - ./themes:/var/www/html/wp-content/themes
       - .:/var/www/html/wp-content/plugins/leaflet-map
     ports:
       - 1234:80

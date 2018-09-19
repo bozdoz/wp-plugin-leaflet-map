@@ -76,8 +76,8 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
         <script>
-        var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        WPLeafletMapPlugin.push(function () {
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
             var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                 line = L.polyline(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
                 fitbounds = <?php echo $fitbounds; ?>;

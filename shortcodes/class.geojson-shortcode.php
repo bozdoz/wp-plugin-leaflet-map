@@ -84,8 +84,8 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
         <script>
-            var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-            WPLeafletMapPlugin.push(function () {
+            window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+            window.WPLeafletMapPlugin.push(function () {
                 var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                     src = '<?php echo $src; ?>',
                     default_style = <?php echo $style_json; ?>,

@@ -196,8 +196,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 echo $width; 
             ?>;"></div>
         <script>
-        var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        WPLeafletMapPlugin.push(function () {
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
             var baseUrl = '<?php echo $tileurl; ?>',
                 base = (!baseUrl && window.MQ) ? 
                     MQ.mapLayer() : L.tileLayer(baseUrl, { 

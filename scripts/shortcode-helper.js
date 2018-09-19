@@ -1,7 +1,7 @@
 (function () {
 
-	var WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-	WPLeafletMapPlugin.push( initAdminShortcodes );
+	window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+	window.WPLeafletMapPlugin.push( initAdminShortcodes );
 
 	function initAdminShortcodes () {
 		var map_input = document.getElementById('map-shortcode'),
