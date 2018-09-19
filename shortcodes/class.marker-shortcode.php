@@ -123,12 +123,12 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
             var marker_options = (function () {
                     var _options = <?php echo $options; ?>;
                     var iconArrays = [
-                            'iconSize', 
-                            'iconAnchor', 
-                            'shadowSize', 
-                            'shadowAnchor',
-                            'popupAnchor'
-                        ];
+                        'iconSize', 
+                        'iconAnchor', 
+                        'shadowSize', 
+                        'shadowAnchor',
+                        'popupAnchor'
+                    ];
                     var default_icon = L.Icon.Default.prototype.options;
                     if (_options.iconUrl) {
                         // arrays are strings, unfortunately...

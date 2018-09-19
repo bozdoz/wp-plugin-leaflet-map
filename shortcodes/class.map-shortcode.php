@@ -101,8 +101,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 $closepopuponclick : null,
             'trackResize' => isset($trackresize) ? $trackresize : null,
             'boxZoom' => isset($boxzoom) ? $boxzoom : null,
-            'doubleClickZoom' => isset($doubleclickzoom) ? 
-                $doubleclickzoom : null,
             'dragging' => isset($dragging) ? $dragging : null,
             'keyboard' => isset($keyboard) ? $keyboard : null
         );
