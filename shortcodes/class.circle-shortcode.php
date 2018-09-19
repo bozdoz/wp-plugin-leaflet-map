@@ -54,8 +54,9 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
         <script>
-        WPLeafletMapPlugin.add(function () {
-            var previous_map = WPLeafletMapPlugin.getCurrentMap(),
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
+            var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                 fitbounds = <?php echo $fitbounds; ?>,
                 is_image = previous_map.is_image_map,
                 lat = <?php echo $lat; ?>,

@@ -17,6 +17,56 @@ Installation
 
 * (needlessly complicated) Copy this repo (or download a release of it) into your WordPress plugins directory: `/wp-content/plugins/`. You might also need to name the directory 'leaflet-map', like so: `git clone https://github.com/bozdoz/wp-plugin-leaflet-map.git leaflet-map`
 
+General Usage
+-------------
+
+```
+[leaflet-map address="Manhattan, New York"]
+[leaflet-marker]
+```
+
+The above shortcode will produce a map centered at Manhattan, New York (thanks to geocoding), and also drop a marker in the center.
+
+It's also useful to add popups to the markers:
+
+```
+[leaflet-map address="Las Vegas"]
+[leaflet-marker]Hey! This is where I got married![/leaflet-marker]
+```
+
+You can have SVG markers, add shapes, geojson, kml, images, and more!  See available shortcodes below.
+
+Developing
+----------
+
+This plugin uses Docker for development.  Simply 1. [install Docker](https://www.docker.com/get-started), 2. fork/clone the repo, and 3. execute this command from the repo's root directory in your terminal:
+
+```bash
+docker-compose up
+```
+
+You should also have node and NPM installed if you want to edit JavaScript files, and need to minify them:
+
+```bash
+npm install
+npm run minify
+```
+
+You can also use these NPM scripts to interact with Docker, if you make changes to Docker-related files:
+
+To start: 
+
+```bash
+npm start
+```
+
+To completely remove:
+
+```bash
+npm run destroy
+```
+
+That's all for now! Thanks!
 
 Available Shortcodes
 --------------------
@@ -134,7 +184,6 @@ Or you can add a geojson shape via a url:
 Option | Usage
 --- | ---
 `src` | Source of the geojson file
-`
 
 ### [leaflet-kml]
 
