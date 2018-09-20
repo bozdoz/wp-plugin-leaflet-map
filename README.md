@@ -115,6 +115,31 @@ Option | Default
 
 Much the same as leaflet-map above, but uses `src` for the source image.
 
+TBH, it's a huge mess, and probably shouldn't be used.  It might make a good image viewer with optional marker highlight points.  It requires far too much manual work at the moment.  Recommended usage:
+
+```
+[leaflet-image src="path/to/img.jpg" zoom=1]
+[leaflet-marker draggable=1]
+```
+
+Then in the console, check the coordinates when you move the marker (should only work at that zoom level).
+
+#### [leaflet-image] Options:
+
+Option | Default
+--- | ---
+`src` | https://lorempixel.com/1000/1000/
+`zoom` | 12
+`height` | 250
+`width` | 100%
+`fit_markers` | 0 (false)
+`zoomcontrol` | 0 (false)
+`scrollwheel` | 0 (false)
+`doubleclickzoom` | 0 (false)
+`min_zoom` | 0
+`max_zoom` | 20
+`attribution` | ©Leaflet ©OpenStreetMap
+
 ---
 
 ### [leaflet-marker]
@@ -164,10 +189,27 @@ Option | Usage
 `addresses`, `latlngs`, or `coordinates` | For geocoded addresses, latitude/longitude, or x/y coordinates for Image Maps (see [leaflet-image]); ex: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`
 `fitbounds` | Fit the map to the bounds of the line (instead of whatever center you gave the map originally)
 
+And the following Shape Options. See https://leafletjs.com/reference-1.3.4.html#path for details.
+'stroke', 'color', 'weight', 'opacity',
+'lineCap', 'lineJoin', 'dashArray', 'dashOffset'
+'fill', 'fillColor', 'fillOpacity', 'fillRule', 'className'
+
 ---
 ### [leaflet-circle]
 
-Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
+![Circle](https://i.imgur.com/rVHH6Zm.png)
+
+Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.1179 lat=52.0979 radius=17500 color="#0DC143" fillOpacity=0.1]`.
+
+#### [leaflet-circle] Options
+
+Options | Usage 
+--- | ---
+`address`, `lat/lng`, or `x/y` | For geocoded addresses, latitude/longitude, or x/y coordinates for Image Maps (see [leaflet-image]); ex: `[leaflet-circle lat=52 lng=5]` or addresses: `[leaflet-circle address="Amsterdam"]`
+`fitbounds` | Fit the map to the bounds of the circle (instead of whatever center you gave the map originally)
+radius | Radius of the circle in meters
+
+Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path 
 
 ### [leaflet-geojson]
 
