@@ -197,7 +197,7 @@ And the following Shape Options. See https://leafletjs.com/reference-1.3.4.html#
 ---
 ### [leaflet-circle]
 
-![Circle](https://i.imgur.com/rVHH6Zm.png)
+![Circle](https://i.imgur.com/rVHH6Zm.png?1234)
 
 Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.1179 lat=52.0979 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
