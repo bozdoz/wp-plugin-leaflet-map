@@ -2,7 +2,7 @@ Leaflet Map WordPress Plugin
 ========
 
 ![Leaflet](https://img.shields.io/badge/leaflet-1.3.4-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-4.9.7-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-4.9.8-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 

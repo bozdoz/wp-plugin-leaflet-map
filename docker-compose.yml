@@ -18,7 +18,7 @@ services:
       - db
     volumes:
       - wordpress:/var/www/html
-      # - ./themes:/var/www/html/wp-content/themes
+      - ./themes:/var/www/html/wp-content/themes
       - .:/var/www/html/wp-content/plugins/leaflet-map
     ports:
       - 1234:80
@@ -35,6 +35,7 @@ services:
       - wordpress
     volumes: 
       - wordpress:/var/www/html
+      - ./themes:/var/www/html/wp-content/themes
       - .:/var/www/html/wp-content/plugins/leaflet-map
     environment:
       WORDPRESS_PORT: 1234
