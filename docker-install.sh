@@ -12,23 +12,23 @@ fi
 
 if [ ! -f .cli-initialized ]; then
     echo "Initializing WordPress install!"
-    wp --allow-root core install --url="localhost:$WORDPRESS_PORT" \
+
+    wp core install --url="localhost:$WORDPRESS_PORT" \
         --title="Test Leaflet Map" \
         --admin_user=admin \
         --admin_password=password \
         --admin_email=not@real.com \
-        --skip-email \
-        --skip-plugins
+        --skip-email
 
-    wp --allow-root config set WP_DEBUG true --raw
+    wp config set WP_DEBUG true --raw
 
-    wp --allow-root core update
+    wp core update
 
-    wp --allow-root theme activate twentyfifteen
+    wp theme activate twentyfifteen
 
-    wp --allow-root plugin activate leaflet-map
+    wp plugin activate leaflet-map
 
-    wp --allow-root post create --post_type=post --post_title='Test Map' --post_content='[leaflet-map] [leaflet-marker]' --post_status='publish'
+    wp post create --post_type=post --post_title='Test Map' --post_content='[leaflet-map] [leaflet-marker]' --post_status='publish'
 
     touch .cli-initialized
 fi

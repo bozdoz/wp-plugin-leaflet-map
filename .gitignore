@@ -1,5 +1,6 @@
 assets/
 svn/
 node_modules/
-# - ./themes:/var/www/html/wp-content/themes in docker-compose
-themes/
+# - ./theme:/var/www/html/wp-content/themes/twentyfifteen in docker-compose
+theme/
+plugins/

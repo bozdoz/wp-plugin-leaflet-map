@@ -18,10 +18,11 @@ services:
       - db
     volumes:
       - wordpress:/var/www/html
-      - ./themes:/var/www/html/wp-content/themes
+      # - ./theme:/var/www/html/wp-content/themes/twentyfifteen
+      # - ./plugins:/var/www/html/wp-content/plugins
       - .:/var/www/html/wp-content/plugins/leaflet-map
     ports:
-      - 1234:80
+      - ${WORDPRESS_PORT:-1234}:80
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
@@ -35,10 +36,11 @@ services:
       - wordpress
     volumes: 
       - wordpress:/var/www/html
-      - ./themes:/var/www/html/wp-content/themes
+      # - ./theme:/var/www/html/wp-content/themes/twentyfifteen
+      # - ./plugins:/var/www/html/wp-content/plugins
       - .:/var/www/html/wp-content/plugins/leaflet-map
     environment:
-      WORDPRESS_PORT: 1234
+      WORDPRESS_PORT: ${WORDPRESS_PORT:-1234}
 
 volumes:
   wp_db:
