@@ -26,8 +26,8 @@
         <?php
         $drag = __('Drag Me', 'leaflet-map');
 
-        echo do_shortcode('[leaflet-map zoom=2 zoomcontrol=1 doubleClickZoom=1 height=300 scrollwheel=1]');
-        echo do_shortcode(sprintf('[leaflet-marker draggable=1 visible="true"] %s [/leaflet-marker]',
+        echo do_shortcode('[leaflet-map zoom=2 zoomcontrol doubleClickZoom height=300 scrollwheel]');
+        echo do_shortcode(sprintf('[leaflet-marker draggable visible] %s [/leaflet-marker]',
             $drag
         ));
         ?>
@@ -52,18 +52,22 @@
                     '[leaflet-marker lat=43.67 lng=-79.4]',
                     ),
                 __("Draggable Marker", 'leaflet-map') => array(
-                    '[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel=1]',
-                    '[leaflet-marker draggable=1]',
+                    '[leaflet-map zoom=8 lat=-33.85 lng=151.21 scrollwheel]',
+                    '[leaflet-marker draggable]',
                     ),
                 __("Marker Icon", 'leaflet-map') => array(
-                    '[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel=1]',
+                    '[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel]',
                     '[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
                     ),
+                __("SVG Marker Icon", 'leaflet-map') => array(
+                    '[leaflet-map address="twilight lane, nova scotia" scrollwheel]',
+                    '[leaflet-marker svg background="#654" iconClass="dashicons dashicons-star-filled" color="gold"]My Favorite Place in the World[/leaflet-marker]'
+                    ),
                 __("Zoom Buttons", 'leaflet-map') => array(
-                    '[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol=1]',
+                    '[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol]',
                     ),
                 __("Alternate Map Tiles w/scrollwheel", 'leaflet-map') => array(
-                    '[leaflet-map zoom=2 scrollwheel=1 lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=abcd attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
+                    '[leaflet-map zoom=2 scrollwheel lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=abcd attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
                     ),
                 __("Marker Popup Messages (on click)", 'leaflet-map') => array(
                     '[leaflet-map lat=59.913 lng=10.739 zoom=12]',
@@ -74,7 +78,7 @@
                     '[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
                     ),
                 __("Basic Lines w/Scrollwheel", 'leaflet-map') => array(
-                    '[leaflet-map lat=41 lng=29 scrollwheel=1 zoom=6]',
+                    '[leaflet-map lat=41 lng=29 scrollwheel zoom=6]',
                     '[leaflet-line latlngs="41, 29; 44, 18;"]'
                     ),
                 __("Basic Circle", 'leaflet-map') => array(
@@ -83,21 +87,21 @@
                     ),
                 __("Fitted Colored Line on Addresses", 'leaflet-map') => array(
                     '[leaflet-map]',
-                    '[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline=1]'
+                    '[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline]'
                     ),
                 __("More Crazy Line Attributes", 'leaflet-map') => array(
                     '[leaflet-map]',
-                    '[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants fitbounds=1]'
+                    '[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, Nova Scotia; Tanzania" classname=marching-ants fitbounds]'
                     ),
                 __("Disable all Interaction", 'leaflet-map') => array(
                     '[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0 attribution=0]',
                     ),
                 __("Add GeoJSON by URL (with popups)", 'leaflet-map') => array(
                     '[leaflet-map doubleClickZoom=true scrollwheel=true]',
-                    '[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds=1 popup_property="popup-text"]'
+                    '[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds popup_property="popup-text"]'
                     ),
-                __("Test Image Map", 'leaflet-map') => array(
-                    '[leaflet-image zoom=1 zoomcontrol=1 scrollwheelzoom=1 attribution=0]',
+                __("Image Map", 'leaflet-map') => array(
+                    '[leaflet-image zoom=1 zoomcontrol scrollwheelzoom attribution=0]',
                     '[leaflet-marker]'
                     )
                 );
