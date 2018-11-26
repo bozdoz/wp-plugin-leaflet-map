@@ -54,11 +54,10 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      * Merge shortcode options with default options
      *
      * @param array|string $atts    key value pairs from shortcode 
-     * @param string       $content inner text in shortcode
      * 
      * @return array new atts, which is actually an array
      */
-    protected function getAtts($atts='', $content=null)
+    protected function getAtts($atts='')
     {
         $atts = (array) $atts;
         extract($atts);

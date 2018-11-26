@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 4.9.8
-Version: 2.11.4
-Stable tag: 2.11.4
+Tested up to: 5.0
+Version: 2.11.5
+Stable tag: 2.11.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,7 +69,7 @@ Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 = Can I have an SVG Marker? =
 
-Yes! Convert the default marker into an svg with a shortcode like this: `[leaflet-marker svg="true" color="white" iconClass="fab fa-wordpress-simple" background="red"]` The `iconClass` is perfect for adding a [font-awesome](https://fontawesome.com/icons?d=gallery) icon.
+Yes! Convert the default marker into an svg with a shortcode like this: `[leaflet-marker svg color="white" iconClass="fab fa-wordpress-simple" background="red"]` The `iconClass` is perfect for adding a [font-awesome](https://fontawesome.com/icons?d=gallery) icon.
 
 = How do I change the style for lines/geojson? =
 
@@ -91,7 +91,7 @@ Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet
 
 = Can I add a message to a marker? =
 
-Yes: `[leaflet-marker message="Hello there!" visible="true"]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
+Yes: `[leaflet-marker message="Hello there!" visible]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
 
 = Can I use your plugin with a picture instead of a map? =
 
@@ -118,13 +118,16 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 1. Put the shortcode into the post.
 2. See the shortcode play out on the front end.
 3. For `[leaflet-image]` upload an image, and copy the URL from the right-hand side
-4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `src="http://lorempixel.com/1000/1000/"`.
+4. For `[leaflet-image]` paste that image URL into an attribute titled `source`: example: `src="https://picsum.photos/1000/1000/"`.
 5. See the `[leaflet-image]` on the front end.
-6. If you use `[leaflet-marker draggable=true]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
+6. If you use `[leaflet-marker draggable]`, then you can drag the marker where you want it, open a developers console, and see the specific shortcode to use.
 7. Add geojson via URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]`
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.11.5 =
+* Added assumed-boolean attributes to all shortcodes; ex: `[leaflet-marker draggable svg]` would be the same as `[leaflet-marker draggable=1 svg=1]`
 
 = 2.11.4 =
 * Fix to a race condition issue with custom scripts changing leaflet rendering methods
