@@ -39,15 +39,28 @@ abstract class Leaflet_Shortcode
     /**
      * Instantiate class and get HTML for shortcode
      *
-     * @param array  $atts    string
+     * @param array  $atts    string|array
      * @param string $content Optional
      * 
      * @return string (see above)
      */
-    public static function shortcode($atts, $content = null)
+    public static function shortcode($atts = '', $content = null)
     {
         $class = self::getClass();
-        $instance = new $class($atts, $content);
+        $instance = new $class();
+
+        // swap sequential array with associative array
+        // this enables assumed-boolean attributes,
+        // like: [leaflet-marker draggable svg]
+        // meaning draggable=1 svg=1
+        if (!empty($atts)) {
+            foreach($atts as $k => $v) {
+                if (is_numeric($k) && !key_exists($v, $atts)) {
+                    $atts[$v] = 1;
+                }
+            }
+        }
+
         return $instance->getHTML($atts, $content);
     }
 
