@@ -86,6 +86,28 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
         $atts['width'] .= is_numeric($atts['width']) ? 'px' : '';   
 
+        // maxbounds as string: maxbounds="50, -114; 52, -112"
+        $maxBounds = isset($maxbounds) ? $maxbounds : null;
+
+        if ($maxBounds) {
+            try {
+                // explode by semi-colons and commas
+                $maxBounds = preg_split("[;|,]", $maxBounds);
+                print_r($maxBounds);
+                $maxBounds = array(
+                    array(
+                        $maxBounds[0], $maxBounds[1]
+                    ),
+                    array(
+                        $maxBounds[2], $maxBounds[3]
+                    )
+                );
+                print_r($maxBounds);
+            } catch (Exception $e) {
+                $maxBounds = null;
+            }
+        }
+
         /* 
         need to allow 0 or empty for removal of attribution 
         */
@@ -101,14 +123,18 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'trackResize' => isset($trackresize) ? $trackresize : null,
             'boxZoom' => isset($boxzoom) ? $boxzoom : null,
             'dragging' => isset($dragging) ? $dragging : null,
-            'keyboard' => isset($keyboard) ? $keyboard : null
+            'keyboard' => isset($keyboard) ? $keyboard : null,
         );
-        
+
         // filter out nulls
         $more_options = $this->LM->filter_null($more_options);
         
         // change string booleans to booleans
         $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN);
+
+        if ($maxBounds) {
+            $more_options['maxBounds'] = $maxBounds;
+        }
 
         // wrap as JSON
         if ($more_options) {
