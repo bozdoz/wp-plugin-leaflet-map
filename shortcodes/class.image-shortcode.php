@@ -38,7 +38,7 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
 
         /* only required field for image map (src/source) */
         $src = empty($src) ? '' : $src;
-        $source = empty($source) ? 'https://lorempixel.com/1000/1000/' : $source;
+        $source = empty($source) ? 'https://picsum.photos/1000/1000/' : $source;
         $source = empty($src) ? $source : $src;
 
         ob_start();
