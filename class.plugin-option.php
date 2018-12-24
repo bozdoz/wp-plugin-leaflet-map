@@ -69,7 +69,7 @@ class Leaflet_Map_Plugin_Option
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags'  => FILTER_FORCE_ARRAY
             ),
-            'helptext'         =>     FILTER_SANITIZE_STRING
+            'helptext'         =>     null
         );
 
         // get matching keys only

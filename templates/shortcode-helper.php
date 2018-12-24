@@ -61,7 +61,7 @@
                     ),
                 __("SVG Marker Icon", 'leaflet-map') => array(
                     '[leaflet-map address="twilight lane, nova scotia" scrollwheel]',
-                    '[leaflet-marker svg background="#654" iconClass="dashicons dashicons-star-filled" color="gold"]My Favorite Place in the World[/leaflet-marker]'
+                    '[leaflet-marker svg background="#777" iconClass="dashicons dashicons-star-filled" color="gold"]My Favorite Place in the World[/leaflet-marker]'
                     ),
                 __("Zoom Buttons", 'leaflet-map') => array(
                     '[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol]',

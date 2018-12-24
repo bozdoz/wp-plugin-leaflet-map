@@ -28,7 +28,9 @@ if (isset($_POST['submit'])) {
             $form[$name] = isset($_POST[ $name ]) ? 1 : 0;
         }
 
-        $settings->set($name, stripslashes( $form[$name]));
+        $value = trim( stripslashes( $form[$name]) );
+
+        $settings->set($name, $value);
     }
 ?>
 <div class="notice notice-success is-dismissible">

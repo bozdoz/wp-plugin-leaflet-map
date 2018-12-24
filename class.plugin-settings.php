@@ -199,7 +199,7 @@ class Leaflet_Map_Plugin_Settings
                 'helptext' => __('Choose a tiling service or provide your own.', 'leaflet-map')
             ),
             'mapquest_appkey' => array(
-                'display_name'=>__('MapQuest App Key', 'leaflet-map'),
+                'display_name'=>__('MapQuest App Key (optional)', 'leaflet-map'),
                 'default' => __('Supply an app key if you choose MapQuest', 'leaflet-map'),
                 'type' => 'text',
                 'noreset' => true,
@@ -267,7 +267,20 @@ class Leaflet_Map_Plugin_Settings
                     'dawa' => __('Denmark Addresses', 'leaflet-map')
                 ),
                 'helptext' => __('Select the Geocoding provider to use to retrieve addresses defined in shortcode.', 'leaflet-map')
-            )
+            ),
+            'google_appkey' => array(
+                'display_name'=>__('Google API Key (optional)', 'leaflet-map'),
+                'default' => __('Supply a Google API Key', 'leaflet-map'),
+                'type' => 'text',
+                'noreset' => true,
+                'helptext' => sprintf(
+                    '%1$s: <a href="https://cloud.google.com/maps-platform/?apis=places" target="_blank">%2$s</a>.  %3$s %4$s',
+                    __('The Google Geocoder requires an API key with the Places product enabled', 'leaflet-map'),
+                    __('here', 'leaflet-map'),
+                    __('You must create a project and set up a billing account, then you will be given an API key.', 'leaflet-map'),
+                    __('You are unlikely to ever be charged for geocoding.', 'leaflet-map')
+                ),
+            ),
         );
 
         foreach ($this->options as $name => $details) {
@@ -324,7 +337,12 @@ class Leaflet_Map_Plugin_Settings
     public function reset()
     {
         foreach ($this->options as $name => $option) {
-            $this->delete($name);
+            if (
+                !array_key_exists('noreset', $options) ||
+                $options['noreset'] != true
+            ) {
+                $this->delete($name);
+            }
         }
         return $this;
     }
