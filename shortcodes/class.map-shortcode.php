@@ -256,7 +256,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 endforeach;
             endif;
             ?>
-            window.WPLeafletMapPlugin.maps.push(map);
+            window.WPLeafletMapPlugin.add('map', map);
         }); // end add
         </script><?php
 

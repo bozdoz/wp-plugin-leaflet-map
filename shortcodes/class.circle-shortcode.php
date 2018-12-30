@@ -76,9 +76,10 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
                 // zoom the map to the polyline
                 previous_map.fitBounds( circle.getBounds() );
             }
-        <?php
-            $this->LM->add_popup_to_shape($atts, $content, 'circle');
-        ?>
+            <?php
+                $this->LM->add_popup_to_shape($atts, $content, 'circle');
+            ?>
+            window.WPLeafletMapPlugin.circles.push( circle );
         });
         </script>
         <?php
