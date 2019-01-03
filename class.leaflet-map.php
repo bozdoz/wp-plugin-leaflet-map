@@ -323,6 +323,7 @@ class Leaflet_Map
         $message = empty($message) ? 
             (empty($content) ? '' : $content) : $message;
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
+        $message = addslashes($message);
         $message = htmlspecialchars($message);
         $visible = empty($visible) ? false : ($visible == 'true');
 
