@@ -156,8 +156,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     protected function enqueue()
     {
         wp_enqueue_style('leaflet_stylesheet');
-        wp_enqueue_script('leaflet_js');
-        wp_enqueue_script('leaflet_map_init');
+        wp_enqueue_script('wp_leaflet_map');
 
         if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
             // mapquest doesn't accept direct tile access as of July 11, 2016
