@@ -79,8 +79,14 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             $scrollwheel : $settings->get('scroll_wheel_zoom');
         $atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? 
             $doubleclickzoom : $settings->get('double_click_zoom');
+        
+        // backwards-compatible fit_markers
         $atts['fit_markers'] = array_key_exists('fit_markers', $atts) ? 
             $fit_markers : $settings->get('fit_markers');
+
+        // fitbounds is what it should be called @since v2.12.0
+        $atts['fitbounds'] = array_key_exists('fitbounds', $atts) ? 
+            $fitbounds : $atts['fit_markers'];
 
         /* allow percent, but add px for ints */
         $atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
@@ -238,8 +244,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                     .setView([<?php 
                         echo $lat . ',' . $lng . '],' . $zoom; 
                     ?>);
-            if (<?php echo $fit_markers; ?>) {
-                map.fit_markers = true;
+            if (<?php echo $fitbounds; ?>) {
+                map._shouldFitBounds = true;
             }
             <?php
             if ($attribution) :

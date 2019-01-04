@@ -60,7 +60,7 @@
             mg.timeout = null;
 
             // custom attribute
-            if (map.fit_markers) {
+            if (map._shouldFitBounds) {
                 mg.on('layeradd', function (d) {
                     // needs a timeout so that it doesn't 
                     // opt out of a bound change

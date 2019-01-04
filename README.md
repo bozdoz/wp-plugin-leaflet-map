@@ -90,7 +90,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `zoom`                       | 12                      |
 | `height`                     | 250                     |
 | `width`                      | 100%                    |
-| `fit_markers`                | 0 (false)               |
+| `fitbounds`                  | 0 (false)               |
 | `zoomcontrol`                | 0 (false)               |
 | `scrollwheel`                | 0 (false)               |
 | `doubleclickzoom`            | 0 (false)               |
@@ -127,7 +127,7 @@ Then in the console, check the coordinates when you move the marker (should only
 | `zoom`            | 12                               |
 | `height`          | 250                              |
 | `width`           | 100%                             |
-| `fit_markers`     | 0 (false)                        |
+| `fitbounds`       | 0 (false)                        |
 | `zoomcontrol`     | 0 (false)                        |
 | `scrollwheel`     | 0 (false)                        |
 | `doubleclickzoom` | 0 (false)                        |

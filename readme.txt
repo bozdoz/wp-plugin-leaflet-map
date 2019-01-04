@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 5.0
-Version: 2.11.5
-Stable tag: 2.11.5
+Tested up to: 5.0.2
+Version: 2.12.0
+Stable tag: 2.12.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,41 +20,70 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 = Maps =
 
-Height, width, latitude, longitude and zoom are the basic attributes: 
+Simply create a **map** with:
 
-`[leaflet-map height=250 width=250 lat=44.67 lng=-63.61 zoom=5]`
+`[leaflet-map]`
 
-However, you can also just give it an **address**, and Google (by default) will look it up for you:
+Lookup an address with:
 
-`[leaflet-map address="Oslo, Norway"]`
+`[leaflet-map address="chicago"]`
 
-The default URL requires attribution by its terms of use.  If you want to change the URL, you may define a new attribution, or remove the attribution.  You can define this site-wide in the admin, or you can set this per map in the shortcode (0 for disabled):
+Know the latitude and longitude of a location? Use them (and a zoom level) with:
 
-`[leaflet-map attribution=0]`
+`[leaflet-map lat=44.67 lng=-63.61 zoom=5]`
 
-OR 
+Add a **marker** under your map shortcode, like so:
 
-`[leaflet-map attribution="Copyright @bozdoz"]`
+`
+[leaflet-map]
+[leaflet-marker]
+`
 
-Look at other examples on the Shortcode Helper in the Leaflet Map admin section.
+Want more? Make more (and fit the map to contain all of them):
 
-= Markers =
+`
+[leaflet-map fitbounds]
+[leaflet-marker address="tokyo"]
+[leaflet-marker address="oslo"]
+[leaflet-marker address="cairo"]
+[leaflet-marker address="toronto"]
+`
 
-Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` shortcode.  You can adjust the lat/lng in the same way, as well as some other basic functionality (popup message, draggable, visible on load).  Also, if you want to add a link to a marker popup, use this syntax: `[leaflet-marker]Message here: click here[/leaflet-marker]` and add a link like you normally would with the WordPress editor.
+You can even add **popups** (to any shape) with their names:
 
-= Lines and other Shapes =
+`
+[leaflet-map fitbounds]
+[leaflet-marker address="tokyo"]Tokyo[/leaflet-marker]
+[leaflet-marker address="oslo"]Oslo[/leaflet-marker]
+...
+`
+
+Add a link to the popup messages the same way you would add any other link with the WordPress editor.
+
+= Other Shapes, GeoJSON, and KML =
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
 
 Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
-Or you can add a geojson shape via a url (work in progress): `[leaflet-geojson src="https://example.com/path/to.geojson"]`
+Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so (note fitbounds needs to be on leaflet-geojson (for now)): 
+
+`
+[leaflet-map]
+[leaflet-geojson fitbounds]{name}[/leaflet-geojson]
+`
+
+`name` is a property on that GeoJSON, and it can be accessed with curly brackets and the property name.
 
 = Image Maps =
 
 Alternatively, you could use a plain image for visitors to zoom and pan around with `[leaflet-image src="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
-Check out the source code on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
+= More =
+
+Check out other examples on the Shortcode Helper page in the Leaflet Map admin section.
+
+Check out the **source code** and **more** details on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
 
 Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
@@ -125,6 +154,13 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.12.0 =
+* Re-added Google Geocoder (optional), since they forced billing accounts
+* Fixed links in shortcode helper page
+* Fixed issue with marker popups that had single quotes
+* Loading leaflet scripts and styles only when a map shortcode is used
+* Added fitbounds to leaflet-map (to replace fit_markers someday)
 
 = 2.11.5 =
 * Added assumed-boolean attributes to all shortcodes; ex: `[leaflet-marker draggable svg]` would be the same as `[leaflet-marker draggable=1 svg=1]`
@@ -301,6 +337,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.12.0 =
+Fixed links in shortcode helper page; fixed issue with marker popups that had single quotes; loading leaflet scripts and styles only when a map shortcode is used
 
 = 2.11.4 =
 Fix to a race condition issue with custom scripts changing leaflet rendering methods

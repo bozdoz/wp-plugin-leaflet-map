@@ -132,7 +132,7 @@ class Leaflet_Map_Plugin_Settings
                 'default' => '0',
                 'type' => 'checkbox',
                 'helptext' => sprintf(
-                    '%1$s %2$s <br /> <code>[leaflet-map fit_markers="1"]</code>', 
+                    '%1$s %2$s <br /> <code>[leaflet-map fitbounds]</code>', 
                     __('If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map.', 'leaflet-map'),
                     $foreachmap
                 )
