@@ -55,7 +55,7 @@
 
         /**
          * Get/Create L.FeatureGroup for ALL shapes; used for `fitbounds`
-         * @since 2.12.0
+         * @since 2.13.0
          */
         this.getCurrentGroup = function () {
             // marker groups are mapid -> feature group
@@ -68,7 +68,7 @@
 
         /** 
          * backwards-compatible getCurrentGroup 
-         * @deprecated 2.12.0
+         * @deprecated 2.13.0
          */
         this.getCurrentMarkerGroup = this.getCurrentGroup;
 

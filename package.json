@@ -1,6 +1,6 @@
 {
   "name": "leaflet-map",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "Leaflet Map WordPress Plugin",
   "main": "index.js",
   "scripts": {

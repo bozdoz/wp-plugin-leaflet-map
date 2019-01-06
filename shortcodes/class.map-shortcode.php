@@ -80,7 +80,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? 
             $doubleclickzoom : $settings->get('double_click_zoom');
         
-        // backwards-compatible fit_markers
+        // @deprecated backwards-compatible fit_markers
         $atts['fit_markers'] = array_key_exists('fit_markers', $atts) ? 
             $fit_markers : $settings->get('fit_markers');
 
