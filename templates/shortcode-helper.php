@@ -97,13 +97,21 @@
                     '[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0 attribution=0]',
                     ),
                 __("Add GeoJSON by URL (with popups)", 'leaflet-map') => array(
-                    '[leaflet-map doubleClickZoom=true scrollwheel=true]',
-                    '[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson fitbounds popup_property="popup-text"]'
+                    '[leaflet-map fitbounds doubleClickZoom scrollwheel]',
+                    '[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson]{popup-text}[/leaflet-geojson]'
+                    ),
+                __("Add KML by URL", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-kml src=https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml fillColor=red color=white]'
+                    ),
+                __("Add GPX by URL", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-gpx src=https://cdn.rawgit.com/mapbox/togeojson/master/test/data/run.gpx color=black]'
                     ),
                 __("Image Map", 'leaflet-map') => array(
                     '[leaflet-image zoom=1 zoomcontrol scrollwheelzoom attribution=0]',
                     '[leaflet-marker]'
-                    )
+                    ),
                 );
 
             foreach ($examples as $title => $collection) {

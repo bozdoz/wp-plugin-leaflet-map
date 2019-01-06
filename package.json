@@ -27,5 +27,6 @@
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
   "devDependencies": {
     "minify": "^3.0.2"
-  }
+  },
+  "dependencies": {}
 }
