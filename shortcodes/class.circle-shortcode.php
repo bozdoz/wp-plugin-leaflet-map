@@ -61,7 +61,8 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
                 is_image = previous_map.is_image_map,
                 lat = <?php echo $lat; ?>,
                 lng = <?php echo $lng; ?>,
-                radius = <?php echo $radius; ?>;
+                radius = <?php echo $radius; ?>,
+                group = window.WPLeafletMapPlugin.getCurrentGroup();
 
             // update lat lng to previous map's center
             if (!lat && !lng && !is_image) {
@@ -71,7 +72,10 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
             }
             var circle = L.circle([lat, lng], {radius: radius});
             circle.setStyle(<?php echo $style_json; ?>);
-            circle.addTo( previous_map );
+            circle.addTo( group );
+
+            window.WPLeafletMapPlugin.circles.push( circle );
+            
             if (fitbounds) {
                 // zoom the map to the polyline
                 previous_map.fitBounds( circle.getBounds() );

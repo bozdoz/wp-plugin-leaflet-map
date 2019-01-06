@@ -80,8 +80,9 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
         window.WPLeafletMapPlugin.push(function () {
             var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
                 line = L.polyline(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
-                fitbounds = <?php echo $fitbounds; ?>;
-            line.addTo( previous_map );
+                fitbounds = <?php echo $fitbounds; ?>,
+                group = window.WPLeafletMapPlugin.getCurrentGroup();
+            line.addTo( group );
             if (fitbounds) {
                 // zoom the map to the polyline
                 previous_map.fitBounds( line.getBounds() );
