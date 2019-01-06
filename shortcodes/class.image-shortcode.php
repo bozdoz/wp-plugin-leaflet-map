@@ -82,8 +82,8 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
             map = L.map('leaflet-map-image-<?php echo $this->map_id; ?>', options).setView([0, 0], zoom);
             // make it known that it is an image map
             map.is_image_map = true;
-            if (<?php echo $fit_markers; ?>) {
-                map.fit_markers = true;
+            if (<?php echo $fitbounds; ?>) {
+                map._shouldFitBounds = true;
             }
             <?php
             if ($attribution) {

@@ -8,39 +8,42 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
 
-  wordpress:
-    image: wordpress:latest
+  cli:
+    build: .
     depends_on:
       - db
     volumes:
       - wordpress:/var/www/html
-      # - ./theme:/var/www/html/wp-content/themes/twentyfifteen
-      # - ./plugins:/var/www/html/wp-content/plugins
       - .:/var/www/html/wp-content/plugins/leaflet-map
+      #-------------------------------------------------
+      # Uncomment these along with the wordpress service
+      # to debug themes and plugins
+      #-------------------------------------------------
+      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      # - ./plugins:/var/www/html/wp-content/plugins
+    environment:
+      WORDPRESS_PORT: ${WORDPRESS_PORT:-1234}
+
+  wordpress:
+    image: wordpress
+    depends_on:
+      - cli
+    volumes:
+      - wordpress:/var/www/html
+      - .:/var/www/html/wp-content/plugins/leaflet-map
+      #-------------------------------------------------
+      # Uncomment these along with the cli service
+      # to debug themes and plugins
+      #-------------------------------------------------
+      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      # - ./plugins:/var/www/html/wp-content/plugins
     ports:
       - ${WORDPRESS_PORT:-1234}:80
     restart: always
     environment:
+      WORDPRESS_DB_PASSWORD: rootpass
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-  
-  cli:
-    build: .
-    depends_on:
-      - wordpress
-    volumes: 
-      - wordpress:/var/www/html
-      # - ./theme:/var/www/html/wp-content/themes/twentyfifteen
-      # - ./plugins:/var/www/html/wp-content/plugins
-      - .:/var/www/html/wp-content/plugins/leaflet-map
-    environment:
-      WORDPRESS_PORT: ${WORDPRESS_PORT:-1234}
 
 volumes:
   wp_db:

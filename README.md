@@ -1,6 +1,6 @@
 # Leaflet Map WordPress Plugin
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.3.4-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.4.0-green.svg?style=flat)
 ![WordPress](https://img.shields.io/badge/wordpress-5.0-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
@@ -90,7 +90,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `zoom`                       | 12                      |
 | `height`                     | 250                     |
 | `width`                      | 100%                    |
-| `fit_markers`                | 0 (false)               |
+| `fitbounds`                  | 0 (false)               |
 | `zoomcontrol`                | 0 (false)               |
 | `scrollwheel`                | 0 (false)               |
 | `doubleclickzoom`            | 0 (false)               |
@@ -127,7 +127,7 @@ Then in the console, check the coordinates when you move the marker (should only
 | `zoom`            | 12                               |
 | `height`          | 250                              |
 | `width`           | 100%                             |
-| `fit_markers`     | 0 (false)                        |
+| `fitbounds`       | 0 (false)                        |
 | `zoomcontrol`     | 0 (false)                        |
 | `scrollwheel`     | 0 (false)                        |
 | `doubleclickzoom` | 0 (false)                        |
@@ -219,9 +219,15 @@ Or you can add a geojson shape via a url:
 
 #### [leaflet-geojson] Options
 
-| Option | Usage                      |
-| ------ | -------------------------- |
-| `src`  | Source of the geojson file |
+| Option       | Usage                      |
+| ------------ | -------------------------- |
+| `src`        | Source of the geojson file |
+| `popup_text` | Text for any popups when shapes are clicked |
+| `fitbounds`  | Fit the map to the bounds of all shapes (instead of whatever center you gave the map originally) |
+
+Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path.  Also, if you want to add feature
+properties to the popups, use the inner content and curly brackets to substitute the values:
+`[leaflet-marker]Field A = {{field_a}}[/leaflet-marker]`.
 
 ### [leaflet-kml]
 

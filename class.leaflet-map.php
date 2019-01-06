@@ -24,7 +24,7 @@ class Leaflet_Map
      * 
      * @var string major minor patch version
      */
-    public static $leaflet_version = '1.3.4';
+    public static $leaflet_version = '1.4.0';
 
     /**
      * Number of maps on page; used for unique map ids
@@ -210,7 +210,7 @@ class Leaflet_Map
         wp_register_script('leaflet_svg_icon_js', plugins_url(sprintf('scripts/leaflet-svg-icon%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
         
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_enqueue_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
     }
 
     /**
@@ -323,6 +323,7 @@ class Leaflet_Map
         $message = empty($message) ? 
             (empty($content) ? '' : $content) : $message;
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
+        $message = addslashes($message);
         $message = htmlspecialchars($message);
         $visible = empty($visible) ? false : ($visible == 'true');
 

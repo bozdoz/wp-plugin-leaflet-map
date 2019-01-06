@@ -120,20 +120,23 @@ class Leaflet_Geocoder {
 	* @return varies object from API or null (failed)
 	*/
 
-	private function google_geocode ( $address ) {	    
-	    $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-	    $geocode_url .= $address;
-	    $json = $this->get_url($geocode_url);
+	private function google_geocode ( $address ) {
+		// Leaflet_Map_Plugin_Settings
+        $settings = Leaflet_Map_Plugin_Settings::init();
+		$key = $settings->get('google_appkey');
+		
+	    $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s';
+		$geocode_url = sprintf($geocode_url, $address, $key);
+		
+		$json = $this->get_url($geocode_url);
+		$json = json_decode($json);
 
-	    if ($json) {
-	        $json = json_decode($json);
-	        /* found location */
-	        if ($json->{'status'} == 'OK') {
-	            
-	            $location = $json->{'results'}[0]->{'geometry'}->{'location'};
+		/* found location */
+		if ($json->status == 'OK') {
+			
+			$location = $json->results[0]->geometry->location;
 
-	            return (Object) $location;
-	        }
+			return (Object) $location;
 		}
 		
 		throw new Exception('No Address Found');
@@ -152,17 +155,10 @@ class Leaflet_Geocoder {
 	    $json = $this->get_url($geocode_url);
 		$json = json_decode($json);
 		
-        if (is_array($json) && 
-            is_object($json[0]) &&
-            $json[0]->lat) {
-            // found location
-            return (Object) array(
-                'lat' => $json[0]->lat,
-                'lng' => $json[0]->lon,
-            );
-        }
-
-	    throw new Exception('No Address Found');
+		return (Object) array(
+			'lat' => $json[0]->lat,
+			'lng' => $json[0]->lon,
+		);
 	}
 
 	/**
@@ -179,18 +175,10 @@ class Leaflet_Geocoder {
 	    $json = $this->get_url($geocode_url);
 	    $json = json_decode($json);
 
-	    if (is_array($json) && 
-	        is_object($json[0]) &&
-	        $json[0]->status == 1) {
-	        /* found location */
-	        $location = (Object) array(
-	            'lat' => $json[0]->adgangsadresse->adgangspunkt->koordinater[1],
-	            'lng' => $json[0]->adgangsadresse->adgangspunkt->koordinater[0]
-            );
-
-	        return $location;
-	    } 
-
-	    throw new Exception('No Address Found');
+		/* found location */
+		return (Object) array(
+			'lat' => $json[0]->adgangsadresse->adgangspunkt->koordinater[1],
+			'lng' => $json[0]->adgangsadresse->adgangspunkt->koordinater[0]
+		);
 	}
 }

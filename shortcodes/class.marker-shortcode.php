@@ -170,7 +170,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
                 ),
                 map = window.WPLeafletMapPlugin.getCurrentMap(),
                 is_image = map.is_image_map,
-                markergroup = window.WPLeafletMapPlugin.getCurrentMarkerGroup();
+                group = window.WPLeafletMapPlugin.getCurrentGroup();
             <?php
             if (empty($lat) && empty($lng)) {
                 /* update lat lng to previous map's center */
@@ -195,8 +195,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
                     }
                 });
             }
-
-            marker.addTo( markergroup );
+            marker.addTo( group );
             <?php
                 $this->LM->add_popup_to_shape($atts, $content, 'marker');
             ?>
