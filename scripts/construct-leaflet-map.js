@@ -25,6 +25,18 @@
         };
 
         /**
+         * Same as above, but what if someone wants to execute a function
+         * before other functions?
+         */
+        this.unshift = function (fnc) {
+            if (ready) {
+                fnc();
+            } else {
+                callbacks.unshift(fnc);
+            }
+        }
+
+        /**
          * execute all callbacks once page/Leaflet is loaded
          */
         this.init = function() {
