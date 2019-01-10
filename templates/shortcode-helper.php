@@ -56,7 +56,7 @@
                     '[leaflet-marker draggable]',
                     ),
                 __("Marker Icon", 'leaflet-map') => array(
-                    '[leaflet-map zoom=10 address="cochrane, Ontario" scrollwheel]',
+                    '[leaflet-map zoom=14 address="Ha Ling, canmore" scrollwheel]',
                     '[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
                     ),
                 __("SVG Marker Icon", 'leaflet-map') => array(
@@ -75,7 +75,7 @@
                     ),
                 __("Links In Marker Messages (visible)", 'leaflet-map') => array(
                     '[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
-                    '[leaflet-marker visible="true"] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
+                    '[leaflet-marker visible] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
                     ),
                 __("Basic Lines w/Scrollwheel", 'leaflet-map') => array(
                     '[leaflet-map lat=41 lng=29 scrollwheel zoom=6]',
@@ -86,15 +86,15 @@
                     '[leaflet-circle lat=52 lng=5 radius=17500]'
                     ),
                 __("Fitted Colored Line on Addresses", 'leaflet-map') => array(
-                    '[leaflet-map]',
-                    '[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;" fitline]'
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-line color="purple" addresses="Sayulita; Puerto Vallarta;"]'
                     ),
                 __("More Crazy Line Attributes", 'leaflet-map') => array(
-                    '[leaflet-map]',
-                    '[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, Nova Scotia; Tanzania" classname=marching-ants fitbounds]'
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, Nova Scotia; Tanzania" classname=marching-ants]'
                     ),
                 __("Disable all Interaction", 'leaflet-map') => array(
-                    '[leaflet-map address="las vegas" boxZoom=false doubleClickZoom=false dragging=false keyboard=false scrollwheel=0 attribution=0]',
+                    '[leaflet-map address="las vegas" !boxZoom !doubleClickZoom !dragging !keyboard !scrollwheel !attribution !touchZoom]',
                     ),
                 __("Add GeoJSON by URL (with popups)", 'leaflet-map') => array(
                     '[leaflet-map fitbounds doubleClickZoom scrollwheel]',
@@ -109,7 +109,7 @@
                     '[leaflet-gpx src=https://cdn.rawgit.com/mapbox/togeojson/master/test/data/run.gpx color=black]'
                     ),
                 __("Image Map", 'leaflet-map') => array(
-                    '[leaflet-image zoom=1 zoomcontrol scrollwheelzoom attribution=0]',
+                    '[leaflet-image zoom=1 zoomcontrol scrollwheelzoom !attribution]',
                     '[leaflet-marker]'
                     ),
                 );
