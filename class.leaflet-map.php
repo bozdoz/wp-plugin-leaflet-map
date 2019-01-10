@@ -325,7 +325,9 @@ class Leaflet_Map
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = addslashes($message);
         $message = htmlspecialchars($message);
-        $visible = empty($visible) ? false : ($visible == 'true');
+        $visible = empty($visible) 
+            ? false 
+            : filter_var($visible, FILTER_VALIDATE_BOOLEAN);
 
         if (!empty($message)) {
             echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
