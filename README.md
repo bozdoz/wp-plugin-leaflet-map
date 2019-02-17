@@ -100,9 +100,10 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `attribution`                | ©Leaflet ©OpenStreetMap |
 | `closepopuponclick`          | false                   |
 | `trackresize`                | false                   |
-| `boxzoom`                    | true                    |
+| `boxZoom`                    | true                    |
 | `dragging`                   | true                    |
 | `keyboard`                   | true                    |
+| `maxbounds`                  | null                    |
 
 ---
 

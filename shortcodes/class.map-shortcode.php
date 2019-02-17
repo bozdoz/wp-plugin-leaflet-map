@@ -99,7 +99,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             try {
                 // explode by semi-colons and commas
                 $maxBounds = preg_split("[;|,]", $maxBounds);
-                print_r($maxBounds);
                 $maxBounds = array(
                     array(
                         $maxBounds[0], $maxBounds[1]
@@ -108,7 +107,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                         $maxBounds[2], $maxBounds[3]
                     )
                 );
-                print_r($maxBounds);
             } catch (Exception $e) {
                 $maxBounds = null;
             }
