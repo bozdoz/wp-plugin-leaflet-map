@@ -227,7 +227,7 @@ Or you can add a geojson shape via a url:
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path.  Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
-`[leaflet-marker]Field A = {{field_a}}[/leaflet-marker]`.
+`[leaflet-marker]Field A = {field_a}[/leaflet-marker]`.
 
 ### [leaflet-kml]
 
