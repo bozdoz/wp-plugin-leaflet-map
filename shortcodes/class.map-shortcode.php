@@ -99,7 +99,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             try {
                 // explode by semi-colons and commas
                 $maxBounds = preg_split("[;|,]", $maxBounds);
-                print_r($maxBounds);
                 $maxBounds = array(
                     array(
                         $maxBounds[0], $maxBounds[1]
@@ -108,7 +107,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                         $maxBounds[2], $maxBounds[3]
                     )
                 );
-                print_r($maxBounds);
             } catch (Exception $e) {
                 $maxBounds = null;
             }
@@ -127,7 +125,11 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'closePopupOnClick' => isset($closepopuponclick) ? 
                 $closepopuponclick : null,
             'trackResize' => isset($trackresize) ? $trackresize : null,
-            'boxZoom' => isset($boxzoom) ? $boxzoom : null,
+            'boxZoom' => isset($boxzoom) 
+                ? $boxzoom 
+                : isset($boxZoom)
+                    ? $boxZoom
+                    : null,
             'touchZoom' => isset($touchZoom) ? $touchZoom : null,
             'dragging' => isset($dragging) ? $dragging : null,
             'keyboard' => isset($keyboard) ? $keyboard : null,

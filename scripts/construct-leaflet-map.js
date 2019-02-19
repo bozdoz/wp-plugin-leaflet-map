@@ -174,8 +174,6 @@
         function parseKey (obj, key) {
             var arr = strToPath(unescape(key))
             var value = obj
-
-            console.log({arr})
             
             for (var i = 0, len = arr.length; i < len; i++) {
                 value = value[arr[i]]
