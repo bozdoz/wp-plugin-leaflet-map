@@ -57,7 +57,11 @@ abstract class Leaflet_Shortcode
         // meaning doubleClickZoom=0 boxZoom=0
         if (!empty($atts)) {
             foreach($atts as $k => $v) {
-                if (is_numeric($k) && !key_exists($v, $atts)) {
+                if (
+                    is_numeric($k) && 
+                    !key_exists($v, $atts) &&
+                    !!$v
+                ) {
                     // false if starts with !, else true
                     if ($v[0] == '!') {
                         $atts[substr($v, 1)] = 0;
