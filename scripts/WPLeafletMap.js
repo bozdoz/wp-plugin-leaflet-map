@@ -3,7 +3,7 @@ L.WPLeafletMapPlugin = L.Class({
 
     maps: [],
     images: [],
-    markergroups: [],
+    groups: [],
     markers: [],
     lines: [],
     circles: [],
@@ -67,14 +67,14 @@ L.WPLeafletMapPlugin = L.Class({
      * @since 2.13.0
      */
     getCurrentGroup: function() {
-        // marker groups are mapid -> feature group
+        // groups are mapid -> feature group
         var mapid = this.maps.length;
-        if (!this.markergroups[mapid]) {
-            this.markergroups[mapid] = this.newMarkerGroup(
+        if (!this.groups[mapid]) {
+            this.groups[mapid] = this.newGroup(
                 this.maps[mapid - 1]
             );
         }
-        return this.markergroups[mapid];
+        return this.groups[mapid];
     },
 
     /**
@@ -97,14 +97,14 @@ L.WPLeafletMapPlugin = L.Class({
     /**
      * group is created and event is added
      */
-    newMarkerGroup: function(map) {
-        var mg = this.getGroup(map);
+    newGroup: function(map) {
+        var group = this.getGroup(map);
 
-        mg.timeout = null;
+        group.timeout = null;
 
         // custom attribute
         if (map._shouldFitBounds) {
-            mg.on(
+            group.on(
                 "layeradd",
                 function(event) {
                     // needs a timeout so that it doesn't
@@ -112,24 +112,24 @@ L.WPLeafletMapPlugin = L.Class({
                     if (event.layer instanceof L.FeatureGroup) {
                         // wait for featuregroup/ajax-geojson to be ready
                         event.layer.on("ready", function() {
-                            map.fitBounds(mg.getBounds());
+                            map.fitBounds(group.getBounds());
                         });
                     }
 
                     window.clearTimeout(this.timeout);
                     this.timeout = window.setTimeout(function() {
                         try {
-                            map.fitBounds(mg.getBounds());
+                            map.fitBounds(group.getBounds());
                         } catch (e) {
                             // ajax-geojson might not have valid bounds yet
                         }
                     }, 100);
                 },
-                mg
+                group
             );
         }
 
-        return mg;
+        return group;
     },
 
     unescape: function(str) {
