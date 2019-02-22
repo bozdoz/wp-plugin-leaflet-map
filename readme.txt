@@ -6,9 +6,9 @@ Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 3.0.1
-Tested up to: 5.0.2
-Version: 2.13.0
-Stable tag: 2.13.0
+Tested up to: 5.0.3
+Version: 2.14.0
+Stable tag: 2.14.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,14 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.14.0 =
+* Fix `visible` att in popups.
+* Adds nested property accessors to geojson popup text: `{attributes.email}`
+* Adds negation to shortcode attributes with an exclamation mark: e.g. Disable all interaction with `[leaflet-map address="las vegas" !boxZoom !doubleClickZoom !dragging !keyboard !scrollwheel !attribution !touchZoom]`
+* Fix case-sensitive `boxZoom`
+* Add `touchZoom` to map attributes
+* Fix icon-related anchor attributes (numbers instead of strings)
 
 = 2.13.0 =
 * Updated LeafletJS to 1.4.0

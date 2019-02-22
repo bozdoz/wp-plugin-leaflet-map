@@ -20,7 +20,7 @@ services:
       # Uncomment these along with the wordpress service
       # to debug themes and plugins
       #-------------------------------------------------
-      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      # - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     environment:
       WORDPRESS_PORT: ${WORDPRESS_PORT:-1234}
@@ -36,7 +36,7 @@ services:
       # Uncomment these along with the cli service
       # to debug themes and plugins
       #-------------------------------------------------
-      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      # - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     ports:
       - ${WORDPRESS_PORT:-1234}:80

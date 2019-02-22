@@ -114,7 +114,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         );
 
         $options = $this->LM->json_sanitize($options, $args);
-        
+
         if ($options === '[]') {
             $options = '{}';
         }
@@ -124,53 +124,58 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
         window.WPLeafletMapPlugin.push(function () {
             var marker_options = (function () {
-                    var _options = <?php echo $options; ?>;
-                    var iconArrays = [
-                        'iconSize', 
-                        'iconAnchor', 
-                        'shadowSize', 
-                        'shadowAnchor',
-                        'popupAnchor'
-                    ];
-                    var default_icon = L.Icon.Default.prototype.options;
-                    if (_options.iconUrl) {
-                        // arrays are strings, unfortunately...
-                        for (var i = 0, len = iconArrays.length; i < len; i++) {
-                            var option_name = iconArrays[i],
-                                option = _options[ option_name ];
-                            // convert "1,2" to [1, 2];
-                            if (option) {
-                                _options[ option_name ] = option.join('').split(',');
+                var _options = <?php echo $options; ?>;
+                var iconArrays = [
+                    'iconSize', 
+                    'iconAnchor', 
+                    'shadowSize', 
+                    'shadowAnchor',
+                    'popupAnchor'
+                ];
+                var default_icon = L.Icon.Default.prototype.options;
+                if (_options.iconUrl) {
+                    // arrays are strings, unfortunately...
+                    for (var i = 0, len = iconArrays.length; i < len; i++) {
+                        var option_name = iconArrays[i],
+                            option = _options[ option_name ];
+                        // convert "1,2" to [1, 2];
+                        if (option) {
+                            var arr = option.join('').split(',');
+                            // array.map for ie<9
+                            for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
+                                arr[j] = Number(arr[j]);
                             }
+                            _options[ option_name ] = arr;
                         }
-                        // default popupAnchor
-                        if (!_options.popupAnchor) {
-                            // set (roughly) to size of icon
-                            _options.popupAnchor = (function (i_size) {
-                                // copy array
-                                i_size = i_size.slice();
-                                
-                                // inverse coordinates
-                                i_size[0] = 0;
-                                i_size[1] *= -1;
-                                // bottom position on popup is 7px
-                                i_size[1] -= 3;
-                                return i_size;
-                            })(_options.iconSize || default_icon.iconSize);
-                        }
-
-                        _options.icon = new L.Icon( _options );
                     }
-                    return _options;
-                })(),
-                draggable = marker_options.draggable,
-                marker = <?php echo $default_marker; ?>(
-                    [<?php echo $lat . ',' . $lng; ?>], 
-                    marker_options
-                ),
-                map = window.WPLeafletMapPlugin.getCurrentMap(),
-                is_image = map.is_image_map,
-                group = window.WPLeafletMapPlugin.getCurrentGroup();
+                    // default popupAnchor
+                    if (!_options.popupAnchor) {
+                        // set (roughly) to size of icon
+                        _options.popupAnchor = (function (i_size) {
+                            // copy array
+                            i_size = i_size.slice();
+                            
+                            // inverse coordinates
+                            i_size[0] = 0;
+                            i_size[1] *= -1;
+                            // bottom position on popup is 7px
+                            i_size[1] -= 3;
+                            return i_size;
+                        })(_options.iconSize || default_icon.iconSize);
+                    }
+
+                    _options.icon = new L.Icon( _options );
+                }
+                return _options;
+            })();
+            var draggable = marker_options.draggable;
+            var marker = <?php echo $default_marker; ?>(
+                [<?php echo $lat . ',' . $lng; ?>], 
+                marker_options
+            );
+            var map = window.WPLeafletMapPlugin.getCurrentMap();
+            var is_image = map.is_image_map;
+            var group = window.WPLeafletMapPlugin.getCurrentGroup();
             <?php
             if (empty($lat) && empty($lng)) {
                 /* update lat lng to previous map's center */

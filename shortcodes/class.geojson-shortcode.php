@@ -132,21 +132,15 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                 }      
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {};
-                    var text = popup_property && props[ popup_property ] || 
-                        template(popup_text, feature.properties);
+                    var text = popup_property
+                        ? props[ popup_property ]
+                        : window.WPLeafletMapPlugin.template(
+                            popup_text, 
+                            feature.properties
+                        );
                     if (text) {
                         layer.bindPopup( text );
                     }
-                }
-                var templateRe = /\{ *([\w_-]+) *\}/g;
-                function template(str, data) {
-                    return str.replace(templateRe, function (match, key) {
-                        var value = data[key];
-                        if (value === undefined) {
-                            return match;
-                        }
-                        return value;
-                    });
                 }  
             });
         </script>

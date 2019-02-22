@@ -120,11 +120,75 @@
             return mg;
         };
 
-        this.unescape = function(str) {
-            var div = document.createElement("div");
+        var unescape = this.unescape = function (str) {
+            var div = document.createElement('div');
             div.innerHTML = str;
             return div.innerText;
         };
+
+        var templateRe = /\{ *(.*?) *\}/g;
+
+        /**
+         * It interpolates variables in curly brackets (regex above)
+         * 
+         * ex: "Property Value: {property_key}"
+         * 
+         * @param {string} str
+         * @param {object} data e.g. feature.properties
+         */
+        this.template = function (str, data) {
+            return str.replace(templateRe, function (match, key) {
+                var value = parseKey(data, key);
+                if (value === undefined) {
+                    return match;
+                }
+                return value;
+            });
+        }
+
+        var strToPathRe = /[.‘’'“”"\[\]]+/g
+
+        /**
+         * Converts nested object keys to array
+         * 
+         * ex: `this.that['and'].theOther[4]` -> 
+         *     ['this', 'that', 'and', 'theOther', '4']
+         * @param {string} key 
+         */
+        function strToPath (key) {
+            var input = key.split(strToPathRe)
+            var output = []
+            
+            // failsafe for all empty strings; 
+            // mostly catches brackets at the end of a string
+            for (var i = 0, len = input.length; i < len; i++) {
+                if (input[i] !== '') {
+                    output.push(input[i])
+                }
+            }
+            
+            return output
+        }
+
+        /**
+         * It uses strToPath to access a possibly nested path value
+         * 
+         * @param {object} obj 
+         * @param {string} key 
+         */
+        function parseKey (obj, key) {
+            var arr = strToPath(unescape(key))
+            var value = obj
+            
+            for (var i = 0, len = arr.length; i < len; i++) {
+                value = value[arr[i]]
+                if (!value) {
+                    return undefined
+                }
+            }
+            
+            return value
+        }
 
         // these accessible properties hold map objects
         this.maps = [];

@@ -53,10 +53,21 @@ abstract class Leaflet_Shortcode
         // this enables assumed-boolean attributes,
         // like: [leaflet-marker draggable svg]
         // meaning draggable=1 svg=1
+        // and: [leaflet-marker !doubleClickZoom !boxZoom]
+        // meaning doubleClickZoom=0 boxZoom=0
         if (!empty($atts)) {
             foreach($atts as $k => $v) {
-                if (is_numeric($k) && !key_exists($v, $atts)) {
-                    $atts[$v] = 1;
+                if (
+                    is_numeric($k) && 
+                    !key_exists($v, $atts) &&
+                    !!$v
+                ) {
+                    // false if starts with !, else true
+                    if ($v[0] == '!') {
+                        $atts[substr($v, 1)] = 0;
+                    } else {
+                        $atts[$v] = 1;
+                    }
                 }
             }
         }
