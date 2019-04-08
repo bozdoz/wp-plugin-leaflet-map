@@ -89,6 +89,8 @@ class Leaflet_Geocoder {
 	* @return varies object from API or null (failed)
 	*/
 	private function get_url( $url ) {
+		$referer = get_site_url();
+
 	    if (in_array('curl', get_loaded_extensions())) {
 	        /* try curl */
 	        $ch = curl_init();
@@ -96,7 +98,7 @@ class Leaflet_Geocoder {
 	        curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
 	        curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_REFERER, get_site_url());
+			curl_setopt($ch, CURLOPT_REFERER, $referer);
 	        curl_setopt($ch, CURLOPT_URL, $url);
 	        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
@@ -105,8 +107,16 @@ class Leaflet_Geocoder {
 
 	        return $data;
 	    } else if (ini_get('allow_url_fopen')) {
-	        /* try file get contents */
-	        return file_get_contents( $url );
+			/* try file get contents */
+
+			$opts = array(
+				'http' => array(
+					'header' => array("Referer: $referer\r\n")
+				)
+			);
+			$context = stream_context_create($opts);
+
+	        return file_get_contents($url, false, $context);
 	    }
 
 	    $error_msg = 'Could not get url: ' . $url;
