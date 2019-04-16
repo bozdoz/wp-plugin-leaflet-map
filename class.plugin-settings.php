@@ -194,18 +194,18 @@ class Leaflet_Map_Plugin_Settings
                 'type' => 'select',
                 'options' => array(
                     'other' => __('I will provide my own map tile URL', 'leaflet-map'),
-                    'mapquest' => __('MapQuest (I have an app key)', 'leaflet-map'),
+                    'mapquest' => __('MapQuest (I have an API key)', 'leaflet-map'),
                 ),
                 'helptext' => __('Choose a tiling service or provide your own.', 'leaflet-map')
             ),
             'mapquest_appkey' => array(
-                'display_name'=>__('MapQuest App Key (optional)', 'leaflet-map'),
-                'default' => __('Supply an app key if you choose MapQuest', 'leaflet-map'),
+                'display_name'=>__('MapQuest API Key (optional)', 'leaflet-map'),
+                'default' => __('Supply an API key if you choose MapQuest', 'leaflet-map'),
                 'type' => 'text',
                 'noreset' => true,
                 'helptext' => sprintf(
                     '%1$s <a href="https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register" target="_blank"> %2$s </a>, %3$s <a href="https://developer.mapquest.com/user/me/apps" target="_blank"> %4$s </a> %5$s',
-                    __('If you choose MapQuest, you must provide an app key.', 'leaflet-map'),
+                    __('If you choose MapQuest, you must provide an API key.', 'leaflet-map'),
                     __('Sign up', 'leaflet-map'),
                     __('then', 'leaflet-map'),
                     __('Create a new app', 'leaflet-map'),
@@ -220,7 +220,7 @@ class Leaflet_Map_Plugin_Settings
                     '%1$s: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank"> %2$s </a>. %3$s: <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank"> %4$s </a>. %5$s <br/> <code>[leaflet-map tileurl=http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg subdomains=abcd]</code>',
                     __('See more tile servers', 'leaflet-map'),
                     __('here', 'leaflet-map'),
-                    __('Please note: free tiles from MapQuest have been discontinued without use of an app key', 'leaflet-map'),
+                    __('Please note: free tiles from MapQuest have been discontinued without use of an API key', 'leaflet-map'),
                     __('blog post', 'leaflet-map'),
                     $foreachmap
                 )
