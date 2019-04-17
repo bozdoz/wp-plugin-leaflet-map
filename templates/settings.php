@@ -107,5 +107,10 @@ if (isset($_POST['submit'])) {
     </div>
 
     </form>
+
+    <div>
+        <p>Leaf icon provided by <a href="https://fontawesome.com/" target="_blank">Font Awesome</a>, under their free license.</p>
+    </div>
+
     </div>
 </div>
