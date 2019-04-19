@@ -9,6 +9,16 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 ![Admin Screenshot](https://imgur.com/W4BGTif.jpg)
 
+## Table of Contents
+
+- [Installation](#installation)
+- [General Usage](#general-usage)
+- [Devloping](#developing)
+- [Available Shortcodes](#available-shortcodes)
+- [Frequently Asked Questions](#frequently-asked-questions)
+- [Contributing](#contributing)
+- [Wish List](#wish-list)
+
 ## Installation
 
 - (simple) Install via the WordPress plugins page on your WordPress site: `/wp-admin/plugin-install.php` (search Leaflet)
@@ -233,6 +243,50 @@ properties to the popups, use the inner content and curly brackets to substitute
 ### [leaflet-kml]
 
 Same idea as geojson (above), but takes KML files and loads [Mapbox's togeojson library](https://github.com/mapbox/togeojson)
+
+## Frequently Asked Questions
+
+### How Can I Add another Leaflet Plugin?
+
+There are some steps you can take, currently, to add another Leaflet Plugin to enhance this WordPress plugin. In general, you can add an action to trigger when Leaflet is loaded, and add custom JavaScript and any dependencies your plugin needs:
+
+Here's an example with MapBox Fullscreen plugin:
+
+functions.php
+
+```php
+add_action('leaflet_map_loaded', 'fs_leaflet_loaded');
+function fs_leaflet_loaded() {
+  wp_enqueue_script('full_screen_leaflet', 'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js', Array('wp_leaflet_map'), '1.0', true);
+  wp_enqueue_style('full_screen_leaflet_styles', 'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css');
+
+  // custom js
+  wp_enqueue_script('full_screen_custom', get_theme_file_uri( '/js/full-screen.js' ), Array('full_screen_leaflet'), '1.0', true);
+}
+```
+
+/js/full-screen.js
+
+```js
+function main() {
+  if (!window.WPLeafletMapPlugin) {
+    console.log('no plugin found!')
+    return
+  }
+
+  // iterate any of these: `maps`, `markers`, `markergroups`, `lines`, `circles`, `geojsons`
+  var maps = window.WPLeafletMapPlugin.maps
+
+  for (var i = 0, len = maps.length; i < len; i++) {
+    var map = maps[i]
+    map.whenReady(function() {
+      this.addControl(new L.Control.Fullscreen())
+    })
+  }
+}
+
+window.addEventListener('load', main)
+```
 
 ## Contributing
 
