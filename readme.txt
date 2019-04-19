@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/leaflet-map/
 Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
-Requires at least: 3.0.1
+Requires at least: 4.6
 Tested up to: 5.0.3
 Version: 2.14.0
 Stable tag: 2.14.0
