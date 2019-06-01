@@ -45,7 +45,11 @@ You can have SVG markers, add shapes, geojson, kml, images, and more! See availa
 
 ## Developing
 
-This plugin uses Docker for development. Simply 1. [install Docker](https://www.docker.com/get-started), 2. fork/clone the repo, and 3. execute this command from the repo's root directory in your terminal:
+This plugin uses Docker for development. Simply:
+
+1. [install Docker](https://www.docker.com/get-started)
+1. fork/clone the repo, and 
+1. execute this command from the repo's root directory in your terminal:
 
 ```bash
 docker-compose up
