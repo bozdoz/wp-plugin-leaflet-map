@@ -13,7 +13,7 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 - [Installation](#installation)
 - [General Usage](#general-usage)
-- [Devloping](#developing)
+- [Developing](#developing)
 - [Available Shortcodes](#available-shortcodes)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Contributing](#contributing)
