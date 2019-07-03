@@ -1,6 +1,6 @@
 # Leaflet Map WordPress Plugin
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.4.0-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.5.1-green.svg?style=flat)
 ![WordPress](https://img.shields.io/badge/wordpress-5.0-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
@@ -13,7 +13,7 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 - [Installation](#installation)
 - [General Usage](#general-usage)
-- [Devloping](#developing)
+- [Developing](#developing)
 - [Available Shortcodes](#available-shortcodes)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Contributing](#contributing)
@@ -45,7 +45,11 @@ You can have SVG markers, add shapes, geojson, kml, images, and more! See availa
 
 ## Developing
 
-This plugin uses Docker for development. Simply 1. [install Docker](https://www.docker.com/get-started), 2. fork/clone the repo, and 3. execute this command from the repo's root directory in your terminal:
+This plugin uses Docker for development. Simply:
+
+1. [install Docker](https://www.docker.com/get-started)
+1. fork/clone the repo, and 
+1. execute this command from the repo's root directory in your terminal:
 
 ```bash
 docker-compose up
