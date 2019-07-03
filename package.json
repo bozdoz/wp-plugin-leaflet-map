@@ -2,7 +2,7 @@
   "name": "leaflet-map",
   "version": "2.14.0",
   "description": "Leaflet Map WordPress Plugin",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "docker-compose up --build && exit 0",
     "restart": "npm run destroy && npm run start",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
   "devDependencies": {
-    "minify": "^3.0.2"
+    "minify": "^4.1.2"
   },
   "dependencies": {}
 }
