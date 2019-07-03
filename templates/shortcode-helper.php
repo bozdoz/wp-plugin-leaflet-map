@@ -112,8 +112,8 @@
                     '[leaflet-map maxbounds="46.22545288226939, -59.61181640625;51.72702815704774, -52.36083984375" zoom=5 zoomcontrol]',
                 ),
                 __("Image Map", 'leaflet-map') => array(
-                    '[leaflet-image zoom=1 zoomcontrol scrollwheelzoom !attribution]',
-                    '[leaflet-marker]'
+                    '[leaflet-image zoom=1 zoomcontrol scrollwheel !attribution]',
+                    '[leaflet-marker draggable]'
                     ),
                 );
 
