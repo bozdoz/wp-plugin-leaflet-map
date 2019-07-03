@@ -225,7 +225,7 @@ Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path
 Or you can add a geojson shape via a url:
 
 ```
-[leaflet-geojson src="https://rawgit.com/bozdoz/567817310f102d169510d94306e4f464/raw/2fdb48dafafd4c8304ff051f49d9de03afb1718b/map.geojson"]
+[leaflet-geojson src="https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson"]
 ```
 
 #### [leaflet-geojson] Options

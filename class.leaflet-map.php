@@ -197,7 +197,7 @@ class Leaflet_Map
         }
         
         // optional ajax geojson plugin
-        wp_register_script('tmcw_togeojson', 'https://cdn.rawgit.com/mapbox/togeojson/master/togeojson.js', Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('tmcw_togeojson', 'https://unpkg.com/@mapbox/togeojson@0.16.0/togeojson.js', Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
         if (defined('WP_DEBUG') && WP_DEBUG) {
             $minified = '';

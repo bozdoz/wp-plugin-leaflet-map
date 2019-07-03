@@ -98,15 +98,15 @@
                     ),
                 __("Add GeoJSON by URL (with popups)", 'leaflet-map') => array(
                     '[leaflet-map fitbounds doubleClickZoom scrollwheel]',
-                    '[leaflet-geojson src=https://cdn.rawgit.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson]{popup-text}[/leaflet-geojson]'
+                    '[leaflet-geojson src=https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson]{popup-text}[/leaflet-geojson]'
                     ),
                 __("Add KML by URL", 'leaflet-map') => array(
                     '[leaflet-map fitbounds]',
-                    '[leaflet-kml src=https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml fillColor=red color=white]'
+                    '[leaflet-kml src=https://cdn.jsdelivr.net/gh/mapbox/togeojson@master/test/data/polygon.kml fillColor=red color=white]'
                     ),
                 __("Add GPX by URL", 'leaflet-map') => array(
                     '[leaflet-map fitbounds]',
-                    '[leaflet-gpx src=https://cdn.rawgit.com/mapbox/togeojson/master/test/data/run.gpx color=black]'
+                    '[leaflet-gpx src=https://cdn.jsdelivr.net/gh/mapbox/togeojson@master/test/data/run.gpx color=black]'
                     ),
                 __("Keep them in Newfoundland", 'leaflet-map') => array(
                     '[leaflet-map maxbounds="46.22545288226939, -59.61181640625;51.72702815704774, -52.36083984375" zoom=5 zoomcontrol]',

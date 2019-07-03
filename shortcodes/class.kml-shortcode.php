@@ -35,5 +35,5 @@ class Leaflet_Kml_Shortcode extends Leaflet_Geojson_Shortcode
      * 
      * @var string $default_src
      */
-    public static $default_src = 'https://cdn.rawgit.com/mapbox/togeojson/master/test/data/polygon.kml';
+    public static $default_src = 'https://cdn.jsdelivr.net/gh/mapbox/togeojson@master/test/data/polygon.kml';
 }
