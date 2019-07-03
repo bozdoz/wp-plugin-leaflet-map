@@ -25,6 +25,8 @@ if [ ! -f .cli-initialized ]; then
 
     wp core update
 
+    wp core update-db
+
     wp theme activate twentynineteen
 
     wp plugin activate leaflet-map
