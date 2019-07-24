@@ -1,5 +1,7 @@
-L.WPLeafletMapPlugin = L.Class({
-  includes: L.Evented || L.Mixin.Events,
+L.WPLeafletMapPlugin = (L.Evented || L.Class).extend({
+  includes: !!L.Evented 
+    ? {}
+    : L.Mixin.Events,
 
   maps: [],
   images: [],
@@ -25,7 +27,7 @@ L.WPLeafletMapPlugin = L.Class({
    * @param {function} fnc
    */
   push: function(fnc) {
-    fnc()
+    fnc.call(this);
   },
 
   /**
@@ -150,9 +152,9 @@ L.WPLeafletMapPlugin = L.Class({
    * @param {object} data e.g. feature.properties
    */
   template: function(str, data) {
-    var parseKey = this.parseKey;
+    var _parseKey = this._parseKey.bind(this);
     return str.replace(this.templateRe, function(match, key) {
-      var value = parseKey(data, key)
+      var value = _parseKey(data, key)
       if (value === undefined) {
         return match
       }
@@ -160,7 +162,7 @@ L.WPLeafletMapPlugin = L.Class({
     })
   },
 
-  strToPathRe: /[.‘’'“”"\[\]]+/g,
+  _strToPathRe: /[.‘’'“”"\[\]]+/g,
 
   /**
    * Converts nested object keys to array
@@ -169,8 +171,8 @@ L.WPLeafletMapPlugin = L.Class({
    *     ['this', 'that', 'and', 'theOther', '4']
    * @param {string} key
    */
-  strToPath: function(key) {
-    var input = key.split(this.strToPathRe)
+  _strToPath: function(key) {
+    var input = key.split(this._strToPathRe)
     var output = []
 
     // failsafe for all empty strings;
@@ -185,13 +187,13 @@ L.WPLeafletMapPlugin = L.Class({
   },
 
   /**
-   * It uses strToPath to access a possibly nested path value
+   * It uses _strToPath to access a possibly nested path value
    *
    * @param {object} obj
    * @param {string} key
    */
-  parseKey: function(obj, key) {
-    var arr = this.strToPath(this.unescape(key))
+  _parseKey: function(obj, key) {
+    var arr = this._strToPath(this.unescape(key))
     var value = obj
 
     for (var i = 0, len = arr.length; i < len; i++) {
@@ -205,32 +207,39 @@ L.WPLeafletMapPlugin = L.Class({
   }
 })
 
-/**
- * Init function
- */
-;(function() {
-  /**
-   * window.WPLeafletMapPlugin can be used, by saving arguments,
-   * before it is officially initialized
-   *
-   * This is used to deal with the potential for deferred scripts
-   */
-  var original = window.WPLeafletMapPlugin
-  window.WPLeafletMapPlugin = new L.WPLeafletMapPlugin()
-  // check for functions to execute
-  if (!!original) {
-    for (var i = 0, len = original.length; i < len; i++) {
-      window.WPLeafletMapPlugin.push(original[i])
-    }
 
-    // empty the array
-    original.splice(0)
-
-    // re-add any methods that may have been added to the original
-    for (var k in original) {
-      if (original.hasOwnProperty(k)) {
-        window.WPLeafletMapPlugin[k] = original[k]
+;(function () {
+  function init() {
+    /**
+     * window.WPLeafletMapPlugin can be used, by saving arguments,
+     * before it is officially initialized
+     *
+     * This is used to deal with the potential for deferred scripts
+     */
+    var original = window.WPLeafletMapPlugin
+    window.WPLeafletMapPlugin = new L.WPLeafletMapPlugin()
+    // check for functions to execute
+    if (!!original) {
+      for (var i = 0, len = original.length; i < len; i++) {
+        window.WPLeafletMapPlugin.push(original[i])
+      }
+  
+      // empty the array
+      original.splice(0)
+  
+      // re-add any methods that may have been added to the original
+      for (var k in original) {
+        if (original.hasOwnProperty(k)) {
+          window.WPLeafletMapPlugin[k] = original[k]
+        }
       }
     }
+  }
+  
+  // waits any plugins (svg-icon, geojson-ajax) to load
+  if (window.addEventListener) {
+    window.addEventListener('load', init, false);
+  } else if (window.attachEvent) {
+    window.attachEvent('onload', init);
   }
 })()
