@@ -234,11 +234,12 @@ Or you can add a geojson shape via a url:
 
 #### [leaflet-geojson] Options
 
-| Option       | Usage                      |
-| ------------ | -------------------------- |
-| `src`        | Source of the geojson file |
-| `popup_text` | Text for any popups when shapes are clicked |
-| `fitbounds`  | Fit the map to the bounds of all shapes (instead of whatever center you gave the map originally) |
+| Option           | Usage                      |
+| ---------------- | -------------------------- |
+| `src`            | Source of the geojson file |
+| `popup_text`     | Text for any popups when shapes are clicked |
+| `popup_property` | Name of the geojson property that contains popup content |
+| `fitbounds`      | Fit the map to the bounds of all shapes (instead of whatever center you gave the map originally) |
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path.  Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
