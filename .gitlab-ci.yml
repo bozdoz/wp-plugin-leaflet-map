@@ -7,15 +7,9 @@ update svn:
   script:
     - apk add subversion
     - svn co https://plugins.svn.wordpress.org/leaflet-map /repo
-    - ls
     - rm -rf /repo/trunk/*
     - cp -r * /repo/trunk
-    - cd /repo/trunk
-    - ls
-    - cd ..
-    - ls
     - svn stat
     - env
-    - echo $USER
   # only:
   #   - tags
