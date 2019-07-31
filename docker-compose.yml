@@ -1,7 +1,12 @@
 version: '3.3'
 
 services:
-  db:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 1235:8080
+  mysql:
     image: mariadb
     volumes:
       - wp_db:/var/lib/mysql
@@ -10,12 +15,13 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
 
   cli:
-    build: .
+    image: bozdoz/wordpress-initialize
     depends_on:
-      - db
+      - mysql
     volumes:
       - wordpress:/var/www/html
       - .:/var/www/html/wp-content/plugins/leaflet-map
+      - ./docker-initialize.sh:/app/initialize.sh
       #-------------------------------------------------
       # Uncomment these along with the wordpress service
       # to debug themes and plugins
@@ -23,8 +29,13 @@ services:
       # - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     environment:
-      WORDPRESS_PORT: ${WORDPRESS_PORT:-1234}
-
+      WP_PLUGINS: leaflet-map
+      WORDPRESS_PORT: ${WP_PORT:-1234}
+      WP_PORT: ${WP_PORT:-1234}
+      WP_URL: ${WP_URL:-localhost:1234}
+      WP_USER: admin
+      WP_PASSWORD: password
+      
   wordpress:
     image: wordpress
     depends_on:
@@ -39,11 +50,10 @@ services:
       # - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     ports:
-      - ${WORDPRESS_PORT:-1234}:80
+      - ${WP_PORT:-1234}:80
     restart: always
     environment:
       WORDPRESS_DB_PASSWORD: rootpass
-      WORDPRESS_DB_HOST: db:3306
 
 volumes:
   wp_db:
