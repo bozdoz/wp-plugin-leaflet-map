@@ -1,8 +1,8 @@
 === Leaflet Map ===
 Author: bozdoz
-Author URI: https://www.twitter.com/bozdoz/
+Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, Remigr, nielsalstrup, jeromelebleu, gerital, peteruithoven
+Contributors: bozdoz, remigr, gerital
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
@@ -84,8 +84,6 @@ Alternatively, you could use a plain image for visitors to zoom and pan around w
 Check out other examples on the Shortcode Helper page in the Leaflet Map admin section.
 
 Check out the **source code** and **more** details on [GitHub](https://github.com/bozdoz/wp-plugin-leaflet-map)!
-
-Shoot me a question [@bozdoz](https://www.twitter.com/bozdoz/).
 
 == Installation ==
 

@@ -379,5 +379,5 @@ msgid "bozdoz"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://twitter.com/bozdoz/"
+msgid "https://bozdoz.com"
 msgstr ""

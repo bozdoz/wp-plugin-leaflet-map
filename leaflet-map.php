@@ -5,7 +5,7 @@
  * Plugin URI: https://wordpress.org/plugins/leaflet-map/
  * Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
  * Author: bozdoz
- * Author URI: https://twitter.com/bozdoz/
+ * Author URI: https://bozdoz.com/
  * Text Domain: leaflet-map
  * Domain Path: /languages/
  * Version: 2.15.0
