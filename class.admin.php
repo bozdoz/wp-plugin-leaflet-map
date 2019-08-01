@@ -67,17 +67,22 @@ class Leaflet_Map_Admin
      */
     public function admin_menu()
     {
-        if (current_user_can('manage_options')) {
-            $main_link = 'leaflet-map';
-        } else {
-            $main_link = 'leaflet-shortcode-helper';
-        }
-
         $leaf = 'data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsZWFmIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtbGVhZiBmYS13LTE4IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDU3NiA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTU0Ni4yIDkuN2MtNS42LTEyLjUtMjEuNi0xMy0yOC4zLTEuMkM0ODYuOSA2Mi40IDQzMS40IDk2IDM2OCA5NmgtODBDMTgyIDk2IDk2IDE4MiA5NiAyODhjMCA3IC44IDEzLjcgMS41IDIwLjVDMTYxLjMgMjYyLjggMjUzLjQgMjI0IDM4NCAyMjRjOC44IDAgMTYgNy4yIDE2IDE2cy03LjIgMTYtMTYgMTZDMTMyLjYgMjU2IDI2IDQxMC4xIDIuNCA0NjhjLTYuNiAxNi4zIDEuMiAzNC45IDE3LjUgNDEuNiAxNi40IDYuOCAzNS0xLjEgNDEuOC0xNy4zIDEuNS0zLjYgMjAuOS00Ny45IDcxLjktOTAuNiAzMi40IDQzLjkgOTQgODUuOCAxNzQuOSA3Ny4yQzQ2NS41IDQ2Ny41IDU3NiAzMjYuNyA1NzYgMTU0LjNjMC01MC4yLTEwLjgtMTAyLjItMjkuOC0xNDQuNnoiLz48L3N2Zz4=';
 
-        add_menu_page("Leaflet Map", "Leaflet Map", 'manage_options', $main_link, array($this, "settings_page"), $leaf);
-        add_submenu_page("leaflet-map", "Default Values", "Default Values", 'manage_options', "leaflet-map", array($this, "settings_page"));
-        add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", 'edit_posts', "leaflet-shortcode-helper", array($this, "shortcode_page"));
+        $admin = "manage_options";
+        $author = "edit_posts";
+
+        if (current_user_can($admin)) {
+            $main_link = 'leaflet-map';
+            $main_page = array($this, "settings_page");
+        } else {
+            $main_link = 'leaflet-shortcode-helper';
+            $main_page = array($this, "shortcode_page");
+        }
+
+        add_menu_page("Leaflet Map", "Leaflet Map", $author, $main_link, $main_page, $leaf);
+        add_submenu_page("leaflet-map", "Default Values", "Default Values", $admin, "leaflet-map", array($this, "settings_page"));
+        add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", $author, "leaflet-shortcode-helper", array($this, "shortcode_page"));
     }
 
     /**
