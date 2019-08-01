@@ -59,6 +59,10 @@ class Leaflet_Map
             'file' => 'class.line-shortcode.php',
             'class' => 'Leaflet_Line_Shortcode'
         ),
+        'leaflet-polygon' => array(
+            'file' => 'class.polygon-shortcode.php',
+            'class' => 'Leaflet_Polygon_Shortcode'
+        ),
         'leaflet-circle' => array(
             'file' => 'class.circle-shortcode.php',
             'class' => 'Leaflet_Circle_Shortcode'

@@ -23,6 +23,13 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 class Leaflet_Line_Shortcode extends Leaflet_Shortcode
 {
     /**
+     * How leaflet renders the shape
+     * 
+     * @var string $type 
+     */
+    public static $type = 'line';
+
+    /**
      * Get Script for Shortcode
      * 
      * @param string $atts    shortcode attributes
@@ -73,24 +80,38 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
         }
 
         $location_json = json_encode($locations);
+
+        $class = self::getClass();
+
+        $type = $class::$type;
+
+        $js_factory = 'L.polyline';
+        $collection = 'lines';
+        
+        if ($type == 'polygon') {
+            $js_factory = 'L.polygon';
+            $locations = "[$location_json]";
+            $collection = 'polygons';
+        }
+
         ob_start();
         ?>
         <script>
         window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
         window.WPLeafletMapPlugin.push(function () {
             var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
-                line = L.polyline(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
+                shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
                 fitbounds = <?php echo $fitbounds; ?>,
                 group = window.WPLeafletMapPlugin.getCurrentGroup();
-            line.addTo( group );
+            shape.addTo( group );
             if (fitbounds) {
-                // zoom the map to the polyline
-                previous_map.fitBounds( line.getBounds() );
+                // zoom the map to the shape
+                previous_map.fitBounds( shape.getBounds() );
             }
             <?php
-                $this->LM->add_popup_to_shape($atts, $content, 'line');
+                $this->LM->add_popup_to_shape($atts, $content, 'shape');
             ?>
-            window.WPLeafletMapPlugin.lines.push( line );
+            window.WPLeafletMapPlugin.<?php echo $collection; ?>.push( shape );
         });
         </script>
         <?php

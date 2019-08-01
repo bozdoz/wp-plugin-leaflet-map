@@ -81,6 +81,10 @@
                     '[leaflet-map lat=41 lng=29 scrollwheel zoom=6]',
                     '[leaflet-line latlngs="41, 29; 44, 18;"]'
                     ),
+                __("Basic Polygon", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-polygon addresses="Miami; San Juan; Bermuda" color="green" fillColor="yellow"]<a href="https://en.wikipedia.org/wiki/Bermuda_Triangle" target="_blank">Bermuda Triangle</a>[/leaflet-polygon]'
+                    ),
                 __("Basic Circle", 'leaflet-map') => array(
                     '[leaflet-map lat=52 lng=5 zoom=9]',
                     '[leaflet-circle lat=52 lng=5 radius=17500]'

@@ -191,6 +191,7 @@
         this.markergroups = {};
         this.markers = [];
         this.lines = [];
+        this.polygons = [];
         this.circles = [];
         this.geojsons = [];
     }

@@ -206,6 +206,12 @@ And the following Shape Options. See https://leafletjs.com/reference-1.3.4.html#
 
 ---
 
+### [leaflet-polygon]
+
+Virtually the same as [leaflet-line] (above)
+
+---
+
 ### [leaflet-circle]
 
 ![Circle](https://i.imgur.com/rVHH6Zm.png?1234)
@@ -221,6 +227,8 @@ Add a circle to the map by adding `[leaflet-circle]`. You can specify the positi
 | radius                         | Radius of the circle in meters                                                                                                                                                                |
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path
+
+---
 
 ### [leaflet-geojson]
 
