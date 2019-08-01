@@ -1,62 +1,84 @@
-/* styles for both admin settings and shortcode page */
-h1 small {
-	color: #999;
-	margin: 1em;
-	font-size:0.65em;
+form {
+	margin-top: 4em;
 }
-.h3 {
-	font-size: 1.3em;
-	margin: 1em 0;
-}
+
 .container {
-	width:100%;
-	max-width: 700px;
-	margin:35px 0;
-	clear:both;
-	min-height:50px;
+	margin-bottom: 2em;
+	max-width: 800px;
+	font-size: 18px;
 }
-.container label {
-	width:30%;
+
+.container:first-child {
+	margin-bottom: 1em;
 }
-.container .label {
-	line-height: 2.4em;
-	font-weight: bold;
-	width:30%;
-	font-size:1.1em;
+
+.label {
+	float: left;
+	margin-right: 2em;
+	padding: 1em 0;
+	vertical-align: center;
 }
-.container input {
-	float:right;
-	margin:0;
-}
-.container input[type="text"] {
-	width:70%;
-	padding:7px 12px;
-	box-sizing:border-box;
-}
-.input-group {
-	width:70%;
-	float:right;
-}
-.input-group .full-width {
-	width:100%;
-}
-.input-group textarea {
-	height:7em;
-	padding:0.5em 1em;
-}
+
 .helptext {
-	margin: 0;
-	padding: 0.2em 0;
-	clear:both;
-	color:#666;
+	clear: both;
 }
-.helptext p.description {
-	font-size:14px;
-	line-height: 1.618;
-	letter-spacing: -0.001em;
-	word-spacing: 0.01em;
-	margin:0.5em 0 0;
+
+.helptext p {
+	line-height: 2;
 }
+
+code {
+	margin: 1em 0; 
+	padding: 1em 2em;
+	display: block;
+}
+
+.input-group {
+	float: right;
+	width: 50%;
+}
+
+.input-group input {
+	padding: 1em;
+}
+
+.input-group input[type="text"],
+.input-group textarea,
+.input-group select {
+	width: 100%;
+}
+
+.input-group input[type="checkbox"] {
+	margin: 1.34em;
+	margin-right: 0;
+	float: right;
+}
+
+.input-group select {
+	margin: 0.9em;
+	margin-right: 0;
+	float: right;
+}
+
+/* 
+* For Flexbox Support
+*/
+
+.container > label {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	justify-content: space-between;
+}
+
+.container .input-group {
+	width: initial;
+	flex: 1 1 auto;
+}
+
+/* Shortcode Example page */
 .flex, 
 .examples {
 	display: -webkit-box;
@@ -88,9 +110,4 @@ p {
 }
 .list-item p {
 	font-size:1.2em;
-}
-@media screen and (max-width: 770px) {
-	.input-group {
-		float:none;
-	}
 }

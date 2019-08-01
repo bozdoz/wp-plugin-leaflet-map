@@ -122,7 +122,7 @@ class Leaflet_Map_Plugin_Settings
                 'default'=>'100%',
                 'type' => 'text',
                 'helptext' => sprintf(
-                    '%1$s %2$s <br /> <code>[leaflet-map width="100%"]</code>', 
+                    '%1$s %2$s <br /> <code>[leaflet-map width="100%%"]</code>', 
                     __('Default width for maps. Values can include "px" but it is not necessary.  Can also be "%".', 'leaflet-map'),
                     $foreachmap
                 )
@@ -142,7 +142,7 @@ class Leaflet_Map_Plugin_Settings
                 'default' => '0',
                 'type' => 'checkbox',
                 'helptext' => sprintf(
-                    '%1$s %2$s <br /> <code>[leaflet-map zoomcontrol="0"]</code>', 
+                    '%1$s %2$s <br /> <code>[leaflet-map !zoomcontrol]</code>', 
                     __('The zoom buttons can be large and annoying.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -152,7 +152,7 @@ class Leaflet_Map_Plugin_Settings
                 'default' => '0',
                 'type' => 'checkbox',
                 'helptext' => sprintf(
-                    '%1$s %2$s <br /> <code>[leaflet-map scrollwheel="0"]</code>', 
+                    '%1$s %2$s <br /> <code>[leaflet-map !scrollwheel]</code>', 
                     __('Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -162,7 +162,7 @@ class Leaflet_Map_Plugin_Settings
                 'default' => '0',
                 'type' => 'checkbox',
                 'helptext' => sprintf(
-                    '%1$s %2$s <br /> <code>[leaflet-map doubleClickZoom=false]</code>', 
+                    '%1$s %2$s <br /> <code>[leaflet-map !doubleClickZoom]</code>', 
                     __('If enabled, your maps will zoom with a double click.  By default it is disabled: If we\'re going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map.', 'leaflet-map'),
                     $foreachmap
                 )
@@ -280,6 +280,12 @@ class Leaflet_Map_Plugin_Settings
                     __('You must create a project and set up a billing account, then you will be given an API key.', 'leaflet-map'),
                     __('You are unlikely to ever be charged for geocoding.', 'leaflet-map')
                 ),
+            ),
+            'togeojson_url' => array(
+                'display_name'=>__('KML/GPX JavaScript Converter', 'leaflet-map'),
+                'default' => 'https://unpkg.com/@mapbox/togeojson@0.16.0/togeojson.js',
+                'type' => 'text',
+                'helptext' => __('ToGeoJSON converts KML and GPX files to GeoJSON; if you plan to use [leaflet-kml] or [leaflet-gpx] then this library is loaded.  You can change the default if you need.', 'leaflet-map')
             ),
         );
 

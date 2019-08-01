@@ -162,6 +162,7 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * Updates default Leaflet to 1.5.1
 * Fixes reset default values button in settings
 * Requires at least WordPress 4.6
+* ToGeoJSON library URL is customizable
 
 = 2.14.0 =
 * Fix `visible` att in popups.

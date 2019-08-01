@@ -249,6 +249,10 @@ properties to the popups, use the inner content and curly brackets to substitute
 
 Same idea as geojson (above), but takes KML files and loads [Mapbox's togeojson library](https://github.com/mapbox/togeojson)
 
+### [leaflet-gpx]
+
+Same idea as geojson and KML (above), but takes GPX files and also loads [Mapbox's togeojson library](https://github.com/mapbox/togeojson)
+
 ## Frequently Asked Questions
 
 ### How Can I Add another Leaflet Plugin?
