@@ -4,12 +4,14 @@ variables:
 image: alpine
 
 update svn:
+  stage: deploy
   script:
     - apk add subversion
-    - svn co https://plugins.svn.wordpress.org/leaflet-map /repo
+    - svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
     - rm -rf /repo/trunk/*
     - cp -r * /repo/trunk
-    - svn stat
-    - env
-  # only:
-  #   - tags
+    - cd /repo/trunk
+    - svn cp trunk tags/${CI_COMMIT_TAG//v}
+    - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
+  only:
+    - tags
