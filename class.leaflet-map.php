@@ -27,13 +27,6 @@ class Leaflet_Map
     public static $leaflet_version = '1.5.1';
 
     /**
-     * Number of maps on page; used for unique map ids
-     * 
-     * @var int $map_count
-     */
-    public $map_count = 0;
-
-    /**
      * Files to include upon init
      * 
      * @var array $_shortcodes

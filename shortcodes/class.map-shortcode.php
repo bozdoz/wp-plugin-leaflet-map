@@ -27,9 +27,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     /**
      * Unique ID for a map
      * 
-     * @var int $map_id
+     * @var str $map_id
      */
-    protected $map_id = 0;
+    protected $map_id = 'unique-key-here';
 
     /**
      * Instantiate class
@@ -38,16 +38,35 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     {
         parent::__construct();
         $this->enqueue();
-        $this->incrementMap();
+        $this->generateID();
+    }
+
+    /**
+     * Enqueue Scripts and Styles for Leaflet 
+     * 
+     * @return null
+     */
+    protected function enqueue()
+    {
+        wp_enqueue_style('leaflet_stylesheet');
+        wp_enqueue_script('wp_leaflet_map');
+
+        if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
+            // mapquest doesn't accept direct tile access as of July 11, 2016
+            wp_enqueue_script('leaflet_mapquest_plugin');
+        }
+
+        // enqueue user-defined scripts
+        do_action('leaflet_map_enqueue');
     }
 
     /**
      * Increment the map count
      */
-    protected function incrementMap()
+    protected function generateID()
     {
-        $this->LM->map_count++;
-        $this->map_id = $this->LM->map_count;
+        // generate unique map_id
+        $this->map_id = substr(str_shuffle(MD5(microtime())), 0, 13);
     }
 
     /**
@@ -156,25 +175,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['more_options'] = $more_options;
 
         return $atts;
-    }
-
-    /**
-     * Enqueue Scripts and Styles for Leaflet 
-     * 
-     * @return null
-     */
-    protected function enqueue()
-    {
-        wp_enqueue_style('leaflet_stylesheet');
-        wp_enqueue_script('wp_leaflet_map');
-
-        if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
-            // mapquest doesn't accept direct tile access as of July 11, 2016
-            wp_enqueue_script('leaflet_mapquest_plugin');
-        }
-
-        // enqueue user-defined scripts
-        do_action('leaflet_map_enqueue');
     }
 
     /**
