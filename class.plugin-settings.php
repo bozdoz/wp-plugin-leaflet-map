@@ -338,8 +338,8 @@ class Leaflet_Map_Plugin_Settings
     {
         foreach ($this->options as $name => $option) {
             if (
-                !array_key_exists('noreset', $options) ||
-                $options['noreset'] != true
+                !property_exists($option, 'noreset') ||
+                $option->noreset != true
             ) {
                 $this->delete($name);
             }

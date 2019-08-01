@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.2.2
-Version: 2.14.0
-Stable tag: 2.14.0
+Version: 2.15.0
+Stable tag: 2.15.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,14 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.15.0 =
+* Updates rawgit URL's to use jsdelivr, unpkg, and githubusercontent.com
+* Change logo to use FontAwesome SVG
+* Adds referer to file_get_contents, in case curl is disabled
+* Updates default Leaflet to 1.5.1
+* Fixes reset default values button in settings
+* Requires at least WordPress 4.6
 
 = 2.14.0 =
 * Fix `visible` att in popups.
@@ -349,6 +357,12 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.15.0 =
+* Adds referer to file_get_contents, in case curl is disabled
+* Updates default Leaflet to 1.5.1
+* Fixes reset default values button in settings
+* Requires at least WordPress 4.6
 
 = 2.12.0 =
 Fixed links in shortcode helper page; fixed issue with marker popups that had single quotes; loading leaflet scripts and styles only when a map shortcode is used
