@@ -13,13 +13,8 @@ before_script:
 new version:
   stage: deploy
   script:
+    - svn add --force .
     - svn cp trunk tags/${CI_COMMIT_TAG//v}
     - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
   only:
     - tags
-
-new update:
-  stage: deploy
-  script:
-    - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
-  when: manual
