@@ -285,24 +285,26 @@ function fs_leaflet_loaded() {
 /js/full-screen.js
 
 ```js
-function main() {
-  if (!window.WPLeafletMapPlugin) {
-    console.log('no plugin found!')
-    return
+;(function() {
+  function main() {
+    if (!window.WPLeafletMapPlugin) {
+      console.log('no plugin found!')
+      return
+    }
+
+    // iterate any of these: `maps`, `markers`, `markergroups`, `lines`, `circles`, `geojsons`
+    var maps = window.WPLeafletMapPlugin.maps
+
+    for (var i = 0, len = maps.length; i < len; i++) {
+      var map = maps[i]
+      map.whenReady(function() {
+        this.addControl(new L.Control.Fullscreen())
+      })
+    }
   }
 
-  // iterate any of these: `maps`, `markers`, `markergroups`, `lines`, `circles`, `geojsons`
-  var maps = window.WPLeafletMapPlugin.maps
-
-  for (var i = 0, len = maps.length; i < len; i++) {
-    var map = maps[i]
-    map.whenReady(function() {
-      this.addControl(new L.Control.Fullscreen())
-    })
-  }
-}
-
-window.addEventListener('load', main)
+  window.addEventListener('load', main)
+})()
 ```
 
 ## Contributing
