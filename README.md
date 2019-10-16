@@ -15,6 +15,15 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 - [General Usage](#general-usage)
 - [Developing](#developing)
 - [Available Shortcodes](#available-shortcodes)
+  - [[leaflet-map]](#leaflet-map)
+  - [[leaflet-image]](#leaflet-image)
+  - [[leaflet-marker]](#leaflet-marker)
+  - [[leaflet-line]](#leaflet-line)
+  - [[leaflet-polygon]](#leaflet-polygon)
+  - [[leaflet-circle]](#leaflet-circle)
+  - [[leaflet-geojson]](#leaflet-geojson)
+  - [[leaflet-kml]](#leaflet-kml)
+  - [[leaflet-gpx]](#leaflet-gpx)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Contributing](#contributing)
 - [Wish List](#wish-list)
@@ -251,7 +260,7 @@ Or you can add a geojson shape via a url:
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path.  Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
-`[leaflet-marker]Field A = {field_a}[/leaflet-marker]`.
+`[leaflet-geojson]Field A = {field_a}[/leaflet-geojson]`.
 
 ### [leaflet-kml]
 
