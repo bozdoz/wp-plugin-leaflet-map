@@ -69,6 +69,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
         $style_json = $this->LM->get_style_json($atts);
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
+        $circleMarker = empty($circleMarker) ? 0 : $circleMarker;
 
         // shortcode content becomes popup text
         $content_text = empty($content) ? '' : $content;
@@ -99,8 +100,10 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                         type: '<?php echo $class::$type; ?>',
                         style : layerStyle,
                         onEachFeature : onEachFeature,
+                        pointToLayer: pointToLayer
                     }),
                     fitbounds = <?php echo $fitbounds; ?>,
+                    circleMarker = <?php echo $circleMarker; ?>,
                     popup_text = window.WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
                     popup_property = '<?php echo $popup_property; ?>',
                     group = window.WPLeafletMapPlugin.getCurrentGroup();   
@@ -129,7 +132,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                     }
                     style = L.Util.extend(style, default_style);
                     return style;
-                }      
+                }
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {};
                     var text = popup_property
@@ -141,7 +144,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                     if (text) {
                         layer.bindPopup( text );
                     }
-                }  
+                }
+                function pointToLayer (feature, latlng) {
+                    if (circleMarker) {
+                        return L.circleMarker(latlng);
+                    } else {
+                        return L.marker(latlng);
+                    }
+                }
             });
         </script>
         <?php
