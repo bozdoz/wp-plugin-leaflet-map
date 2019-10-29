@@ -279,6 +279,7 @@ class Leaflet_Map
             'fillOpacity' => isset($fillopacity) ? $fillopacity : null,
             'fillRule' => isset($fillrule) ? $fillrule : null,
             'className' => isset($classname) ? $classname : null,
+            'radius' => isset($radius) ? $radius : null
             );
 
         $args = array(
@@ -294,7 +295,8 @@ class Leaflet_Map
             'fillColor' => FILTER_SANITIZE_STRING,
             'fillOpacity' => FILTER_VALIDATE_FLOAT,
             'fillRule' => FILTER_SANITIZE_STRING,
-            'className' => FILTER_SANITIZE_STRING
+            'className' => FILTER_SANITIZE_STRING,
+            'radius' => FILTER_VALIDATE_FLOAT
             );
 
         return $this->json_sanitize($style, $args);
