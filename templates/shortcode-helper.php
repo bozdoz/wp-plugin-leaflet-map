@@ -100,9 +100,13 @@
                 __("Disable all Interaction", 'leaflet-map') => array(
                     '[leaflet-map address="las vegas" !boxZoom !doubleClickZoom !dragging !keyboard !scrollwheel !attribution !touchZoom]',
                     ),
-                __("Add GeoJSON by URL (with circle markers and popups)", 'leaflet-map') => array(
-                    '[leaflet-map fitbounds doubleClickZoom scrollwheel]',
-                    '[leaflet-geojson circleMarker src=https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson]{popup-text}[/leaflet-geojson]'
+                __("Add GeoJSON by URL", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds scrollwheel]',
+                    '[leaflet-geojson src=https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/ee100561f5a0a8cf55430e9f2157e4a1e2560a2e/map.geojson]'
+                    ),
+                __("Add GeoJSON with circle markers and popups", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds scrollwheel]',
+                    '[leaflet-geojson circleMarker radius=10 src=https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/ee100561f5a0a8cf55430e9f2157e4a1e2560a2e/map.geojson]{popup-text}[/leaflet-geojson]'
                     ),
                 __("Add KML by URL", 'leaflet-map') => array(
                     '[leaflet-map fitbounds]',
