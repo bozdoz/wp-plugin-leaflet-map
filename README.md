@@ -1,7 +1,7 @@
 # Leaflet Map WordPress Plugin
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.5.1-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-5.2.2-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.6.0-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-5.3.2-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -11,22 +11,31 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [General Usage](#general-usage)
-- [Developing](#developing)
-- [Available Shortcodes](#available-shortcodes)
-  - [[leaflet-map]](#leaflet-map)
-  - [[leaflet-image]](#leaflet-image)
-  - [[leaflet-marker]](#leaflet-marker)
-  - [[leaflet-line]](#leaflet-line)
-  - [[leaflet-polygon]](#leaflet-polygon)
-  - [[leaflet-circle]](#leaflet-circle)
-  - [[leaflet-geojson]](#leaflet-geojson)
-  - [[leaflet-kml]](#leaflet-kml)
-  - [[leaflet-gpx]](#leaflet-gpx)
-- [Frequently Asked Questions](#frequently-asked-questions)
-- [Contributing](#contributing)
-- [Wish List](#wish-list)
+- [Leaflet Map WordPress Plugin](#leaflet-map-wordpress-plugin)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [General Usage](#general-usage)
+  - [Developing](#developing)
+  - [Available Shortcodes](#available-shortcodes)
+    - [[leaflet-map]](#leaflet-map)
+      - [[leaflet-map] Options:](#leaflet-map-options)
+    - [[leaflet-image]](#leaflet-image)
+      - [[leaflet-image] Options:](#leaflet-image-options)
+    - [[leaflet-marker]](#leaflet-marker)
+      - [[leaflet-marker] Options:](#leaflet-marker-options)
+    - [[leaflet-line]](#leaflet-line)
+      - [[leaflet-line] Options](#leaflet-line-options)
+    - [[leaflet-polygon]](#leaflet-polygon)
+    - [[leaflet-circle]](#leaflet-circle)
+      - [[leaflet-circle] Options](#leaflet-circle-options)
+    - [[leaflet-geojson]](#leaflet-geojson)
+      - [[leaflet-geojson] Options](#leaflet-geojson-options)
+    - [[leaflet-kml]](#leaflet-kml)
+    - [[leaflet-gpx]](#leaflet-gpx)
+  - [Frequently Asked Questions](#frequently-asked-questions)
+    - [How Can I Add another Leaflet Plugin?](#how-can-i-add-another-leaflet-plugin)
+  - [Contributing](#contributing)
+  - [Wish List](#wish-list)
 
 ## Installation
 
@@ -57,7 +66,7 @@ You can have SVG markers, add shapes, geojson, kml, images, and more! See availa
 This plugin uses Docker for development. Simply:
 
 1. [install Docker](https://www.docker.com/get-started)
-1. fork/clone the repo, and 
+1. fork/clone the repo, and
 1. execute this command from the repo's root directory in your terminal:
 
 ```bash
@@ -217,7 +226,7 @@ And the following Shape Options. See https://leafletjs.com/reference-1.3.4.html#
 
 ### [leaflet-polygon]
 
-Virtually the same as [leaflet-line] (above)
+Virtually the same as [leaflet-line](above)
 
 ---
 
@@ -251,16 +260,16 @@ Or you can add a geojson shape via a url:
 
 #### [leaflet-geojson] Options
 
-| Option           | Usage                      |
-| ---------------- | -------------------------- |
-| `src`            | Source of the geojson file |
-| `popup_text`     | Text for any popups when shapes are clicked |
-| `popup_property` | Name of the geojson property that contains popup content |
+| Option           | Usage                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| `src`            | Source of the geojson file                                                                       |
+| `popup_text`     | Text for any popups when shapes are clicked                                                      |
+| `popup_property` | Name of the geojson property that contains popup content                                         |
 | `fitbounds`      | Fit the map to the bounds of all shapes (instead of whatever center you gave the map originally) |
-| `circleMarker`   | Display circles instead of markers. Vastly improves performance on maps with a lot of points. |
-| `radius`         | Radius of the circles, when `circleMarkers` is set |
+| `circleMarker`   | Display circles instead of markers. Vastly improves performance on maps with a lot of points.    |
+| `radius`         | Radius of the circles, when `circleMarkers` is set                                               |
 
-Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path.  Also, if you want to add feature
+Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path. Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
 `[leaflet-geojson]Field A = {field_a}[/leaflet-geojson]`.
 
@@ -296,26 +305,26 @@ function fs_leaflet_loaded() {
 /js/full-screen.js
 
 ```js
-;(function() {
+(function() {
   function main() {
     if (!window.WPLeafletMapPlugin) {
-      console.log('no plugin found!')
-      return
+      console.log("no plugin found!");
+      return;
     }
 
     // iterate any of these: `maps`, `markers`, `markergroups`, `lines`, `circles`, `geojsons`
-    var maps = window.WPLeafletMapPlugin.maps
+    var maps = window.WPLeafletMapPlugin.maps;
 
     for (var i = 0, len = maps.length; i < len; i++) {
-      var map = maps[i]
+      var map = maps[i];
       map.whenReady(function() {
-        this.addControl(new L.Control.Fullscreen())
-      })
+        this.addControl(new L.Control.Fullscreen());
+      });
     }
   }
 
-  window.addEventListener('load', main)
-})()
+  window.addEventListener("load", main);
+})();
 ```
 
 ## Contributing
