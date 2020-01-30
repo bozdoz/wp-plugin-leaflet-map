@@ -155,6 +155,8 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 
 = 2.16.1 =
 * Updates default Leaflet to 1.6.0
+* Adds optional circle markers as [leaflet-geojson circleMarker]
+* removes random unique map id's for caching purposes
 
 = 2.16.0 =
 * allow author roles to see shortcodes
@@ -367,6 +369,7 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 
 = 2.16.1 =
 Updates default Leaflet to 1.6.0
+Changes map generation from a pre-defined randomly identified div element to a JavaScript generated div which is created (insertBefore) each inserted script tag
 
 = 2.16.0 =
 Adds [leaflet-polygon]
