@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.3.2
-Version: 2.16.1
-Stable tag: 2.16.1
+Version: 2.16.2
+Stable tag: 2.16.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.16.2 =
+* Fix to wpautop by removing spaces in javascript
 
 = 2.16.1 =
 * Updates default Leaflet to 1.6.0
@@ -366,6 +369,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.16.1 =
+Fixes missing maps by removing spaces in the JavaScript which some themes turn into paragraphs
 
 = 2.16.1 =
 Updates default Leaflet to 1.6.0

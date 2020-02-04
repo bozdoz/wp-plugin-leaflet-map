@@ -207,16 +207,13 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             // TODO: This could/should be abstracted so we don't duplicate code in image-shortcode
             var scriptsSoFar = document.getElementsByTagName('script');
             var thisScript = scriptsSoFar[scriptsSoFar.length - 1];
-
             // create map HTMLElement
             var mapElement = document.createElement('div');
             mapElement.className = 'leaflet-map';
             mapElement.style.height = "<?php echo $height; ?>";
             mapElement.style.width = "<?php echo $width; ?>";
-
             // insert just before this script
             thisScript.parentNode.insertBefore(mapElement, thisScript);
-
             // push deferred map creation function
             window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
             window.WPLeafletMapPlugin.push(function () {
