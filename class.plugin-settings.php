@@ -235,6 +235,16 @@ class Leaflet_Map_Plugin_Settings
                     $foreachmap
                 )
             ),
+            'detect_retina' => array(
+                'display_name' => __('Detect Retina', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map detect-retina]</code>',
+                    __('Fetch tiles at different zoom levels to appear smoother on retina displays.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
             'js_url' => array(
                 'display_name'=>__('JavaScript URL', 'leaflet-map'),
                 'default' => sprintf('https://unpkg.com/leaflet@%s/dist/leaflet.js', $leaflet_version),

@@ -63,11 +63,19 @@ abstract class Leaflet_Shortcode
                     !!$v
                 ) {
                     // false if starts with !, else true
-                    if ($v[0] == '!') {
-                        $atts[substr($v, 1)] = 0;
+                    if ($v[0] === '!') {
+                        $k = substr($v, 1);
+                        $v = 0;
                     } else {
-                        $atts[$v] = 1;
+                        $k = $v;
+                        $v = 1;
                     }
+                    $atts[$k] = $v;
+                }
+                // change hyphens to underscores for `extract()`
+                if (strpos($k, '-')) {
+                    $k = str_replace('-', '_', $k);
+                    $atts[$k] = $v;
                 }
             }
         }

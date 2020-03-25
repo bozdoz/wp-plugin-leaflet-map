@@ -198,6 +198,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             $tileurl = empty($tileurl) ? $settings->get('map_tile_url') : $tileurl;
             $subdomains = empty($subdomains) ? 
                 $settings->get('map_tile_url_subdomains') : $subdomains;
+
+            $detect_retina = empty($detect_retina) ? $settings->get('detect_retina') : $detect_retina;
         }
 
         /* should be iterated for multiple maps */
@@ -220,7 +222,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 var baseUrl = '<?php echo $tileurl; ?>',
                     base = (!baseUrl && window.MQ) ? 
                         MQ.mapLayer() : L.tileLayer(baseUrl, { 
-                            subdomains: '<?php echo $subdomains; ?>'
+                            subdomains: '<?php echo $subdomains; ?>',
+                            detectRetina: <?php echo $detect_retina; ?>,
                         }),
                     options = L.Util.extend({}, {
                         maxZoom: <?php echo $max_zoom; ?>,

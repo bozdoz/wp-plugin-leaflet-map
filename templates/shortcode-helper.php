@@ -56,7 +56,7 @@
                     '[leaflet-marker draggable]',
                     ),
                 __("Marker Icon", 'leaflet-map') => array(
-                    '[leaflet-map zoom=14 address="Ha Ling, canmore" scrollwheel]',
+                    '[leaflet-map zoom=14 address="Ha Ling, canmore" scrollwheel !detect-retina]',
                     '[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
                     ),
                 __("SVG Marker Icon", 'leaflet-map') => array(
@@ -64,7 +64,7 @@
                     '[leaflet-marker svg background="#777" iconClass="dashicons dashicons-star-filled" color="gold"]My Favorite Place in the World[/leaflet-marker]'
                     ),
                 __("Zoom Buttons", 'leaflet-map') => array(
-                    '[leaflet-map zoom=9 lat=48.855 lng=2.35 zoomcontrol]',
+                    '[leaflet-map zoom=10 lat=48.855 lng=2.35 zoomcontrol !detect-retina]',
                     ),
                 __("Alternate Map Tiles w/scrollwheel", 'leaflet-map') => array(
                     '[leaflet-map zoom=2 scrollwheel lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=abcd attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
@@ -74,7 +74,7 @@
                     '[leaflet-marker]OSLO![/leaflet-marker]',
                     ),
                 __("Links In Marker Messages (visible)", 'leaflet-map') => array(
-                    '[leaflet-map lat=28.41 lng=-81.58 zoom=15]',
+                    '[leaflet-map lat=28.41 lng=-81.58 zoom=15 detect-retina]',
                     '[leaflet-marker visible] Disney World! <a href="https://disneyworld.disney.go.com">Link</a> [/leaflet-marker]',
                     ),
                 __("Basic Lines w/Scrollwheel", 'leaflet-map') => array(
