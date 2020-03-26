@@ -14,11 +14,15 @@ before_script:
 new version:
   stage: deploy
   script:
-    - rm scripts/*.min.js
+    # minify js
+    - cd trunk/scripts
+    - rm -rf *.min.js
     - |
-      for file in scripts/*.js; do 
-      minify $file > scripts/$(basename $file .js).min.js; 
+      for file in *.js; do 
+      minify $file > $(basename $file .js).min.js; 
       done
+    - cd /repo
+    # tag and commit to svn
     - svn add --force .
     - svn cp trunk tags/${CI_COMMIT_TAG//v}
     - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
