@@ -297,6 +297,11 @@ class Leaflet_Map_Plugin_Settings
                 'type' => 'text',
                 'helptext' => __('ToGeoJSON converts KML and GPX files to GeoJSON; if you plan to use [leaflet-kml] or [leaflet-gpx] then this library is loaded.  You can change the default if you need.', 'leaflet-map')
             ),
+            'shortcode_in_excerpt' => array(
+                'display_name' => __('Show maps in excerpts', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+            ),
         );
 
         foreach ($this->options as $name => $details) {
