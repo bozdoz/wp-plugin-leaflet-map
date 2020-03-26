@@ -5,7 +5,7 @@
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
     "start": "docker-compose up && exit 0",
-    "restart": "npm run destroy && npm run start",
+    "restart": "npm run destroy && npm start",
     "destroy": "docker-compose down -v",
     "wordpress": "docker-compose run wordpress bash",
     "cli": "docker-compose run cli sh",

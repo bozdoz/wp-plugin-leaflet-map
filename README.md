@@ -136,6 +136,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `dragging`                   | true                    |
 | `keyboard`                   | true                    |
 | `maxbounds`                  | null                    |
+| `detect-retina`              | 0 (false)               |
 
 ---
 
