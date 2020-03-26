@@ -16,7 +16,7 @@ new version:
   script:
     # minify js
     - cd trunk/scripts
-    - rm -rf *.min.js
+    - rm -f *.min.js
     - |
       for file in *.js; do 
       minify $file > $(basename $file .js).min.js; 
