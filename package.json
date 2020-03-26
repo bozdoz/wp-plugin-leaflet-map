@@ -9,10 +9,7 @@
     "destroy": "docker-compose down -v",
     "wordpress": "docker-compose run wordpress bash",
     "cli": "docker-compose run cli sh",
-    "minify": "npm run clean && for file in scripts/*.js; do npx minify $file > ./scripts/$(basename $file .js).min.js; done",
-    "clean": "rm scripts/*.min.js",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
-    "tag": "git tag v$VERSION && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,8 +22,6 @@
     "url": "https://github.com/bozdoz/wp-plugin-leaflet-map/issues"
   },
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
-  "devDependencies": {
-    "minify": "^4.1.2"
-  },
+  "devDependencies": {},
   "dependencies": {}
 }

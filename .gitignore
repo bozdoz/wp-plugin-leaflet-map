@@ -4,3 +4,4 @@ node_modules/
 # - ./theme:/var/www/html/wp-content/themes/twentyfifteen in docker-compose
 theme/
 plugins/
+scripts/*.min.js

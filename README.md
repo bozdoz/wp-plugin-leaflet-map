@@ -39,9 +39,7 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
 
 ## Installation
 
-- (simple) Install via the WordPress plugins page on your WordPress site: `/wp-admin/plugin-install.php` (search Leaflet)
-
-- (needlessly complicated) Copy this repo (or download a release of it) into your WordPress plugins directory: `/wp-content/plugins/`. You might also need to name the directory 'leaflet-map', like so: `git clone https://github.com/bozdoz/wp-plugin-leaflet-map.git leaflet-map`
+- Install via the WordPress plugins page on your WordPress site: `/wp-admin/plugin-install.php` (search Leaflet)
 
 ## General Usage
 
@@ -73,14 +71,7 @@ This plugin uses Docker for development. Simply:
 docker-compose up
 ```
 
-You should also have node and NPM installed if you want to edit JavaScript files, and need to minify them:
-
-```bash
-npm install
-npm run minify
-```
-
-You can also use these NPM scripts to interact with Docker, if you make changes to Docker-related files:
+You can also use NPM scripts to interact with Docker, if you make changes to Docker-related files:
 
 To start:
 
