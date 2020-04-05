@@ -22,6 +22,7 @@
     "url": "https://github.com/bozdoz/wp-plugin-leaflet-map/issues"
   },
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "prettier": "^2.0.2"
+  }
 }
