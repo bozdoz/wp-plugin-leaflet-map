@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.3.2
-Version: 2.17.0
-Stable tag: 2.17.0
+Version: 2.17.1
+Stable tag: 2.17.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.17.1 =
+* Lazy-loading svg and geojson scripts so that it can wait for Leaflet to be loaded under some circumstances (deferred scripts)
 
 = 2.17.0 =
 * Adds `detect-retina` to plugin options and `leaflet-map` shortcode
@@ -373,6 +376,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.17.1 =
+Lazy-loading svg and geojson scripts so that it can wait for Leaflet to be loaded under some circumstances (deferred scripts)
 
 = 2.17.0 =
 Makes shortcode in excerpts conditional (enable it in admin->leaflet-map->settings)

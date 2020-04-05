@@ -4,7 +4,7 @@ variables:
 image: alpine
 
 before_script:
-  - apk add subversion nodejs npm
+  - apk add --no-cache subversion nodejs npm
   - npm i -g minify@5.1.1
   - svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
   - rm -rf /repo/trunk/*
