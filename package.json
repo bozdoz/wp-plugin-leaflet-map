@@ -1,7 +1,7 @@
 {
   "name": "wp-plugin-leaflet-map",
   "private": true,
-  "version": "2.17.1",
+  "version": "2.17.2",
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
     "start": "docker-compose up && exit 0",
@@ -24,5 +24,10 @@
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
   "devDependencies": {
     "prettier": "^2.0.2"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
   }
 }

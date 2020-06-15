@@ -21,7 +21,7 @@ services:
       # Uncomment these along with the wordpress service
       # to debug themes and plugins
       #-------------------------------------------------
-      # - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     environment:
       WP_PLUGINS: leaflet-map
@@ -30,9 +30,9 @@ services:
       WP_URL: ${WP_URL:-localhost:1234}
       WP_USER: admin
       WP_PASSWORD: password
-      
+
   wordpress:
-    image: wordpress
+    image: wordpress:php7.4
     depends_on:
       - cli
     volumes:
@@ -42,7 +42,7 @@ services:
       # Uncomment these along with the cli service
       # to debug themes and plugins
       #-------------------------------------------------
-      # - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      - ./theme:/var/www/html/wp-content/themes/twentynineteen
       # - ./plugins:/var/www/html/wp-content/plugins
     ports:
       - ${WP_PORT:-1234}:80
