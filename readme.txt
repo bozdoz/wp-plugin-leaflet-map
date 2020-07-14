@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.4.2
-Version: 2.17.3
-Stable tag: 2.17.3
+Version: 2.18.0
+Stable tag: 2.18.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.18.0 =
+* Adds table-view to leaflet-geojson: [leaflet-geojson table-view]
+* Creates maps in order their containers are rendered (no unique ids)
 
 = 2.17.3 =
 * Bugfix to detect retina breaking MapQuest maps since 2.17.0
@@ -382,6 +386,9 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.18.0 =
+Changes the way maps are rendered: Now creates map containers before creating maps, in the same order the containers are rendered. This should help with ajax, caching, and script-altering plugins.
 
 = 2.17.3 =
 Bugfix to detect retina breaking MapQuest maps since 2.17.0
