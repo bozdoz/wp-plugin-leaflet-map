@@ -112,11 +112,30 @@
             }, 100)
           },
           mg
-        )
+
+    /** Adds all properties as a table-view for GeoJSON popups */
+    this.propsToTable = function (props) {
+      var prop;
+      var keys = [];
+      for (prop in props) {
+        if (Object.prototype.hasOwnProperty.call(props, prop)) {
+          keys.push(prop);
+        }
+      }
+      keys = keys.sort();
+
+      var output = '<table>';
+
+      for (var i = 0, len = keys.length; i < len; i++) {
+        var key = keys[i];
+        output += '<tr><td>' + key + '</td>';
+        output += '<td>' + props[key] + '</td></tr>';
       }
 
-      return mg
-    }
+      output += '</table>';
+
+      return output;
+    };
 
     var unescape = (this.unescape = function (str) {
       var div = document.createElement('div')

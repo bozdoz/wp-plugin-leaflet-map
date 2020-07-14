@@ -82,6 +82,8 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         $popup_text = trim($popup_text);
 
+        $table_view = filter_var(empty($table_view) ? 0 : $table_view, FILTER_VALIDATE_INT);
+
         ob_start();
         ?>
         <script>
@@ -135,12 +137,17 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                 }
                 function onEachFeature (feature, layer) {
                     var props = feature.properties || {};
-                    var text = popup_property
-                        ? props[ popup_property ]
-                        : window.WPLeafletMapPlugin.template(
-                            popup_text, 
-                            feature.properties
-                        );
+                    var text;
+                    if (<?php echo $table_view; ?>) {
+                        text = window.WPLeafletMapPlugin.propsToTable(props);
+                    } else {
+                        text = popup_property
+                            ? props[ popup_property ]
+                            : window.WPLeafletMapPlugin.template(
+                                popup_text, 
+                                feature.properties
+                            );
+                    }
                     if (text) {
                         layer.bindPopup( text );
                     }
