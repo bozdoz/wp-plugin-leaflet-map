@@ -141,6 +141,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         // filter out nulls
         $more_options = $this->LM->filter_null($more_options);
         
+        // custom field for moving to JavaScript
+        $more_options['fitBounds'] = $atts['fitbounds'];
+
         // change string booleans to booleans
         $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN);
 
@@ -148,14 +151,11 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             $more_options['maxBounds'] = $maxBounds;
         }
 
-        // wrap as JSON
-        if ($more_options) {
-            $more_options = json_encode($more_options);
-        } else {
-            $more_options = '{}';
-        }
+        // custom field for moving to javascript
+        $more_options['attribution'] = $atts['attribution'];
 
-        $atts['more_options'] = $more_options;
+        // wrap as JSON
+        $atts['more_options'] = json_encode($more_options);
 
         return $atts;
     }
@@ -204,61 +204,36 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 
         /* should be iterated for multiple maps */
         ob_start(); ?>
+        <div class="leaflet-map WPLeafletMap"
+            style="height:<?php 
+                echo $height; 
+            ?>; width:<?php 
+                echo $width; 
+            ?>;"></div>
         <script>
-        (function () {
-            // TODO: This could/should be abstracted so we don't duplicate code in image-shortcode
-            var scriptsSoFar = document.getElementsByTagName('script');
-            var thisScript = scriptsSoFar[scriptsSoFar.length - 1];
-            // create map HTMLElement
-            var mapElement = document.createElement('div');
-            mapElement.className = 'leaflet-map';
-            mapElement.style.height = "<?php echo $height; ?>";
-            mapElement.style.width = "<?php echo $width; ?>";
-            // insert just before this script
-            thisScript.parentNode.insertBefore(mapElement, thisScript);
-            // push deferred map creation function
-            window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-            window.WPLeafletMapPlugin.push(function () {
-                var baseUrl = '<?php echo $tileurl; ?>',
-                    base = (!baseUrl && window.MQ) ? 
-                        MQ.mapLayer() : L.tileLayer(baseUrl, { 
-                            subdomains: '<?php echo $subdomains; ?>',
-                            detectRetina: <?php echo $detect_retina; ?>,
-                        }),
-                    options = L.Util.extend({}, {
-                        maxZoom: <?php echo $max_zoom; ?>,
-                        minZoom: <?php echo $min_zoom; ?>,
-                        layers: [base],
-                        zoomControl: <?php echo $zoomcontrol; ?>,
-                        scrollWheelZoom: <?php echo $scrollwheel; ?>,
-                        doubleClickZoom: <?php echo $doubleclickzoom; ?>,
-                        attributionControl: false
-                    }, <?php echo $more_options; ?>),
-                    map = L.map(mapElement, options)
-                        .setView([<?php 
-                            echo $lat . ',' . $lng . '],' . $zoom; 
-                        ?>);
-                if (<?php echo $fitbounds; ?>) {
-                    map._shouldFitBounds = true;
-                }
-                <?php
-                if ($attribution) :
-                    /* add any attributions, semi-colon-separated */
-                    $attributions = explode(';', $attribution);
-                    ?>
-                    var attControl = L.control.attribution({prefix:false}).addTo(map);
-                    <?php
-                    foreach ($attributions as $a):
-                    ?>
-                        attControl.addAttribution('<?php echo trim($a); ?>');
-                    <?php
-                    endforeach;
-                endif;
-                ?>
-                window.WPLeafletMapPlugin.maps.push(map);
-            }); // end add
-        })(); // end IIFE
-        </script><?php
+        // push deferred map creation function
+        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+        window.WPLeafletMapPlugin.push(function () {
+            var baseUrl = '<?php echo $tileurl; ?>';
+            var base = (!baseUrl && window.MQ) ? 
+                MQ.mapLayer() : L.tileLayer(baseUrl, { 
+                    subdomains: '<?php echo $subdomains; ?>',
+                    detectRetina: <?php echo $detect_retina; ?>,
+                });
+            var options = L.Util.extend({}, {
+                    maxZoom: <?php echo $max_zoom; ?>,
+                    minZoom: <?php echo $min_zoom; ?>,
+                    layers: [base],
+                    zoomControl: <?php echo $zoomcontrol; ?>,
+                    scrollWheelZoom: <?php echo $scrollwheel; ?>,
+                    doubleClickZoom: <?php echo $doubleclickzoom; ?>,
+                    attributionControl: false
+                }, <?php echo $more_options; ?>);
+            window.WPLeafletMapPlugin.createMap(options)
+                .setView(<?php 
+                    echo '[' . $lat . ',' . $lng . '],' . $zoom; 
+                ?>);
+        });</script><?php
 
         return ob_get_clean();
     }

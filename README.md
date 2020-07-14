@@ -1,7 +1,7 @@
 # Leaflet Map WordPress Plugin
 
 ![Leaflet](https://img.shields.io/badge/leaflet-1.6.0-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-5.3.2-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-5.4.2-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -297,10 +297,10 @@ function fs_leaflet_loaded() {
 /js/full-screen.js
 
 ```js
-(function() {
+(function () {
   function main() {
     if (!window.WPLeafletMapPlugin) {
-      console.log("no plugin found!");
+      console.log('no plugin found!');
       return;
     }
 
@@ -309,13 +309,13 @@ function fs_leaflet_loaded() {
 
     for (var i = 0, len = maps.length; i < len; i++) {
       var map = maps[i];
-      map.whenReady(function() {
+      map.whenReady(function () {
         this.addControl(new L.Control.Fullscreen());
       });
     }
   }
 
-  window.addEventListener("load", main);
+  window.addEventListener('load', main);
 })();
 ```
 
