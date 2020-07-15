@@ -56,7 +56,7 @@
                     '[leaflet-marker draggable]',
                     ),
                 __("Marker Icon", 'leaflet-map') => array(
-                    '[leaflet-map zoom=14 address="Ha Ling, canmore" scrollwheel !detect-retina]',
+                    '[leaflet-map zoom=14 address="Ha Ling, canmore" scrollwheel !detect-retina show_scale]',
                     '[leaflet-marker iconUrl="https://i.imgur.com/Q54ueuO.png" iconSize="80,50" iconAnchor="40,60"]'
                     ),
                 __("SVG Marker Icon", 'leaflet-map') => array(
@@ -86,8 +86,9 @@
                     '[leaflet-polygon addresses="Miami; San Juan; Bermuda" color="green" fillColor="yellow"]<a href="https://en.wikipedia.org/wiki/Bermuda_Triangle" target="_blank">Bermuda Triangle</a>[/leaflet-polygon]'
                     ),
                 __("Basic Circle", 'leaflet-map') => array(
-                    '[leaflet-map lat=52 lng=5 zoom=9]',
-                    '[leaflet-circle lat=52 lng=5 radius=17500]'
+                    '[leaflet-map lat=52 lng=5 zoom=8.2 zoomcontrol !show_scale]',
+                    '[leaflet-circle lat=52 lng=5 radius=17500]',
+                    '[leaflet-scale position=topright]'
                     ),
                 __("Fitted Colored Line on Addresses", 'leaflet-map') => array(
                     '[leaflet-map fitbounds]',
@@ -98,7 +99,7 @@
                     '[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, Nova Scotia; Tanzania" classname=marching-ants]'
                     ),
                 __("Disable all Interaction", 'leaflet-map') => array(
-                    '[leaflet-map address="las vegas" !boxZoom !doubleClickZoom !dragging !keyboard !scrollwheel !attribution !touchZoom]',
+                    '[leaflet-map address="las vegas" !boxZoom !doubleClickZoom !dragging !keyboard !scrollwheel !attribution !touchZoom !show_scale]',
                     ),
                 __("Add GeoJSON by URL", 'leaflet-map') => array(
                     '[leaflet-map fitbounds scrollwheel]',

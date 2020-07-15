@@ -294,6 +294,10 @@
       waitFor('AjaxGeoJSON', cb);
     };
 
+    this.createScale = function (options) {
+      L.control.scale(options).addTo(this.getCurrentMap());
+    };
+
     // these accessible properties hold map objects
     this.maps = [];
     this.images = [];

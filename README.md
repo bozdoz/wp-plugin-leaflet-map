@@ -32,6 +32,7 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
       - [[leaflet-geojson] Options](#leaflet-geojson-options)
     - [[leaflet-kml]](#leaflet-kml)
     - [[leaflet-gpx]](#leaflet-gpx)
+    - [[leaflet-scale]](#leaflet-scale)
   - [Frequently Asked Questions](#frequently-asked-questions)
     - [How Can I Add another Leaflet Plugin?](#how-can-i-add-another-leaflet-plugin)
   - [Contributing](#contributing)
@@ -273,6 +274,18 @@ Same idea as geojson (above), but takes KML files and loads [Mapbox's togeojson 
 ### [leaflet-gpx]
 
 Same idea as geojson and KML (above), but takes GPX files and also loads [Mapbox's togeojson library](https://github.com/mapbox/togeojson)
+
+### [leaflet-scale]
+
+Can be added after any map, or enabled for all maps in the admin. If you want to extend it, you can extend window.WPLeafletMapPlugin.createScale with custom JavaScript.
+
+| Option           | Default   |
+| ---------------- | --------- |
+| `maxWidth`       | 100       |
+| `metric`         | 1 (true)  |
+| `imperial`       | 1 (true)  |
+| `updateWhenIdle` | 0 (false) |
+| `position`       | topright  |
 
 ## Frequently Asked Questions
 

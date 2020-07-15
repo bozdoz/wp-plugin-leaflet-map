@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.4.2
-Version: 2.18.0
-Stable tag: 2.18.0
+Version: 2.19.0
+Stable tag: 2.19.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,11 +66,11 @@ Add a line to the map by adding `[leaflet-line]`. You can specify the postions w
 
 Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
-Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so (note fitbounds needs to be on leaflet-geojson (for now)): 
+Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so: 
 
 `
-[leaflet-map]
-[leaflet-geojson fitbounds]{name}[/leaflet-geojson]
+[leaflet-map fitbounds]
+[leaflet-geojson]{name}[/leaflet-geojson]
 `
 
 `name` is a property on that GeoJSON, and it can be accessed with curly brackets and the property name.
@@ -104,10 +104,6 @@ Pass the style attributes to the respective shortcodes (see all options on [Leaf
 
 `[leaflet-line color="red" weight=10 dasharray="2,15" addresses="Halifax, NS; Tanzania" classname=marching-ants]`
 
-= My map now says direct tile access has been discontinued (July 11, 2016); can you fix it? =
-
-Yes. Update to the newest plugin version, and reset defaults in settings.  You can choose to use MapQuest by signing up and supplying an app key, or use the default OpenStreetMap tiles (with attribution).  See Screenshot 8.
-
 = Can I add geojson? =
 
 Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/to.geojson"]` It will also support leaflet geojson styles or geojson.io styles. Add a popup message with `[leaflet-geojson popup_text="hello!"]`, or add HTML by adding it to the content of the shortcode: `[leaflet-geojson]<a href="#">Link here, or use text from a feature property, like {title}</a>[/leaflet-geojson]` or identify a geojson property with `popup_property`, and each shape will use its own popup text if available.
@@ -118,27 +114,19 @@ Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet
 
 = Can I add a message to a marker? =
 
-Yes: `[leaflet-marker message="Hello there!" visible]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
+Yes: `[leaflet-marker visible]Hello there![/leaflet-marker]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
 
 = Can I use your plugin with a picture instead of a map? =
 
-Yes: Use `[leaflet-image src="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up. 
+Yes: Use `[leaflet-image src="path/to/image/file.jpg"]`.  See screenshots 3 - 5 for help setting that up.
 
 = Can I use my own self-hosted Leaflet files? =
 
-Yes: It's been added to the dashboard options! 
+Yes: Add your custom URL to the options in the admin page.
 
 = How can I add a link to a marker? =
 
 Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a hyperlink like you normally would with the WordPress editor.
-
-= Can I add a line to the map? =
-
-Use the line format `[leaflet-line]` with attributes `latlngs` or `addresses` separated by semi-colons to draw a line: `[leaflet-line addresses="Sayulita; Puerto Vallarta"]`.
-
-= Can I add my own attributions to custom tile layers? =
-
-Yes: use the keyword `attribution` in your shortcode (semi-colon separated list of attributions): `[leaflet-map attribution="Tiles courtesy of MapBox; Locations contributed by viewers"]`
 
 == Screenshots ==
 
@@ -152,6 +140,10 @@ Yes: use the keyword `attribution` in your shortcode (semi-colon separated list 
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.19.0 =
+* Adds [leaflet-scale] and global option in admin
+* Removes unnecessary console.log
 
 = 2.18.0 =
 * Adds table-view to leaflet-geojson: [leaflet-geojson table-view]

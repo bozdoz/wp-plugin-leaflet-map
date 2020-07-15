@@ -67,7 +67,11 @@ class Leaflet_Map
         'leaflet-marker' => array(
             'file' => 'class.marker-shortcode.php',
             'class' => 'Leaflet_Marker_Shortcode'
-        )
+        ),
+        'leaflet-scale' => array(
+            'file' => 'class.scale-shortcode.php',
+            'class' => 'Leaflet_Scale_Shortcode'
+        ),
     );
 
     /**

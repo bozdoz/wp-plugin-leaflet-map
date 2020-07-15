@@ -123,7 +123,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         }
 
         /* allow a bunch of other options */
-        // http://leafletjs.com/reference-1.0.3.html#map-closepopuponclick
+        // http://leafletjs.com/reference.html#map
         $more_options = array(
             'closePopupOnClick' => isset($closepopuponclick) ? 
                 $closepopuponclick : null,
@@ -234,6 +234,12 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                     echo '[' . $lat . ',' . $lng . '],' . $zoom; 
                 ?>);
         });</script><?php
+
+        $show_scale = isset($show_scale) ? $show_scale : $settings->get('show_scale');
+
+        if ($show_scale) {
+            echo do_shortcode('[leaflet-scale]');
+        }
 
         return ob_get_clean();
     }

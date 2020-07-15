@@ -128,7 +128,7 @@ class Leaflet_Map_Plugin_Settings
                 )
             ),
             'fit_markers' => array(
-                'display_name'=>__('Fit Markers', 'leaflet-map'),
+                'display_name'=>__('Fit Bounds', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'checkbox',
                 'helptext' => sprintf(
@@ -266,6 +266,15 @@ class Leaflet_Map_Plugin_Settings
                 ),
                 'type' => 'textarea',
                 'helptext' => __('Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.', 'leaflet-map')
+            ),
+            'show_scale' => array(
+                'display_name' => __('Show Scale', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => __(
+                    'Add a scale to each map. Can also be added via shortcode <br /> <code>[leaflet-scale]</code>', 
+                    'leaflet-map'
+                )
             ),
             'geocoder' => array(
                 'display_name'=>__('Geocoder', 'leaflet-map'),
