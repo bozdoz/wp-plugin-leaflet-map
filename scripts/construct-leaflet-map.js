@@ -211,7 +211,6 @@
     };
 
     function addAttributionToMap(attribution, map) {
-      console.log({ attribution });
       if (attribution) {
         var attributions = attribution.split(';');
         var attControl = L.control
