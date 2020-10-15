@@ -24,7 +24,7 @@ class Leaflet_Map
      * 
      * @var string major minor patch version
      */
-    public static $leaflet_version = '1.6.0';
+    public static $leaflet_version = '1.7.1';
 
     /**
      * Files to include upon init
