@@ -260,7 +260,7 @@ class Leaflet_Map_Plugin_Settings
             'default_attribution' => array(
                 'display_name' => __('Default Attribution', 'leaflet-map'),
                 'default' => sprintf(
-                    '<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; \r\n© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
+                    '<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
                     __("A JS library for interactive maps", 'leaflet-map'),
                     __("contributors", 'leaflet-map')
                 ),
