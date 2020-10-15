@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
 
   cli:
-    image: bozdoz/wordpress-initialize
+    image: bozdoz/wordpress-initialize:2.4.0
     depends_on:
       - mysql
     volumes:
@@ -21,7 +21,7 @@ services:
       # Uncomment these along with the wordpress service
       # to debug themes and plugins
       #-------------------------------------------------
-      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      - ./themes:/var/www/html/wp-content/themes
       # - ./plugins:/var/www/html/wp-content/plugins
     environment:
       WP_PLUGINS: leaflet-map
@@ -30,6 +30,7 @@ services:
       WP_URL: ${WP_URL:-localhost:1234}
       WP_USER: admin
       WP_PASSWORD: password
+      WP_THEME: twentynineteen
 
   wordpress:
     image: wordpress:php7.4
@@ -42,7 +43,7 @@ services:
       # Uncomment these along with the cli service
       # to debug themes and plugins
       #-------------------------------------------------
-      - ./theme:/var/www/html/wp-content/themes/twentynineteen
+      - ./themes:/var/www/html/wp-content/themes
       # - ./plugins:/var/www/html/wp-content/plugins
     ports:
       - ${WP_PORT:-1234}:80
