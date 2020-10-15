@@ -15,6 +15,9 @@ $version = $plugin_data['Version'];
 <div class="wrap">
     <h1><?php echo $title; ?> <small>version: <?php echo $version; ?></small></h1>
     <p><?php echo $description; ?></p>
+    <h3>Found an issue?</h3>
+    <p>Post it to <b>WordPress Support</b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
+    <p>Add an issue on <b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
 <?php
 if (isset($_POST['submit'])) {
     /* copy and overwrite $post for checkboxes */
