@@ -219,6 +219,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 MQ.mapLayer() : L.tileLayer(baseUrl, { 
                     subdomains: '<?php echo $subdomains; ?>',
                     detectRetina: <?php echo $detect_retina; ?>,
+                    minZoom: <?php echo $min_zoom; ?>,
+                    maxZoom: <?php echo $max_zoom; ?>,
                 });
             var options = L.Util.extend({}, {
                     maxZoom: <?php echo $max_zoom; ?>,
