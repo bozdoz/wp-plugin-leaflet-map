@@ -6,9 +6,9 @@ Contributors: bozdoz, remigr, gerital, sal0max
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 5.4.2
-Version: 2.19.0
-Stable tag: 2.19.0
+Tested up to: 5.5.1
+Version: 2.19.1
+Stable tag: 2.19.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,11 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.19.1 =
+* Bumps leaflet version to 1.7.1
+* Removes "\r\n" from default attribution
+* Uses min and max zoom in tileurl as well as map
 
 = 2.19.0 =
 * Adds [leaflet-scale] and global option in admin
@@ -378,6 +383,11 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.19.1 =
+Bumps leaflet version to 1.7.1
+Removes "\r\n" from default attribution
+Uses min and max zoom in tileurl as well as map
 
 = 2.18.0 =
 Changes the way maps are rendered: Now creates map containers before creating maps, in the same order the containers are rendered. This should help with ajax, caching, and script-altering plugins.

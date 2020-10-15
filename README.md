@@ -1,7 +1,7 @@
 # Leaflet Map WordPress Plugin
 
-![Leaflet](https://img.shields.io/badge/leaflet-1.6.0-green.svg?style=flat)
-![WordPress](https://img.shields.io/badge/wordpress-5.4.2-green.svg?style=flat)
+![Leaflet](https://img.shields.io/badge/leaflet-1.7.1-green.svg?style=flat)
+![WordPress](https://img.shields.io/badge/wordpress-5.5.1-green.svg?style=flat)
 
 ![Header Image](https://ps.w.org/leaflet-map/assets/banner-1544x500.png?rev=1693083)
 
@@ -108,27 +108,29 @@ However, you can also just give it an address, and the chosen geocoder (default:
 
 #### [leaflet-map] Options:
 
-| Option                       | Default                 |
-| ---------------------------- | ----------------------- |
-| `lat` and `lng` or `address` | lat: 44.67, lng: -63.61 |
-| `zoom`                       | 12                      |
-| `height`                     | 250                     |
-| `width`                      | 100%                    |
-| `fitbounds`                  | 0 (false)               |
-| `zoomcontrol`                | 0 (false)               |
-| `scrollwheel`                | 0 (false)               |
-| `doubleclickzoom`            | 0 (false)               |
-| `min_zoom`                   | 0                       |
-| `max_zoom`                   | 20                      |
-| `subdomains`                 | abc                     |
-| `attribution`                | ©Leaflet ©OpenStreetMap |
-| `closepopuponclick`          | false                   |
-| `trackresize`                | false                   |
-| `boxZoom`                    | true                    |
-| `dragging`                   | true                    |
-| `keyboard`                   | true                    |
-| `maxbounds`                  | null                    |
-| `detect-retina`              | 0 (false)               |
+| Option                       | Default                                              |
+| ---------------------------- | ---------------------------------------------------- |
+| `lat` and `lng` or `address` | lat: 44.67, lng: -63.61                              |
+| `zoom`                       | 12                                                   |
+| `height`                     | 250                                                  |
+| `width`                      | 100%                                                 |
+| `fitbounds`                  | 0 (false)                                            |
+| `zoomcontrol`                | 0 (false)                                            |
+| `scrollwheel`                | 0 (false)                                            |
+| `doubleclickzoom`            | 0 (false)                                            |
+| `min_zoom`                   | 0                                                    |
+| `max_zoom`                   | 20                                                   |
+| `subdomains`                 | abc                                                  |
+| `attribution`                | ©Leaflet ©OpenStreetMap                              |
+| `closepopuponclick`          | false                                                |
+| `trackresize`                | false                                                |
+| `boxZoom`                    | true                                                 |
+| `dragging`                   | true                                                 |
+| `keyboard`                   | true                                                 |
+| `maxbounds`                  | null                                                 |
+| `detect-retina`              | 0 (false)                                            |
+| `tileurl`                    | 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' |
+| `subdomains`                 | 'abc'                                                |
 
 ---
 
