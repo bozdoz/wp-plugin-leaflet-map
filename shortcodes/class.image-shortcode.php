@@ -59,7 +59,7 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
                     scrollWheelZoom: <?php echo $scrollwheel; ?>,
                     doubleClickZoom: <?php echo $doubleclickzoom; ?>,
                     attributionControl: false
-                }, <?php echo $more_options; ?>, {
+                }, <?php echo $map_options; ?>, {
                     crs: L.CRS.Simple
                 });
             var image_src = '<?php echo $source; ?>';

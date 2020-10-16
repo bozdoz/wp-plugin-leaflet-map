@@ -347,4 +347,67 @@ class Leaflet_Map
         include_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-settings.php';
         return Leaflet_Map_Plugin_Settings::init();
     }
+
+    /**
+     * Parses liquid tags from a string
+     * 
+     * @param string $str
+     * 
+     * @return array|null
+     */
+    public function liquid ($str) {
+        if (!is_string($str)) {
+            return null;
+        }
+        $templateRegex = "/\{ *(.*?) *\}/";
+        preg_match_all($templateRegex, $str, $matches);
+               
+        if (!$matches[1]) {
+            return null;
+        }
+        
+        $str = $matches[1][0];
+
+        $tags = explode(' | ', $str);
+
+        $original = array_shift($tags);
+
+        if (!$tags) {
+            return null;
+        }
+
+        $output = array();
+
+        foreach ($tags as $tag) {
+            $tagParts = explode(': ', $tag);
+            $tagName = array_shift($tagParts);
+            $tagValue = implode(': ', $tagParts) || true;
+
+            $output[$tagName] = $tagValue;
+        }
+
+        // preserve the original
+        $output['original'] = $original;
+
+        return $output;
+    }
+
+    /**
+     * Renders a json-like string, removing quotes for values
+     * 
+     * allows JavaScript variables to be added directly 
+     * 
+     * @return string
+     */
+    public function rawDict ($arr) {
+        $obj = '{';
+        
+        foreach ($arr as $key=>$val) {
+            $obj .= "\"$key\": $val,";
+        }
+
+        $obj .= '}';
+
+        return $obj;
+    }
 }
