@@ -184,32 +184,6 @@
       return output;
     };
 
-    var unescape = (this.unescape = function (str) {
-      var div = document.createElement('div');
-      div.innerHTML = str;
-      return div.innerText;
-    });
-
-    var templateRe = /\{ *(.*?) *\}/g;
-
-    /**
-     * It interpolates variables in curly brackets (regex above)
-     *
-     * ex: "Property Value: {property_key}"
-     *
-     * @param {string} str
-     * @param {object} data e.g. feature.properties
-     */
-    this.template = function (str, data) {
-      return str.replace(templateRe, function (match, key) {
-        var value = parseKey(data, key);
-        if (value === undefined) {
-          return match;
-        }
-        return value;
-      });
-    };
-
     function addAttributionToMap(attribution, map) {
       if (attribution) {
         var attributions = attribution.split(';');
@@ -229,6 +203,37 @@
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
     }
 
+    var unescape = (this.unescape = function (str) {
+      var div = document.createElement('div');
+      div.innerHTML = str;
+      return div.innerText || str;
+    });
+
+    var templateRe = /\{ *(.*?) *\}/g;
+
+    /**
+     * It interpolates variables in curly brackets (regex above)
+     *
+     * ex: "Property Value: {property_key}"
+     *
+     * @param {string} str
+     * @param {object} data e.g. feature.properties
+     */
+    this.template = function (str, data) {
+      if (data == null) {
+        return str;
+      }
+
+      return str.replace(templateRe, function (match, key) {
+        var obj = liquid(key);
+        var value = parseKey(data, obj.key);
+        if (value == null) {
+          return obj.default || match;
+        }
+        return value;
+      });
+    };
+
     /** used in strToPath */
     var strToPathRe = /[.‘’'“”"\[\]]+/g;
 
@@ -240,6 +245,9 @@
      * @param {string} key
      */
     function strToPath(key) {
+      if (key == null) {
+        return [];
+      }
       var input = key.split(strToPathRe);
       var output = [];
 
@@ -272,6 +280,32 @@
       }
 
       return value;
+    }
+
+    /**
+     * parses liquid tags from a string
+     *
+     * @param {string} str
+     */
+    function liquid(str) {
+      var tags = str.split(' | ');
+      var obj = {};
+
+      // removes initial variable from array
+      var key = tags.shift();
+
+      for (var i = 0, len = tags.length; i < len; i++) {
+        var tag = tags[i].split(': ');
+        var tagName = tag.shift();
+        var tagValue = tag.join(': ');
+
+        obj[tagName] = tagValue;
+      }
+
+      // always preserve the original string
+      obj.key = key;
+
+      return obj;
     }
 
     function waitFor(prop, cb) {
