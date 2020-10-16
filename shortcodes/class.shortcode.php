@@ -16,6 +16,9 @@
  */
 abstract class Leaflet_Shortcode
 {
+    /**
+     * @var Leaflet_Map
+     */
     protected $LM;
 
     /**
@@ -31,23 +34,26 @@ abstract class Leaflet_Shortcode
      */
     abstract protected function getHTML($atts='', $content=null);
 
-    public static function getClass()
+    /**
+     * @return $this
+     */
+    public static function getInstance()
     {
-        return function_exists('get_called_class') ? get_called_class() : __CLASS__;
+        $class = function_exists('get_called_class') ? get_called_class() : __CLASS__;
+        return new $class();
     }
 
     /**
      * Instantiate class and get HTML for shortcode
      *
-     * @param array  $atts    string|array
-     * @param string $content Optional
+     * @param array|string|null $atts    string|array
+     * @param string|null       $content Optional
      * 
-     * @return string (see above)
+     * @return string HTML
      */
     public static function shortcode($atts = '', $content = null)
     {
-        $class = self::getClass();
-        $instance = new $class();
+        $instance = self::getInstance();
 
         // swap sequential array with associative array
         // this enables assumed-boolean attributes,
