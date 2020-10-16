@@ -71,15 +71,20 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['height'] = empty($height) ? 
             $settings->get('default_height') : $height;
         $atts['width'] = empty($width) ? $settings->get('default_width') : $width;
-        $atts['zoomcontrol'] = array_key_exists('zoomcontrol', $atts) ?
-            $zoomcontrol : $settings->get('show_zoom_controls');
+        $atts['zoomcontrol'] = isset($zoomControl) 
+            ? $zoomControl
+            : (array_key_exists('zoomcontrol', $atts) 
+                ? $zoomcontrol 
+                : $settings->get('show_zoom_controls'));
         $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ? 
             $min_zoom : $settings->get('default_min_zoom');
         $atts['max_zoom'] = empty($max_zoom) ? 
             $settings->get('default_max_zoom') : $max_zoom;
-        $atts['scrollwheel'] = array_key_exists('scrollwheel', $atts) 
-            ? $scrollwheel 
-            : $settings->get('scroll_wheel_zoom');
+        $atts['scrollwheel'] = isset($scrollWheelZoom)
+            ? $scrollWheelZoom
+            : (array_key_exists('scrollwheel', $atts) 
+                ? $scrollwheel 
+                : $settings->get('scroll_wheel_zoom'));
         $atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? 
             $doubleclickzoom : $settings->get('double_click_zoom');
         
@@ -143,6 +148,13 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'touchZoom' => isset($touchZoom) ? $touchZoom : null,
             'dragging' => isset($dragging) ? $dragging : null,
             'keyboard' => isset($keyboard) ? $keyboard : null,
+            'zoomAnimation' => isset($zoomAnimation) ?  $zoomAnimation : null,
+            'fadeAnimation' => isset($fadeAnimation) ?  $fadeAnimation : null,
+            'markerZoomAnimation' => isset($markerZoomAnimation) ?  $markerZoomAnimation : null,
+            'inertia' => isset($inertia) ?  $inertia : null,
+            'worldCopyJump' => isset($worldCopyJump) ?  $worldCopyJump : null,
+            'tap' => isset($tap) ? $tap : null,
+            'bounceAtZoomLimits' => isset($bounceAtZoomLimits) ? $bounceAtZoomLimits : null,
         );
 
         // filter out nulls
