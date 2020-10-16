@@ -10,7 +10,7 @@
     "wordpress": "docker-compose run wordpress bash",
     "cli": "docker-compose run cli sh",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
   "devDependencies": {
+    "jest": "^26.5.3",
     "prettier": "^2.0.2"
   },
   "prettier": {
