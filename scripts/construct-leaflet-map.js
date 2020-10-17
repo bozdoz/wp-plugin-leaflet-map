@@ -297,7 +297,7 @@
       for (var i = 0, len = tags.length; i < len; i++) {
         var tag = tags[i].split(': ');
         var tagName = tag.shift();
-        var tagValue = tag.join(': ');
+        var tagValue = tag.join(': ') || true;
 
         obj[tagName] = tagValue;
       }
