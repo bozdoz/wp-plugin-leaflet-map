@@ -131,6 +131,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `detect-retina`              | 0 (false)                                            |
 | `tileurl`                    | 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' |
 | `subdomains`                 | 'abc'                                                |
+| `tap`                        | true                                                 |
 
 ---
 

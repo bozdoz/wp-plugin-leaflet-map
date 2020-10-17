@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.5.1
-Version: 2.19.1
-Stable tag: 2.19.1
+Version: 2.20.0
+Stable tag: 2.20.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.20.0 =
+* Adds tap and !tap option to [leaflet-map]
+* Adds (advanced) raw filter syntax for map options: [leaflet-map dragging="{!L.Browser.mobile | raw}"]
 
 = 2.19.1 =
 * Bumps leaflet version to 1.7.1
