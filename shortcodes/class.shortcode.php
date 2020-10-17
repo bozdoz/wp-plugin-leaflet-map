@@ -34,13 +34,9 @@ abstract class Leaflet_Shortcode
      */
     abstract protected function getHTML($atts='', $content=null);
 
-    /**
-     * @return $this
-     */
-    public static function getInstance()
+    public static function getClass()
     {
-        $class = function_exists('get_called_class') ? get_called_class() : __CLASS__;
-        return new $class();
+        return function_exists('get_called_class') ? get_called_class() : __CLASS__;
     }
 
     /**
@@ -53,7 +49,8 @@ abstract class Leaflet_Shortcode
      */
     public static function shortcode($atts = '', $content = null)
     {
-        $instance = self::getInstance();
+        $class = self::getClass();
+        $instance = new $class();
 
         // swap sequential array with associative array
         // this enables assumed-boolean attributes,
