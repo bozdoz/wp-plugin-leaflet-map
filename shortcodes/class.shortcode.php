@@ -16,6 +16,9 @@
  */
 abstract class Leaflet_Shortcode
 {
+    /**
+     * @var Leaflet_Map
+     */
     protected $LM;
 
     /**
@@ -39,10 +42,10 @@ abstract class Leaflet_Shortcode
     /**
      * Instantiate class and get HTML for shortcode
      *
-     * @param array  $atts    string|array
-     * @param string $content Optional
+     * @param array|string|null $atts    string|array
+     * @param string|null       $content Optional
      * 
-     * @return string (see above)
+     * @return string HTML
      */
     public static function shortcode($atts = '', $content = null)
     {

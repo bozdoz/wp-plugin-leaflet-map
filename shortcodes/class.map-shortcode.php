@@ -71,15 +71,20 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['height'] = empty($height) ? 
             $settings->get('default_height') : $height;
         $atts['width'] = empty($width) ? $settings->get('default_width') : $width;
-        $atts['zoomcontrol'] = array_key_exists('zoomcontrol', $atts) ?
-            $zoomcontrol : $settings->get('show_zoom_controls');
+        $atts['zoomcontrol'] = isset($zoomControl) 
+            ? $zoomControl
+            : (array_key_exists('zoomcontrol', $atts) 
+                ? $zoomcontrol 
+                : $settings->get('show_zoom_controls'));
         $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ? 
             $min_zoom : $settings->get('default_min_zoom');
         $atts['max_zoom'] = empty($max_zoom) ? 
             $settings->get('default_max_zoom') : $max_zoom;
-        $atts['scrollwheel'] = array_key_exists('scrollwheel', $atts) 
-            ? $scrollwheel 
-            : $settings->get('scroll_wheel_zoom');
+        $atts['scrollwheel'] = isset($scrollWheelZoom)
+            ? $scrollWheelZoom
+            : (array_key_exists('scrollwheel', $atts) 
+                ? $scrollwheel 
+                : $settings->get('scroll_wheel_zoom'));
         $atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ? 
             $doubleclickzoom : $settings->get('double_click_zoom');
         
@@ -122,40 +127,69 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             $atts['attribution'] = $settings->get('default_attribution');
         }
 
-        /* allow a bunch of other options */
+        /* allow a bunch of other (boolean) options */
         // http://leafletjs.com/reference.html#map
-        $more_options = array(
-            'closePopupOnClick' => isset($closepopuponclick) ? 
-                $closepopuponclick : null,
-            'trackResize' => isset($trackresize) ? $trackresize : null,
-            'boxZoom' => (isset($boxzoom) 
+        $map_options = array(
+            'closePopupOnClick' => isset($closePopupOnClick)
+                ? $closePopupOnClick
+                : (isset($closepopuponclick)
+                    ? $closepopuponclick 
+                    : null),
+            'trackResize' => isset($trackResize) 
+                ? $trackResize
+                : (isset($trackresize) 
+                    ? $trackresize 
+                    : null),
+            'boxZoom' => isset($boxzoom) 
                 ? $boxzoom 
-                : isset($boxZoom))
+                : (isset($boxZoom)
                     ? $boxZoom
-                    : null,
+                    : null),
             'touchZoom' => isset($touchZoom) ? $touchZoom : null,
             'dragging' => isset($dragging) ? $dragging : null,
             'keyboard' => isset($keyboard) ? $keyboard : null,
+            'zoomAnimation' => isset($zoomAnimation) ?  $zoomAnimation : null,
+            'fadeAnimation' => isset($fadeAnimation) ?  $fadeAnimation : null,
+            'markerZoomAnimation' => isset($markerZoomAnimation) ?  $markerZoomAnimation : null,
+            'inertia' => isset($inertia) ?  $inertia : null,
+            'worldCopyJump' => isset($worldCopyJump) ?  $worldCopyJump : null,
+            'tap' => isset($tap) ? $tap : null,
+            'bounceAtZoomLimits' => isset($bounceAtZoomLimits) ? $bounceAtZoomLimits : null,
         );
 
         // filter out nulls
-        $more_options = $this->LM->filter_null($more_options);
+        $map_options = $this->LM->filter_null($map_options);
         
         // custom field for moving to JavaScript
-        $more_options['fitBounds'] = $atts['fitbounds'];
+        $map_options['fitBounds'] = $atts['fitbounds'];
 
         // change string booleans to booleans
-        $more_options = filter_var_array($more_options, FILTER_VALIDATE_BOOLEAN);
+        $map_options = filter_var_array($map_options, FILTER_VALIDATE_BOOLEAN);
 
         if ($maxBounds) {
-            $more_options['maxBounds'] = $maxBounds;
+            $map_options['maxBounds'] = $maxBounds;
         }
 
         // custom field for moving to javascript
-        $more_options['attribution'] = $atts['attribution'];
+        $map_options['attribution'] = $atts['attribution'];
 
         // wrap as JSON
-        $atts['more_options'] = json_encode($more_options);
+        $atts['map_options'] = json_encode($map_options);
+
+        // get raw variables, allowing for JavaScript variables in values
+        $raw_map_options = array();
+        foreach($map_options as $key=>$val) {
+            $original_value = isset($atts[$key]) ? $atts[$key] : null;
+            
+            $liquid = $this->LM->liquid($original_value);
+
+            if ($liquid && isset($liquid['raw']) && $liquid['raw']) {
+                // raw leaves original value un-quoted
+                $raw_map_options[$key] = $liquid['original'];
+            }
+        }
+
+        $atts['raw_map_options'] = $this->LM->rawDict($raw_map_options);
 
         return $atts;
     }
@@ -230,7 +264,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                     scrollWheelZoom: <?php echo $scrollwheel; ?>,
                     doubleClickZoom: <?php echo $doubleclickzoom; ?>,
                     attributionControl: false
-                }, <?php echo $more_options; ?>);
+                }, <?php echo $map_options; ?>, 
+                <?php echo $raw_map_options; ?>);
             window.WPLeafletMapPlugin.createMap(options)
                 .setView(<?php 
                     echo '[' . $lat . ',' . $lng . '],' . $zoom; 
