@@ -40,7 +40,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
      * Get Script for Shortcode
      * 
      * @param string $atts    could be an array
-     * @param string $content could be an array
+     * @param string $content
      * 
      * @return string HTML
      */
