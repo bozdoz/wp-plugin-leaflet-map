@@ -236,6 +236,15 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         
         $detect_retina = empty($detect_retina) ? $settings->get('detect_retina') : $detect_retina;
 
+        $tile_min_zoom = $min_zoom;
+        $tile_max_zoom = $max_zoom;
+        
+        // fix #114 tilelayer zoom with detect_retina
+        if ($detect_retina && $min_zoom == $max_zoom) {
+            $tile_min_zoom = 'undefined';
+            $tile_max_zoom = 'undefined';
+        }
+
         /* should be iterated for multiple maps */
         ob_start(); ?>
         <div class="leaflet-map WPLeafletMap"
@@ -253,8 +262,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
                 MQ.mapLayer() : L.tileLayer(baseUrl, { 
                     subdomains: '<?php echo $subdomains; ?>',
                     detectRetina: <?php echo $detect_retina; ?>,
-                    minZoom: <?php echo $min_zoom; ?>,
-                    maxZoom: <?php echo $max_zoom; ?>,
+                    minZoom: <?php echo $tile_min_zoom; ?>,
+                    maxZoom: <?php echo $tile_max_zoom; ?>,
                 });
             var options = L.Util.extend({}, {
                     maxZoom: <?php echo $max_zoom; ?>,
