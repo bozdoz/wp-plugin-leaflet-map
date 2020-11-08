@@ -6,9 +6,9 @@ Contributors: bozdoz, remigr, gerital, sal0max
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 5.5.1
-Version: 2.20.0
-Stable tag: 2.20.0
+Tested up to: 5.5.3
+Version: 2.21.0
+Stable tag: 2.21.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.21.0 =
+* Fixes issues with tilelayers when min_zoom and max_zoom are identical and detect_retina is true
+* Adds (advanced) default liquid-like filter to template tags: [leaflet-geojson]{Properties.Name | default: No Name}[/leaflet-geojson]
 
 = 2.20.0 =
 * Adds tap and !tap option to [leaflet-map]
@@ -387,6 +391,9 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.21.0 =
+Fixes issues with tilelayers when min_zoom and max_zoom are identical and detect_retina is true
 
 = 2.19.1 =
 Bumps leaflet version to 1.7.1
