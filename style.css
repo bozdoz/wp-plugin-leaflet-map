@@ -1,63 +1,64 @@
 form {
-	margin-top: 4em;
+  margin-top: 4em;
 }
 
 .container {
-	margin-bottom: 2em;
-	max-width: 800px;
-	font-size: 18px;
+  margin-bottom: 2em;
+  max-width: 800px;
+  font-size: 18px;
 }
 
 .container:first-child {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 .label {
-	float: left;
-	margin-right: 2em;
-	padding: 1em 0;
-	vertical-align: center;
+  float: left;
+  margin-right: 2em;
+  padding: 1em 0;
+  vertical-align: center;
 }
 
 .helptext {
-	clear: both;
+  clear: both;
 }
 
 .helptext p {
-	line-height: 2;
+  line-height: 2;
 }
 
 code {
-	margin: 1em 0; 
-	padding: 1em 2em;
-	display: block;
+  margin: 1em 0;
+  padding: 1em 2em;
+  display: block;
 }
 
 .input-group {
-	float: right;
-	width: 50%;
+  float: right;
+  width: 50%;
 }
 
 .input-group input {
-	padding: 1em;
+  padding: 1em;
 }
 
-.input-group input[type="text"],
+.input-group input[type='number'],
+.input-group input[type='text'],
 .input-group textarea,
 .input-group select {
-	width: 100%;
+  width: 100%;
 }
 
-.input-group input[type="checkbox"] {
-	margin: 1.34em;
-	margin-right: 0;
-	float: right;
+.input-group input[type='checkbox'] {
+  margin: 1.34em;
+  margin-right: 0;
+  float: right;
 }
 
 .input-group select {
-	margin: 0.9em;
-	margin-right: 0;
-	float: right;
+  margin: 0.9em;
+  margin-right: 0;
+  float: right;
 }
 
 /* 
@@ -65,49 +66,49 @@ code {
 */
 
 .container > label {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	justify-content: space-between;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
 }
 
 .container .input-group {
-	width: initial;
-	flex: 1 1 auto;
+  width: initial;
+  flex: 1 1 auto;
 }
 
 /* Shortcode Example page */
-.flex, 
+.flex,
 .examples {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-around;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 .flex > label {
-	flex: 0 1 200px;
+  flex: 0 1 200px;
 }
 .flex > input {
-	flex: 1 1 400px;
+  flex: 1 1 400px;
 }
 .examples .list-item {
-	flex: 1 1 250px;
+  flex: 1 1 250px;
 }
 p {
-	vertical-align: top;
-	word-wrap: break-word;
+  vertical-align: top;
+  word-wrap: break-word;
 }
 .list-item {
-	width: 250px;
-	display:inline-block;
-	vertical-align: top;
-	padding:15px;
+  width: 250px;
+  display: inline-block;
+  vertical-align: top;
+  padding: 15px;
 }
 .list-item p {
-	font-size:1.2em;
+  font-size: 1.2em;
 }
