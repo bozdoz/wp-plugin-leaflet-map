@@ -203,7 +203,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
         $tile_layer_options = $this->LM->filter_null($tile_layer_options);
 
-        $atts['tile_layer_options'] = json_encode($tile_layer_options);
+        $atts['tile_layer_options'] = json_encode($tile_layer_options, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
 
         return $atts;
     }
