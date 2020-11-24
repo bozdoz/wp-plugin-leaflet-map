@@ -231,6 +231,24 @@ class Leaflet_Map
     }
 
     /**
+     * Filter for removing empty strings from array
+     *
+     * @param array $arr
+     * 
+     * @return array with empty strings removed
+     */
+    public function filter_empty_string($arr)
+    {
+        if (!function_exists('remove_empty_string')) {
+            function remove_empty_string ($var) {
+                return $var !== "";
+            }
+        }
+
+        return array_filter($arr, 'remove_empty_string');
+    }
+
+    /**
      * Sanitize JSON
      *
      * Takes options for filtering/correcting inputs for use in JavaScript
