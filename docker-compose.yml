@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   mysql:
-    image: mariadb
+    image: mariadb:10.5.8
     volumes:
       - wp_db:/var/lib/mysql
     restart: always
@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
 
   cli:
-    image: bozdoz/wordpress-initialize:2.4.0
+    image: bozdoz/wordpress-initialize:2.4.0-20201102
     depends_on:
       - mysql
     volumes:
@@ -33,7 +33,7 @@ services:
       WP_THEME: twentynineteen
 
   wordpress:
-    image: wordpress:php7.4
+    image: wordpress:5.5.3-php7.4
     depends_on:
       - cli
     volumes:
