@@ -132,6 +132,11 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `tileurl`                    | 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' |
 | `subdomains`                 | 'abc'                                                |
 | `tap`                        | true                                                 |
+| `tilesize`                   | 256                                                  |
+| `mapid`                      | null                                                 |
+| `accesstoken`                | null                                                 |
+| `zoomoffset`                 | 0                                                    |
+| `nowrap`                     | false                                                |
 
 ---
 

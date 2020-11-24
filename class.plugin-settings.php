@@ -80,7 +80,7 @@ class Leaflet_Map_Plugin_Settings
             'default_lat' => array(
                 'display_name'=>__('Default Latitude', 'leaflet-map'),
                 'default'=>'44.67',
-                'type' => 'text',
+                'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map lat="44.67"]</code>', 
                     __('Default latitude for maps.', 'leaflet-map'),
@@ -90,7 +90,7 @@ class Leaflet_Map_Plugin_Settings
             'default_lng' => array(
                 'display_name'=>__('Default Longitude', 'leaflet-map'),
                 'default'=>'-63.61',
-                'type' => 'text',
+                'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map lng="-63.61"]</code>', 
                     __('Default longitude for maps.', 'leaflet-map'),
@@ -100,7 +100,7 @@ class Leaflet_Map_Plugin_Settings
             'default_zoom' => array(
                 'display_name'=>__('Default Zoom', 'leaflet-map'),
                 'default'=>'12',
-                'type' => 'text',
+                'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map zoom="5"]</code>', 
                     __('Default zoom for maps.', 'leaflet-map'),
@@ -170,7 +170,7 @@ class Leaflet_Map_Plugin_Settings
             'default_min_zoom' => array(
                 'display_name'=>__('Default Min Zoom', 'leaflet-map'),
                 'default' => '0',
-                'type' => 'text',
+                'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map min_zoom="1"]</code>', 
                     __('Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here.', 'leaflet-map'),
@@ -180,7 +180,7 @@ class Leaflet_Map_Plugin_Settings
             'default_max_zoom' => array(
                 'display_name'=>__('Default Max Zoom', 'leaflet-map'),
                 'default' => '20',
-                'type' => 'text',
+                'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2%s <br /> <code>%3$s</code>', 
                     __('Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here', 'leaflet-map'),
@@ -242,6 +242,56 @@ class Leaflet_Map_Plugin_Settings
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map detect-retina]</code>',
                     __('Fetch tiles at different zoom levels to appear smoother on retina displays.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'tilesize' => array(
+                'display_name' => __('Tile Size', 'leaflet-map'),
+                'default' => null,
+                'type' => 'text',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map tilesize=512]</code>',
+                    __('Width and height of tiles (in pixels) in the grid. Default is 256', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'mapid' => array(
+                'display_name' => __('Tile Id', 'leaflet-map'),
+                'default' => null,
+                'type' => 'text',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map mapid="mapbox/streets-v11"]</code>',
+                    __('An id that is passed to L.tileLayer; useful for Mapbox', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'accesstoken' => array(
+                'display_name' => __('Access Token', 'leaflet-map'),
+                'default' => null,
+                'type' => 'text',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map accesstoken="your.mapbox.access.token"]</code>',
+                    __('An access token that is passed to L.tileLayer; useful for Mapbox tiles', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'zoomoffset' => array(
+                'display_name' => __('Zoom Offset', 'leaflet-map'),
+                'default' => null,
+                'type' => 'number',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map zoomoffset="-1"]</code>',
+                    __('The zoom number used in tile URLs will be offset with this value', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'tile_no_wrap' => array(
+                'display_name' => __('No Wrap (tiles)', 'leaflet-map'),
+                'default' => '0',
+                'type' => 'checkbox',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br /> <code>[leaflet-map nowrap]</code>',
+                    __('Boolean for whether the layer is wrapped around the antimeridian', 'leaflet-map'),
                     $foreachmap
                 )
             ),

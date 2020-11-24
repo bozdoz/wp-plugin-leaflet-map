@@ -191,6 +191,20 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 
         $atts['raw_map_options'] = $this->LM->rawDict($raw_map_options);
 
+        $tile_layer_options = array(
+            'tileSize' => empty($tilesize) ? $settings->get('tilesize') : $tilesize,
+            'subdomains' => empty($subdomains) ? $settings->get('map_tile_url_subdomains') : $subdomains,
+            'id' => empty($mapid) ? $settings->get('mapid') : $mapid,
+            'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
+            'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
+            'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
+        );
+        
+        $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
+        $tile_layer_options = $this->LM->filter_null($tile_layer_options);
+
+        $atts['tile_layer_options'] = json_encode($tile_layer_options);
+
         return $atts;
     }
 
@@ -227,11 +241,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         */
         if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
             $tileurl = '';
-            $subdomains = '';
         } else {
             $tileurl = empty($tileurl) ? $settings->get('map_tile_url') : $tileurl;
-            $subdomains = empty($subdomains) ? 
-                $settings->get('map_tile_url_subdomains') : $subdomains;
         }
         
         $detect_retina = empty($detect_retina) ? $settings->get('detect_retina') : $detect_retina;
@@ -259,12 +270,13 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         window.WPLeafletMapPlugin.push(function () {
             var baseUrl = '<?php echo $tileurl; ?>';
             var base = (!baseUrl && window.MQ) ? 
-                MQ.mapLayer() : L.tileLayer(baseUrl, { 
-                    subdomains: '<?php echo $subdomains; ?>',
-                    detectRetina: <?php echo $detect_retina; ?>,
-                    minZoom: <?php echo $tile_min_zoom; ?>,
-                    maxZoom: <?php echo $tile_max_zoom; ?>,
-                });
+                MQ.mapLayer() : L.tileLayer(baseUrl, 
+                    L.Util.extend({}, {
+                        detectRetina: <?php echo $detect_retina; ?>,
+                        minZoom: <?php echo $tile_min_zoom; ?>,
+                        maxZoom: <?php echo $tile_max_zoom; ?>,
+                    }, <?php echo $tile_layer_options; ?>)
+                );
             var options = L.Util.extend({}, {
                     maxZoom: <?php echo $max_zoom; ?>,
                     minZoom: <?php echo $min_zoom; ?>,
