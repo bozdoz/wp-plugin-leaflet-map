@@ -226,11 +226,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
                     if (circleMarker) {
                         return L.circleMarker(latlng);
                     } else {
-                        if(options.iconUrl) {
-                            return L.marker(latlng, options);           
-                        } else {
-                            return L.marker(latlng);
-                        }
+                        return L.marker(latlng, options);
                     }
                 }
             });
