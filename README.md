@@ -270,6 +270,10 @@ Or you can add a geojson shape via a url:
 | `circleMarker`   | Display circles instead of markers. Vastly improves performance on maps with a lot of points.    |
 | `radius`         | Radius of the circles, when `circleMarkers` is set                                               |
 | `table-view`     | Show all properties on each feature when clicked                                                 |
+| `iconurl`        | Give a url for the marker image file                                                             |
+| `iconsize`       | Set the size of the icon: e.g. "80,50" for 80px width 50px height                                |
+| `iconanchor`     | Set the anchor position of the icon: e.g. "40,60" for 40px left 60px top                         |
+| `popupanchor`    | Set the anchor position of the popup: e.g. "40,60" for 40px left 60px top                        |
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path. Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
