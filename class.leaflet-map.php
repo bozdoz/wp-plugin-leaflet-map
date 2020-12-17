@@ -266,7 +266,14 @@ class Leaflet_Map
         $args = array_intersect_key($args, $arr);
         $arr = filter_var_array($arr, $args);
 
-        return json_encode($arr);
+        $output = json_encode($arr);
+
+        // always return object; not array
+        if ($output === '[]') {
+            $output = '{}';
+        }
+
+        return $output;
     }
 
     /**
