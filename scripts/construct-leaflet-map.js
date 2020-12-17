@@ -135,8 +135,6 @@
         mg.on(
           'layeradd',
           function (event) {
-            // needs a timeout so that it doesn't
-            // opt out of a bound change
             if (event.layer instanceof L.FeatureGroup) {
               // wait for featuregroup/ajax-geojson to be ready
               event.layer.on('ready', function () {
@@ -144,6 +142,8 @@
               });
             }
 
+            // needs a timeout so that it doesn't
+            // opt out of a bound change
             window.clearTimeout(this.timeout);
             this.timeout = window.setTimeout(function () {
               try {
