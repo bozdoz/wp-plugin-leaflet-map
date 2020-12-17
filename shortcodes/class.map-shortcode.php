@@ -19,6 +19,9 @@ if (!defined('ABSPATH')) {
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
+// make sure we enqueue once
+$lms_enqueued = false;
+
 /**
  * Leaflet_Map_Shortcode Class
  */
@@ -29,8 +32,14 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     public function __construct()
     {
+        global $lms_enqueued;
+
         parent::__construct();
-        $this->enqueue();
+        
+        if (!$lms_enqueued) {
+            $this->enqueue();
+            $lms_enqueued = true;
+        }
     }
 
     /**
@@ -209,6 +218,26 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     }
 
     /**
+     * Get the div tag for the map to instantiate
+     * 
+     * @param string $height
+     * @param string $width
+     * 
+     * @return string HTML div element
+     */
+    protected function getDiv($height, $width) {
+        // div does not get wrapped in script tags
+        ob_start();
+        ?>
+<div class="leaflet-map WPLeafletMap" style="height:<?php 
+    echo $height;
+?>; width:<?php 
+    echo $width;
+?>;"></div><?php
+        return ob_get_clean();
+    }
+
+    /**
      * Get script for shortcode
      * 
      * @param array  $atts    sometimes this is null
@@ -257,48 +286,43 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         }
 
         /* should be iterated for multiple maps */
-        ob_start(); ?>
-        <div class="leaflet-map WPLeafletMap"
-            style="height:<?php 
-                echo $height; 
-            ?>; width:<?php 
-                echo $width; 
-            ?>;"></div>
-        <script>
-        // push deferred map creation function
-        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        window.WPLeafletMapPlugin.push(function () {
-            var baseUrl = '<?php echo $tileurl; ?>';
-            var base = (!baseUrl && window.MQ) ? 
-                MQ.mapLayer() : L.tileLayer(baseUrl, 
-                    L.Util.extend({}, {
-                        detectRetina: <?php echo $detect_retina; ?>,
-                        minZoom: <?php echo $tile_min_zoom; ?>,
-                        maxZoom: <?php echo $tile_max_zoom; ?>,
-                    }, <?php echo $tile_layer_options; ?>)
-                );
-            var options = L.Util.extend({}, {
-                    maxZoom: <?php echo $max_zoom; ?>,
-                    minZoom: <?php echo $min_zoom; ?>,
-                    layers: [base],
-                    zoomControl: <?php echo $zoomcontrol; ?>,
-                    scrollWheelZoom: <?php echo $scrollwheel; ?>,
-                    doubleClickZoom: <?php echo $doubleclickzoom; ?>,
-                    attributionControl: false
-                }, <?php echo $map_options; ?>, 
-                <?php echo $raw_map_options; ?>);
-            window.WPLeafletMapPlugin.createMap(options)
-                .setView(<?php 
-                    echo '[' . $lat . ',' . $lng . '],' . $zoom; 
-                ?>);
-        });</script><?php
+        ob_start(); 
+        ?>/*<script>*/
+var baseUrl = '<?php echo $tileurl; ?>';
+var base = (!baseUrl && window.MQ) ? 
+    window.MQ.mapLayer() : L.tileLayer(baseUrl, 
+        L.Util.extend({}, {
+            detectRetina: <?php echo $detect_retina; ?>,
+            minZoom: <?php echo $tile_min_zoom; ?>,
+            maxZoom: <?php echo $tile_max_zoom; ?>,
+        }, 
+        <?php echo $tile_layer_options; ?>
+        )
+    );
+var options = L.Util.extend({}, {
+        maxZoom: <?php echo $max_zoom; ?>,
+        minZoom: <?php echo $min_zoom; ?>,
+        layers: [base],
+        zoomControl: <?php echo $zoomcontrol; ?>,
+        scrollWheelZoom: <?php echo $scrollwheel; ?>,
+        doubleClickZoom: <?php echo $doubleclickzoom; ?>,
+        attributionControl: false
+    }, 
+    <?php echo $map_options; ?>, 
+    <?php echo $raw_map_options; ?>
+);
+window.WPLeafletMapPlugin.createMap(options).setView(<?php 
+    echo '[' . $lat . ',' . $lng . '],' . $zoom; 
+?>);<?php
 
         $show_scale = isset($show_scale) ? $show_scale : $settings->get('show_scale');
 
         if ($show_scale) {
-            echo do_shortcode('[leaflet-scale]');
+            echo do_shortcode('[leaflet-scale noScriptWrap]');
         }
 
-        return ob_get_clean();
+        $script = ob_get_clean();
+
+        return $this->getDiv($height, $width) . $this->wrap_script($script);
     }
 }

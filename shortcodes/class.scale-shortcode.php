@@ -57,16 +57,14 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
 
         $options = $this->LM->json_sanitize($options, $filters);
 
-        ob_start();
-        ?>
-        <script>
-        // push deferred function
-        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        window.WPLeafletMapPlugin.push(function () {
-            window.WPLeafletMapPlugin.createScale(<?php echo $options; ?>);
-        });
-        </script>
-        <?php
-        return ob_get_clean();
+        $script = "window.WPLeafletMapPlugin.createScale($options);";
+       
+        if (isset($noScriptWrap)) {
+            // don't wrap script 
+            // (probably already wrapped in map-shortcode)
+            return $script;
+        }
+        
+        return $this->wrap_script($script);
     }
 }

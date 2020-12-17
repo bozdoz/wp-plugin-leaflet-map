@@ -27,14 +27,14 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
      * 
      * @var string $default_src
      */
-    public static $default_src = 'https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson';
+    protected $default_src = 'https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson';
 
     /**
      * How leaflet renders the src
      * 
      * @var string $type 
      */
-    public static $type = 'json';
+    protected $type = 'json';
 
     /**
      * Get Script for Shortcode
@@ -46,10 +46,6 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
      */
     protected function getHTML($atts='', $content=null)
     {
-
-        // need to get the called class to extend above variables
-        $class = self::getClass();
-        
         if ($atts) {
             extract($atts);
         } 
@@ -63,7 +59,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         /* only required field for geojson; accept either src or source */
         $source = empty($source) ? '' : $source;
-        $src = empty($src) ? $class::$default_src : $src;
+        $src = empty($src) ? $this->default_src : $src;
         $src = empty($source) ? $src : $source;
 
         $style_json = $this->LM->get_style_json($atts);
@@ -85,83 +81,78 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
         $table_view = filter_var(empty($table_view) ? 0 : $table_view, FILTER_VALIDATE_INT);
 
         ob_start();
-        ?>
-        <script>
-            window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-            window.WPLeafletMapPlugin.push(function () {
-                var src = '<?php echo $src; ?>',
-                    default_style = <?php echo $style_json; ?>,
-                    rewrite_keys = {
-                        stroke : 'color',
-                        'stroke-width' : 'weight',
-                        'stroke-opacity' : 'opacity',
-                        fill : 'fillColor',
-                        'fill-opacity' : 'fillOpacity',
-                    },
-                    layer = L.ajaxGeoJson(src, {
-                        type: '<?php echo $class::$type; ?>',
-                        style : layerStyle,
-                        onEachFeature : onEachFeature,
-                        pointToLayer: pointToLayer
-                    }),
-                    fitbounds = <?php echo $fitbounds; ?>,
-                    circleMarker = <?php echo $circleMarker; ?>,
-                    popup_text = window.WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>'),
-                    popup_property = '<?php echo $popup_property; ?>',
-                    group = window.WPLeafletMapPlugin.getCurrentGroup();   
-                layer.addTo( group );
-                window.WPLeafletMapPlugin.geojsons.push( layer );
-                if (fitbounds) {
-                    layer.on('ready', function () {
-                        this.map.fitBounds( this.getBounds() );
-                    });
-                }
-                function layerStyle (feature) {
-                    var props = feature.properties || {};
-                    var style = {};
-                    var camelFun = function camelFun (_, first_letter) {
-                        return first_letter.toUpperCase();
-                    };
-                    for (var key in props) {
-                        if (key.match('-')) {
-                            var camelcase = key.replace(/-(\w)/, camelFun);
-                            style[ camelcase ] = props[ key ];
-                        }
-                        // rewrite style keys from geojson.io
-                        if (rewrite_keys[ key ]) {
-                            style[ rewrite_keys[ key ] ] = props[ key ];
-                        }
-                    }
-                    style = L.Util.extend(style, default_style);
-                    return style;
-                }
-                function onEachFeature (feature, layer) {
-                    var props = feature.properties || {};
-                    var text;
-                    if (<?php echo $table_view; ?>) {
-                        text = window.WPLeafletMapPlugin.propsToTable(props);
-                    } else {
-                        text = popup_property
-                            ? props[ popup_property ]
-                            : window.WPLeafletMapPlugin.template(
-                                popup_text, 
-                                feature.properties
-                            );
-                    }
-                    if (text) {
-                        layer.bindPopup( text );
-                    }
-                }
-                function pointToLayer (feature, latlng) {
-                    if (circleMarker) {
-                        return L.circleMarker(latlng);
-                    } else {
-                        return L.marker(latlng);
-                    }
-                }
-            });
-        </script>
-        <?php
-        return ob_get_clean();
+        ?>/*<script>*/
+var src = '<?php echo $src; ?>';
+var default_style = <?php echo $style_json; ?>;
+var rewrite_keys = {
+    stroke : 'color',
+    'stroke-width' : 'weight',
+    'stroke-opacity' : 'opacity',
+    fill : 'fillColor',
+    'fill-opacity' : 'fillOpacity',
+};
+var layer = L.ajaxGeoJson(src, {
+    type: '<?php echo $this->type; ?>',
+    style : layerStyle,
+    onEachFeature : onEachFeature,
+    pointToLayer: pointToLayer
+});
+var fitbounds = <?php echo $fitbounds; ?>;
+var circleMarker = <?php echo $circleMarker; ?>;
+var popup_text = window.WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>');
+var popup_property = '<?php echo $popup_property; ?>';
+var group = window.WPLeafletMapPlugin.getCurrentGroup();
+layer.addTo( group );
+window.WPLeafletMapPlugin.geojsons.push( layer );
+if (fitbounds) {
+    layer.on('ready', function () {
+        this.map.fitBounds( this.getBounds() );
+    });
+}
+function layerStyle (feature) {
+    var props = feature.properties || {};
+    var style = {};
+    function camelFun (_, first_letter) {
+        return first_letter.toUpperCase();
+    };
+    for (var key in props) {
+        if (key.match('-')) {
+            var camelcase = key.replace(/-(\w)/, camelFun);
+            style[ camelcase ] = props[ key ];
+        }
+        // rewrite style keys from geojson.io
+        if (rewrite_keys[ key ]) {
+            style[ rewrite_keys[ key ] ] = props[ key ];
+        }
+    }
+    return L.Util.extend(style, default_style);
+}
+function onEachFeature (feature, layer) {
+    var props = feature.properties || {};
+    var text;
+    if (<?php echo $table_view; ?>) {
+        text = window.WPLeafletMapPlugin.propsToTable(props);
+    } else {
+        text = popup_property
+            ? props[ popup_property ]
+            : window.WPLeafletMapPlugin.template(
+                popup_text, 
+                feature.properties
+            );
+    }
+    if (text) {
+        layer.bindPopup( text );
+    }
+}
+function pointToLayer (feature, latlng) {
+    if (circleMarker) {
+        return L.circleMarker(latlng);
+    } else {
+        return L.marker(latlng);
+    }
+}<?php
+        $script = ob_get_clean();
+
+        return $this->wrap_script($script);
     }
 }

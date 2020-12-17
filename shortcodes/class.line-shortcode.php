@@ -27,7 +27,7 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
      * 
      * @var string $type 
      */
-    public static $type = 'line';
+    protected $type = 'line';
 
     /**
      * Get Script for Shortcode
@@ -81,40 +81,32 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
 
         $location_json = json_encode($locations);
 
-        $class = self::getClass();
-
-        $type = $class::$type;
-
         $js_factory = 'L.polyline';
         $collection = 'lines';
         
-        if ($type == 'polygon') {
+        if ($this->type == 'polygon') {
             $js_factory = 'L.polygon';
             $locations = "[$location_json]";
             $collection = 'polygons';
         }
 
         ob_start();
-        ?>
-        <script>
-        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        window.WPLeafletMapPlugin.push(function () {
-            var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
-                shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>),
-                fitbounds = <?php echo $fitbounds; ?>,
-                group = window.WPLeafletMapPlugin.getCurrentGroup();
-            shape.addTo( group );
-            if (fitbounds) {
-                // zoom the map to the shape
-                previous_map.fitBounds( shape.getBounds() );
-            }
-            <?php
-                $this->LM->add_popup_to_shape($atts, $content, 'shape');
-            ?>
-            window.WPLeafletMapPlugin.<?php echo $collection; ?>.push( shape );
-        });
-        </script>
-        <?php
-        return ob_get_clean();
+        ?>/*<script>*/
+var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
+var group = window.WPLeafletMapPlugin.getCurrentGroup();
+var shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>);
+var fitbounds = <?php echo $fitbounds; ?>;
+shape.addTo( group );
+if (fitbounds) {
+    // zoom the map to the shape
+    previous_map.fitBounds( shape.getBounds() );
+}
+<?php 
+    $this->LM->add_popup_to_shape($atts, $content, 'shape'); 
+?>
+window.WPLeafletMapPlugin.<?php echo $collection; ?>.push( shape );<?php
+        $script = ob_get_clean();
+
+        return $this->wrap_script($script);
     }
 }

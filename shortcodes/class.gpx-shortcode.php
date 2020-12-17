@@ -27,12 +27,12 @@ class Leaflet_Gpx_Shortcode extends Leaflet_Geojson_Shortcode
      * 
      * @var string $type
      */
-    public static $type = 'gpx';
+    protected $type = 'gpx';
 
     /**
      * Default src
      * 
      * @var string $default_src
      */
-    public static $default_src = '';
+    protected $default_src = 'https://cdn.jsdelivr.net/gh/mapbox/togeojson@master/test/data/run.gpx';
 }

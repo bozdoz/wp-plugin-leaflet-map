@@ -115,99 +115,88 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
 
         $options = $this->LM->json_sanitize($options, $args);
 
-        if ($options === '[]') {
-            $options = '{}';
-        }
         ob_start();
-        ?>
-        <script>
-        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        window.WPLeafletMapPlugin.push(function () {
-            var marker_options = (function () {
-                var _options = <?php echo $options; ?>;
-                var iconArrays = [
-                    'iconSize', 
-                    'iconAnchor', 
-                    'shadowSize', 
-                    'shadowAnchor',
-                    'popupAnchor'
-                ];
-                var default_icon = L.Icon.Default.prototype.options;
-                if (_options.iconUrl) {
-                    // arrays are strings, unfortunately...
-                    for (var i = 0, len = iconArrays.length; i < len; i++) {
-                        var option_name = iconArrays[i],
-                            option = _options[ option_name ];
-                        // convert "1,2" to [1, 2];
-                        if (option) {
-                            var arr = option.join('').split(',');
-                            // array.map for ie<9
-                            for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
-                                arr[j] = Number(arr[j]);
-                            }
-                            _options[ option_name ] = arr;
-                        }
-                    }
-                    // default popupAnchor
-                    if (!_options.popupAnchor) {
-                        // set (roughly) to size of icon
-                        _options.popupAnchor = (function (i_size) {
-                            // copy array
-                            i_size = i_size.slice();
-                            
-                            // inverse coordinates
-                            i_size[0] = 0;
-                            i_size[1] *= -1;
-                            // bottom position on popup is 7px
-                            i_size[1] -= 3;
-                            return i_size;
-                        })(_options.iconSize || default_icon.iconSize);
-                    }
-
-                    _options.icon = new L.Icon( _options );
+        ?>/*<script>*/
+var map = window.WPLeafletMapPlugin.getCurrentMap();
+var group = window.WPLeafletMapPlugin.getCurrentGroup();
+var marker_options = (function () {
+    var _options = <?php echo $options; ?>;
+    var iconArrays = [
+        'iconSize', 
+        'iconAnchor', 
+        'shadowSize', 
+        'shadowAnchor',
+        'popupAnchor'
+    ];
+    var default_icon = L.Icon.Default.prototype.options;
+    if (_options.iconUrl) {
+        // arrays are strings, unfortunately...
+        for (var i = 0, len = iconArrays.length; i < len; i++) {
+            var option_name = iconArrays[i];
+            var option = _options[ option_name ];
+            // convert "1,2" to [1, 2];
+            if (option) {
+                var arr = option.join('').split(',');
+                // array.map for ie<9
+                for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
+                    arr[j] = Number(arr[j]);
                 }
-                return _options;
-            })();
-            var draggable = marker_options.draggable;
-            var marker = <?php echo $default_marker; ?>(
-                [<?php echo $lat . ',' . $lng; ?>], 
-                marker_options
-            );
-            var map = window.WPLeafletMapPlugin.getCurrentMap();
-            var is_image = map.is_image_map;
-            var group = window.WPLeafletMapPlugin.getCurrentGroup();
-            <?php
-            if (empty($lat) && empty($lng)) {
-                /* update lat lng to previous map's center */
-            ?>
-                if (!is_image) {
-                    marker.setLatLng( map.getCenter() );
-                } else {
-                    marker.setLatLng( [0, 0] );
-                }
-            <?php
+                _options[ option_name ] = arr;
             }
-            ?>
-            if (draggable) {
-                marker.on('dragend', function () {
-                    var latlng = this.getLatLng(),
-                        lat = latlng.lat,
-                        lng = latlng.lng;
-                    if (is_image) {
-                        console.log('leaflet-marker y=' + lat + ' x=' + lng);
-                    } else {
-                        console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
-                    }
-                });
-            }
-            marker.addTo( group );
-            <?php
-                $this->LM->add_popup_to_shape($atts, $content, 'marker');
-            ?>
-            window.WPLeafletMapPlugin.markers.push( marker );
-        }); // end add function
-        </script>
+        }
+        // default popupAnchor
+        if (!_options.popupAnchor) {
+            // set (roughly) to size of icon
+            _options.popupAnchor = (function (i_size) {
+                // copy array
+                i_size = i_size.slice();
+                
+                // inverse coordinates
+                i_size[0] = 0;
+                i_size[1] *= -1;
+                // bottom position on popup is 7px
+                i_size[1] -= 3;
+                return i_size;
+            })(_options.iconSize || default_icon.iconSize);
+        }
+        _options.icon = new L.Icon( _options );
+    }
+    return _options;
+})();
+var marker = <?php echo $default_marker; ?>(
+    [<?php echo $lat . ',' . $lng; ?>], 
+    marker_options
+);
+var is_image = map.is_image_map;
+<?php
+if (empty($lat) && empty($lng)) {
+    /* update lat lng to previous map's center */
+?>
+    marker.setLatLng( map.getCenter() );
+<?php
+}
+?>
+if (marker_options.draggable) {
+    marker.on('dragend', function () {
+        var latlng = this.getLatLng();
+        var lat = latlng.lat;
+        var lng = latlng.lng;
+        if (is_image) {
+            console.log('leaflet-marker y=' + lat + ' x=' + lng);
+        } else {
+            console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
+        }
+    });
+}
+marker.addTo( group );
+<?php
+    $this->LM->add_popup_to_shape($atts, $content, 'marker');
+?>
+window.WPLeafletMapPlugin.markers.push( marker );
         <?php
-        return ob_get_clean();
+        
+        $script = ob_get_clean();
+
+        return $this->wrap_script($script);
     }
 }

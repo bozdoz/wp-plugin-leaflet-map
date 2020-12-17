@@ -27,5 +27,5 @@ class Leaflet_Polygon_Shortcode extends Leaflet_Line_Shortcode
      * 
      * @var string $type 
      */
-    public static $type = 'polygon';
+    protected $type = 'polygon';
 }

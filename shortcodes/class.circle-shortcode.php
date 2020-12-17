@@ -52,40 +52,32 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
         $radius = empty($radius) ? '1000' : $radius;
 
         ob_start();
-        ?>
-        <script>
-        window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-        window.WPLeafletMapPlugin.push(function () {
-            var previous_map = window.WPLeafletMapPlugin.getCurrentMap(),
-                fitbounds = <?php echo $fitbounds; ?>,
-                is_image = previous_map.is_image_map,
-                lat = <?php echo $lat; ?>,
-                lng = <?php echo $lng; ?>,
-                radius = <?php echo $radius; ?>,
-                group = window.WPLeafletMapPlugin.getCurrentGroup();
+        ?>/*<script>*/
+var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
+var group = window.WPLeafletMapPlugin.getCurrentGroup();
+var fitbounds = <?php echo $fitbounds; ?>;
+var is_image = previous_map.is_image_map;
+var lat = <?php echo $lat; ?>;
+var lng = <?php echo $lng; ?>;
+var radius = <?php echo $radius; ?>;
+// update lat lng to previous map's center
+if (!lat && !lng && !is_image) {
+    var map_center = previous_map.getCenter();
+    lat = map_center.lat;
+    lng = map_center.lng;
+}
+var circle = L.circle([lat, lng], {radius: radius});
+circle.setStyle(<?php echo $style_json; ?>);
+circle.addTo( group );
+window.WPLeafletMapPlugin.circles.push( circle );
+if (fitbounds) {
+    // zoom the map to the polyline
+    previous_map.fitBounds( circle.getBounds() );
+}<?php
+        $this->LM->add_popup_to_shape($atts, $content, 'circle');
 
-            // update lat lng to previous map's center
-            if (!lat && !lng && !is_image) {
-                var map_center = previous_map.getCenter();
-                lat = map_center.lat;
-                lng = map_center.lng;
-            }
-            var circle = L.circle([lat, lng], {radius: radius});
-            circle.setStyle(<?php echo $style_json; ?>);
-            circle.addTo( group );
+        $script = ob_get_clean();
 
-            window.WPLeafletMapPlugin.circles.push( circle );
-            
-            if (fitbounds) {
-                // zoom the map to the polyline
-                previous_map.fitBounds( circle.getBounds() );
-            }
-        <?php
-            $this->LM->add_popup_to_shape($atts, $content, 'circle');
-        ?>
-        });
-        </script>
-        <?php
-        return ob_get_clean();
+        return $this->wrap_script($script);
     }
 }
