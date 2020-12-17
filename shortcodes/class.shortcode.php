@@ -87,6 +87,22 @@ abstract class Leaflet_Shortcode
     }
 
     /**
+     * Wrap Javascript output with common function and tags
+     *
+     * @param string $script JavaScript
+     * 
+     * @return string JavaScript
+     */
+    protected function wrap_script($script)
+    {
+        ob_start();
+        ?><script>
+window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+window.WPLeafletMapPlugin.push(function () {<?php echo $script; ?>});</script><?php
+        return ob_get_clean();
+    }
+
+    /**
      * Create an LM variable for each shortcode class 
      * instance
      */
