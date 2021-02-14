@@ -22,9 +22,29 @@ new version:
       minify $file > $(basename $file .js).min.js; 
       done
     - cd /repo
-    # tag and commit to svn
+    # add all svn
     - svn add --force .
+    # new tag
     - svn cp trunk tags/${CI_COMMIT_TAG//v}
     - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
-  only:
-    - tags
+  rules:
+    - if: $CI_COMMIT_TAG
+
+update latest:
+  stage: deploy
+  script:
+    # minify js
+    - cd trunk/scripts
+    - rm -f *.min.js
+    - |
+      for file in *.js; do 
+      minify $file > $(basename $file .js).min.js; 
+      done
+    - cd /repo
+    # add all svn
+    - svn add --force .
+    - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "master"'
