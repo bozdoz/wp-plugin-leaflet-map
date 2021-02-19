@@ -2,13 +2,13 @@
 Author: bozdoz
 Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, remigr, gerital, sal0max
+Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 5.6.1
-Version: 2.22.1
-Stable tag: 2.22.1
+Version: 2.23.0
+Stable tag: 2.23.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.23.0 =
+* Added iconUrl to leaflet-geojson shortcode.
+* bugfix to number inputs in admin accepting either integers or decimals but not both (couldn't switch types)
 
 = 2.22.1 =
 * hotfix to tile url attributions not being numeric and stripping slashes.
@@ -397,6 +401,9 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.23.0 =
+Minor bugfix to number-type inputs in admin that couldn't switch types between decimals and integers
 
 = 2.21.0 =
 Fixes issues with tilelayers when min_zoom and max_zoom are identical and detect_retina is true

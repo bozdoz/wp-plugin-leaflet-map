@@ -95,10 +95,23 @@ class Leaflet_Map_Plugin_Option
     {
         switch ($this->type) {
         case 'text':
+            ?>
+        <input 
+            class="full-width" 
+            name="<?php echo $name; ?>" 
+            type="<?php echo $this->type; ?>" 
+            id="<?php echo $name; ?>" 
+            value="<?php echo htmlspecialchars($value); ?>" 
+            />
+            <?php
+            break;
+
+        
         case 'number':
             ?>
         <input 
             class="full-width" 
+            step="any"
             name="<?php echo $name; ?>" 
             type="<?php echo $this->type; ?>" 
             id="<?php echo $name; ?>" 
