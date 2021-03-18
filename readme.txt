@@ -130,7 +130,7 @@ Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a h
 
 = Additional questions? =
 
-For more FAQs, please visit the [FAQ section on Github here](https://github.com/bozdoz/wp-plugin-leaflet-map#frequently-asked-questions).
+For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/bozdoz/wp-plugin-leaflet-map#frequently-asked-questions).
 
 == Screenshots ==
 
