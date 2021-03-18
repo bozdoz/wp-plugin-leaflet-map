@@ -6,3 +6,5 @@ theme/
 themes/
 plugins/
 scripts/*.min.js
+
+.env

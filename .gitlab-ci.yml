@@ -1,7 +1,7 @@
 variables:
   GIT_DEPTH: 5
 
-image: alpine
+image: alpine:3.11
 
 before_script:
   - apk add --no-cache subversion nodejs npm
