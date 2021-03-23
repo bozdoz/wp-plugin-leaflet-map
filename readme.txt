@@ -6,9 +6,9 @@ Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 5.6.1
-Version: 2.23.0
-Stable tag: 2.23.0
+Tested up to: 5.7
+Version: 2.23.1
+Stable tag: 2.23.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,6 +144,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 2.23.1 =
+* possible bugfix to failing to enqueue map when shortcode rendered 
 
 = 2.23.0 =
 * Added iconUrl to leaflet-geojson shortcode.
@@ -405,6 +408,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 2.23.1 =
+Possible bugfix to ensuring javascript is enqueued when map is rendered
 
 = 2.23.0 =
 Minor bugfix to number-type inputs in admin that couldn't switch types between decimals and integers

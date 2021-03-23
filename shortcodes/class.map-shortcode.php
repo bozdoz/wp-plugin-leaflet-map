@@ -19,9 +19,6 @@ if (!defined('ABSPATH')) {
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 
-// make sure we enqueue once
-$lms_enqueued = false;
-
 /**
  * Leaflet_Map_Shortcode Class
  */
@@ -32,14 +29,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     public function __construct()
     {
-        global $lms_enqueued;
-
         parent::__construct();
         
-        if (!$lms_enqueued) {
-            $this->enqueue();
-            $lms_enqueued = true;
-        }
+        $this->enqueue();
     }
 
     /**
@@ -49,6 +41,11 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     protected function enqueue()
     {
+        if (wp_script_is('wp_leaflet_map', 'enqueued')) {
+            // only enqueue once
+            return;
+        }
+
         wp_enqueue_style('leaflet_stylesheet');
         wp_enqueue_script('wp_leaflet_map');
 
