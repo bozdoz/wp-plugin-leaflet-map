@@ -30,7 +30,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->enqueue();
     }
 
@@ -41,7 +41,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     protected function enqueue()
     {
-        if (wp_script_is('wp_leaflet_map', 'enqueued')) {
+        if (did_action('leaflet_map_enqueue')) {
             // only enqueue once
             return;
         }
