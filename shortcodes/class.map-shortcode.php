@@ -41,11 +41,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     protected function enqueue()
     {
-        if (did_action('leaflet_map_enqueue')) {
-            // only enqueue once
-            return;
-        }
-
         wp_enqueue_style('leaflet_stylesheet');
         wp_enqueue_script('wp_leaflet_map');
 
@@ -54,7 +49,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             wp_enqueue_script('leaflet_mapquest_plugin');
         }
 
-        // enqueue user-defined scripts
+        // enqueue user-defined scripts 
+        // ! will fire for each map
         do_action('leaflet_map_enqueue');
     }
 
