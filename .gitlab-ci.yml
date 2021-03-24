@@ -30,6 +30,7 @@ new version:
   rules:
     - if: $CI_COMMIT_TAG
 
+# only run for readme stuff
 update latest:
   stage: deploy
   script:
@@ -47,4 +48,16 @@ update latest:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
+    - changes:
+        - '*.php'
+        - '**/*.php'
+        - '**/*.js'
+        - '*.css'
+        - 'docker*'
+        - '.github/*'
+        - '.vscode/*'
+      when: never
     - if: '$CI_COMMIT_BRANCH == "master"'
+      # delay to avoid competing with tag deploy
+      when: delayed
+      start_in: 5 minutes
