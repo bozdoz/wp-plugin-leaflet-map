@@ -330,8 +330,15 @@ function fs_leaflet_loaded() {
       return;
     }
 
-    // iterate any of these: `maps`, `markers`, `markergroups`, `lines`, `circles`, `geojsons`
+    // iterate any of these arrays: `maps`, `markers`, `lines`, `circles`, `geojsons`
     var maps = window.WPLeafletMapPlugin.maps;
+    
+    // Note: `markergroups` is an *object*. If you'd like to iterate it, you can do it like this:
+    // var markergroups = window.WPLeafletMapPlugin.markergroups;
+    // var keys = Object.keys(markergroups);
+    // for (var i = 0, len = keys.length; i < len; i++) {
+    //   var markergroup = markergroups[keys[i]];
+    // }
 
     for (var i = 0, len = maps.length; i < len; i++) {
       var map = maps[i];
