@@ -26,6 +26,9 @@ test:
 new version:
   stage: deploy
   script:
+    # sanity check for node_modules from test stage
+    - ls trunk
+    - '[ -d trunk/node_modules ] && exit 1'
     # minify js
     - cd trunk/scripts
     - rm -f *.min.js
@@ -63,16 +66,16 @@ update latest:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
-    - changes:
-        - '*.php'
-        - '**/*.php'
-        - '**/*.js'
-        - '*.css'
-        - 'docker*'
-        - '.github/*'
-        - '.vscode/*'
-      when: never
-    - if: '$CI_COMMIT_BRANCH == "master"'
-      # delay to avoid competing with tag deploy
-      when: delayed
-      start_in: 5 minutes
+    # - changes:
+    #     - '*.php'
+    #     - '**/*.php'
+    #     - '**/*.js'
+    #     - '*.css'
+    #     - 'docker*'
+    #     - '.github/*'
+    #     - '.vscode/*'
+    #   when: never
+    # - if: '$CI_COMMIT_BRANCH == "master"'
+    #   # delay to avoid competing with tag deploy
+    #   when: delayed
+    #   start_in: 5 minutes
