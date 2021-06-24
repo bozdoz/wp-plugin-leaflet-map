@@ -1,6 +1,10 @@
 variables:
   GIT_DEPTH: 5
 
+stages:
+  - test
+  - deploy
+
 image: alpine:3.11
 
 before_script:
@@ -10,6 +14,14 @@ before_script:
   - rm -rf /repo/trunk/*
   - cp -r * /repo/trunk
   - cd /repo
+
+test:
+  stage: test
+  script:
+    # move to git repo (not svn repo)
+    - cd trunk
+    - npm ci
+    - npm test
 
 new version:
   stage: deploy
@@ -34,6 +46,9 @@ new version:
 update latest:
   stage: deploy
   script:
+    # sanity check for node_modules from test stage
+    - ls trunk
+    - '[ -d trunk/node_modules ] && exit 1'
     # minify js
     - cd trunk/scripts
     - rm -f *.min.js
@@ -43,8 +58,8 @@ update latest:
       done
     - cd /repo
     # add all svn
-    - svn add --force .
-    - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
+    # - svn add --force .
+    # - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
   rules:
     - if: $CI_COMMIT_TAG
       when: never
