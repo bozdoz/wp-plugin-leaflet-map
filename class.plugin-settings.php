@@ -2,8 +2,6 @@
 /**
  * Class for getting and setting db/default values
  * 
- * PHP Version 5.5
- * 
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -14,6 +12,8 @@ if (!defined('ABSPATH')) {
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-option.php';
+
+// TODO: add option to reset just a single field
 
 /**
  * Used to get and set values
@@ -310,12 +310,12 @@ class Leaflet_Map_Plugin_Settings
             'default_attribution' => array(
                 'display_name' => __('Default Attribution', 'leaflet-map'),
                 'default' => sprintf(
-                    '<a href="http://leafletjs.com" title="%1$s">Leaflet</a>; © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> %2$s',
+                    '[Leaflet](http://leafletjs.com "%1$s"); © [OpenStreetMap](http://www.openstreetmap.org/copyright) %2$s',
                     __("A JS library for interactive maps", 'leaflet-map'),
                     __("contributors", 'leaflet-map')
                 ),
                 'type' => 'textarea',
-                'helptext' => __('Attribution to a custom tile url.  Use semi-colons (;) to separate multiple.', 'leaflet-map')
+                'helptext' => __('Attribution to a custom tile url.  Use semi-colons (;) to separate multiple. Use MarkDown only because "some people just want to watch the world burn"', 'leaflet-map')
             ),
             'show_scale' => array(
                 'display_name' => __('Show Scale', 'leaflet-map'),
