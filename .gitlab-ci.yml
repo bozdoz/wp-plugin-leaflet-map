@@ -63,10 +63,10 @@ update latest:
     # add all svn
     # - svn add --force .
     # - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - when: always
+  # rules:
+  #   - if: $CI_COMMIT_TAG
+  #     when: never
+  #   - when: always
     # - changes:
     #     - '*.php'
     #     - '**/*.php'
