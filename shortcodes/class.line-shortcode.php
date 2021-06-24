@@ -4,8 +4,6 @@
  *
  * Use with [leaflet-line ...]
  * 
- * PHP Version 5.5
- * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -52,6 +50,8 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
             $fitbounds = $fitline;
         }
 
+        $fitbounds = filter_var($fitbounds, FILTER_VALIDATE_BOOLEAN);
+
         $locations = Array();
 
         if (!empty($addresses)) {
@@ -95,7 +95,7 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
 var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>);
-var fitbounds = <?php echo $fitbounds; ?>;
+var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 shape.addTo( group );
 if (fitbounds) {
     // zoom the map to the shape

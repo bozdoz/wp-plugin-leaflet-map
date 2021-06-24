@@ -4,8 +4,6 @@
  *
  * Use with [leaflet-circle ...]
  *
- * PHP Version 5.5
- *
  * @category Shortcode
  * @author   Peter Uithoven <peter@peteruithoven.nl>
  */
@@ -39,6 +37,7 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
         $style_json = $this->LM->get_style_json($atts);
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
+        $fitbounds = filter_var($fitbounds, FILTER_VALIDATE_BOOLEAN);
 
         if (!empty($address)) {
             include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
@@ -49,13 +48,20 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
 
         $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
+        
+        // validate lat/lng
+        $lat = filter_var($lat, FILTER_VALIDATE_FLOAT);
+        $lng = filter_var($lng, FILTER_VALIDATE_FLOAT);
+
         $radius = empty($radius) ? '1000' : $radius;
+
+        $radius = filter_var($radius, FILTER_VALIDATE_FLOAT);
 
         ob_start();
         ?>/*<script>*/
 var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var fitbounds = <?php echo $fitbounds; ?>;
+var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 var is_image = previous_map.is_image_map;
 var lat = <?php echo $lat; ?>;
 var lng = <?php echo $lng; ?>;
