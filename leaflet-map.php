@@ -8,7 +8,7 @@
  * Author URI: https://bozdoz.com/
  * Text Domain: leaflet-map
  * Domain Path: /languages/
- * Version: 2.23.3
+ * Version: 3.0.0
  * License: GPL2
  * Leaflet Map is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
     exit; 
 }
 
-define('LEAFLET_MAP__PLUGIN_VERSION', '2.23.3');
+define('LEAFLET_MAP__PLUGIN_VERSION', '3.0.0');
 define('LEAFLET_MAP__PLUGIN_FILE', __FILE__);
 define('LEAFLET_MAP__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
