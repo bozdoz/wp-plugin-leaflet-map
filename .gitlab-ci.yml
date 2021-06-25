@@ -22,6 +22,9 @@ test:
   script:
     - npm ci
     - npm test
+  rules:
+    - changes:
+      - '**/*.js'
 
 new version:
   stage: deploy
