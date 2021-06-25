@@ -184,65 +184,9 @@
       return output;
     };
 
-    /**
-     * Gets string of anchor for Leaflet's consumption
-     * @param {Record<string, string>} atts
-     */
-    function makeStringLink(atts) {
-      var a = document.createElement('a');
-      a.href = atts.href;
-      a.textContent = atts.textContent;
-
-      if (atts.title) {
-        a.title = atts.title;
-      }
-
-      return a.outerHTML;
-    }
-
-    var globalLinkRegex = /\[.*?\]\(.*?\)/g;
-    var groupLinkRegex = /\[(.*?)\]\((\S*?)(?:\s"(.*?)"\)|\))/;
-    /**
-     * Converts basic markdown links
-     * @param {string} attribution
-     */
-    function markdownAttribution(attribution) {
-      return attribution.replace(globalLinkRegex, function (matched) {
-        var match = matched.match(groupLinkRegex);
-
-        if (match) {
-          var textContent = match[1];
-          var href = match[2];
-          var title = match[3];
-
-          return makeStringLink({
-            textContent: textContent,
-            href: href,
-            title: title,
-          });
-        } else {
-          return matched;
-        }
-      });
-    }
-
     function trim(a) {
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
     }
-
-    /**
-     * @param {string} text
-     * @return {string}
-     */
-    function sanitizeHTML(text) {
-      var element = document.createElement('div');
-      element.textContent = text;
-      return element.innerHTML;
-    }
-
-    /** @since 3.0.0 try to reduce the headache of this breaking update */
-    var originalAttribution =
-      '<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>; © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
     function addAttributionToMap(attribution, map) {
       if (!attribution) {
@@ -258,11 +202,6 @@
 
       for (var i = 0, len = attributions.length; i < len; i++) {
         var att = trim(attributions[i]);
-        /** @since 3.0.0 we sanitize inputs */
-        if (attribution !== originalAttribution) {
-          att = sanitizeHTML(att);
-          att = markdownAttribution(att);
-        }
         attControl.addAttribution(att);
       }
     }
