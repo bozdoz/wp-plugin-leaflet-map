@@ -158,7 +158,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             // defined above, but can be validated here
             'zoomControl' => $atts['zoomcontrol'],
             'scrollWheelZoom' => $atts['scrollwheel'],
-            'doubleClickZoom' => $atts['doubleclickzoom'],
+            'doubleClickZoom' => $atts['doubleclickzoom']
         );
 
         // filter out nulls
@@ -173,14 +173,14 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         // add min/max zoom validations
         $zoom_options = array(
             'minZoom' => $atts['min_zoom'],
-            'maxZoom' => $atts['max_zoom'],
+            'maxZoom' => $atts['max_zoom']
         );
 
         $zoom_options = filter_var_array($zoom_options, FILTER_VALIDATE_FLOAT);
 
         $map_options = array_merge(
             $map_options,
-            $zoom_options,
+            $zoom_options
         );
 
         // update atts too
@@ -218,7 +218,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'id' => empty($mapid) ? $settings->get('mapid') : $mapid,
             'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
             'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
-            'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
+            'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN)
         );
         
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
@@ -230,7 +230,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $validations = array(
             'detect_retina' => FILTER_VALIDATE_BOOLEAN,
             'zoom' => FILTER_VALIDATE_FLOAT,
-            'fitBounds' => FILTER_VALIDATE_BOOLEAN,
+            'fitBounds' => FILTER_VALIDATE_BOOLEAN
         );
 
         $atts = $this->LM->sanitize_inclusive($atts, $validations);
