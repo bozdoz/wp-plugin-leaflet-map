@@ -125,7 +125,7 @@ var layer = L.ajaxGeoJson(src, {
 });
 var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 var circleMarker = <?php echo $circleMarker ? '1' : '0'; ?>;
-var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo htmlspecialchars($popup_text); ?>");
+var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo $popup_text; ?>");
 var popup_property = "<?php echo htmlspecialchars($popup_property); ?>";
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var options = <?php echo $options; ?>;
