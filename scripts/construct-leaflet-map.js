@@ -189,7 +189,7 @@
      * @param {Record<string, string>} atts
      */
     function makeStringLink(atts) {
-      const a = document.createElement('a');
+      var a = document.createElement('a');
       a.href = atts.href;
       a.textContent = atts.textContent;
 
