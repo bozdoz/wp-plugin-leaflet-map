@@ -358,7 +358,8 @@ class Leaflet_Map
     public function add_popup_to_shape($atts, $content, $shape)
     {
         if (!empty($atts)) {
-            extract($atts);
+            // don't overwrite existing variables
+            extract($atts, EXTR_SKIP);
         }
 
         $message = empty($message) ? 
