@@ -45,7 +45,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if ($atts) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         } 
 
         wp_enqueue_script('leaflet_ajax_geojson_js');

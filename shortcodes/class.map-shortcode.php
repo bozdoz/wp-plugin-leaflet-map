@@ -62,7 +62,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     protected function getAtts($atts='')
     {
         $atts = (array) $atts;
-        extract($atts);
+        extract($atts, EXTR_SKIP);
 
         $settings = Leaflet_Map_Plugin_Settings::init();
 

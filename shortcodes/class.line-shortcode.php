@@ -38,7 +38,7 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if (!empty($atts)) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
         
         $style_json = $this->LM->get_style_json($atts);

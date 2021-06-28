@@ -31,7 +31,7 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if (!empty($atts)) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
 
         /**

@@ -303,7 +303,7 @@ class Leaflet_Map
     public function get_style_json($atts)
     {
         if ($atts) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
 
         // from http://leafletjs.com/reference-1.0.3.html#path
