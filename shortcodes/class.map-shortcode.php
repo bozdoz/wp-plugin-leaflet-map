@@ -192,8 +192,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         }
 
         // custom field for moving to javascript
-        $map_options['attribution'] = $atts['attribution'];
-
+        // filter out any unwanted HTML tags (including img)
+        $map_options['attribution'] = wp_kses_post($atts['attribution']);
+        
         // wrap as JSON
         $atts['map_options'] = json_encode($map_options);
 
