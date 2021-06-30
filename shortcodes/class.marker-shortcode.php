@@ -4,8 +4,6 @@
  *
  * Use with [leaflet-marker ...]
  * 
- * PHP Version 5.5
- * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -33,7 +31,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if (!empty($atts)) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
 
         if (!empty($address)) {
@@ -46,6 +44,10 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         /* add to user contributed lat lng */
         $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
+
+        // validate lat/lng
+        $lat = filter_var($lat, FILTER_VALIDATE_FLOAT);
+        $lng = filter_var($lng, FILTER_VALIDATE_FLOAT);
 
         $default_marker = 'L.marker';
 

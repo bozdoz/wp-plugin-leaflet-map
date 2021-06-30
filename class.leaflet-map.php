@@ -2,8 +2,6 @@
 /**
  * Leaflet Map Class File
  * 
- * PHP Version 5.5
- * 
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -249,7 +247,29 @@ class Leaflet_Map
     }
 
     /**
-     * Sanitize JSON
+     * Sanitize any given validations, but concatenate with the remaining keys from $arr
+     */
+    public function sanitize_inclusive($arr, $validations) {
+        return array_merge(
+            $arr,
+            $this->sanitize_exclusive($arr, $validations)
+        );
+    }
+
+    /**
+     * Sanitize and return ONLY given validations
+     */
+    public function sanitize_exclusive($arr, $validations) {
+        // remove nulls
+        $arr = $this->filter_null($arr);
+
+        // sanitize output
+        $args = array_intersect_key($validations, $arr);
+        return filter_var_array($arr, $args);
+    }
+
+    /**
+     * Sanitize JSON 
      *
      * Takes options for filtering/correcting inputs for use in JavaScript
      *
@@ -259,12 +279,7 @@ class Leaflet_Map
      */
     public function json_sanitize($arr, $args)
     {
-        // remove nulls
-        $arr = $this->filter_null($arr);
-
-        // sanitize output
-        $args = array_intersect_key($args, $arr);
-        $arr = filter_var_array($arr, $args);
+        $arr = $this->sanitize_exclusive($arr, $args);
 
         $output = json_encode($arr);
 
@@ -288,7 +303,7 @@ class Leaflet_Map
     public function get_style_json($atts)
     {
         if ($atts) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
 
         // from http://leafletjs.com/reference-1.0.3.html#path
@@ -343,7 +358,8 @@ class Leaflet_Map
     public function add_popup_to_shape($atts, $content, $shape)
     {
         if (!empty($atts)) {
-            extract($atts);
+            // don't overwrite existing variables
+            extract($atts, EXTR_SKIP);
         }
 
         $message = empty($message) ? 

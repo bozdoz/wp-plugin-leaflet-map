@@ -6,8 +6,6 @@
  *
  * JavaScript equivalent : L.imageOverlay('path/to/image.jpg');
  *
- * PHP Version 5.5
- * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -43,16 +41,11 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
 
         ob_start(); ?>/*<script>*/
 var options = L.Util.extend({}, {
-        maxZoom: <?php echo $max_zoom; ?>,
-        minZoom: <?php echo $min_zoom; ?>,
-        zoomControl: <?php echo $zoomcontrol; ?>,
-        scrollWheelZoom: <?php echo $scrollwheel; ?>,
-        doubleClickZoom: <?php echo $doubleclickzoom; ?>,
         attributionControl: false
     }, <?php echo $map_options; ?>, {
         crs: L.CRS.Simple
     });
-var image_src = '<?php echo $source; ?>';
+var image_src = '<?php echo htmlspecialchars($source, ENT_QUOTES); ?>';
 var img = new Image();
 var zoom = <?php echo $zoom; ?>;
 var map = window.WPLeafletMapPlugin.createImageMap(options).setView([0, 0], zoom);

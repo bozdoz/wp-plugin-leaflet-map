@@ -4,8 +4,6 @@
  *
  * Use with [leaflet-geojson src="..."]
  * 
- * PHP Version 5.5
- * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -47,7 +45,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if ($atts) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         } 
 
         wp_enqueue_script('leaflet_ajax_geojson_js');
@@ -65,7 +63,9 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
         $style_json = $this->LM->get_style_json($atts);
 
         $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
+        $fitbounds = filter_var($fitbounds, FILTER_VALIDATE_BOOLEAN);
         $circleMarker = empty($circleMarker) ? 0 : $circleMarker;
+        $circleMarker = filter_var($circleMarker, FILTER_VALIDATE_BOOLEAN);
 
         // shortcode content becomes popup text
         $content_text = empty($content) ? '' : $content;
@@ -108,7 +108,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         ob_start();
         ?>/*<script>*/
-var src = '<?php echo $src; ?>';
+var src = '<?php echo htmlspecialchars($src, ENT_QUOTES); ?>';
 var default_style = <?php echo $style_json; ?>;
 var rewrite_keys = {
     stroke : 'color',
@@ -123,10 +123,10 @@ var layer = L.ajaxGeoJson(src, {
     onEachFeature : onEachFeature,
     pointToLayer: pointToLayer
 });
-var fitbounds = <?php echo $fitbounds; ?>;
-var circleMarker = <?php echo $circleMarker; ?>;
-var popup_text = window.WPLeafletMapPlugin.unescape('<?php echo $popup_text; ?>');
-var popup_property = '<?php echo $popup_property; ?>';
+var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
+var circleMarker = <?php echo $circleMarker ? '1' : '0'; ?>;
+var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo $popup_text; ?>");
+var popup_property = "<?php echo $popup_property; ?>";
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var options = <?php echo $options; ?>;
 if (options.iconUrl) {

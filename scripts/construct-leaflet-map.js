@@ -184,23 +184,26 @@
       return output;
     };
 
-    function addAttributionToMap(attribution, map) {
-      if (attribution) {
-        var attributions = attribution.split(';');
-        var attControl = L.control
-          .attribution({
-            prefix: false,
-          })
-          .addTo(map);
-
-        for (var i = 0, len = attributions.length; i < len; i++) {
-          attControl.addAttribution(trim(attributions[i]));
-        }
-      }
-    }
-
     function trim(a) {
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
+    }
+
+    function addAttributionToMap(attribution, map) {
+      if (!attribution) {
+        return;
+      }
+
+      var attributions = attribution.split(';');
+      var attControl = L.control
+        .attribution({
+          prefix: false,
+        })
+        .addTo(map);
+
+      for (var i = 0, len = attributions.length; i < len; i++) {
+        var att = trim(attributions[i]);
+        attControl.addAttribution(att);
+      }
     }
 
     var unescape = (this.unescape = function (str) {

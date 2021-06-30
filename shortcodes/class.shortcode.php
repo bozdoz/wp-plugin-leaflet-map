@@ -2,8 +2,6 @@
 /**
  * Abstract Shortcode
  *
- * PHP Version 5.5
- * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */

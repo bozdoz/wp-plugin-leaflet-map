@@ -31,7 +31,7 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
     protected function getHTML($atts='', $content=null)
     {
         if (!empty($atts)) {
-            extract($atts);
+            extract($atts, EXTR_SKIP);
         }
 
         /**
@@ -44,7 +44,7 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
           'metric' => isset($metric) ? $metric : null,
           'imperial' => isset($imperial) ? $imperial : null,
           'updateWhenIdle' => isset($updateWhenIdle) ? $updateWhenIdle : null,
-          'position' => isset($position) ? $position : null,
+          'position' => isset($position) ? $position : null
         );
 
         $filters = array(
@@ -52,7 +52,7 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
           'metric' => FILTER_VALIDATE_BOOLEAN,
           'imperial' => FILTER_VALIDATE_BOOLEAN,
           'updateWhenIdle' => FILTER_VALIDATE_BOOLEAN,
-          'position' => FILTER_SANITIZE_STRING,
+          'position' => FILTER_SANITIZE_STRING
         );
 
         $options = $this->LM->json_sanitize($options, $filters);

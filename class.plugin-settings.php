@@ -2,8 +2,6 @@
 /**
  * Class for getting and setting db/default values
  * 
- * PHP Version 5.5
- * 
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -14,6 +12,8 @@ if (!defined('ABSPATH')) {
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'class.plugin-option.php';
+
+// TODO: add option to reset just a single field
 
 /**
  * Used to get and set values

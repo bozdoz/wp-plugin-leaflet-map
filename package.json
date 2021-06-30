@@ -1,7 +1,7 @@
 {
   "name": "wp-plugin-leaflet-map",
   "private": true,
-  "version": "2.23.3",
+  "version": "3.0.0",
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
     "start": "docker-compose up && exit 0",
@@ -22,13 +22,16 @@
     "url": "https://github.com/bozdoz/wp-plugin-leaflet-map/issues"
   },
   "homepage": "https://github.com/bozdoz/wp-plugin-leaflet-map#readme",
-  "devDependencies": {
-    "jest": "^26.6.3",
-    "prettier": "^2.2.1"
-  },
   "prettier": {
     "tabWidth": 2,
     "semi": true,
     "singleQuote": true
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "jest": "^27.0.5",
+    "prettier": "^2.3.2"
   }
 }

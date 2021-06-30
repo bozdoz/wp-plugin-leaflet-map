@@ -3,8 +3,6 @@
  * GPX Shortcode
  *
  * Use with [leaflet-gpx src="..."]
- *
- * PHP Version 5.5
  * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>

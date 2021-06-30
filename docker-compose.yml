@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
 
   cli:
-    image: bozdoz/wordpress-initialize:2.4.0-20201102
+    image: bozdoz/wordpress-initialize:2.5.0
     depends_on:
       - mysql
     volumes:
@@ -33,7 +33,7 @@ services:
       WP_THEME: twentynineteen
 
   wordpress:
-    image: wordpress:5.5.3-php7.4
+    image: wordpress:5.7.2-php7.4
     depends_on:
       - cli
     volumes:
