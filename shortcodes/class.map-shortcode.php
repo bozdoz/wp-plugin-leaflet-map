@@ -285,10 +285,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $lat = empty($lat) ? $settings->get('default_lat') : $lat;
         $lng = empty($lng) ? $settings->get('default_lng') : $lng;
 
-        // TODO: extract as a helper method
         // validate lat/lng
-        $lat = filter_var($lat, FILTER_VALIDATE_FLOAT);
-        $lng = filter_var($lng, FILTER_VALIDATE_FLOAT);
+        $lat = $this->LM::filter_float($lat);
+        $lng = $this->LM::filter_float($lng);
 
         /*
         mapquest doesn't need tile urls

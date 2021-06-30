@@ -451,4 +451,16 @@ class Leaflet_Map
 
         return $obj;
     }
+
+    /**
+     * Filter all floats to remove commas, force decimals, and validate float
+     */
+    public static function filter_float ($flt) {
+        // some locales seem to force commas
+        $out = str_replace(',', '.', $flt);
+        // force float to be decimal
+        $out = filter_var($out, FILTER_VALIDATE_FLOAT, array('options' => array('decimal' => '.')));
+
+        return $out;
+    }
 }
