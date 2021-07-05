@@ -312,10 +312,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         }
 
         /* should be iterated for multiple maps */
-        // TODO: use filter_var($url, FILTER_SANITIZE_URL);
         ob_start(); 
         ?>/*<script>*/
-var baseUrl = '<?php echo htmlspecialchars($tileurl, ENT_QUOTES); ?>';
+var baseUrl = '<?php echo filter_var($tileurl, FILTER_SANITIZE_URL); ?>';
 var base = (!baseUrl && window.MQ) ? 
     window.MQ.mapLayer() : L.tileLayer(baseUrl, 
         L.Util.extend({}, {
