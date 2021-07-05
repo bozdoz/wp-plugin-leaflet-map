@@ -1,7 +1,8 @@
 (function () {
   // holds a function queue to call once page is loaded
   function Main() {
-    var VERSION = 'v3.0.1';
+    // TODO: figure out how to derive this from php or package.json instead
+    var VERSION = 'v3.0.2';
     this.VERSION = VERSION;
 
     /**
