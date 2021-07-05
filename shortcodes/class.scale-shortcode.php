@@ -65,6 +65,6 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
             return $script;
         }
         
-        return $this->wrap_script($script);
+        return $this->wrap_script($script, 'WPLeafletScaleShortcode');
     }
 }

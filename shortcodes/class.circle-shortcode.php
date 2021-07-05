@@ -84,6 +84,6 @@ if (fitbounds) {
 
         $script = ob_get_clean();
 
-        return $this->wrap_script($script);
+        return $this->wrap_script($script, 'WPLeafletCircleShortcode');
     }
 }

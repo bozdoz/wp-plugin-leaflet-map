@@ -88,15 +88,16 @@ abstract class Leaflet_Shortcode
      * Wrap Javascript output with common function and tags
      *
      * @param string $script JavaScript
+     * @param string $name string name of function
      * 
      * @return string JavaScript
      */
-    protected function wrap_script($script)
+    protected function wrap_script($script, $name="")
     {
         ob_start();
         ?><script>
 window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
-window.WPLeafletMapPlugin.push(function () {<?php echo $script; ?>});</script><?php
+window.WPLeafletMapPlugin.push(function <?php echo $name; ?>() {<?php echo $script; ?>});</script><?php
         return ob_get_clean();
     }
 

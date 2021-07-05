@@ -1,6 +1,22 @@
 (function () {
   // holds a function queue to call once page is loaded
   function Main() {
+    var VERSION = 'v3.0.1';
+    this.VERSION = VERSION;
+
+    /**
+     * Call a render function, wrapped in a try/catch
+     * @param {() => void} fnc
+     */
+    function callRenderFunction(fnc) {
+      try {
+        fnc();
+      } catch (e) {
+        console.log('-- version --', VERSION);
+        console.error(e);
+      }
+    }
+
     var ready = false;
     var callbacks = [];
 
@@ -17,7 +33,7 @@
      */
     this.push = function (fnc) {
       if (ready) {
-        fnc();
+        callRenderFunction(fnc);
       } else {
         callbacks.push(fnc);
       }
@@ -29,7 +45,7 @@
      */
     this.unshift = function (fnc) {
       if (ready) {
-        fnc();
+        callRenderFunction(fnc);
       } else {
         callbacks.unshift(fnc);
       }
@@ -41,7 +57,7 @@
     this.init = function () {
       ready = true;
       for (var i = 0, len = callbacks.length; i < len; i++) {
-        callbacks[i]();
+        callRenderFunction(callbacks[i]);
       }
     };
 

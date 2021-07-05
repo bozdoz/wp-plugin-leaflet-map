@@ -215,6 +215,6 @@ function pointToLayer (feature, latlng) {
 }<?php
         $script = ob_get_clean();
 
-        return $this->wrap_script($script);
+        return $this->wrap_script($script, 'WPLeaflet' . $this->type .'Shortcode');
     }
 }

@@ -63,6 +63,6 @@ img.src = image_src;<?php
 
         $script = ob_get_clean();
 
-        return $this->getDiv($height, $width) . $this->wrap_script($script);
+        return $this->getDiv($height, $width) . $this->wrap_script($script, 'WPLeafletImageShortcode');
     }
 }
