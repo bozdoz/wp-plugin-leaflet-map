@@ -46,8 +46,8 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
         // validate lat/lng
-        $lat = $this->LM::filter_float($lat);
-        $lng = $this->LM::filter_float($lng);
+        $lat = $this->LM->filter_float($lat);
+        $lng = $this->LM->filter_float($lng);
 
         $default_marker = 'L.marker';
 

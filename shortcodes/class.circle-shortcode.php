@@ -50,12 +50,12 @@ class Leaflet_Circle_Shortcode extends Leaflet_Shortcode
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
         
         // validate lat/lng
-        $lat = $this->LM::filter_float($lat);
-        $lng = $this->LM::filter_float($lng);
+        $lat = $this->LM->filter_float($lat);
+        $lng = $this->LM->filter_float($lng);
 
         $radius = empty($radius) ? '1000' : $radius;
 
-        $radius = $this->LM::filter_float($radius);
+        $radius = $this->LM->filter_float($radius);
 
         ob_start();
         ?>/*<script>*/

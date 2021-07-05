@@ -284,10 +284,10 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         // map uses lat/lng
         $lat = empty($lat) ? $settings->get('default_lat') : $lat;
         $lng = empty($lng) ? $settings->get('default_lng') : $lng;
-
+        
         // validate lat/lng
-        $lat = $this->LM::filter_float($lat);
-        $lng = $this->LM::filter_float($lng);
+        $lat = $this->LM->filter_float($lat);
+        $lng = $this->LM->filter_float($lng);
 
         /*
         mapquest doesn't need tile urls
@@ -312,6 +312,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         }
 
         /* should be iterated for multiple maps */
+        // TODO: use filter_var($url, FILTER_SANITIZE_URL);
         ob_start(); 
         ?>/*<script>*/
 var baseUrl = '<?php echo htmlspecialchars($tileurl, ENT_QUOTES); ?>';
