@@ -70,6 +70,10 @@ class Leaflet_Map
             'file' => 'class.scale-shortcode.php',
             'class' => 'Leaflet_Scale_Shortcode'
         ),
+        'leaflet-overlay' => array(
+            'file' => 'class.overlay-shortcode.php',
+            'class' => 'Leaflet_Overlay_Shortcode'
+        ),
     );
 
     /**
