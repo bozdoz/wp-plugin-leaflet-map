@@ -2,7 +2,7 @@
   // holds a function queue to call once page is loaded
   function Main() {
     // TODO: figure out how to derive this from php or package.json instead
-    var VERSION = 'v3.0.2';
+    var VERSION = 'v3.0.3';
     this.VERSION = VERSION;
 
     /**

@@ -6,9 +6,9 @@ Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 5.7.2
-Version: 3.0.2
-Stable tag: 3.0.2
+Tested up to: 5.8.1
+Version: 3.0.3
+Stable tag: 3.0.3
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,6 +144,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.0.3 =
+* Fixes using `popupAnchor` without passing `iconUrl`
 
 = 3.0.2 =
 * Another fix for commas in float coordinates.
@@ -426,6 +429,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 3.0.3 =
+Fixes using `popupAnchor` without passing `iconUrl`
 
 = 3.0.2 =
 Another fix for commas in float coordinates. Fix validation of tile urls. Fix for php 5.6 using static function methods.
