@@ -352,6 +352,51 @@
       L.control.scale(options).addTo(this.getCurrentMap());
     };
 
+    this.getIconOptions = function (options) {
+      var _options = options || {};
+      var iconArrays = [
+        'iconSize',
+        'iconAnchor',
+        'shadowSize',
+        'shadowAnchor',
+        'popupAnchor',
+      ];
+      var default_icon = L.Icon.Default.prototype.options;
+      // arrays are strings, unfortunately...
+      for (var i = 0, len = iconArrays.length; i < len; i++) {
+        var option_name = iconArrays[i];
+        var option = _options[option_name];
+        // convert "1,2" to [1, 2];
+        if (option) {
+          var arr = option.split(',');
+          // array.map for ie<9
+          for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
+            arr[j] = Number(arr[j]);
+          }
+          _options[option_name] = arr;
+        }
+      }
+      // default popupAnchor
+      if (!_options.popupAnchor) {
+        // set (roughly) to size of icon
+        _options.popupAnchor = (function (i_size) {
+          // copy array
+          i_size = i_size.slice();
+
+          // inverse coordinates
+          i_size[0] = 0;
+          i_size[1] *= -1;
+          // bottom position on popup is 7px
+          i_size[1] -= 3;
+          return i_size;
+        })(_options.iconSize || default_icon.iconSize);
+      }
+      if (_options.iconUrl) {
+        _options.icon = new L.Icon(_options);
+      }
+      return _options;
+    };
+
     // these accessible properties hold map objects
     this.maps = [];
     this.images = [];
