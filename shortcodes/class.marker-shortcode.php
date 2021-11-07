@@ -41,7 +41,9 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
             $lng = $location->lng;
         }
 
-        /* add to user contributed lat lng */
+        $lat_set = isset($lat) || isset($y);
+        $lng_set = isset($lng) || isset($x);
+
         $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
         $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
@@ -113,7 +115,7 @@ var marker = <?php echo $default_marker; ?>(
 );
 var is_image = map.is_image_map;
 <?php
-if (empty($lat) && empty($lng)) {
+if (!$lat_set && !$lng_set) {
     /* update lat lng to previous map's center */
 ?>
     marker.setLatLng( map.getCenter() );
