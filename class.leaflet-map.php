@@ -217,8 +217,7 @@ class Leaflet_Map
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
         wp_register_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
-        // todo remove "-src" once debugging is done
-        wp_register_script('leaflet_markercluster_js', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js', Array('leaflet_js'), '1.4.1', true);
+        wp_register_script('leaflet_markercluster_js', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js', Array('leaflet_js'), '1.4.1', true);
         wp_register_style('leaflet_markercluster_css', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css', Array(), '1.4.1', false);
         wp_register_style('leaflet_markercluster_default_css', 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css', Array(), '1.4.1', false);
     }
