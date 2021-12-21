@@ -18,7 +18,7 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 /**
  * Leaflet Marker Shortcode Class
  */
-class Leaflet_Marker_Cluster_Group_Shortcode extends Leaflet_Shortcode
+class Leaflet_Feature_Group_Shortcode extends Leaflet_Shortcode
 {
     /**
      * Get Script for Shortcode
@@ -40,9 +40,7 @@ class Leaflet_Marker_Cluster_Group_Shortcode extends Leaflet_Shortcode
 
         ob_start();
         ?>/*<script>*/
-      //debugger
-      // console.log('set WPLeafletMapPlugin.markerGroupConstructor = L.markerClusterGroup');
-      window.WPLeafletMapPlugin.markerGroupConstructor = L.markerClusterGroup;
+      delete window.WPLeafletMapPlugin.markerGroupConstructor;
       // and remove previous group from map to ensure creation of a new one
       var mapid = window.WPLeafletMapPlugin.maps.length;
       delete window.WPLeafletMapPlugin.markergroups[mapid];

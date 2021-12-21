@@ -70,6 +70,10 @@ class Leaflet_Map
             'file' => 'class.marker-cluster-group-shortcode.php',
             'class' => 'Leaflet_Marker_Cluster_Group_Shortcode'
         ),
+        'leaflet-feature-group' => array(
+            'file' => 'class.feature-group-shortcode.php',
+            'class' => 'Leaflet_Feature_Group_Shortcode'
+        ),
         'leaflet-scale' => array(
             'file' => 'class.scale-shortcode.php',
             'class' => 'Leaflet_Scale_Shortcode'
