@@ -137,10 +137,10 @@
      */
     this.getGroup = function (map) {
       if (typeof window.WPLeafletMapPlugin.markerGroupConstructor === 'function') {
-        console.log('use WPLeafletMapPlugin.markerGroupConstructor to create markerGroup = ', WPLeafletMapPlugin.markerGroupConstructor);
+        // console.log('use WPLeafletMapPlugin.markerGroupConstructor to create markerGroup = ', WPLeafletMapPlugin.markerGroupConstructor);
         return new window.WPLeafletMapPlugin.markerGroupConstructor().addTo(map);
       }
-      console.log('use L.FeatureGroup');
+      // console.log('use L.FeatureGroup');
       return new L.FeatureGroup().addTo(map);
     };
 
