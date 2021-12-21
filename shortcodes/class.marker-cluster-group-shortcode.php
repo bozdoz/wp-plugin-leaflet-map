@@ -40,11 +40,12 @@ class Leaflet_Marker_Cluster_Group_Shortcode extends Leaflet_Shortcode
 
         ob_start();
         ?>/*<script>*/
-      debugger
-var map = window.WPLeafletMapPlugin.getCurrentMap();
-var markers = L.markerClusterGroup();
-markers.addLayers([L.marker([44.65986223989897, -63.590927124023445]), L.marker([44.645452487688495, -63.60431671142579]), L.marker([44.65155875202518, -63.58612060546876])]);
-map.addLayer(markers);
+      //debugger
+      console.log('set WPLeafletMapPlugin.markerGroupConstructor = L.markerClusterGroup');
+      window.WPLeafletMapPlugin.markerGroupConstructor = L.markerClusterGroup;
+      // and remove previous group from map to ensure creation of a new one
+      var mapid = window.WPLeafletMapPlugin.maps.length;
+      window.WPLeafletMapPlugin.markergroups[mapid] = null;
         <?php
         
         $script = ob_get_clean();
