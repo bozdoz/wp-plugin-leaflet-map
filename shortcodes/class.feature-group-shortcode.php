@@ -48,6 +48,6 @@ class Leaflet_Feature_Group_Shortcode extends Leaflet_Shortcode
         
         $script = ob_get_clean();
 
-        return $this->wrap_script($script, 'WPLeafletMarkerClusterGroupShortcode');
+        return $this->wrap_script($script, 'WPLeafletFeatureGroupShortcode');
     }
 }
