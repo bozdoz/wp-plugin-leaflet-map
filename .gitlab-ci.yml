@@ -58,7 +58,7 @@ update latest:
       done
     - cd /repo
     # get version
-    - VERSION=$(node -p "require('trunk/package.json').version")
+    - VERSION=$(node -p "require('./trunk/package.json').version")
     # update tagged
     - svn cp trunk tags/${VERSION}
     # add all svn
