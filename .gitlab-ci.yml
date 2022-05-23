@@ -60,6 +60,7 @@ update latest:
     # get version
     - VERSION=$(node -p "require('./trunk/package.json').version")
     # update tagged
+    - svn rm tags/${VERSION}
     - svn cp trunk tags/${VERSION}
     # add all svn
     - svn add --force .
