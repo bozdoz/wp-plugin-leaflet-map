@@ -57,6 +57,10 @@ update latest:
       minify $file > $(basename $file .js).min.js; 
       done
     - cd /repo
+    # get version
+    - VERSION=$(node -p "require('trunk/package.json').version")
+    # update tagged
+    - svn cp trunk tags/${VERSION}
     # add all svn
     - svn add --force .
     - svn ci -m "${CI_COMMIT_MESSAGE}" --username $USER --password $PASSWORD
