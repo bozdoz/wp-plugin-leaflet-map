@@ -352,6 +352,10 @@ function fs_leaflet_loaded() {
 })();
 ```
 
+### Are there some examples for adding a Leaflet Plugin and other functions?
+
+Take a look at the functions of [Extensions for Leaflet Map](https://wordpress.org/plugins/extensions-leaflet-map/).
+
 ## Contributing
 
 [View Contribution guidelines](https://github.com/bozdoz/wp-plugin-leaflet-map/blob/master/CONTRIBUTING.md)

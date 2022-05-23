@@ -128,6 +128,10 @@ Yes: Add your custom URL to the options in the admin page.
 
 Use the marker format `[leaflet-marker]Click here![/leaflet-marker]` and add a hyperlink like you normally would with the WordPress editor.
 
+= I need more functions!
+
+Take a look at the functions of [Extensions for Leaflet Map](https://wordpress.org/plugins/extensions-leaflet-map/).
+
 = Additional questions? =
 
 For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/bozdoz/wp-plugin-leaflet-map#frequently-asked-questions).
