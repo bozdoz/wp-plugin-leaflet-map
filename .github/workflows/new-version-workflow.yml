@@ -1,0 +1,49 @@
+name: New Version Workflow
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  test:
+    container:
+      image: node:16.13-alpine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm test
+  new-version:
+    needs: test
+    if: ${{ !contains(github.event.head_commit.message, 'NO_DEPLOY') }}
+    container:
+      image: alpine:3.11
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # setup
+      - run: apk add --no-cache subversion nodejs npm
+      - run: npm i -g minify@5.1.1
+      - run: svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
+      - run: rm -rf /repo/trunk/*
+      - run: cp -r * /repo/trunk
+      - run: |
+          cd /repo
+          pwd 
+          ls
+          ls trunk
+          # minify js
+          cd trunk/scripts
+          rm -f *.min.js
+          for file in *.js; do 
+          minify $file > $(basename $file .js).min.js; 
+          done
+      - run: |
+          cd /repo
+          # add all svn
+          svn add --force .
+          # new tag
+          TAG="${{ github.event.ref }}"
+          svn cp trunk tags/${TAG//refs\/tags\/v}
+          svn ci -m "${{ github.event.head_commit.message }}" --username ${{ secrets.SVN_USER }} --password ${{ secrets.SVN_PASSWORD }}

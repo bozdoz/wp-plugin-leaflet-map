@@ -1,0 +1,21 @@
+name: Test Workflow
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**.js'
+  pull_request:
+    paths:
+      - '**.js'
+
+jobs:
+  test:
+    container:
+      image: node:16.13-alpine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm test
