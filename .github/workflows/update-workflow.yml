@@ -2,10 +2,6 @@ name: Update Workflow
 
 on:
   push:
-    tags-ignore:
-      - v*
-    branches:
-      - master
     paths-ignore:
       - '*.php'
       - '**/*.php'
@@ -17,7 +13,7 @@ on:
 
 jobs:
   update:
-    if: ${{ contains(github.event.ref, 'refs/heads/master') }}
+    if: github.event.ref == 'refs/heads/master'
     container:
       image: alpine:3.11
     runs-on: ubuntu-latest
