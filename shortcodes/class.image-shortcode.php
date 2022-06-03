@@ -48,7 +48,7 @@ var options = L.Util.extend({}, {
 var image_src = '<?php echo htmlspecialchars($source, ENT_QUOTES); ?>';
 var img = new Image();
 var zoom = <?php echo $zoom; ?>;
-var map = window.WPLeafletMapPlugin.createImageMap(options).setView([0, 0], zoom);
+var map = window.WPLeafletMapPlugin.createImageMap(options).setView([<?= $lat ? $lat : '0' ?>, <?= $lng  ? $lng : '0'?>], zoom);
 img.onload = function() {
     var h = img.height,
         w = img.width,
