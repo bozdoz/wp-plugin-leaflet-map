@@ -71,7 +71,7 @@ class Leaflet_Map_Plugin_Settings
         /* update leaflet version from main class */
         $leaflet_version = Leaflet_Map::$leaflet_version;
 
-        $foreachmap = __('You can also change this for each map');
+        $foreachmap = __('You can also change this for each map', 'leaflet-map');
 
         /* 
         * initiate options using internationalization! 
