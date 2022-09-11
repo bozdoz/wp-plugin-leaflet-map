@@ -90,18 +90,9 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         $args = array(
             'iconUrl' => FILTER_SANITIZE_URL,
-            'iconSize' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'iconAnchor' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'popupAnchor' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            )
+            'iconSize' => FILTER_SANITIZE_STRING,
+            'iconAnchor' => FILTER_SANITIZE_STRING,
+            'popupAnchor' => FILTER_SANITIZE_STRING,
         );
 
         $options = $this->LM->json_sanitize($options, $args);
@@ -128,43 +119,7 @@ var circleMarker = <?php echo $circleMarker ? '1' : '0'; ?>;
 var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo $popup_text; ?>");
 var popup_property = "<?php echo $popup_property; ?>";
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var options = <?php echo $options; ?>;
-if (options.iconUrl) {
-    var iconArrays = [
-        'iconSize', 
-        'iconAnchor', 
-        'popupAnchor'
-    ];
-    // arrays are strings, unfortunately...
-    for (var i = 0, len = iconArrays.length; i < len; i++) {
-        var option_name = iconArrays[i];
-        var option = options[ option_name ];
-        // convert "1,2" to [1, 2];
-        if (option) {
-            var arr = option.join('').split(',');
-            // array.map for ie<9
-            for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
-                arr[j] = Number(arr[j]);
-            }
-            options[ option_name ] = arr;
-        }
-    }
-    // default popupAnchor
-    if (!options.popupAnchor) {
-        // set (roughly) to size of icon
-        options.popupAnchor = (function (i_size) {
-            // copy array
-            i_size = i_size.slice();
-            // inverse coordinates
-            i_size[0] = 0;
-            i_size[1] *= -1;
-            // bottom position on popup is 7px
-            i_size[1] -= 3;
-            return i_size;
-        })(options.iconSize || L.Icon.Default.prototype.options.iconSize);
-    }
-    options.icon = new L.Icon( options );          
-}
+var markerOptions = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
 layer.addTo( group );
 window.WPLeafletMapPlugin.geojsons.push( layer );
 if (fitbounds) {
@@ -211,7 +166,7 @@ function pointToLayer (feature, latlng) {
     if (circleMarker) {
         return L.circleMarker(latlng);
     }
-    return L.marker(latlng, options);
+    return L.marker(latlng, markerOptions);
 }<?php
         $script = ob_get_clean();
 

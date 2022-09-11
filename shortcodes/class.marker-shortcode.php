@@ -89,26 +89,11 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
             'opacity' => FILTER_VALIDATE_FLOAT,
             'iconUrl' => FILTER_SANITIZE_URL,
             'shadowUrl' => FILTER_SANITIZE_URL,
-            'iconSize' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'iconAnchor' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'shadowSize' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'shadowAnchor' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
-            'popupAnchor' => array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FORCE_ARRAY
-            ),
+            'iconSize' => FILTER_SANITIZE_STRING,
+            'iconAnchor' => FILTER_SANITIZE_STRING,
+            'shadowSize' => FILTER_SANITIZE_STRING,
+            'shadowAnchor' => FILTER_SANITIZE_STRING,
+            'popupAnchor' => FILTER_SANITIZE_STRING,
             'svg' => FILTER_VALIDATE_BOOLEAN,
             'background' => FILTER_SANITIZE_STRING,
             'iconClass' => FILTER_SANITIZE_STRING,
@@ -121,50 +106,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
         ?>/*<script>*/
 var map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var marker_options = (function () {
-    var _options = <?php echo $options; ?>;
-    var iconArrays = [
-        'iconSize', 
-        'iconAnchor', 
-        'shadowSize', 
-        'shadowAnchor',
-        'popupAnchor'
-    ];
-    var default_icon = L.Icon.Default.prototype.options;
-    if (_options.iconUrl) {
-        // arrays are strings, unfortunately...
-        for (var i = 0, len = iconArrays.length; i < len; i++) {
-            var option_name = iconArrays[i];
-            var option = _options[ option_name ];
-            // convert "1,2" to [1, 2];
-            if (option) {
-                var arr = option.join('').split(',');
-                // array.map for ie<9
-                for (var j = 0, lenJ = arr.length; j < lenJ; j++) {
-                    arr[j] = Number(arr[j]);
-                }
-                _options[ option_name ] = arr;
-            }
-        }
-        // default popupAnchor
-        if (!_options.popupAnchor) {
-            // set (roughly) to size of icon
-            _options.popupAnchor = (function (i_size) {
-                // copy array
-                i_size = i_size.slice();
-                
-                // inverse coordinates
-                i_size[0] = 0;
-                i_size[1] *= -1;
-                // bottom position on popup is 7px
-                i_size[1] -= 3;
-                return i_size;
-            })(_options.iconSize || default_icon.iconSize);
-        }
-        _options.icon = new L.Icon( _options );
-    }
-    return _options;
-})();
+var marker_options = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
 var marker = <?php echo $default_marker; ?>(
     [<?php echo $lat . ',' . $lng; ?>], 
     marker_options

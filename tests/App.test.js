@@ -69,4 +69,47 @@ describe('WPLeafletMapPlugin', () => {
       ).toBe(`Email: ${email}`);
     });
   });
+
+  describe('getIconOptions()', () => {
+    window.L = {
+      Icon: jest.fn(),
+    };
+    window.L.Icon.Default = {
+      prototype: {
+        options: {
+          iconSize: [10, 10],
+        },
+      },
+    };
+    it('works with no inputs', () => {
+      expect(plugin.getIconOptions()).toEqual(
+        expect.objectContaining({
+          popupAnchor: expect.arrayContaining([0, -13]),
+        })
+      );
+    });
+
+    it('calls L.Icon if iconUrl passed', () => {
+      const options = plugin.getIconOptions({
+        iconUrl: 'gravy',
+      });
+      expect(L.Icon).toHaveBeenCalled();
+      expect(options).toEqual(
+        expect.objectContaining({
+          icon: expect.anything(),
+        })
+      );
+    });
+
+    it('transforms csv into arrays', () => {
+      const options = plugin.getIconOptions({
+        popupAnchor: '11,22',
+      });
+      expect(options).toEqual(
+        expect.objectContaining({
+          popupAnchor: [11, 22],
+        })
+      );
+    });
+  });
 });
