@@ -360,6 +360,7 @@
         'shadowSize',
         'shadowAnchor',
         'popupAnchor',
+        'tooltipAnchor',
       ];
       var default_icon = L.Icon.Default.prototype.options;
       // arrays are strings, unfortunately...

@@ -194,6 +194,7 @@ Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` s
 | `shadowsize`                 | Set the size of the shadow: e.g. "80,50" for 80px width 50px height                        |
 | `shadowanchor`               | Set the anchor position of the shadow: e.g. "40,60" for 40px left 60px top                 |
 | `popupanchor`                | Set the anchor position of the popup: e.g. "40,60" for 40px left 60px top                  |
+| `tooltipanchor`              | Set the anchor position of the tooltip: e.g. "40,60" for 40px left 60px top                |
 | `svg`                        | Boolean for whether the marker should be created as an svg: default `false`                |
 | `background`                 | Background color for an SVG marker (above)                                                 |
 | `color`                      | color of the SVG marker (above)                                                            |
@@ -332,7 +333,7 @@ function fs_leaflet_loaded() {
 
     // iterate any of these arrays: `maps`, `markers`, `lines`, `circles`, `geojsons`
     var maps = window.WPLeafletMapPlugin.maps;
-    
+
     // Note: `markergroups` is an *object*. If you'd like to iterate it, you can do it like this:
     // var markergroups = window.WPLeafletMapPlugin.markergroups;
     // var keys = Object.keys(markergroups);
