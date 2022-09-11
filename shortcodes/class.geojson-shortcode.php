@@ -108,7 +108,9 @@ var rewrite_keys = {
     fill : 'fillColor',
     'fill-opacity' : 'fillOpacity',
 };
-var layer = L.ajaxGeoJson(src, {
+// htmlspecialchars converts & to "&amp;"; maybe unnecessarily, and maybe 3x
+var ampersandRegex = /&(?:amp;){1,3}/g
+var layer = L.ajaxGeoJson(src.replace(ampersandRegex, '&'), {
     type: '<?php echo $this->type; ?>',
     style : layerStyle,
     onEachFeature : onEachFeature,

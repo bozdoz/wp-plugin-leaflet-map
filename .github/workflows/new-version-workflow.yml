@@ -37,8 +37,9 @@ jobs:
           cd trunk/scripts
           rm -f *.min.js
           for file in *.js; do 
-          minify $file > $(basename $file .js).min.js; 
+          minify $file > $(basename $file .js).min.js;
           done
+          sed -e "s/{{VERSION}}/${TAG}/g" construct-leaflet-map.min.js;
       - run: |
           cd /repo
           # add all svn
