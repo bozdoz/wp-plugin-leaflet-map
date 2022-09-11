@@ -39,7 +39,7 @@ jobs:
           for file in *.js; do 
           minify $file > $(basename $file .js).min.js;
           done
-          sed -e "s/{{VERSION}}/${TAG}/g" construct-leaflet-map.min.js;
+          sed -i "s/{{VERSION}}/${TAG}/g" construct-leaflet-map.min.js;
       - run: |
           cd /repo
           # add all svn
