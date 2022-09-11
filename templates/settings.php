@@ -82,9 +82,9 @@ if (isset($_POST['submit']) && verify_nonce()) {
 ?>
 
 <p><?php echo $description; ?></p>
-<h3>Found an issue?</h3>
-<p>Post it to <b>WordPress Support</b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
-<p>Add an issue on <b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
+<h3><?php _e('Found an issue?', 'leaflet-map') ?></h3>
+<p><?php _e('Post it to ', 'leaflet-map') ?><b><?php _e('WordPress Support', 'leaflet-map') ?></b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
+<p><?php _e('Add an issue on ', 'leaflet-map') ?><b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
 
 <div class="wrap">
     <div class="wrap">
@@ -142,7 +142,7 @@ if (isset($_POST['submit']) && verify_nonce()) {
     </form>
 
     <div>
-        <p>Leaf icon provided by <a href="https://fontawesome.com/" target="_blank">Font Awesome</a>, under their free license.</p>
+        <p><?php _e('Leaf icon provided by ', 'leaflet-map') ?><a href="https://fontawesome.com/" target="_blank">Font Awesome</a><?php _e( ', under their free license.', 'leaflet-map' ) ?></p>
     </div>
 
     </div>

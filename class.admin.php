@@ -81,8 +81,8 @@ class Leaflet_Map_Admin
         }
 
         add_menu_page("Leaflet Map", "Leaflet Map", $author, $main_link, $main_page, $leaf);
-        add_submenu_page("leaflet-map", "Settings", "Settings", $admin, "leaflet-map", array($this, "settings_page"));
-        add_submenu_page("leaflet-map", "Shortcode Helper", "Shortcode Helper", $author, "leaflet-shortcode-helper", array($this, "shortcode_page"));
+        add_submenu_page("leaflet-map", __('Settings', 'leaflet-map'), __('Settings', 'leaflet-map'), $admin, "leaflet-map", array($this, "settings_page"));
+        add_submenu_page("leaflet-map", __('Shortcode helper', 'leaflet-map'), __('Shortcode helper', 'leaflet-map'), $author, "leaflet-shortcode-helper", array($this, "shortcode_page"));
     }
 
     /**
