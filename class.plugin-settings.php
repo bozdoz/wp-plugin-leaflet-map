@@ -231,7 +231,7 @@ class Leaflet_Map_Plugin_Settings
                 'type' => 'text',
                 'helptext' => sprintf(
                     '%1$s %2$s <br/> <code>[leaflet-map subdomains="1234"]</code>',
-                    __('Some maps get tiles from multiple servers with subdomains such as a,b,c,d or 1,2,3,4', 'leaflet-map'),
+                    __('Some maps get tiles from multiple servers with subdomains such as a,b,c or 1,2,3 or cache1,cache2; pass a string where each char is its own subdomain, or pass comma-separated string', 'leaflet-map'),
                     $foreachmap
                 )
             ),
