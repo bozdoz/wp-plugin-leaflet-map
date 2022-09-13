@@ -202,7 +202,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
         $tile_layer_options = $this->LM->filter_null($tile_layer_options);
 
-        if (strpos($tile_layer_options['subdomains'], ',') !== false) {
+        if (isset($tile_layer_options['subdomains']) && strpos($tile_layer_options['subdomains'], ',') !== false) {
             // subdomains can be comma-separated
             $tile_layer_options['subdomains'] = explode(',', $tile_layer_options['subdomains']);
         }
