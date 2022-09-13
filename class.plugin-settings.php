@@ -179,7 +179,7 @@ class Leaflet_Map_Plugin_Settings
             ),
             'default_max_zoom' => array(
                 'display_name'=>__('Default Max Zoom', 'leaflet-map'),
-                'default' => '20',
+                'default' => '19',
                 'type' => 'number',
                 'helptext' => sprintf(
                     '%1$s %2%s <br /> <code>%3$s</code>', 
