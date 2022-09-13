@@ -405,6 +405,7 @@
     this.polygons = [];
     this.circles = [];
     this.geojsons = [];
+    this.overlays = [];
   }
 
   /**
