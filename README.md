@@ -33,6 +33,8 @@ Add a map generated with [LeafletJS](http://leafletjs.com/): an open-source Java
     - [[leaflet-kml]](#leaflet-kml)
     - [[leaflet-gpx]](#leaflet-gpx)
     - [[leaflet-scale]](#leaflet-scale)
+    - [[leaflet-image-overlay]](#leaflet-image-overlay)
+    - [[leaflet-video-overlay]](#leaflet-video-overlay)
   - [Frequently Asked Questions](#frequently-asked-questions)
     - [How Can I Add another Leaflet Plugin?](#how-can-i-add-another-leaflet-plugin)
   - [Contributing](#contributing)
@@ -299,6 +301,35 @@ Can be added after any map, or enabled for all maps in the admin. If you want to
 | `updateWhenIdle` | 0 (false) |
 | `position`       | topright  |
 
+### [leaflet-image-overlay]
+
+```
+[leaflet-image-overlay src="https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg" bounds="40.799311,-74.118464;40.68202047785919,-74.33"]
+```
+
+#### [leaflet-image-overlay] Options
+
+| Option            | Usage                                                                         |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `src`             | Source of the image file                                                      |
+| `bounds`          | coordinates for south-west, and north-east coordinates                        |
+| `interactive`     | triggers mouse events (not recommended)                                       |
+| `opacity`         | 0 - 1 for opaciity of the image                                               |
+| `alt`             | alt attribute for the image                                                   |
+| `crossOrigin`     | Whether the crossOrigin attribute will be added to the image                  |
+| `errorOverlayUrl` | URL to the overlay image to show in place of the overlay that failed to load. |
+| `zIndex`          | The explicit zIndex of the overlay layer                                      |
+| `className`       | The className attribute for the image                                         |
+| `attribution`     | String to be shown in the attribution control                                 |
+
+### [leaflet-video-overlay]
+
+Same options as [leaflet-image-overlay]
+
+```
+[leaflet-video-overlay src="https://www.mapbox.com/bites/00188/patricia_nasa.webm" bounds="32,-130;13,-100"]
+```
+
 ## Frequently Asked Questions
 
 ### How Can I Add another Leaflet Plugin?
@@ -332,7 +363,7 @@ function fs_leaflet_loaded() {
 
     // iterate any of these arrays: `maps`, `markers`, `lines`, `circles`, `geojsons`
     var maps = window.WPLeafletMapPlugin.maps;
-    
+
     // Note: `markergroups` is an *object*. If you'd like to iterate it, you can do it like this:
     // var markergroups = window.WPLeafletMapPlugin.markergroups;
     // var keys = Object.keys(markergroups);

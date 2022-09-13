@@ -70,9 +70,13 @@ class Leaflet_Map
             'file' => 'class.scale-shortcode.php',
             'class' => 'Leaflet_Scale_Shortcode'
         ),
-        'leaflet-overlay' => array(
-            'file' => 'class.overlay-shortcode.php',
-            'class' => 'Leaflet_Overlay_Shortcode'
+        'leaflet-image-overlay' => array(
+            'file' => 'class.image-overlay-shortcode.php',
+            'class' => 'Leaflet_Image_Overlay_Shortcode'
+        ),
+        'leaflet-video-overlay' => array(
+            'file' => 'class.video-overlay-shortcode.php',
+            'class' => 'Leaflet_Video_Overlay_Shortcode'
         ),
     );
 
@@ -460,7 +464,7 @@ class Leaflet_Map
      * Filter all floats to remove commas, force decimals, and validate float
      * see: https://wordpress.org/support/topic/all-maps-are-gone/page/3/#post-14625548
      */
-    public static function filter_float ($flt) {
+    public function filter_float ($flt) {
         // make sure the value actually is a float
         $out = filter_var($flt, FILTER_VALIDATE_FLOAT);
         
@@ -468,5 +472,33 @@ class Leaflet_Map
         $out = str_replace(',', '.', $out);
         
         return $out;
+    }
+
+    /**
+     * Bounds are given as "50, -114; 52, -112"
+     * Converted to 2d-array: [[50, -114], [52, -112]]
+     */
+    public function convert_bounds_str_to_arr ($bounds) {
+        if (isset($bounds)) {
+            try {
+                // explode by semi-colons and commas
+                $arr = preg_split("[;|,]", $bounds);
+
+                return array(
+                    array(
+                        $this->filter_float($arr[0]), 
+                        $this->filter_float($arr[1])
+                    ),
+                    array(
+                        $this->filter_float($arr[2]), 
+                        $this->filter_float($arr[3])
+                    )
+                );
+            } catch (Exception $e) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

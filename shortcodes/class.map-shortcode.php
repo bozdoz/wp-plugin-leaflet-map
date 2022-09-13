@@ -100,26 +100,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
         $atts['width'] .= is_numeric($atts['width']) ? 'px' : '';   
 
-        // maxbounds as string: maxbounds="50, -114; 52, -112"
-        $maxBounds = isset($maxbounds) ? $maxbounds : null;
-
-        if ($maxBounds) {
-            try {
-                // explode by semi-colons and commas
-                $maxBounds = preg_split("[;|,]", $maxBounds);
-                $maxBounds = array(
-                    array(
-                        $maxBounds[0], $maxBounds[1]
-                    ),
-                    array(
-                        $maxBounds[2], $maxBounds[3]
-                    )
-                );
-            } catch (Exception $e) {
-                $maxBounds = null;
-            }
-        }
-
         /* 
         need to allow 0 or empty for removal of attribution 
         */
@@ -186,10 +166,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         // update atts too
         $atts['minZoom'] = $zoom_options['minZoom'];
         $atts['maxZoom'] = $zoom_options['maxZoom'];
-
-        if ($maxBounds) {
-            $map_options['maxBounds'] = $maxBounds;
-        }
+        $map_options['maxBounds'] = isset($maxbounds) ? $this->LM->convert_bounds_str_to_arr($maxbounds) : null;
 
         // custom field for moving to javascript
         // filter out any unwanted HTML tags (including img)

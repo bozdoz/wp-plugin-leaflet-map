@@ -18,6 +18,11 @@
         stroke-dashoffset: -1000;
       }
     }
+
+    /* wordpress messes up video tags */ 
+    video {
+        max-width: inherit;
+    }
 </style>
 
 <div class="wrap">
@@ -123,7 +128,15 @@
                 __("Image Map", 'leaflet-map') => array(
                     '[leaflet-image zoom=1 zoomcontrol scrollwheel !attribution]',
                     '[leaflet-marker draggable]'
-                    ),
+                ),
+                __("Image Overlay Map", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-image-overlay]',
+                ),
+                __("Video Overlay Map", 'leaflet-map') => array(
+                    '[leaflet-map fitbounds]',
+                    '[leaflet-video-overlay]',
+                ),
                 );
 
             foreach ($examples as $title => $collection) {
