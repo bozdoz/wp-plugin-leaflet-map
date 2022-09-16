@@ -85,7 +85,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
             'iconUrl' => isset($iconurl) ? $iconurl : null,
             'iconSize' => isset($iconsize) ? $iconsize : null,
             'iconAnchor' => isset($iconanchor) ? $iconanchor : null,
-            'popupAnchor' => isset($popupanchor) ? $popupanchor : null
+            'popupAnchor' => isset($popupanchor) ? $popupanchor : null,
             'tooltipAnchor' => isset($tooltipanchor) ? $tooltipanchor : null
         );
 
