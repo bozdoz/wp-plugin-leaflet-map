@@ -85,7 +85,8 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
             'iconUrl' => isset($iconurl) ? $iconurl : null,
             'iconSize' => isset($iconsize) ? $iconsize : null,
             'iconAnchor' => isset($iconanchor) ? $iconanchor : null,
-            'popupAnchor' => isset($popupanchor) ? $popupanchor : null
+            'popupAnchor' => isset($popupanchor) ? $popupanchor : null,
+            'tooltipAnchor' => isset($tooltipanchor) ? $tooltipanchor : null
         );
 
         $args = array(
@@ -93,6 +94,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
             'iconSize' => FILTER_SANITIZE_STRING,
             'iconAnchor' => FILTER_SANITIZE_STRING,
             'popupAnchor' => FILTER_SANITIZE_STRING,
+            'tooltipAnchor' => FILTER_SANITIZE_STRING,
         );
 
         $options = $this->LM->json_sanitize($options, $args);

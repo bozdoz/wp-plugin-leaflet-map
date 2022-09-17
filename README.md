@@ -196,6 +196,7 @@ Add a marker to any map by adding `[leaflet-marker]` after any `[leaflet-map]` s
 | `shadowsize`                 | Set the size of the shadow: e.g. "80,50" for 80px width 50px height                        |
 | `shadowanchor`               | Set the anchor position of the shadow: e.g. "40,60" for 40px left 60px top                 |
 | `popupanchor`                | Set the anchor position of the popup: e.g. "40,60" for 40px left 60px top                  |
+| `tooltipanchor`              | Set the anchor position of the tooltip: e.g. "40,60" for 40px left 60px top                |
 | `svg`                        | Boolean for whether the marker should be created as an svg: default `false`                |
 | `background`                 | Background color for an SVG marker (above)                                                 |
 | `color`                      | color of the SVG marker (above)                                                            |
@@ -276,6 +277,7 @@ Or you can add a geojson shape via a url:
 | `iconsize`       | Set the size of the icon: e.g. "80,50" for 80px width 50px height                                |
 | `iconanchor`     | Set the anchor position of the icon: e.g. "40,60" for 40px left 60px top                         |
 | `popupanchor`    | Set the anchor position of the popup: e.g. "40,60" for 40px left 60px top                        |
+| `tooltipanchor`  | Set the anchor position of the tooltip: e.g. "40,60" for 40px left 60px top                      |
 
 Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path. Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
