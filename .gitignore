@@ -8,3 +8,5 @@ plugins/
 scripts/*.min.js
 
 .env
+
+.vscode/
