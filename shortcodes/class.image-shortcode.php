@@ -34,6 +34,9 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
     {
         extract($this->getAtts($atts));
 
+        $x = empty($x) ? 0 : $this->LM->filter_float($x);
+        $y = empty($y) ? 0 : $this->LM->filter_float($y);
+
         /* only required field for image map (src/source) */
         $src = empty($src) ? '' : $src;
         $source = empty($source) ? 'https://picsum.photos/1000/1000/' : $source;
@@ -48,7 +51,7 @@ var options = L.Util.extend({}, {
 var image_src = '<?php echo htmlspecialchars($source, ENT_QUOTES); ?>';
 var img = new Image();
 var zoom = <?php echo $zoom; ?>;
-var map = window.WPLeafletMapPlugin.createImageMap(options).setView([<?php echo (int)$lat ? $lat : '0' ?>, <?php echo (int)$lng ? $lng : '0'?>], zoom);
+var map = window.WPLeafletMapPlugin.createImageMap(options).setView([<?php echo $x; ?>, <?php echo $y; ?>], zoom);
 img.onload = function() {
     var h = img.height,
         w = img.width,

@@ -168,6 +168,8 @@ Then in the console, check the coordinates when you move the marker (should only
 | `min_zoom`        | 0                                |
 | `max_zoom`        | 20                               |
 | `attribution`     | ©Leaflet ©OpenStreetMap          |
+| `x`               | 0                                |
+| `y`               | 0                                |
 
 ---
 
@@ -332,7 +334,7 @@ function fs_leaflet_loaded() {
 
     // iterate any of these arrays: `maps`, `markers`, `lines`, `circles`, `geojsons`
     var maps = window.WPLeafletMapPlugin.maps;
-    
+
     // Note: `markergroups` is an *object*. If you'd like to iterate it, you can do it like this:
     // var markergroups = window.WPLeafletMapPlugin.markergroups;
     // var keys = Object.keys(markergroups);
