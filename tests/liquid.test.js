@@ -45,6 +45,19 @@ describe('liquid', () => {
     expect(output).toEqual(str);
   });
 
+  it('does not parse when bar is missing whitespace', () => {
+    const str = '{ test|isBoolean }';
+
+    const output = plugin.liquid(str, observer);
+
+    expect(observer).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.not.objectContaining({
+        isBoolean: true,
+      })
+    );
+  });
+
   it('accepts multiple filters', () => {
     const str = '{ test | default: yolo | substr: 0,4 | lowercase }';
 
@@ -57,6 +70,19 @@ describe('liquid', () => {
         default: 'yolo',
         substr: '0,4',
         lowercase: true,
+      })
+    );
+  });
+
+  it('does not have key as a filter', () => {
+    const str = '{ key | key: not key }';
+
+    plugin.liquid(str, observer);
+
+    expect(observer).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        key: 'key',
       })
     );
   });
