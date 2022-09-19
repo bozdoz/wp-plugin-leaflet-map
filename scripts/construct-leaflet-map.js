@@ -200,8 +200,11 @@
       return output;
     };
 
-    var liquidRe = /{ *(.*?) *}/g;
-
+    /**
+     * Trim whitespace
+     * @param {string} a
+     * @returns string
+     */
     function trim(a) {
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
     }
@@ -236,9 +239,7 @@
         var att = trim(attributions[i]);
 
         // add liquid-style attribution: {WP | link: https://wordpress.com}
-        att = att.replace(liquidRe, function (match, key) {
-          var obj = liquid(key);
-
+        att = liquid(att, function (match, obj) {
           if (obj.link) {
             return makeStringLink({
               href: obj.link,
@@ -272,8 +273,8 @@
         return str;
       }
 
-      return str.replace(liquidRe, function (match, key) {
-        var obj = liquid(key);
+      // @since 2.21.0 allow for a `default` filter for missing properties
+      return liquid(str, function (match, obj) {
         var value = parseKey(data, obj.key);
         if (value == null) {
           return obj.default || match;
@@ -330,32 +331,41 @@
       return value;
     }
 
+    var liquidRe = /{+ *(.*?) *}+/g;
+
     /**
      * parses liquid tags from a string
      *
      * @param {string} str
      */
-    function liquid(str) {
-      var tags = str.split(' | ');
-      var obj = {};
+    function liquid(str, callback) {
+      return str.replace(liquidRe, function (match, group) {
+        /** @type string[] */
+        var tags = group.split(' | ');
+        var obj = {};
 
-      // removes initial variable from array
-      var key = tags.shift();
+        // removes initial variable from array
+        var filter = tags.shift();
 
-      for (var i = 0, len = tags.length; i < len; i++) {
-        var tag = tags[i];
-        var delimiter = tag.indexOf(':');
-        var tagName = trim(tag.slice(0, delimiter));
-        var tagValue = trim(tag.slice(delimiter + 1)) || true;
+        for (var i = 0, len = tags.length; i < len; i++) {
+          var tag = tags[i];
+          var delimiter = tag.indexOf(':');
+          var tagName = trim(delimiter === -1 ? tag : tag.slice(0, delimiter));
+          var tagValue =
+            delimiter === -1 ? true : trim(tag.slice(delimiter + 1));
 
-        obj[tagName] = tagValue;
-      }
+          obj[tagName] = tagValue;
+        }
 
-      // always preserve the original string
-      obj.key = key;
+        // always preserve the original string
+        obj.key = filter;
 
-      return obj;
+        return callback(match, obj);
+      });
     }
+
+    // export for tests
+    this.liquid = liquid;
 
     function waitFor(prop, cb) {
       if (typeof L !== 'undefined' && typeof L[prop] !== 'undefined') {
