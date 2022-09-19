@@ -200,8 +200,24 @@
       return output;
     };
 
+    var liquidRe = /{ *(.*?) *}/g;
+
     function trim(a) {
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
+    }
+
+    /**
+     * Gets string of anchor for Leaflet's consumption
+     * @param {Record<'href' | 'textContent', string>} atts
+     */
+    function makeStringLink(atts) {
+      const a = document.createElement('a');
+      a.href = atts.href;
+      a.textContent = atts.textContent;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+
+      return a.outerHTML;
     }
 
     function addAttributionToMap(attribution, map) {
@@ -218,6 +234,21 @@
 
       for (var i = 0, len = attributions.length; i < len; i++) {
         var att = trim(attributions[i]);
+
+        // add liquid-style attribution: {WP | link: https://wordpress.com}
+        att = att.replace(liquidRe, function (match, key) {
+          var obj = liquid(key);
+
+          if (obj.link) {
+            return makeStringLink({
+              href: obj.link,
+              textContent: obj.key,
+            });
+          }
+
+          return match;
+        });
+
         attControl.addAttribution(att);
       }
     }
@@ -227,8 +258,6 @@
       div.innerHTML = str;
       return div.innerText || str;
     });
-
-    var templateRe = /\{ *(.*?) *\}/g;
 
     /**
      * It interpolates variables in curly brackets (regex above)
@@ -243,7 +272,7 @@
         return str;
       }
 
-      return str.replace(templateRe, function (match, key) {
+      return str.replace(liquidRe, function (match, key) {
         var obj = liquid(key);
         var value = parseKey(data, obj.key);
         if (value == null) {
@@ -314,9 +343,10 @@
       var key = tags.shift();
 
       for (var i = 0, len = tags.length; i < len; i++) {
-        var tag = tags[i].split(': ');
-        var tagName = tag.shift();
-        var tagValue = tag.join(': ') || true;
+        var tag = tags[i];
+        var delimiter = tag.indexOf(':');
+        var tagName = trim(tag.slice(0, delimiter));
+        var tagValue = trim(tag.slice(delimiter + 1)) || true;
 
         obj[tagName] = tagValue;
       }
