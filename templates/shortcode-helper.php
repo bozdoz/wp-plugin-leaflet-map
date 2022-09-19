@@ -39,9 +39,18 @@
         <div class="wrap">
             <hr>
             <h2><?php _e('Interactive Shortcodes:', 'leaflet-map'); ?></h2>
-            <p class="description"><?php _e('Move the map and the marker to generate shortcodes below:', 'leaflet-map'); ?></p>
-            <div class="flex"><label class="h3" for="map-shortcode"><?php _e('Map Shortcode', 'leaflet-map'); ?></label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
-            <div class="flex"><label class="h3" for="marker-shortcode"><?php _e('Marker Shortcode', 'leaflet-map'); ?></label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
+            <p class="description">
+                <?php _e('Move the map and the marker to generate shortcodes below:', 'leaflet-map'); ?>
+            </p>
+            <div class="flex">
+                <label class="h3" for="map-shortcode"><?php _e('Map Shortcode', 'leaflet-map'); ?></label> 
+                <input type="text" id="map-shortcode" />
+            </div>
+            <div class="flex">
+                <label class="h3" for="marker-shortcode"><?php _e('Marker Shortcode', 'leaflet-map'); ?></label> 
+                <input type="text" id="marker-shortcode" />
+            </div>
+            <button id="leaflet-map-reset-shortcodes" type="button">Reset Shortcodes</button>
             <hr>
             <h2><?php _e('Examples', 'leaflet-map'); ?>:</h2>
             <div class="examples">
