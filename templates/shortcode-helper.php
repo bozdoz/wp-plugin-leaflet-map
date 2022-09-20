@@ -50,7 +50,7 @@
                 <label class="h3" for="marker-shortcode"><?php _e('Marker Shortcode', 'leaflet-map'); ?></label> 
                 <input type="text" id="marker-shortcode" />
             </div>
-            <button id="leaflet-map-reset-shortcodes" type="button">Reset Shortcodes</button>
+            <button id="leaflet-map-reset-shortcodes" type="button"><?php _e('Reset Shortcodes', 'leaflet-map'); ?></button>
             <hr>
             <h2><?php _e('Examples', 'leaflet-map'); ?>:</h2>
             <div class="examples">
