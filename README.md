@@ -221,7 +221,7 @@ Add a popup to the line by adding text to the content of the shortcode:
 | `addresses`, `latlngs`, or `coordinates` | For geocoded addresses, latitude/longitude, or x/y coordinates for Image Maps; ex: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]` |
 | `fitbounds`                              | Fit the map to the bounds of the line (instead of whatever center you gave the map originally)                                                                                             |
 
-And the following Shape Options. See https://leafletjs.com/reference-1.3.4.html#path for details.
+And the following Shape Options. See https://leafletjs.com/reference.html#path for details.
 'stroke', 'color', 'weight', 'opacity',
 'lineCap', 'lineJoin', 'dashArray', 'dashOffset'
 'fill', 'fillColor', 'fillOpacity', 'fillRule', 'className'
@@ -248,7 +248,7 @@ Add a circle to the map by adding `[leaflet-circle]`. You can specify the positi
 | `fitbounds`                    | Fit the map to the bounds of the circle (instead of whatever center you gave the map originally)                                                                                              |
 | radius                         | Radius of the circle in meters                                                                                                                                                                |
 
-Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path
+Includes all style options: See https://leafletjs.com/reference.html#path
 
 ---
 
@@ -279,7 +279,7 @@ Or you can add a geojson shape via a url:
 | `popupanchor`    | Set the anchor position of the popup: e.g. "40,60" for 40px left 60px top                        |
 | `tooltipanchor`  | Set the anchor position of the tooltip: e.g. "40,60" for 40px left 60px top                      |
 
-Includes all style options: See https://leafletjs.com/reference-1.3.4.html#path. Also, if you want to add feature
+Includes all style options: See https://leafletjs.com/reference.html#path. Also, if you want to add feature
 properties to the popups, use the inner content and curly brackets to substitute the values:
 `[leaflet-geojson]Field A = {field_a}[/leaflet-geojson]`.
 
