@@ -264,8 +264,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $settings = Leaflet_Map_Plugin_Settings::init();
 
         // map uses lat/lng
-        $lat = empty($lat) ? $settings->get('default_lat') : $lat;
-        $lng = empty($lng) ? $settings->get('default_lng') : $lng;
+        $lat = isset($lat) ? $lat : $settings->get('default_lat');
+        $lng = isset($lng) ? $lng : $settings->get('default_lng');
 
         // validate lat/lng
         $lat = $this->LM->filter_float($lat);
