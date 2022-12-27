@@ -65,6 +65,9 @@ class Leaflet_Map_Plugin_Option
             'display_name'     =>     FILTER_SANITIZE_STRING,
             'default'          =>     null,
             'type'             =>     FILTER_SANITIZE_STRING,
+            'min'              =>     "",
+            'max'              =>     "",
+            'step'             =>     "",
             'options'          =>     array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags'  => FILTER_FORCE_ARRAY
