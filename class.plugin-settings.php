@@ -101,6 +101,9 @@ class Leaflet_Map_Plugin_Settings
                 'display_name'=>__('Default Zoom', 'leaflet-map'),
                 'default'=>'12',
                 'type' => 'number',
+				'min' => 0,
+				'max' => 20,
+				'step' => 1,
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map zoom="5"]</code>', 
                     __('Default zoom for maps.', 'leaflet-map'),
@@ -171,6 +174,9 @@ class Leaflet_Map_Plugin_Settings
                 'display_name'=>__('Default Min Zoom', 'leaflet-map'),
                 'default' => '0',
                 'type' => 'number',
+				'min' => 0,
+				'max' => 20,
+				'step' => 1,
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map min_zoom="1"]</code>', 
                     __('Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here.', 'leaflet-map'),
@@ -181,6 +187,9 @@ class Leaflet_Map_Plugin_Settings
                 'display_name'=>__('Default Max Zoom', 'leaflet-map'),
                 'default' => '19',
                 'type' => 'number',
+				'min' => 0,
+				'max' => 20,
+				'step' => 1,
                 'helptext' => sprintf(
                     '%1$s %2%s <br /> <code>%3$s</code>', 
                     __('Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here', 'leaflet-map'),

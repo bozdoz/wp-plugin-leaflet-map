@@ -114,7 +114,9 @@ class Leaflet_Map_Plugin_Option
             ?>
         <input 
             class="full-width" 
-            step="any"
+            min="<?php echo isset($this->min) ? $this->min : ""; ?>"
+            max="<?php echo isset($this->max) ? $this->max : ""; ?>"
+            step="<?php echo isset($this->step) ? $this->step : "any"; ?>"
             name="<?php echo $name; ?>" 
             type="<?php echo $this->type; ?>" 
             id="<?php echo $name; ?>" 
