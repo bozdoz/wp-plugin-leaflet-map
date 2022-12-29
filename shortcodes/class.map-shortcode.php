@@ -264,8 +264,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $settings = Leaflet_Map_Plugin_Settings::init();
 
         // map uses lat/lng
-        $lat = empty($lat) ? $settings->get('default_lat') : $lat;
-        $lng = empty($lng) ? $settings->get('default_lng') : $lng;
+        $lat = isset($lat) ? $lat : $settings->get('default_lat');
+        $lng = isset($lng) ? $lng : $settings->get('default_lng');
         
         // validate lat/lng
         $lat = $this->LM->filter_float($lat);
@@ -296,7 +296,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         /* should be iterated for multiple maps */
         ob_start(); 
         ?>/*<script>*/
-var baseUrl = '<?php echo filter_var($tileurl, FILTER_SANITIZE_URL); ?>';
+var baseUrl = atob('<?php echo base64_encode(filter_var($tileurl, FILTER_SANITIZE_URL)); ?>');
 var base = (!baseUrl && window.MQ) ? 
     window.MQ.mapLayer() : L.tileLayer(baseUrl, 
         L.Util.extend({}, {

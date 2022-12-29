@@ -6,7 +6,7 @@ Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 6.0.2
+Tested up to: 6.1
 Version: 3.0.5
 Stable tag: 3.0.5
 License: GPLv2
@@ -64,7 +64,7 @@ Add a link to the popup messages the same way you would add any other link with 
 
 Add a line to the map by adding `[leaflet-line]`. You can specify the postions with a list separated by semi-colon `;` or bar `|` using lat/lng: `[leaflet-line latlngs="41, 29; 44, 18"]` or addresses: `[leaflet-line addresses="Istanbul; Sarajevo"]`, or x/y coordinates for image maps.
 
-Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference-1.3.4.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
+Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
 Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so: 
 

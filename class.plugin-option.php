@@ -65,6 +65,9 @@ class Leaflet_Map_Plugin_Option
             'display_name'     =>     FILTER_SANITIZE_STRING,
             'default'          =>     null,
             'type'             =>     FILTER_SANITIZE_STRING,
+            'min'              =>     "",
+            'max'              =>     "",
+            'step'             =>     "",
             'options'          =>     array(
                 'filter' => FILTER_SANITIZE_STRING,
                 'flags'  => FILTER_FORCE_ARRAY
@@ -111,7 +114,9 @@ class Leaflet_Map_Plugin_Option
             ?>
         <input 
             class="full-width" 
-            step="any"
+            min="<?php echo isset($this->min) ? $this->min : ""; ?>"
+            max="<?php echo isset($this->max) ? $this->max : ""; ?>"
+            step="<?php echo isset($this->step) ? $this->step : "any"; ?>"
             name="<?php echo $name; ?>" 
             type="<?php echo $this->type; ?>" 
             id="<?php echo $name; ?>" 
