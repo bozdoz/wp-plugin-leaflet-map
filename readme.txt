@@ -6,7 +6,7 @@ Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 6.0.2
+Tested up to: 6.1
 Version: 3.0.5
 Stable tag: 3.0.5
 License: GPLv2

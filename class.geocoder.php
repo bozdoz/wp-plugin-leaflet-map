@@ -166,14 +166,13 @@ class Leaflet_Geocoder {
         $geocode_url .= $address;
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
-        
+
         if (isset($json[0]->lat) && isset($json[0]->lon)) {
             return (Object) array(
                 'lat' => $json[0]->lat,
                 'lng' => $json[0]->lon,
             );
         } else {
-            throw new Exception('No Address Found.');
             return false;
         }
     }
