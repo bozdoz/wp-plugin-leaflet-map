@@ -11,7 +11,7 @@
     function update_marker() {
       var latlng = marker_1.getLatLng();
       marker_input.value =
-        '[leaflet-marker lat=' + latlng.lat + ' lng=' + latlng.lng + ']'.__('My Marker', 'leaflet-map').'[/leaflet-marker]';
+        '[leaflet-marker lat=' + latlng.lat + ' lng=' + latlng.lng + ']';
     }
 
     function update_map() {
@@ -24,7 +24,7 @@
         latlng.lng +
         ' zoom=' +
         map_1.getZoom() +
-        ']'.__('My Marker', 'leaflet-map').'[/leaflet-marker]';
+        ']';
 
       // update marker if outside of bounds
       if (!bounds.contains(marker_1.getLatLng())) {

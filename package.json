@@ -1,7 +1,7 @@
 {
   "name": "wp-plugin-leaflet-map",
   "private": true,
-  "version": "3.0.5",
+  "version": "3.1.0",
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
     "start": "docker-compose up && exit 0",

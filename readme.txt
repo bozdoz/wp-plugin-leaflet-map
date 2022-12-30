@@ -2,13 +2,13 @@
 Author: bozdoz
 Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, remigr, gerital, sal0max, thibault-barrat
+Contributors: bozdoz, hupe13, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 6.1
-Version: 3.0.5
-Stable tag: 3.0.5
+Tested up to: 6.1.1
+Version: 3.1.0
+Stable tag: 3.1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -148,6 +148,16 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.1.0 =
+* Bumps leaflet default version to 1.9.3
+* Checks for `lat` and `lon` in osm_geocode with `isset`
+* Adds min, max, step to inputs for zoom, minZoom, and maxZoom
+* Obfuscates base tileurl with base64_encode in map-shortcode to deter crawlers
+* Adds `tooltipAnchor` to geojson and marker shortcodes
+* Default maxZoom is 19, down from 20
+* Allows for comma-separated tile server subdomains, as opposed to 'abc' turning into 'a','b','c' automatically (i.e. you can now use something like "cache-1,cache2" as default subdomains)
+* Adds new shortcodes: [leaflet-image-overlay] and [leaflet-video-overlay] (examples in the shortcode-helper page, or README.md)
 
 = 3.0.5 =
 * Fixes ampersands in geojson/gpx/kml urls
@@ -439,6 +449,13 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 3.1.0 =
+Reduces php warnings by checking for `lat` and `lon` in osm_geocode with `isset()`.
+Adds min, max, step to inputs for zoom, minZoom, and maxZoom.
+Obfuscates base tileurl with base64_encode in map-shortcode to deter crawlers.
+Allows for comma-separated tile server subdomains, as opposed to 'abc' turning into 'a','b','c' automatically (i.e. you can now use something like "cache-1,cache2" as default subdomains).
+New Shortcodes: [leaflet-image-overlay] and [leaflet-video-overlay] (examples in the shortcode-helper page, or README.md).
 
 = 3.0.5 =
 Fixes ampersands/querystrings in geojson/gpx/kml urls
