@@ -170,6 +170,8 @@ Then in the console, check the coordinates when you move the marker (should only
 | `min_zoom`        | 0                                |
 | `max_zoom`        | 20                               |
 | `attribution`     | ©Leaflet ©OpenStreetMap          |
+| `x`               | 0                                |
+| `y`               | 0                                |
 
 ---
 
