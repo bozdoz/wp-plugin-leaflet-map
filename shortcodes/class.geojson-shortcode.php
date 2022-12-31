@@ -91,10 +91,10 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         $args = array(
             'iconUrl' => FILTER_SANITIZE_URL,
-            'iconSize' => FILTER_SANITIZE_STRING,
-            'iconAnchor' => FILTER_SANITIZE_STRING,
-            'popupAnchor' => FILTER_SANITIZE_STRING,
-            'tooltipAnchor' => FILTER_SANITIZE_STRING,
+            'iconSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'iconAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'popupAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         );
 
         $options = $this->LM->json_sanitize($options, $args);

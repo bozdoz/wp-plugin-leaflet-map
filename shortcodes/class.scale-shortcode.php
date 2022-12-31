@@ -52,7 +52,7 @@ class Leaflet_Scale_Shortcode extends Leaflet_Shortcode
           'metric' => FILTER_VALIDATE_BOOLEAN,
           'imperial' => FILTER_VALIDATE_BOOLEAN,
           'updateWhenIdle' => FILTER_VALIDATE_BOOLEAN,
-          'position' => FILTER_SANITIZE_STRING
+          'position' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
         );
 
         $options = $this->LM->json_sanitize($options, $filters);
