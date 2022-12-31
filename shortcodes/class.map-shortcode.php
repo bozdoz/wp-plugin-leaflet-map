@@ -284,15 +284,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 
         $detect_retina = filter_var($detect_retina, FILTER_VALIDATE_BOOLEAN);
 
-        $tile_min_zoom = $minZoom;
-        $tile_max_zoom = $maxZoom;
-        
-        // fix #114 tilelayer zoom with detect_retina
-        if ($detect_retina && $minZoom == $maxZoom) {
-            $tile_min_zoom = 'undefined';
-            $tile_max_zoom = 'undefined';
-        }
-
         /* should be iterated for multiple maps */
         ob_start(); 
         ?>/*<script>*/
@@ -301,8 +292,6 @@ var base = (!baseUrl && window.MQ) ?
     window.MQ.mapLayer() : L.tileLayer(baseUrl, 
         L.Util.extend({}, {
             detectRetina: <?php echo $detect_retina ? '1' : '0'; ?>,
-            minZoom: <?php echo is_numeric($tile_min_zoom) ? $tile_min_zoom : '0'; ?>,
-            maxZoom: <?php echo is_numeric($tile_max_zoom) ? $tile_max_zoom : '20'; ?>,
         }, 
         <?php echo $tile_layer_options; ?>
         )
