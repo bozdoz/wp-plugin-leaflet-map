@@ -59,12 +59,12 @@ class Leaflet_Image_Overlay_Shortcode extends Leaflet_Shortcode
         $args = array(
             'interactive' => FILTER_VALIDATE_BOOLEAN,
             'opacity' => FILTER_VALIDATE_FLOAT,
-            'alt' => FILTER_SANITIZE_STRING,
-            'crossOrigin' => FILTER_SANITIZE_STRING,
-            'errorOverlayUrl' => FILTER_SANITIZE_STRING,
+            'alt' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'crossOrigin' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'errorOverlayUrl' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'zIndex' => FILTER_VALIDATE_INT,
-            'className' => FILTER_SANITIZE_STRING,
-            'attribution' => FILTER_SANITIZE_STRING,
+            'className' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'attribution' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'keepAspectRatio' => FILTER_VALIDATE_BOOLEAN
         );
 

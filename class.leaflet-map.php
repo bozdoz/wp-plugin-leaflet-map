@@ -334,18 +334,18 @@ class Leaflet_Map
 
         $args = array(
             'stroke' => FILTER_VALIDATE_BOOLEAN,
-            'color' => FILTER_SANITIZE_STRING,
+            'color' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'weight' => FILTER_VALIDATE_FLOAT,
             'opacity' => FILTER_VALIDATE_FLOAT,
-            'lineCap' => FILTER_SANITIZE_STRING,
-            'lineJoin' => FILTER_SANITIZE_STRING,
-            'dashArray' => FILTER_SANITIZE_STRING,
-            'dashOffset' => FILTER_SANITIZE_STRING,
+            'lineCap' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'lineJoin' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'dashArray' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'dashOffset' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'fill' => FILTER_VALIDATE_BOOLEAN,
-            'fillColor' => FILTER_SANITIZE_STRING,
+            'fillColor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'fillOpacity' => FILTER_VALIDATE_FLOAT,
-            'fillRule' => FILTER_SANITIZE_STRING,
-            'className' => FILTER_SANITIZE_STRING,
+            'fillRule' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'className' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'radius' => FILTER_VALIDATE_FLOAT
             );
 

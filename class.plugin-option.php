@@ -62,14 +62,14 @@ class Leaflet_Map_Plugin_Option
         }
 
         $option_filter = array(
-            'display_name'     =>     FILTER_SANITIZE_STRING,
+            'display_name'     =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'default'          =>     null,
-            'type'             =>     FILTER_SANITIZE_STRING,
+            'type'             =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'min'              =>     "",
             'max'              =>     "",
             'step'             =>     "",
             'options'          =>     array(
-                'filter' => FILTER_SANITIZE_STRING,
+                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
                 'flags'  => FILTER_FORCE_ARRAY
             ),
             'helptext'         =>     null

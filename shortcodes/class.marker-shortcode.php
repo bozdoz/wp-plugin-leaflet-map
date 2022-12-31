@@ -86,22 +86,22 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
 
         $args = array(
             'draggable' => FILTER_VALIDATE_BOOLEAN,
-            'title' => FILTER_SANITIZE_STRING,
-            'alt' => FILTER_SANITIZE_STRING,
+            'title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'alt' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'zIndexOffset' => FILTER_VALIDATE_INT,
             'opacity' => FILTER_VALIDATE_FLOAT,
             'iconUrl' => FILTER_SANITIZE_URL,
             'shadowUrl' => FILTER_SANITIZE_URL,
-            'iconSize' => FILTER_SANITIZE_STRING,
-            'iconAnchor' => FILTER_SANITIZE_STRING,
-            'shadowSize' => FILTER_SANITIZE_STRING,
-            'shadowAnchor' => FILTER_SANITIZE_STRING,
-            'popupAnchor' => FILTER_SANITIZE_STRING,
-            'tooltipAnchor' => FILTER_SANITIZE_STRING,
+            'iconSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'iconAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'shadowSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'shadowAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'popupAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'svg' => FILTER_VALIDATE_BOOLEAN,
-            'background' => FILTER_SANITIZE_STRING,
-            'iconClass' => FILTER_SANITIZE_STRING,
-            'color' => FILTER_SANITIZE_STRING
+            'background' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'iconClass' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'color' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
         );
 
         $options = $this->LM->json_sanitize($options, $args);
