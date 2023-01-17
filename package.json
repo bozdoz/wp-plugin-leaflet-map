@@ -9,7 +9,7 @@
     "destroy": "docker-compose down -v",
     "wordpress": "docker-compose run wordpress bash",
     "cli": "docker-compose run cli sh",
-    "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
+    "translate": "docker run --rm -it -v $(pwd):/var/www/html wordpress:cli wp i18n make-pot . languages/leaflet-map.pot --slug=leaflet-map",
     "test": "jest"
   },
   "repository": {

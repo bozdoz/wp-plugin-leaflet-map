@@ -1,383 +1,522 @@
-# Copyright (C) 2018 Leaflet Map
-# This file is distributed under the same license as the Leaflet Map package.
+# Copyright (C) 2022 bozdoz
+# This file is distributed under the same license as the Leaflet Map plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Leaflet Map 2.10.0\n"
+"Project-Id-Version: Leaflet Map 3.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/leaflet-map\n"
-"POT-Creation-Date: 2018-01-25 22:02:00+00:00\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-
-#: class.plugin-settings.php:54
-msgid "You can also change this for each map"
-msgstr ""
-
-#: class.plugin-settings.php:61
-msgid "Default Latitude"
-msgstr ""
-
-#: class.plugin-settings.php:65
-msgid "Default latitude for maps."
-msgstr ""
-
-#: class.plugin-settings.php:70
-msgid "Default Longitude"
-msgstr ""
-
-#: class.plugin-settings.php:74
-msgid "Default longitude for maps."
-msgstr ""
-
-#: class.plugin-settings.php:79
-msgid "Default Zoom"
-msgstr ""
-
-#: class.plugin-settings.php:83
-msgid "Default zoom for maps."
-msgstr ""
-
-#: class.plugin-settings.php:88
-msgid "Default Height"
-msgstr ""
-
-#: class.plugin-settings.php:92
-msgid ""
-"Default height for maps. Values can include \"px\" but it is not necessary. "
-"Can also be \"%\". "
-msgstr ""
-
-#: class.plugin-settings.php:97
-msgid "Default Width"
-msgstr ""
-
-#: class.plugin-settings.php:101
-msgid ""
-"Default width for maps. Values can include \"px\" but it is not necessary.  "
-"Can also be \"%\"."
-msgstr ""
-
-#: class.plugin-settings.php:106
-msgid "Fit Markers"
-msgstr ""
-
-#: class.plugin-settings.php:110
-msgid ""
-"If enabled, all markers on each map will alter the view of the map; i.e. the "
-"map will fit to the bounds of all of the markers on the map."
-msgstr ""
-
-#: class.plugin-settings.php:115
-msgid "Show Zoom Controls"
-msgstr ""
-
-#: class.plugin-settings.php:119
-msgid "The zoom buttons can be large and annoying."
-msgstr ""
-
-#: class.plugin-settings.php:124
-msgid "Scroll Wheel Zoom"
-msgstr ""
-
-#: class.plugin-settings.php:128
-msgid ""
-"Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll "
-"down the page, and not zoom the map."
-msgstr ""
-
-#: class.plugin-settings.php:133
-msgid "Double Click Zoom"
-msgstr ""
-
-#: class.plugin-settings.php:137
-msgid ""
-"If enabled, your maps will zoom with a double click.  By default it is "
-"disabled: If we're going to remove zoom controls and have scroll wheel zoom "
-"off by default, we might as well stick to our guns and not zoom the map."
-msgstr ""
-
-#: class.plugin-settings.php:142
-msgid "Default Min Zoom"
-msgstr ""
-
-#: class.plugin-settings.php:146
-msgid ""
-"Restrict the viewer from zooming in past the minimum zoom.  Can set per map "
-"in shortcode or adjust for all maps here."
-msgstr ""
-
-#: class.plugin-settings.php:151
-msgid "Default Max Zoom"
-msgstr ""
-
-#: class.plugin-settings.php:155
-msgid ""
-"Restrict the viewer from zooming out past the maximum zoom.  Can set per map "
-"in shortcode or adjust for all maps here"
-msgstr ""
-
-#: class.plugin-settings.php:161
-msgid "Default Tiling Service"
-msgstr ""
-
-#: class.plugin-settings.php:165
-msgid "I will provide my own map tile URL"
-msgstr ""
-
-#: class.plugin-settings.php:166
-msgid "MapQuest (I have an app key)"
-msgstr ""
-
-#: class.plugin-settings.php:168
-msgid "Choose a tiling service or provide your own."
-msgstr ""
-
-#: class.plugin-settings.php:171
-msgid "MapQuest App Key"
-msgstr ""
-
-#: class.plugin-settings.php:172
-msgid "Supply an app key if you choose MapQuest"
-msgstr ""
-
-#: class.plugin-settings.php:176
-msgid "If you choose MapQuest, you must provide an app key."
-msgstr ""
-
-#: class.plugin-settings.php:177
-msgid "Sign up"
-msgstr ""
-
-#: class.plugin-settings.php:178
-msgid "then"
-msgstr ""
-
-#: class.plugin-settings.php:179
-msgid "Create a new app"
-msgstr ""
-
-#: class.plugin-settings.php:180
-msgid "then supply the \"Consumer Key\" here."
-msgstr ""
-
-#: class.plugin-settings.php:184
-msgid "Map Tile URL"
-msgstr ""
-
-#: class.plugin-settings.php:188
-msgid "See more tile servers"
-msgstr ""
-
-#: class.plugin-settings.php:189
-msgid "here"
-msgstr ""
-
-#: class.plugin-settings.php:190
-msgid ""
-"Please note: free tiles from MapQuest have been discontinued without use of "
-"an app key"
-msgstr ""
-
-#: class.plugin-settings.php:191
-msgid "blog post"
-msgstr ""
-
-#: class.plugin-settings.php:196
-msgid "Map Tile URL Subdomains"
-msgstr ""
-
-#: class.plugin-settings.php:200
-msgid ""
-"Some maps get tiles from multiple servers with subdomains such as a,b,c,d or "
-"1,2,3,4"
-msgstr ""
-
-#: class.plugin-settings.php:205
-msgid "JavaScript URL"
-msgstr ""
-
-#: class.plugin-settings.php:208
-msgid "If you host your own Leaflet files, then paste the URL here."
-msgstr ""
-
-#: class.plugin-settings.php:211
-msgid "CSS URL"
-msgstr ""
-
-#: class.plugin-settings.php:214
-msgid "Same as above."
-msgstr ""
-
-#: class.plugin-settings.php:217
-msgid "Default Attribution"
-msgstr ""
-
-#: class.plugin-settings.php:219
-msgid "A JS library for interactive maps"
-msgstr ""
-
-#: class.plugin-settings.php:220
-msgid "contributors"
-msgstr ""
-
-#: class.plugin-settings.php:223
-msgid ""
-"Attribution to a custom tile url.  Use semi-colons (;) to separate multiple."
-msgstr ""
-
-#: class.plugin-settings.php:226
-msgid "Geocoder"
-msgstr ""
-
-#: class.plugin-settings.php:230
-msgid "Google Maps"
-msgstr ""
-
-#: class.plugin-settings.php:231
-msgid "OpenStreetMap Nominatim"
-msgstr ""
-
-#: class.plugin-settings.php:232
-msgid "Denmark Addresses"
-msgstr ""
-
-#: class.plugin-settings.php:234
-msgid ""
-"Select the Geocoding provider to use to retrieve addresses defined in "
-"shortcode."
-msgstr ""
-
-#. #-#-#-#-#  leaflet-map.pot (Leaflet Map 2.10.0)  #-#-#-#-#
-#. Description of the plugin/theme
-#: templates/settings.php:3
-msgid ""
-"A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map "
-"tile services and three free geocoders."
-msgstr ""
-
-#: templates/settings.php:26
-msgid "Options Updated!"
-msgstr ""
-
-#: templates/settings.php:33
-msgid "Options have been reset to default values!"
-msgstr ""
-
-#: templates/settings.php:41
-msgid "Location caches have been cleared!"
-msgstr ""
-
-#: templates/settings.php:50
-msgid "Settings"
-msgstr ""
-
-#: templates/settings.php:85
-msgid "Save Changes"
-msgstr ""
-
-#: templates/settings.php:90
-msgid "Reset to Defaults"
-msgstr ""
-
-#: templates/settings.php:95
-msgid "Clear Geocoder Cache"
-msgstr ""
-
-#: templates/shortcode-helper.php:17
-msgid "Drag Me"
-msgstr ""
-
-#: templates/shortcode-helper.php:26
-msgid "Interactive Shortcodes:"
-msgstr ""
-
-#: templates/shortcode-helper.php:27
-msgid "Move the map and the marker to generate shortcodes below:"
-msgstr ""
-
-#: templates/shortcode-helper.php:28
-msgid "Map Shortcode"
-msgstr ""
-
-#: templates/shortcode-helper.php:29
-msgid "Marker Shortcode"
-msgstr ""
-
-#: templates/shortcode-helper.php:31
-msgid "Examples"
-msgstr ""
-
-#: templates/shortcode-helper.php:35
-msgid "Standard"
-msgstr ""
-
-#: templates/shortcode-helper.php:38
-msgid "Many Markers!"
-msgstr ""
-
-#: templates/shortcode-helper.php:44
-msgid "Draggable Marker"
-msgstr ""
-
-#: templates/shortcode-helper.php:48
-msgid "Marker Icon"
-msgstr ""
-
-#: templates/shortcode-helper.php:52
-msgid "Zoom Buttons"
-msgstr ""
-
-#: templates/shortcode-helper.php:55
-msgid "Alternate Map Tiles w/scrollwheel"
-msgstr ""
-
-#: templates/shortcode-helper.php:58
-msgid "Marker Popup Messages (on click)"
-msgstr ""
-
-#: templates/shortcode-helper.php:62
-msgid "Links In Marker Messages (visible)"
-msgstr ""
-
-#: templates/shortcode-helper.php:66
-msgid "Basic Lines w/Scrollwheel"
-msgstr ""
-
-#: templates/shortcode-helper.php:70
-msgid "Fitted Colored Line on Addresses"
-msgstr ""
-
-#: templates/shortcode-helper.php:74
-msgid "More Crazy Line Attributes"
-msgstr ""
-
-#: templates/shortcode-helper.php:78
-msgid "Disable all Interaction"
-msgstr ""
-
-#: templates/shortcode-helper.php:81
-msgid "Add GeoJSON by URL (with popups)"
-msgstr ""
-
-#: templates/shortcode-helper.php:85
-msgid "Test Image Map"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
+"POT-Creation-Date: 2022-09-20T00:04:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: leaflet-map\n"
+
+#. Plugin Name of the plugin
 msgid "Leaflet Map"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
+#. Plugin URI of the plugin
 msgid "https://wordpress.org/plugins/leaflet-map/"
 msgstr ""
 
-#. Author of the plugin/theme
+#. Description of the plugin
+#: templates/settings.php:12
+msgid "A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders."
+msgstr ""
+
+#. Author of the plugin
 msgid "bozdoz"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://bozdoz.com"
+#. Author URI of the plugin
+msgid "https://bozdoz.com/"
+msgstr ""
+
+#: class.admin.php:84
+#: templates/settings.php:94
+msgid "Settings"
+msgstr ""
+
+#: class.admin.php:85
+msgid "Shortcode helper"
+msgstr ""
+
+#: class.plugin-settings.php:74
+msgid "You can also change this for each map"
+msgstr ""
+
+#: class.plugin-settings.php:81
+msgid "Default Latitude"
+msgstr ""
+
+#: class.plugin-settings.php:86
+msgid "Default latitude for maps."
+msgstr ""
+
+#: class.plugin-settings.php:91
+msgid "Default Longitude"
+msgstr ""
+
+#: class.plugin-settings.php:96
+msgid "Default longitude for maps."
+msgstr ""
+
+#: class.plugin-settings.php:101
+msgid "Default Zoom"
+msgstr ""
+
+#: class.plugin-settings.php:106
+msgid "Default zoom for maps."
+msgstr ""
+
+#: class.plugin-settings.php:111
+msgid "Default Height"
+msgstr ""
+
+#: class.plugin-settings.php:116
+msgid "Default height for maps. Values can include \"px\" but it is not necessary. Can also be \"%\". "
+msgstr ""
+
+#: class.plugin-settings.php:121
+msgid "Default Width"
+msgstr ""
+
+#: class.plugin-settings.php:126
+msgid "Default width for maps. Values can include \"px\" but it is not necessary.  Can also be \"%\"."
+msgstr ""
+
+#: class.plugin-settings.php:131
+msgid "Fit Bounds"
+msgstr ""
+
+#: class.plugin-settings.php:136
+msgid "If enabled, all markers on each map will alter the view of the map; i.e. the map will fit to the bounds of all of the markers on the map."
+msgstr ""
+
+#: class.plugin-settings.php:141
+msgid "Show Zoom Controls"
+msgstr ""
+
+#: class.plugin-settings.php:146
+msgid "The zoom buttons can be large and annoying."
+msgstr ""
+
+#: class.plugin-settings.php:151
+msgid "Scroll Wheel Zoom"
+msgstr ""
+
+#: class.plugin-settings.php:156
+msgid "Disable zoom with mouse scroll wheel.  Sometimes someone wants to scroll down the page, and not zoom the map."
+msgstr ""
+
+#: class.plugin-settings.php:161
+msgid "Double Click Zoom"
+msgstr ""
+
+#: class.plugin-settings.php:166
+msgid "If enabled, your maps will zoom with a double click.  By default it is disabled: If we're going to remove zoom controls and have scroll wheel zoom off by default, we might as well stick to our guns and not zoom the map."
+msgstr ""
+
+#: class.plugin-settings.php:171
+msgid "Default Min Zoom"
+msgstr ""
+
+#: class.plugin-settings.php:176
+msgid "Restrict the viewer from zooming in past the minimum zoom.  Can set per map in shortcode or adjust for all maps here."
+msgstr ""
+
+#: class.plugin-settings.php:181
+msgid "Default Max Zoom"
+msgstr ""
+
+#: class.plugin-settings.php:186
+msgid "Restrict the viewer from zooming out past the maximum zoom.  Can set per map in shortcode or adjust for all maps here"
+msgstr ""
+
+#: class.plugin-settings.php:192
+msgid "Default Tiling Service"
+msgstr ""
+
+#: class.plugin-settings.php:196
+msgid "I will provide my own map tile URL"
+msgstr ""
+
+#: class.plugin-settings.php:197
+msgid "MapQuest (I have an API key)"
+msgstr ""
+
+#: class.plugin-settings.php:199
+msgid "Choose a tiling service or provide your own."
+msgstr ""
+
+#: class.plugin-settings.php:202
+msgid "MapQuest API Key (optional)"
+msgstr ""
+
+#: class.plugin-settings.php:203
+msgid "Supply an API key if you choose MapQuest"
+msgstr ""
+
+#: class.plugin-settings.php:208
+msgid "If you choose MapQuest, you must provide an API key."
+msgstr ""
+
+#: class.plugin-settings.php:209
+msgid "Sign up"
+msgstr ""
+
+#: class.plugin-settings.php:210
+msgid "then"
+msgstr ""
+
+#: class.plugin-settings.php:211
+msgid "Create a new app"
+msgstr ""
+
+#: class.plugin-settings.php:212
+msgid "then supply the \"Consumer Key\" here."
+msgstr ""
+
+#: class.plugin-settings.php:216
+msgid "Map Tile URL"
+msgstr ""
+
+#: class.plugin-settings.php:221
+msgid "See more tile servers"
+msgstr ""
+
+#: class.plugin-settings.php:222
+#: class.plugin-settings.php:348
+msgid "here"
+msgstr ""
+
+#: class.plugin-settings.php:223
+msgid "Please note: free tiles from MapQuest have been discontinued without use of an API key"
+msgstr ""
+
+#: class.plugin-settings.php:224
+msgid "blog post"
+msgstr ""
+
+#: class.plugin-settings.php:229
+msgid "Map Tile URL Subdomains"
+msgstr ""
+
+#: class.plugin-settings.php:234
+msgid "Some maps get tiles from multiple servers with subdomains such as a,b,c or 1,2,3 or cache1,cache2; pass a string where each char is its own subdomain, or pass comma-separated string"
+msgstr ""
+
+#: class.plugin-settings.php:239
+msgid "Detect Retina"
+msgstr ""
+
+#: class.plugin-settings.php:244
+msgid "Fetch tiles at different zoom levels to appear smoother on retina displays."
+msgstr ""
+
+#: class.plugin-settings.php:249
+msgid "Tile Size"
+msgstr ""
+
+#: class.plugin-settings.php:254
+msgid "Width and height of tiles (in pixels) in the grid. Default is 256"
+msgstr ""
+
+#: class.plugin-settings.php:259
+msgid "Tile Id"
+msgstr ""
+
+#: class.plugin-settings.php:264
+msgid "An id that is passed to L.tileLayer; useful for Mapbox"
+msgstr ""
+
+#: class.plugin-settings.php:269
+msgid "Access Token"
+msgstr ""
+
+#: class.plugin-settings.php:274
+msgid "An access token that is passed to L.tileLayer; useful for Mapbox tiles"
+msgstr ""
+
+#: class.plugin-settings.php:279
+msgid "Zoom Offset"
+msgstr ""
+
+#: class.plugin-settings.php:284
+msgid "The zoom number used in tile URLs will be offset with this value"
+msgstr ""
+
+#: class.plugin-settings.php:289
+msgid "No Wrap (tiles)"
+msgstr ""
+
+#: class.plugin-settings.php:294
+msgid "Boolean for whether the layer is wrapped around the antimeridian"
+msgstr ""
+
+#: class.plugin-settings.php:299
+msgid "JavaScript URL"
+msgstr ""
+
+#: class.plugin-settings.php:302
+msgid "If you host your own Leaflet files, then paste the URL here."
+msgstr ""
+
+#: class.plugin-settings.php:305
+msgid "CSS URL"
+msgstr ""
+
+#: class.plugin-settings.php:308
+msgid "Same as above."
+msgstr ""
+
+#: class.plugin-settings.php:311
+msgid "Default Attribution"
+msgstr ""
+
+#: class.plugin-settings.php:314
+msgid "A JS library for interactive maps"
+msgstr ""
+
+#: class.plugin-settings.php:315
+msgid "contributors"
+msgstr ""
+
+#: class.plugin-settings.php:318
+msgid "Attribution to a custom tile url.  Use semi-colons (;) to separate multiple."
+msgstr ""
+
+#: class.plugin-settings.php:321
+msgid "Show Scale"
+msgstr ""
+
+#: class.plugin-settings.php:324
+msgid "Add a scale to each map. Can also be added via shortcode <br /> <code>[leaflet-scale]</code>"
+msgstr ""
+
+#: class.plugin-settings.php:330
+msgid "Geocoder"
+msgstr ""
+
+#: class.plugin-settings.php:334
+msgid "OpenStreetMap Nominatim"
+msgstr ""
+
+#: class.plugin-settings.php:335
+msgid "Google Maps"
+msgstr ""
+
+#: class.plugin-settings.php:336
+msgid "Denmark Addresses"
+msgstr ""
+
+#: class.plugin-settings.php:338
+msgid "Select the Geocoding provider to use to retrieve addresses defined in shortcode."
+msgstr ""
+
+#: class.plugin-settings.php:341
+msgid "Google API Key (optional)"
+msgstr ""
+
+#: class.plugin-settings.php:342
+msgid "Supply a Google API Key"
+msgstr ""
+
+#: class.plugin-settings.php:347
+msgid "The Google Geocoder requires an API key with the Places product enabled"
+msgstr ""
+
+#: class.plugin-settings.php:349
+msgid "You must create a project and set up a billing account, then you will be given an API key."
+msgstr ""
+
+#: class.plugin-settings.php:350
+msgid "You are unlikely to ever be charged for geocoding."
+msgstr ""
+
+#: class.plugin-settings.php:354
+msgid "KML/GPX JavaScript Converter"
+msgstr ""
+
+#: class.plugin-settings.php:357
+msgid "ToGeoJSON converts KML and GPX files to GeoJSON; if you plan to use [leaflet-kml] or [leaflet-gpx] then this library is loaded.  You can change the default if you need."
+msgstr ""
+
+#: class.plugin-settings.php:360
+msgid "Show maps in excerpts"
+msgstr ""
+
+#: templates/settings.php:36
+msgid "Sorry, your nonce did not verify"
+msgstr ""
+
+#: templates/settings.php:62
+msgid "Options Updated!"
+msgstr ""
+
+#: templates/settings.php:69
+msgid "Options have been reset to default values!"
+msgstr ""
+
+#: templates/settings.php:77
+msgid "Location caches have been cleared!"
+msgstr ""
+
+#: templates/settings.php:85
+msgid "Found an issue?"
+msgstr ""
+
+#: templates/settings.php:86
+msgid "Post it to "
+msgstr ""
+
+#: templates/settings.php:86
+msgid "WordPress Support"
+msgstr ""
+
+#: templates/settings.php:87
+msgid "Add an issue on "
+msgstr ""
+
+#: templates/settings.php:129
+msgid "Save Changes"
+msgstr ""
+
+#: templates/settings.php:134
+msgid "Reset to Defaults"
+msgstr ""
+
+#: templates/settings.php:139
+msgid "Clear Geocoder Cache"
+msgstr ""
+
+#: templates/settings.php:145
+msgid "Leaf icon provided by "
+msgstr ""
+
+#: templates/settings.php:145
+msgid ", under their free license."
+msgstr ""
+
+#: templates/shortcode-helper.php:32
+msgid "Drag Me"
+msgstr ""
+
+#: templates/shortcode-helper.php:41
+msgid "Interactive Shortcodes:"
+msgstr ""
+
+#: templates/shortcode-helper.php:43
+msgid "Move the map and the marker to generate shortcodes below:"
+msgstr ""
+
+#: templates/shortcode-helper.php:46
+msgid "Map Shortcode"
+msgstr ""
+
+#: templates/shortcode-helper.php:50
+msgid "Marker Shortcode"
+msgstr ""
+
+#: templates/shortcode-helper.php:53
+msgid "Reset Shortcodes"
+msgstr ""
+
+#: templates/shortcode-helper.php:55
+msgid "Examples"
+msgstr ""
+
+#: templates/shortcode-helper.php:59
+msgid "Standard"
+msgstr ""
+
+#: templates/shortcode-helper.php:62
+msgid "Many Markers!"
+msgstr ""
+
+#: templates/shortcode-helper.php:68
+msgid "Draggable Marker"
+msgstr ""
+
+#: templates/shortcode-helper.php:72
+msgid "Marker Icon"
+msgstr ""
+
+#: templates/shortcode-helper.php:76
+msgid "SVG Marker Icon"
+msgstr ""
+
+#: templates/shortcode-helper.php:80
+msgid "Zoom Buttons"
+msgstr ""
+
+#: templates/shortcode-helper.php:83
+msgid "Alternate Map Tiles w/scrollwheel"
+msgstr ""
+
+#: templates/shortcode-helper.php:86
+msgid "Marker Popup Messages (on click)"
+msgstr ""
+
+#: templates/shortcode-helper.php:90
+msgid "Links In Marker Messages (visible)"
+msgstr ""
+
+#: templates/shortcode-helper.php:94
+msgid "Basic Lines w/Scrollwheel"
+msgstr ""
+
+#: templates/shortcode-helper.php:98
+msgid "Basic Polygon"
+msgstr ""
+
+#: templates/shortcode-helper.php:102
+msgid "Basic Circle"
+msgstr ""
+
+#: templates/shortcode-helper.php:107
+msgid "Fitted Colored Line on Addresses"
+msgstr ""
+
+#: templates/shortcode-helper.php:111
+msgid "More Crazy Line Attributes"
+msgstr ""
+
+#: templates/shortcode-helper.php:115
+msgid "Disable all Interaction"
+msgstr ""
+
+#: templates/shortcode-helper.php:118
+msgid "Add GeoJSON by URL"
+msgstr ""
+
+#: templates/shortcode-helper.php:122
+msgid "Add GeoJSON with circle markers and popups"
+msgstr ""
+
+#: templates/shortcode-helper.php:126
+msgid "Add KML by URL"
+msgstr ""
+
+#: templates/shortcode-helper.php:130
+msgid "Add GPX by URL"
+msgstr ""
+
+#: templates/shortcode-helper.php:134
+msgid "Keep them in Newfoundland"
+msgstr ""
+
+#: templates/shortcode-helper.php:137
+msgid "Image Map"
+msgstr ""
+
+#: templates/shortcode-helper.php:141
+msgid "Image Overlay Map"
+msgstr ""
+
+#: templates/shortcode-helper.php:145
+msgid "Video Overlay Map"
 msgstr ""
