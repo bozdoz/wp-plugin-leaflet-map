@@ -372,6 +372,14 @@ class Leaflet_Map
 
         $message = empty($message) ? 
             (empty($content) ? '' : $content) : $message;
+
+        if (empty($message)) {
+            return;
+        }
+
+        // execute shortcodes if present:
+        // e.g. [leaflet-marker][some-shortcode][/leaflet-marker]
+        $message = do_shortcode($message);
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = addslashes($message);
         $message = htmlspecialchars($message);
@@ -379,13 +387,11 @@ class Leaflet_Map
             ? false 
             : filter_var($visible, FILTER_VALIDATE_BOOLEAN);
 
-        if (!empty($message)) {
-            echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
-            if ($visible) {
-                echo ".openPopup()";
-            }
-            echo ";";
+        echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
+        if ($visible) {
+            echo ".openPopup()";
         }
+        echo ";";
     }
 
     /**
