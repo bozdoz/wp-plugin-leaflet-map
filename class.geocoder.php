@@ -66,9 +66,10 @@ class Leaflet_Geocoder {
             }
         }
 
-        // set variables
-        $this->lat = $location->lat;
-        $this->lng = $location->lng;
+        if (isset($location->lat) && isset($location->lng)) {
+            $this->lat = $location->lat;
+            $this->lng = $location->lng;
+        }
     }
 
     /**
