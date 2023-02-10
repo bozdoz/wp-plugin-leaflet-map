@@ -381,13 +381,14 @@ class Leaflet_Map
         // e.g. [leaflet-marker][some-shortcode][/leaflet-marker]
         $message = do_shortcode($message);
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
-        $message = addslashes($message);
-        $message = htmlspecialchars($message);
+        // $message = addslashes($message);
+        // $message = htmlspecialchars($message);
         $visible = empty($visible) 
             ? false 
             : filter_var($visible, FILTER_VALIDATE_BOOLEAN);
 
-        echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
+        // echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
+        echo "{$shape}.bindPopup(`{$message}`)";
         if ($visible) {
             echo ".openPopup()";
         }
