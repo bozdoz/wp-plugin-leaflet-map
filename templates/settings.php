@@ -79,6 +79,23 @@ if (isset($_POST['submit']) && verify_nonce()) {
 <?php
 }
 /** END FORM SUBMISSION */
+
+/** CHECK LEAFLET VERSION */
+$db_js_url = $settings->get('js_url');
+$unpkg_url = "https://unpkg.com/leaflet";
+$is_unpkg_url = substr_compare($db_js_url, $unpkg_url, 0, strlen($unpkg_url)) === 0;
+
+if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
+?>
+    <div class="notice notice-info is-dismissible">
+        <p><?php 
+        _e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map'); 
+        echo Leaflet_Map::$leaflet_version;
+        ?></p>
+    </div>
+<?php
+}
+/** END LEAFLET VERSION */
 ?>
 
 <p><?php echo $description; ?></p>
