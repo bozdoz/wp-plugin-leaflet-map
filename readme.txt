@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 6.1.1
-Version: 3.1.0
-Stable tag: 3.1.0
+Version: 3.2.0
+Stable tag: 3.2.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -148,6 +148,13 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.2.0 =
+* Adds banner if default js is out-of-sync
+* Adds do_shortcode in popups
+* Fixes error if geocoder fails to get a lat/lng
+* Fixes deprecated warnings in php 8.1
+* Fixes detect retina and maxzoom issues
 
 = 3.1.0 =
 * Bumps leaflet default version to 1.9.3
@@ -449,6 +456,11 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 3.2.0 =
+* Fixes error if geocoder fails to get a lat/lng
+* Fixes deprecated warnings in php 8.1
+* Fixes detect retina and maxzoom issues
 
 = 3.1.0 =
 Reduces php warnings by checking for `lat` and `lon` in osm_geocode with `isset()`.
