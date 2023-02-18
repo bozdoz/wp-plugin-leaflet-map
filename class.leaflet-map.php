@@ -382,12 +382,21 @@ class Leaflet_Map
         $message = do_shortcode($message);
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = addslashes($message);
-        $message = htmlspecialchars($message);
+
+        $should_sanitize = apply_filters('leaflet_map_sanitize_popup', true, $message);
+
+        if ($should_sanitize) {
+            $message = htmlspecialchars($message);
+            
+            echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
+        } else {
+            echo "{$shape}.bindPopup('{$message}')";
+        }
+        
         $visible = empty($visible) 
             ? false 
             : filter_var($visible, FILTER_VALIDATE_BOOLEAN);
-
-        echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
+        
         if ($visible) {
             echo ".openPopup()";
         }
