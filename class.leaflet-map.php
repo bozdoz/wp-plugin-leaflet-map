@@ -377,13 +377,14 @@ class Leaflet_Map
             return;
         }
 
+        // pass $message as the raw message (possibly shortcode)
+        $should_sanitize = apply_filters('leaflet_map_sanitize_popup', true, $message);
+        
         // execute shortcodes if present:
         // e.g. [leaflet-marker][some-shortcode][/leaflet-marker]
         $message = do_shortcode($message);
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = addslashes($message);
-
-        $should_sanitize = apply_filters('leaflet_map_sanitize_popup', true, $message);
 
         if ($should_sanitize) {
             $message = htmlspecialchars($message);
