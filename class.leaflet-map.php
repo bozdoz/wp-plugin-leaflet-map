@@ -376,23 +376,27 @@ class Leaflet_Map
         if (empty($message)) {
             return;
         }
-
-        // pass $message as the raw message (possibly shortcode)
-        $should_sanitize = apply_filters('leaflet_map_sanitize_popup', true, $message);
+        
+        // save variable for filter
+        $original = $message;
         
         // execute shortcodes if present:
         // e.g. [leaflet-marker][some-shortcode][/leaflet-marker]
         $message = do_shortcode($message);
+
+        // save variable for filter
+        $shortcoded = $message;
+
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = addslashes($message);
+        $message = htmlspecialchars($message);
+        $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
 
-        if ($should_sanitize) {
-            $message = htmlspecialchars($message);
-            
-            echo "{$shape}.bindPopup(window.WPLeafletMapPlugin.unescape('{$message}'))";
-        } else {
-            echo "{$shape}.bindPopup('{$message}')";
-        }
+        // use with: add_filter('leaflet_map_popup_message', 'example_callback');
+        // function takes default message, message after do_shortcode, and original/raw
+        $message = apply_filters('leaflet_map_popup_message', $message, $shortcoded, $original);
+
+        echo "{$shape}.bindPopup({$message})";
         
         $visible = empty($visible) 
             ? false 
