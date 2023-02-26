@@ -392,7 +392,7 @@ class Leaflet_Map
         $message = htmlspecialchars($message);
         $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
 
-        // use with: add_filter('leaflet_map_popup_message', 'example_callback');
+        // use with: add_filter('leaflet_map_popup_message', 'example_callback', 10, 3);
         // function takes default message, message after do_shortcode, and original/raw
         $message = apply_filters('leaflet_map_popup_message', $message, $shortcoded, $original);
 

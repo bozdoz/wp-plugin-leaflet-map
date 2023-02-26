@@ -1,7 +1,7 @@
 {
   "name": "wp-plugin-leaflet-map",
   "private": true,
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
     "start": "docker-compose up && exit 0",
@@ -10,7 +10,7 @@
     "wordpress": "docker-compose run wordpress bash",
     "cli": "docker-compose run cli sh",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
-    "changes": "VERSION=$(echo $VERSION || node -e \"console.log(require('./package.json').version)\") && git log v${VERSION}..HEAD --oneline",
+    "changes": "VERSION=$(node -e \"console.log(require('./package.json').version)\") && git log v${VERSION}..HEAD --oneline",
     "test": "jest"
   },
   "repository": {
