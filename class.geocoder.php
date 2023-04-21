@@ -185,7 +185,7 @@ class Leaflet_Geocoder {
 
     /** 
      * Returns the single array of locations from transients 
-     * @since v3.4.0
+     * @since 3.4.0
      */
     public function get_all_cached() {
         // locations will be an array of address -> coordinates
@@ -198,7 +198,7 @@ class Leaflet_Geocoder {
 
     /** 
      * gets a single location's coordinates from the cached locations 
-     * @since v3.4.0
+     * @since 3.4.0
      */
     public function get_cache($key) {
         $locations = $this->get_all_cached();
@@ -208,7 +208,7 @@ class Leaflet_Geocoder {
 
     /** 
      * gets the array of saved locations and updates an individual location
-     * @since v3.4.0
+     * @since 3.4.0
      */
     public function set_cache($key, $value) {
         $locations = $this->get_all_cached();
@@ -222,8 +222,11 @@ class Leaflet_Geocoder {
     * Removes location caches
     */
     public static function remove_caches () {
+        // @since 3.4.0
+        delete_transient( $this->locations_key );
 
         // removes legacy location db entries
+        // pre 3.4.0
         $addresses = get_option('leaflet_geocoded_locations', array());
         foreach ($addresses as $address) {
             delete_option($address);
