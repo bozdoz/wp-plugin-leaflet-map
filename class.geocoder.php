@@ -17,7 +17,7 @@ class Leaflet_Geocoder
     /** Start using transients with a reasonable hardcoded ttl, TODO make ttl configurable in admin */
     private const GEOCACHE_DEFAULT_TTL = 3 * MONTH_IN_SECONDS;
 
-    /** common identifier for cache keys */
+    /** common identifier for cache keys using plugin slug */
     private const GEOCACHE_PREFIX = 'leaflet-map_';
 
     /**
@@ -50,7 +50,7 @@ class Leaflet_Geocoder
 
         $cached_address = $geocoder . '_' . $address;
 
-        /* retrieve cached geocoded location */
+        /* lookup cached geocoded location */
         $found_cache = $this->geocache_transient_get($cached_address);
 
         if ($found_cache) {
@@ -71,7 +71,7 @@ class Leaflet_Geocoder
         if (isset($location->lat) && isset($location->lng)) {
             $this->lat = $location->lat;
             $this->lng = $location->lng;
-            /* if we have a complete location record with lat/lng, store it */
+            /*  we have a complete location record with lat/lng, cache it  */
             $this->geocache_transient_set($cached_address, $location);
         }
     }
@@ -85,7 +85,7 @@ class Leaflet_Geocoder
     */
     public static function remove_caches()
     {
-        // _transient_ is prefixed by wordpress to all transient keys
+        // _transient_ is prefixed to all transient keys in the options table
         $prefix = '_transient_' . self::GEOCACHE_PREFIX;
         // Get all option keys matching the prefix
         $all_option_keys = array_keys(wp_load_alloptions());
@@ -246,38 +246,6 @@ class Leaflet_Geocoder
     {
         $transient_key  = self::GEOCACHE_PREFIX . md5($address);
         set_transient($transient_key, $location, self::GEOCACHE_DEFAULT_TTL);
-        // $this->geocache_transient_collection_add($transient_key);
-        return true;
-    }
-
-    /**
-     * Cleanup transient cache, either all or only expired
-     * @return boolean
-     * @param boolean $full_cleanup
-     */
-    private function geocache_transient_cleanup($full_cleanup = false)
-    {
-        $transient_key  = $this->geocache_prefix . 'collection';
-        $transient_collection = get_transient($transient_key);
-        $transient_new_collection = array();
-
-        if (false === $transient_collection || !is_array($transient_collection)) {
-            return false;
-        }
-
-        foreach ($transient_collection as $transient) {
-            // if full cleanup, delete all transients
-            if ($full_cleanup) {
-                delete_transient($transient);
-            } elseif (false === ($location = get_transient($transient))) {
-                // if transient is expired, will be deleted upon lookup
-                continue;
-            } else {
-                // if transient is not expired, add to new collection
-                $transient_new_collection[] = $transient;
-            }
-        }
-
         return true;
     }
 
