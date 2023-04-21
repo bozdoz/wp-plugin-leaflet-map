@@ -23,6 +23,11 @@ class Leaflet_Geocoder {
     */
     public $lng = 0;
 
+    /** 
+    * transients key for all locations
+    */
+    public $locations_key = 'leaflet_geocoded_locations';
+
     /**
     * new Geocoder from address
     *
@@ -39,10 +44,10 @@ class Leaflet_Geocoder {
         
         $geocoder = $settings->get('geocoder');
 
-        $cached_address = 'leaflet_' . $geocoder . '_' . $address;
+        $cached_address = $geocoder . '_' . $address;
 
         /* retrieve cached geocoded location */
-        $found_cache = get_option( $cached_address );
+        $found_cache = $this->get_cache( $cached_address );
 
         if ( $found_cache ) {
             $location = $found_cache;
@@ -53,13 +58,8 @@ class Leaflet_Geocoder {
             try {
                 $location = (Object) $this->$geocoding_method( $address );
 
-                /* add location */
-                add_option($cached_address, $location);
-
-                /* add option key to locations for clean up purposes */
-                $locations = get_option('leaflet_geocoded_locations', array());
-                array_push($locations, $cached_address);
-                update_option('leaflet_geocoded_locations', $locations);
+                /* update location data in db/cache */
+                $this->set_cache($cached_address, $location);
             } catch (Exception $e) {
                 // failed
                 $location = $this->not_found;
@@ -70,17 +70,6 @@ class Leaflet_Geocoder {
             $this->lat = $location->lat;
             $this->lng = $location->lng;
         }
-    }
-
-    /**
-    * Removes location caches
-    */
-    public static function remove_caches () {
-        $addresses = get_option('leaflet_geocoded_locations', array());
-        foreach ($addresses as $address) {
-            delete_option($address);
-        }
-        delete_option('leaflet_geocoded_locations');
     }
 
     /**
@@ -95,13 +84,12 @@ class Leaflet_Geocoder {
         $referer = get_site_url();
 
         if (in_array('curl', get_loaded_extensions())) {
-            /* try curl */
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
             curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($ch, CURLOPT_REFERER, $referer);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_REFERER, $referer);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
@@ -110,14 +98,12 @@ class Leaflet_Geocoder {
 
             return $data;
         } else if (ini_get('allow_url_fopen')) {
-                    /* try file get contents */
-
-                    $opts = array(
-                        'http' => array(
-                            'header' => array("Referer: $referer\r\n")
-                        )
-                    );
-                    $context = stream_context_create($opts);
+            $opts = array(
+                'http' => array(
+                    'header' => array("Referer: $referer\r\n")
+                )
+            );
+            $context = stream_context_create($opts);
 
             return file_get_contents($url, false, $context);
         }
@@ -132,7 +118,6 @@ class Leaflet_Geocoder {
     * @param string $address    the urlencoded address to look up
     * @return varies object from API or null (failed)
     */
-
     private function google_geocode ( $address ) {
         // Leaflet_Map_Plugin_Settings
         $settings = Leaflet_Map_Plugin_Settings::init();
@@ -161,7 +146,6 @@ class Leaflet_Geocoder {
     * @param string $address    the urlencoded address to look up
     * @return varies object from API or null (failed)
     */
-
     private function osm_geocode ( $address ) {
         $geocode_url = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
         $geocode_url .= $address;
@@ -198,4 +182,53 @@ class Leaflet_Geocoder {
             'lng' => $json[0]->adgangsadresse->adgangspunkt->koordinater[0]
         );
     }
+
+    /** 
+     * Returns the single array of locations from transients 
+     * @since v3.4.0
+     */
+    public function get_all_cached() {
+        // locations will be an array of address -> coordinates
+        if ( false === ($locations = get_transient( $this->locations_key )) ) {
+            return array();
+        }
+
+        return $locations;
+    }
+
+    /** 
+     * gets a single location's coordinates from the cached locations 
+     * @since v3.4.0
+     */
+    public function get_cache($key) {
+        $locations = $this->get_all_cached();
+
+        return isset($locations[ $key ]) ? $locations[ $key ] : false;
+    }
+
+    /** 
+     * gets the array of saved locations and updates an individual location
+     * @since v3.4.0
+     */
+    public function set_cache($key, $value) {
+        $locations = $this->get_all_cached();
+
+        $locations[ $key ] = $value;
+
+        return set_transient( $this->locations_key, $locations, MONTH_IN_SECONDS );
+    }
+
+    /**
+    * Removes location caches
+    */
+    public static function remove_caches () {
+
+        // removes legacy location db entries
+        $addresses = get_option('leaflet_geocoded_locations', array());
+        foreach ($addresses as $address) {
+            delete_option($address);
+        }
+        delete_option('leaflet_geocoded_locations');
+    }
+
 }
