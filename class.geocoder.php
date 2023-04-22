@@ -6,16 +6,13 @@
 *
 */
 
-class Leaflet_Geocoder
-{
+class Leaflet_Geocoder {
     /**
     * Geocoder should return this on error/not found
     * @var array $not_found
     */
     private $not_found = array('lat' => 0, 'lng' => 0);
 
-    /** Start using transients with a reasonable hardcoded ttl, TODO make ttl configurable in admin */
-    private const GEOCACHE_DEFAULT_TTL = 3 * MONTH_IN_SECONDS;
 
     /** common identifier for cache keys using plugin slug */
     private const GEOCACHE_PREFIX = 'leaflet-map_';
@@ -39,21 +36,20 @@ class Leaflet_Geocoder
     * @param string $address the requested address to look up
     * @return NOTHING
     */
-    public function __construct($address)
-    {
+    public function __construct ($address) {
         $settings = Leaflet_Map_Plugin_Settings::init();
         // trim all quotes (even smart) from address
         $address = trim($address, '\'"”');
-        $address = urlencode($address);
-
+        $address = urlencode( $address );
+        
         $geocoder = $settings->get('geocoder');
 
         $cached_address = $geocoder . '_' . $address;
 
         /* lookup cached geocoded location */
-        $found_cache = $this->geocache_transient_get($cached_address);
+        $found_cache = $this->geocache_transient_get( $cached_address );
 
-        if ($found_cache) {
+        if ( $found_cache ) {
             $location = $found_cache;
         } else {
             // try geocoding
@@ -72,7 +68,7 @@ class Leaflet_Geocoder
             $this->lat = $location->lat;
             $this->lng = $location->lng;
             /*  we have a complete location record with lat/lng, cache it  */
-            $this->geocache_transient_set($cached_address, $location);
+            $this->geocache_transient_set($cached_address, $location, $this->geocache_get_ttl($geocoder));
         }
     }
 
@@ -123,40 +119,39 @@ class Leaflet_Geocoder
     * @param string $url    the urlencoded request url
     * @return varies object from API or null (failed)
     */
-    private function get_url($url)
-    {
+    private function get_url( $url ) {
         $referer = get_site_url();
 
         if (in_array('curl', get_loaded_extensions())) {
             /* try curl */
             $ch = curl_init();
 
-            curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+            curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
             curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_REFERER, $referer);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_REFERER, $referer);
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 
             $data = curl_exec($ch);
             curl_close($ch);
 
             return $data;
-        } elseif (ini_get('allow_url_fopen')) {
-            /* try file get contents */
+        } else if (ini_get('allow_url_fopen')) {
+                    /* try file get contents */
 
-            $opts = array(
-                'http' => array(
-                    'header' => array("Referer: $referer\r\n")
-                )
-            );
-            $context = stream_context_create($opts);
+                    $opts = array(
+                        'http' => array(
+                            'header' => array("Referer: $referer\r\n")
+                        )
+                    );
+                    $context = stream_context_create($opts);
 
             return file_get_contents($url, false, $context);
         }
 
         $error_msg = 'Could not get url: ' . $url;
-        throw new Exception($error_msg);
+        throw new Exception( $error_msg );
     }
 
     /**
@@ -166,26 +161,25 @@ class Leaflet_Geocoder
     * @return varies object from API or null (failed)
     */
 
-    private function google_geocode($address)
-    {
+    private function google_geocode ( $address ) {
         // Leaflet_Map_Plugin_Settings
         $settings = Leaflet_Map_Plugin_Settings::init();
         $key = $settings->get('google_appkey');
-
+        
         $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s';
         $geocode_url = sprintf($geocode_url, $address, $key);
-
+        
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
 
         /* found location */
         if ($json->status == 'OK') {
-
+            
             $location = $json->results[0]->geometry->location;
 
-            return (object) $location;
+            return (Object) $location;
         }
-
+        
         throw new Exception('No Address Found');
     }
 
@@ -196,15 +190,14 @@ class Leaflet_Geocoder
     * @return varies object from API or null (failed)
     */
 
-    private function osm_geocode($address)
-    {
+    private function osm_geocode ( $address ) {
         $geocode_url = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
         $geocode_url .= $address;
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
 
         if (isset($json[0]->lat) && isset($json[0]->lon)) {
-            return (object) array(
+            return (Object) array(
                 'lat' => $json[0]->lat,
                 'lng' => $json[0]->lon,
             );
@@ -215,21 +208,20 @@ class Leaflet_Geocoder
 
     /**
      * TODO: does this still work?
-     * Danish Addresses Web Application
+     * Danish Addresses Web Application 
      * (https://dawa.aws.dk)
      *
      * @param string $address    the urlencoded address to look up
      * @return varies object from API or null (failed)
      */
-    private function dawa_geocode($address)
-    {
+    private function dawa_geocode ( $address ) {
         $geocode_url = 'https://dawa.aws.dk/adresser?format=json&q=';
         $geocode_url .= $address;
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
-
+        
         /* found location */
-        return (object) array(
+        return (Object) array(
             'lat' => $json[0]->adgangsadresse->adgangspunkt->koordinater[1],
             'lng' => $json[0]->adgangsadresse->adgangspunkt->koordinater[0]
         );
@@ -255,12 +247,37 @@ class Leaflet_Geocoder
      * Store lookup result in transient cache
      * so far, no error handling is done, so if cache is not available,
      * we silently fail and always return true
+     *
+     * @param string $address
+     * @param object $location
+     * @param int $ttl
+     * @return bool
      */
-    private function geocache_transient_set($address, $location)
+    private function geocache_transient_set($address, $location, $ttl)
     {
         $transient_key  = self::GEOCACHE_PREFIX . md5($address);
-        set_transient($transient_key, $location, self::GEOCACHE_DEFAULT_TTL);
+        set_transient($transient_key, $location, $ttl);
         return true;
     }
+
+    /**
+     * set transient ttl depending on the geocoder used
+     * for now we use a reasonable hardcoded value per geocoder,
+     * but this should probably be configurable in admin @todo
+     *
+     * @param string $geocoder
+     * @return int
+     */
+    private function geocache_get_ttl($geocoder)
+    {
+        switch ($geocoder) {
+
+            case 'osm':
+                return 3 * MONTH_IN_SECONDS;
+            default:
+                return MONTH_IN_SECONDS;
+        }
+    }
+
 
 }
