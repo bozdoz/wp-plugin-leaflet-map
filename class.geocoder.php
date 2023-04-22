@@ -78,27 +78,41 @@ class Leaflet_Geocoder
 
     /**
     * Removes location caches if they ended up in the options table
+    * borrowed from https://kellenmace.com/delete-transients-with-prefix-in-wordpress/
     * This function is only needed if manual cleanup is required;
     * all records that are added with geocache_transient_set()
     * have an expiry set and so will be removed by
     * Wordpress automatically ( cron event delete_expired_transients )
+    * Using $wpdb is necessary because the WP API does not provide a way to
+    * delete transients by prefix or to get a list of all non-autoloaded transients
+    * @return void
     */
     public static function remove_caches()
     {
+
         // _transient_ is prefixed to all transient keys in the options table
         $prefix = '_transient_' . self::GEOCACHE_PREFIX;
-        // Get all option keys matching the prefix
-        $all_option_keys = array_keys(wp_load_alloptions());
 
-        $transient_keys = array_filter($all_option_keys, function ($key) use ($prefix) {
-            return strpos($key, $prefix) === 0;
-        });
+        global $wpdb;
 
-        // Delete all matching transients, removing _transient_ from the prefix
-        foreach($transient_keys as $key) {
-            $transient_name = str_replace('_transient_', '', $key);
+        $prefix = $wpdb->esc_like('_transient_' . self::GEOCACHE_PREFIX);
+        $sql    = "SELECT `option_name` FROM $wpdb->options WHERE `option_name` LIKE '%s'";
+        $keys   = $wpdb->get_results($wpdb->prepare($sql, $prefix . '%'), ARRAY_A);
+
+        if (is_wp_error($keys) || !is_array($keys)) {
+            return ;
+        }
+
+        $transient_keys = array_map(function ($key) {
+            // Remove '_transient_' from the option name.
+            return ltrim($key['option_name'], '_transient_');
+        }, $keys);
+
+        foreach($transient_keys as $transient_name) {
             delete_transient($transient_name);
         }
+        return;
+
     }
 
     /**
