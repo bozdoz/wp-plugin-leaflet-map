@@ -256,6 +256,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         if (!empty($address)) {
             /* try geocoding */
             include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+            // TODO: should this be a try/catch?
             $location = new Leaflet_Geocoder($address);
             $lat = $location->lat;
             $lng = $location->lng;

@@ -62,8 +62,11 @@ class Leaflet_Geocoder {
                 /* add cache to cached list for cleanup */
                 $this->update_caches( $cached_address );
             } catch (Exception $e) {
-                // failed
-                $location = self::$not_found;
+                /**
+                 * @since 3.4.0
+                 * use 'leaflet_geocoder_not_found' filter to return your own not_found response
+                 */
+                $location = apply_filters( 'leaflet_geocoder_not_found', self::$not_found );
             }
         }
 
@@ -238,7 +241,7 @@ class Leaflet_Geocoder {
     */
     public static function remove_caches() {
         /** @since 3.4.0 */
-        do_action('leaflet_remove_caches');
+        do_action('leaflet_geocoder_remove_caches');
 
         $addresses = get_option( self::$locations_key, array() );
 
