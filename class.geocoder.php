@@ -11,7 +11,7 @@ class Leaflet_Geocoder {
     * Geocoder should return this on error/not found
     * @var array $not_found
     */
-    private $not_found = array('lat' => 0, 'lng' => 0);
+    private static $not_found = array('lat' => 0, 'lng' => 0);
     /**
     * Latitude
     * @var float $lat
@@ -23,10 +23,8 @@ class Leaflet_Geocoder {
     */
     public $lng = 0;
 
-    /** 
-    * transients key for all locations
-    */
-    public $locations_key = 'leaflet_geocoded_locations';
+    /** key for all locations */
+    public static $locations_key = 'leaflet_geocoded_locations';
 
     /**
     * new Geocoder from address
@@ -44,10 +42,10 @@ class Leaflet_Geocoder {
         
         $geocoder = $settings->get('geocoder');
 
-        $cached_address = $geocoder . '_' . $address;
+        $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
         /* retrieve cached geocoded location */
-        $found_cache = $this->get_cache( $cached_address );
+        $found_cache = $this->get_cache( $cached_address, $address );
 
         if ( $found_cache ) {
             $location = $found_cache;
@@ -59,10 +57,13 @@ class Leaflet_Geocoder {
                 $location = (Object) $this->$geocoding_method( $address );
 
                 /* update location data in db/cache */
-                $this->set_cache($cached_address, $location);
+                $this->set_cache( $cached_address, $location );
+
+                /* add cache to cached list for cleanup */
+                $this->update_caches( $cached_address );
             } catch (Exception $e) {
                 // failed
-                $location = $this->not_found;
+                $location = self::$not_found;
             }
         }
 
@@ -131,7 +132,6 @@ class Leaflet_Geocoder {
 
         /* found location */
         if ($json->status == 'OK') {
-            
             $location = $json->results[0]->geometry->location;
 
             return (Object) $location;
@@ -184,54 +184,72 @@ class Leaflet_Geocoder {
     }
 
     /** 
-     * Returns the single array of locations from transients 
-     * @since 3.4.0
+     * gets a single location's coordinates from the cached locations
      */
-    public function get_all_cached() {
-        // locations will be an array of address -> coordinates
-        if ( false === ($locations = get_transient( $this->locations_key )) ) {
-            return array();
+    public function get_cache($address_key, $plain_address) {
+        /** 
+         * @since 3.4.0
+         * using 'leaflet_geocoder_get_cache', 
+         * you can return any value that is not identical to the address_key to avoid using get_option
+         */
+        $filtered = apply_filters( 'leaflet_geocoder_get_cache', $address_key, $plain_address );
+
+        if ($filtered === $address_key) {
+            return get_option( $address_key );
         }
 
-        return $locations;
-    }
-
-    /** 
-     * gets a single location's coordinates from the cached locations 
-     * @since 3.4.0
-     */
-    public function get_cache($key) {
-        $locations = $this->get_all_cached();
-
-        return isset($locations[ $key ]) ? $locations[ $key ] : false;
+        return $filtered;
     }
 
     /** 
      * gets the array of saved locations and updates an individual location
-     * @since 3.4.0
      */
     public function set_cache($key, $value) {
-        $locations = $this->get_all_cached();
-
-        $locations[ $key ] = $value;
-
-        return set_transient( $this->locations_key, $locations, MONTH_IN_SECONDS );
+        /** 
+         * @since 3.4.0
+         * using 'leaflet_geocoder_set_cache', 
+         * you can return any falsy value to omit the update_option
+         */
+        if (apply_filters('leaflet_geocoder_set_cache', $key, $value)) {
+            update_option( $key, $value, false );
+        }
     }
 
     /**
-    * Removes location caches
-    */
-    public static function remove_caches () {
-        // @since 3.4.0
-        delete_transient( $this->locations_key );
-
-        // removes legacy location db entries
-        // pre 3.4.0
-        $addresses = get_option('leaflet_geocoded_locations', array());
-        foreach ($addresses as $address) {
-            delete_option($address);
+     * Appends an address to a list of addresses in the db, for cleanup
+     */
+    public function update_caches( $address ) {
+        /** 
+         * @since 3.4.0
+         * using 'leaflet_geocoder_update_caches', 
+         * you can return any falsy value to omit the update_option
+         */
+        if (apply_filters('leaflet_geocoder_update_caches', $address)) {
+            $locations = get_option( self::$locations_key, array() );
+            
+            array_push( $locations, $address );
+            
+            update_option( self::$locations_key, $locations, false );
         }
-        delete_option('leaflet_geocoded_locations');
     }
 
+    /**
+    * Removes all location caches
+    */
+    public static function remove_caches() {
+        /** @since 3.4.0 */
+        do_action('leaflet_remove_caches');
+
+        $addresses = get_option( self::$locations_key, array() );
+
+        if ( !$addresses ) {
+            return;
+        }
+
+        foreach ($addresses as $address) {
+            delete_option( $address );
+        }
+
+        delete_option( self::$locations_key );
+    }
 }
