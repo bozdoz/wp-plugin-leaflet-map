@@ -2,7 +2,7 @@
 /**
 * Geocoder
 *
-* calls the specific geocoder function (chosen in admin or default: google_geocode)
+* calls the specific geocoder function (chosen in admin or default: osm)
 *
 */
 
