@@ -3,7 +3,7 @@
  * Marker Shortcode
  *
  * Use with [leaflet-marker ...]
- * 
+ *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -22,10 +22,10 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
 {
     /**
      * Get Script for Shortcode
-     * 
+     *
      * @param string $atts    could be an array
      * @param string $content optional
-     * 
+     *
      * @return null
      */
     protected function getHTML($atts='', $content=null)
@@ -86,7 +86,7 @@ class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
 
         $args = array(
             'draggable' => FILTER_VALIDATE_BOOLEAN,
-            'title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'title' => FILTER_SANITIZE_SPECIAL_CHARS,
             'alt' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'zIndexOffset' => FILTER_VALIDATE_INT,
             'opacity' => FILTER_VALIDATE_FLOAT,
@@ -112,7 +112,7 @@ var map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var marker_options = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
 var marker = <?php echo $default_marker; ?>(
-    [<?php echo $lat . ',' . $lng; ?>], 
+    [<?php echo $lat . ',' . $lng; ?>],
     marker_options
 );
 var is_image = map.is_image_map;
@@ -142,7 +142,7 @@ marker.addTo( group );
 ?>
 window.WPLeafletMapPlugin.markers.push( marker );
         <?php
-        
+
         $script = ob_get_clean();
 
         return $this->wrap_script($script, 'WPLeafletMarkerShortcode');
