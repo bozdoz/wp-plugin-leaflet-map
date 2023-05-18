@@ -221,8 +221,6 @@ class Leaflet_Geocoder {
                 // stagger caches between 200-400 days to prevent all caches expiring on the same day
                 $stagger = random_int(200, 400);
                 $expiry = DAY_IN_SECONDS * $stagger;
-                $output = "<pre>$expiry</pre>";
-                file_put_contents(LEAFLET_MAP__PLUGIN_DIR . 'log.log', $output, FILE_APPEND);
             }
 
             set_transient( $key, $value, $expiry );

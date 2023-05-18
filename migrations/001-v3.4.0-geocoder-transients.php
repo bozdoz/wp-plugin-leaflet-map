@@ -15,11 +15,13 @@ function migration001() {
       continue;
     }
 
-    // stagger caches between 200-400 days to prevent all caches expiring on the same day
-    $stagger = random_int(200, 400);
-    $expiry = DAY_IN_SECONDS * $stagger;
-
-    $expiry = apply_filters('leaflet_geocoder_expiry', $expiry);
+    $expiry = apply_filters('leaflet_geocoder_expiry', null);
+    
+    if ($expiry === null) {
+      // stagger caches between 200-400 days to prevent all caches expiring on the same day
+      $stagger = random_int(200, 400);
+      $expiry = DAY_IN_SECONDS * $stagger;
+    }
 
     set_transient( $address, $value, $expiry );
 
