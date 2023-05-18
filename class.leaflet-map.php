@@ -104,11 +104,32 @@ class Leaflet_Map
      * Leaflet_Map Constructor
      */
     private function __construct() {
+        $this->run_migrations();
         $this->init_hooks();
         $this->add_shortcodes();
 
         // loaded
         do_action('leaflet_map_loaded');
+    }
+
+    /**
+     * Check for version discrepancy and run migrations if necessary
+     * @since 3.4.0
+     */
+    private function run_migrations() {
+        // assume 3.3.0 if it doesn't exist
+        $db_version = get_option(LEAFLET_MAP__DB_VERSION_KEY, '3.3.0');
+
+        if ($db_version === LEAFLET_MAP__PLUGIN_VERSION) {
+            return;
+        }
+
+        include_once LEAFLET_MAP__PLUGIN_DIR . 'class.migrations.php';
+
+        Leaflet_Map_Migrations::run_once($db_version);
+
+        // set db version to current plugin version
+        update_option(LEAFLET_MAP__DB_VERSION_KEY, LEAFLET_MAP__PLUGIN_VERSION);
     }
 
     /**
@@ -187,8 +208,8 @@ class Leaflet_Map
         $js_url = $settings->get('js_url');
         $css_url = $settings->get('css_url');
 
-        wp_register_style('leaflet_stylesheet', $css_url, Array(), null, false);
-        wp_register_script('leaflet_js', $js_url, Array(), null, true);
+        wp_register_style('leaflet_stylesheet', $css_url, Array(), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('leaflet_js', $js_url, Array(), LEAFLET_MAP__PLUGIN_VERSION, true);
 
         // new required MapQuest javascript file
         $tiling_service = $settings->get('default_tiling_service');
@@ -204,7 +225,8 @@ class Leaflet_Map
         // optional ajax geojson plugin
         wp_register_script('tmcw_togeojson', $settings->get('togeojson_url'), Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
-        if (defined('WP_DEBUG') && WP_DEBUG) {
+        // @since 3.4.0
+        if (defined('LEAFLET_MAP__DEBUG') && LEAFLET_MAP__DEBUG) {
             $minified = '';
         } else {
             $minified = '.min';

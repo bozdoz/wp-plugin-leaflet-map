@@ -193,12 +193,12 @@ class Leaflet_Geocoder {
         /** 
          * @since 3.4.0
          * using 'leaflet_geocoder_get_cache', 
-         * you can return any value that is not identical to the address_key to avoid using get_option
+         * you can return any value that is not identical to the address_key to avoid using get_transient
          */
         $filtered = apply_filters( 'leaflet_geocoder_get_cache', $address_key, $plain_address );
 
         if ($filtered === $address_key) {
-            return get_option( $address_key );
+            return get_transient( $address_key );
         }
 
         return $filtered;
@@ -211,10 +211,21 @@ class Leaflet_Geocoder {
         /** 
          * @since 3.4.0
          * using 'leaflet_geocoder_set_cache', 
-         * you can return any falsy value to omit the update_option
+         * you can return any falsy value to omit the set_transient
          */
         if (apply_filters('leaflet_geocoder_set_cache', $key, $value)) {
-            update_option( $key, $value, false );
+            // get user-defined expiry (maybe this should be an admin option?)
+            $expiry = apply_filters('leaflet_geocoder_expiry', null);
+
+            if ($expiry === null) {
+                // stagger caches between 200-400 days to prevent all caches expiring on the same day
+                $stagger = random_int(200, 400);
+                $expiry = DAY_IN_SECONDS * $stagger;
+                $output = "<pre>$expiry</pre>";
+                file_put_contents(LEAFLET_MAP__PLUGIN_DIR . 'log.log', $output, FILE_APPEND);
+            }
+
+            set_transient( $key, $value, $expiry );
         }
     }
 
@@ -225,14 +236,20 @@ class Leaflet_Geocoder {
         /** 
          * @since 3.4.0
          * using 'leaflet_geocoder_update_caches', 
-         * you can return any falsy value to omit the update_option
+         * you can return any falsy value to omit the set_transient
          */
         if (apply_filters('leaflet_geocoder_update_caches', $address)) {
-            $locations = get_option( self::$locations_key, array() );
+            $locations = get_transient( self::$locations_key );
+            
+            if (!$locations) {
+                $locations = array();
+            }
             
             array_push( $locations, $address );
             
-            update_option( self::$locations_key, $locations, false );
+            // set to 25 year expiry since we never really want it to expire
+            // but omitting expiry causes it to autoload
+            set_transient( self::$locations_key, $locations, YEAR_IN_SECONDS * 25 );
         }
     }
 
@@ -243,16 +260,16 @@ class Leaflet_Geocoder {
         /** @since 3.4.0 */
         do_action('leaflet_geocoder_remove_caches');
 
-        $addresses = get_option( self::$locations_key, array() );
+        $addresses = get_transient( self::$locations_key );
 
         if ( !$addresses ) {
             return;
         }
 
         foreach ($addresses as $address) {
-            delete_option( $address );
+            delete_transient( $address );
         }
 
-        delete_option( self::$locations_key );
+        delete_transient( self::$locations_key );
     }
 }

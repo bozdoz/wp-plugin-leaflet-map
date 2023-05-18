@@ -231,6 +231,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
      */
     protected function getDiv($height, $width) {
         // div does not get wrapped in script tags
+        // TODO: should height and width be escaped with esc_attr?
         ob_start();
         ?>
 <div class="leaflet-map WPLeafletMap" style="height:<?php 

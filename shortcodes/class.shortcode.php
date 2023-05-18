@@ -94,6 +94,7 @@ abstract class Leaflet_Shortcode
      */
     protected function wrap_script($script, $name="")
     {
+        // TODO: should echo $script be echo esc_js($script) ?
         ob_start();
         ?><script>
 window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
