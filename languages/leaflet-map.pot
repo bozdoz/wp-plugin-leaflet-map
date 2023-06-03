@@ -47,7 +47,7 @@ msgstr ""
 #: class.plugin-settings.php:92
 msgid ""
 "Default height for maps. Values can include \"px\" but it is not necessary. "
-"Can also be \"%\". "
+"Can also be \"%\" or \"vh\"."
 msgstr ""
 
 #: class.plugin-settings.php:97
@@ -57,7 +57,7 @@ msgstr ""
 #: class.plugin-settings.php:101
 msgid ""
 "Default width for maps. Values can include \"px\" but it is not necessary.  "
-"Can also be \"%\"."
+"Can also be \"%\" or \"vh\"."
 msgstr ""
 
 #: class.plugin-settings.php:106
