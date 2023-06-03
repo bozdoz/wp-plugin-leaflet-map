@@ -116,7 +116,7 @@ class Leaflet_Map_Plugin_Settings
                 'type' => 'text',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map height="250"]</code>', 
-                    __('Default height for maps. Values can include "px" but it is not necessary. Can also be "%". ', 'leaflet-map'),
+                    __('Default height for maps. Values can include "px" but it is not necessary. Can also be "%" or "vh".', 'leaflet-map'),
                     $foreachmap
                 )
             ),
@@ -126,7 +126,7 @@ class Leaflet_Map_Plugin_Settings
                 'type' => 'text',
                 'helptext' => sprintf(
                     '%1$s %2$s <br /> <code>[leaflet-map width="100%%"]</code>', 
-                    __('Default width for maps. Values can include "px" but it is not necessary.  Can also be "%".', 'leaflet-map'),
+                    __('Default width for maps. Values can include "px" but it is not necessary.  Can also be "%" or "vh".', 'leaflet-map'),
                     $foreachmap
                 )
             ),
