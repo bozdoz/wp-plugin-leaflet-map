@@ -121,7 +121,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `scrollwheel`                | 0 (false)                                            |
 | `doubleclickzoom`            | 0 (false)                                            |
 | `min_zoom`                   | 0                                                    |
-| `max_zoom`                   | 20                                                   |
+| `max_zoom`                   | 19                                                   |
 | `subdomains`                 | abc                                                  |
 | `attribution`                | ©Leaflet ©OpenStreetMap                              |
 | `closepopuponclick`          | false                                                |
@@ -131,8 +131,8 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `keyboard`                   | true                                                 |
 | `maxbounds`                  | null                                                 |
 | `detect-retina`              | 0 (false)                                            |
-| `tileurl`                    | 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' |
-| `subdomains`                 | 'abc'                                                |
+| `tileurl`                    | 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' |
+| `subdomains`                 | ''                                                |
 | `tap`                        | true                                                 |
 | `tilesize`                   | 256                                                  |
 | `mapid`                      | null                                                 |
