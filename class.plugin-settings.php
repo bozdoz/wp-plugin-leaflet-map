@@ -185,7 +185,7 @@ class Leaflet_Map_Plugin_Settings
             ),
             'default_max_zoom' => array(
                 'display_name'=>__('Default Max Zoom', 'leaflet-map'),
-                'default' => '19',
+                'default' => '18',
                 'type' => 'number',
 				'min' => 0,
 				'max' => 20,
@@ -241,6 +241,16 @@ class Leaflet_Map_Plugin_Settings
                 'helptext' => sprintf(
                     '%1$s %2$s <br/> <code>[leaflet-map subdomains="1234"]</code>',
                     __('Some maps get tiles from multiple servers with subdomains such as a,b,c or 1,2,3 or cache1,cache2; pass a string where each char is its own subdomain, or pass comma-separated string', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
+            'map_tile_maxzoom' => array(
+                'display_name'=>__('Map Tile Max Zoom', 'leaflet-map'),
+                'default'=>'18',
+                'type' => 'number',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br/> <code>[leaflet-map map_tile_maxzoom="1234"]</code>',
+                    __('Some tiles have a maxZoom defined.', 'leaflet-map'),
                     $foreachmap
                 )
             ),

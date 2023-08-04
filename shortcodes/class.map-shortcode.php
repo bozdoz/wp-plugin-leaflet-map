@@ -79,8 +79,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ?
             $min_zoom : $settings->get('default_min_zoom');
         $atts['max_zoom'] = empty($max_zoom) ?
-            $settings->get('default_max_zoom') :
-            ($max_zoom <= $settings->get('default_max_zoom') ? $max_zoom : $settings->get('default_max_zoom'));
+            //$settings->get('default_max_zoom')
+            ( empty($map_tile_maxzoom) ? $settings->get('map_tile_maxzoom') : $map_tile_maxzoom )
+            : $max_zoom;
         $atts['scrollwheel'] = isset($scrollWheelZoom)
             ? $scrollWheelZoom
             : (array_key_exists('scrollwheel', $atts)
@@ -198,9 +199,8 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
             'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
             'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
-            'maxZoom' => $atts['maxZoom']
+            'maxZoom' => empty($map_tile_maxzoom) ? $settings->get('map_tile_maxzoom') : $map_tile_maxzoom,
         );
-
 
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
         $tile_layer_options = $this->LM->filter_null($tile_layer_options);
