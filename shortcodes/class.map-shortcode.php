@@ -79,7 +79,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ?
             $min_zoom : $settings->get('default_min_zoom');
         $atts['max_zoom'] = empty($max_zoom) ?
-            //$settings->get('default_max_zoom')
             ( empty($map_tile_maxzoom) ? $settings->get('map_tile_maxzoom') : $map_tile_maxzoom )
             : $max_zoom;
         $atts['scrollwheel'] = isset($scrollWheelZoom)

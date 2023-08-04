@@ -121,7 +121,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `scrollwheel`                | 0 (false)                                            |
 | `doubleclickzoom`            | 0 (false)                                            |
 | `min_zoom`                   | 0                                                    |
-| `max_zoom`                   | 19                                                   |
+| `max_zoom`                   | 18                                                   |
 | `subdomains`                 | abc                                                  |
 | `attribution`                | ©Leaflet ©OpenStreetMap                              |
 | `closepopuponclick`          | false                                                |
