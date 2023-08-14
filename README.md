@@ -180,8 +180,8 @@ Then in the console, check the coordinates when you move the marker (should only
 ### [leaflet-wms]
 
 Much the same as leaflet-map above, but for wms services and uses `source` for the source service, 
-`layer` for the layer name and crs for the coordination system (only supported by 
-leaflet: EPSG:3857 and EPSG 4326)
+`layer` for the layer name and `crs` for the coordination system (only supported by 
+leaflet: EPSG:3857 and EPSG:4326)
 
 All three values are mandatory; though defaulting to a mundialis service.
 ```
