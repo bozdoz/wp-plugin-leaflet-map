@@ -112,6 +112,10 @@ Yes, just give it a source URL: `[leaflet-geojson src="https://example.com/path/
 
 Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet-kml]` or `[leaflet-gpx]` shortcode.
 
+= Can I add wms? =
+
+Sure. Use the same attributes as leaflet-image, but user the `[leaflet-wms]` shortcode.
+
 = Can I add a message to a marker? =
 
 Yes: `[leaflet-marker visible]Hello there![/leaflet-marker]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
