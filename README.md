@@ -179,11 +179,9 @@ Then in the console, check the coordinates when you move the marker (should only
 
 ### [leaflet-wms]
 
-Much the same as leaflet-map above, but for wms services and uses `source` for the source service, 
+Much the same as leaflet-map above, but for wms services and uses `src` for the service url, 
 `layer` for the layer name and `crs` for the coordination system (only supported by 
-leaflet: EPSG:3857 and EPSG:4326)
-
-All three values are mandatory; though defaulting to a mundialis service.
+leaflet: EPSG:3857 and EPSG:4326).
 ```
 [leaflet-wms source="https://your/wms/service?" layer="yourLayer" crs="EPSG:3857" zoom=1]
 ```
@@ -192,9 +190,9 @@ All three values are mandatory; though defaulting to a mundialis service.
 
 | Option            | Default                                   |
 | ----------------- | ----------------------------------------- |
-| `source`          | http://ows.mundialis.de/services/service? |
+| `src`             | https://ows.mundialis.de/services/service? |
 | `layer `          | TOPO-OSM-WMS                              |
-| `crs `            | EPSG:4326                                 |
+| `crs `            | EPSG:3857                                 |
 | `zoom`            | 12                                        |
 | `height`          | 250                                       |
 | `width`           | 100%                                      |

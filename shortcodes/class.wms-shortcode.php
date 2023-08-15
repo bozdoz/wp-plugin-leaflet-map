@@ -1,13 +1,12 @@
 <?php
 /**
- * Image Shortcode
+ * Wms Shortcode
  *
  * Displays map with [leaflet-wms src="path/to/wms"] 
  *
- * JavaScript equivalent : L.TileLayer.wms('path/to/wms', wmsOptions);
+ * JavaScript equivalent : L.TileLayer.wms('path/to/wms?', {layer: 'layername', crs: L.CRS.EPSG3857});
  *
  * @category Shortcode
- * @author   Benjamin J DeLong <ben@bozdoz.com>
  * @author Janne Jakob Fleischer <janne.fleischer@ils-forschung.de>
  */
 
@@ -55,7 +54,7 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
 
         /* only required field for image map (src/source) */
         $src = empty($src) ? '' : $src;
-        $source = empty($source) ? 'http://ows.mundialis.de/services/service?' : $source;
+        $source = empty($source) ? 'https://ows.mundialis.de/services/service?' : $source;
         $source = empty($src) ? $source : $src;
         
         $layer = empty($layer) ? 'TOPO-OSM-WMS' : $layer;
