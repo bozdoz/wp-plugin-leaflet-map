@@ -136,8 +136,8 @@ if (marker_options.draggable) {
         }
     });
 }
-var target = '<?php echo $target; ?>';
 // on click, trigger forward to local target page, if specified in shortcode
+var target = '<?php echo $target; ?>';
 if (target) {
   marker.on('click', function() { window.location.href = target ;});
 }
