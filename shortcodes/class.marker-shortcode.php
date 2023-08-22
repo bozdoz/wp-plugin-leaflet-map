@@ -136,6 +136,11 @@ if (marker_options.draggable) {
         }
     });
 }
+var target = '<?php echo $target; ?>';
+// on click, trigger forward to local target page, if specified in shortcode
+if (target) {
+  marker.on('click', function() { window.location.href = target ;});
+}
 marker.addTo( group );
 <?php
     $this->LM->add_popup_to_shape($atts, $content, 'marker');

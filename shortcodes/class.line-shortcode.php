@@ -95,6 +95,11 @@ class Leaflet_Line_Shortcode extends Leaflet_Shortcode
 var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>);
+// on click, trigger forward to local target page, if specified in shortcode
+var target = '<?php echo $target; ?>';
+if (target) {
+  shape.on('click', function() { window.location.href = target ;});
+}
 var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 shape.addTo( group );
 if (fitbounds) {
