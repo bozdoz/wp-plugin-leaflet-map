@@ -6,9 +6,9 @@ Contributors: bozdoz, hupe13, remigr, gerital, sal0max, thibault-barrat, sardyla
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 6.3
-Version: 3.3.0
-Stable tag: 3.3.0
+Tested up to: 6.3.1
+Version: 3.3.1
+Stable tag: 3.3.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -148,6 +148,13 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.3.1 =
+* [Update] Default Leaflet map set at v1.9.4 
+* [Security] Escapes geojson popup properties to prevent XSS attacks
+* [Bug] Updates "!attribution" or "attribution=0" attributes to actually remove attribution
+* [Bug] Switches SANITIZE_FULL with SANITIZE to to allow "German umlauts"
+* [Bug] Fixes some issues when a map's max zoom differs from a tile layer's max zoom
 
 = 3.3.0 =
 * Adds 'leaflet_map_popup_message' filter for manipulating popup messages
@@ -459,6 +466,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 3.3.1 =
+* Escapes geojson popup properties to prevent XSS attacks
 
 = 3.2.0 =
 * Fixes error if geocoder fails to get a lat/lng
