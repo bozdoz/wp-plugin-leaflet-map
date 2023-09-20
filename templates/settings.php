@@ -91,7 +91,8 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
         <p><?php
         _e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map');
         echo Leaflet_Map::$leaflet_version;
-        _e(' - Please change JavaScript-URL and CSS-URL.', 'leaflet-map');
+        ?></p><p><?php
+        _e('You may want to update your JavaScript URL and CSS URL below.', 'leaflet-map');
         ?></p>
     </div>
 <?php
