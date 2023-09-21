@@ -244,6 +244,16 @@ class Leaflet_Map_Plugin_Settings
                     $foreachmap
                 )
             ),
+            'map_tile_minzoom' => array(
+                'display_name'=>__('Map Tile Min Zoom', 'leaflet-map'),
+                'default'=>'0',
+                'type' => 'number',
+                'helptext' => sprintf(
+                    '%1$s %2$s <br/> <code>[leaflet-map map_tile_minzoom="1234"]</code>',
+                    __('Some tiles have a minZoom defined.', 'leaflet-map'),
+                    $foreachmap
+                )
+            ),
             'map_tile_maxzoom' => array(
                 'display_name'=>__('Map Tile Max Zoom', 'leaflet-map'),
                 'default'=>'18',
