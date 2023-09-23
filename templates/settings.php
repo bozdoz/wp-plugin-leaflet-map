@@ -1,9 +1,9 @@
 <?php
 /**
  * Settings View
- *
+ * 
  * PHP Version 5.5
- *
+ * 
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -88,11 +88,9 @@ $is_unpkg_url = substr_compare($db_js_url, $unpkg_url, 0, strlen($unpkg_url)) ==
 if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
 ?>
     <div class="notice notice-info is-dismissible">
-        <p><?php
-        _e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map');
+        <p><?php 
+        _e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map'); 
         echo Leaflet_Map::$leaflet_version;
-        ?></p><p><?php
-        _e('You may want to update your JavaScript URL and CSS URL below.', 'leaflet-map');
         ?></p>
     </div>
 <?php
@@ -141,20 +139,20 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
     }
     ?>
     <div class="submit">
-        <input type="submit"
-            name="submit"
-            id="submit"
-            class="button button-primary"
+        <input type="submit" 
+            name="submit" 
+            id="submit" 
+            class="button button-primary" 
             value="<?php _e('Save Changes', 'leaflet-map'); ?>">
-        <input type="submit"
-            name="reset"
-            id="reset"
-            class="button button-secondary"
+        <input type="submit" 
+            name="reset" 
+            id="reset" 
+            class="button button-secondary" 
             value="<?php _e('Reset to Defaults', 'leaflet-map'); ?>">
-        <input type="submit"
-            name="clear-geocoder-cache"
-            id="clear-geocoder-cache"
-            class="button button-secondary"
+        <input type="submit" 
+            name="clear-geocoder-cache" 
+            id="clear-geocoder-cache" 
+            class="button button-secondary" 
             value="<?php _e('Clear Geocoder Cache', 'leaflet-map'); ?>">
     </div>
 
