@@ -200,8 +200,27 @@
       return output;
     };
 
+    /**
+     * Trim whitespace
+     * @param {string} a
+     * @returns string
+     */
     function trim(a) {
       return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
+    }
+
+    /**
+     * Gets string of anchor for Leaflet's consumption
+     * @param {Record<'href' | 'textContent', string>} atts
+     */
+    function makeStringLink(atts) {
+      const a = document.createElement('a');
+      a.href = atts.href;
+      a.textContent = atts.textContent;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+
+      return a.outerHTML;
     }
 
     function addAttributionToMap(attribution, map) {
@@ -218,6 +237,19 @@
 
       for (var i = 0, len = attributions.length; i < len; i++) {
         var att = trim(attributions[i]);
+
+        // add liquid-style attribution: {WP | link: https://wordpress.com}
+        att = liquid(att, function (match, obj) {
+          if (obj.link) {
+            return makeStringLink({
+              href: obj.link,
+              textContent: obj.key,
+            });
+          }
+
+          return match;
+        });
+
         attControl.addAttribution(att);
       }
     }
@@ -227,8 +259,6 @@
       div.innerHTML = str;
       return div.innerText || str;
     });
-
-    var templateRe = /\{ *(.*?) *\}/g;
 
     /**
      * It interpolates variables in curly brackets (regex above)
@@ -243,8 +273,8 @@
         return str;
       }
 
-      return str.replace(templateRe, function (match, key) {
-        var obj = liquid(key);
+      // @since 2.21.0 allow for a `default` filter for missing properties
+      return liquid(str, function (match, obj) {
         var value = parseKey(data, obj.key);
         if (value == null) {
           return obj.default || match;
@@ -301,31 +331,41 @@
       return value;
     }
 
+    var liquidRe = /{+ *(.*?) *}+/g;
+
     /**
      * parses liquid tags from a string
      *
      * @param {string} str
      */
-    function liquid(str) {
-      var tags = str.split(' | ');
-      var obj = {};
+    function liquid(str, callback) {
+      return str.replace(liquidRe, function (match, group) {
+        /** @type string[] */
+        var tags = group.split(' | ');
+        var obj = {};
 
-      // removes initial variable from array
-      var key = tags.shift();
+        // removes initial variable from array
+        var filter = tags.shift();
 
-      for (var i = 0, len = tags.length; i < len; i++) {
-        var tag = tags[i].split(': ');
-        var tagName = tag.shift();
-        var tagValue = tag.join(': ') || true;
+        for (var i = 0, len = tags.length; i < len; i++) {
+          var tag = tags[i];
+          var delimiter = tag.indexOf(':');
+          var tagName = trim(delimiter === -1 ? tag : tag.slice(0, delimiter));
+          var tagValue =
+            delimiter === -1 ? true : trim(tag.slice(delimiter + 1));
 
-        obj[tagName] = tagValue;
-      }
+          obj[tagName] = tagValue;
+        }
 
-      // always preserve the original string
-      obj.key = key;
+        // always preserve the original string
+        obj.key = filter;
 
-      return obj;
+        return callback(match, obj);
+      });
     }
+
+    // export for tests
+    this.liquid = liquid;
 
     function waitFor(prop, cb) {
       if (typeof L !== 'undefined' && typeof L[prop] !== 'undefined') {
