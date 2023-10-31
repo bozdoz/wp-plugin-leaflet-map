@@ -137,6 +137,9 @@
                     '[leaflet-map fitbounds]',
                     '[leaflet-video-overlay]',
                 ),
+                __("WMS Map", 'leaflet-map') => array(
+                    '[leaflet-wms zoomControl]',
+                ),
                 );
 
             foreach ($examples as $title => $collection) {

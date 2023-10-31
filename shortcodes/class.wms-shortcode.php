@@ -56,7 +56,7 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
     $source = empty($source)
       ? 'https://ows.mundialis.de/services/service?'
       : $source;
-    $source = empty($src) ? $source : $src;
+    $source = filter_var(empty($src) ? $source : $src, FILTER_SANITIZE_URL);
 
     $layer = empty($layer) ? 'TOPO-OSM-WMS' : $layer;
 
@@ -64,16 +64,17 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
 
     ob_start();
     ?>/*<script>*/
+var srcUrl = atob('<?php echo base64_encode( $source ); ?>');
 var options = L.Util.extend({}, {
         attributionControl: false
     }, <?php echo $map_options; ?>);
 var zoom = <?php echo $zoom; ?>;
 var map = window.WPLeafletMapPlugin.createMap(options).setView(L.latLng(<?php echo $lat; ?>, <?php echo $lng; ?>), zoom);
 var wmslayer = L.tileLayer.wms(
-	'<?php echo $source; ?>', 
+	srcUrl, 
 	{
-		layers: '<?php echo $layer; ?>',
-		crs: L.CRS['<?php echo $crs; ?>']
+		layers: '<?php echo esc_js($layer); ?>',
+		crs: L.CRS['<?php echo esc_js($crs); ?>']
 	}
 ).addTo( map );
 
