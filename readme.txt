@@ -114,7 +114,7 @@ Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet
 
 = Can I add wms? =
 
-Sure. Use the same attributes as leaflet-image, but user the `[leaflet-wms]` shortcode.
+Sure. Use the same attributes as leaflet-map, but use the `[leaflet-wms]` shortcode; attributes include: `src`, `layer`, and `crs`.
 
 = Can I add a message to a marker? =
 
