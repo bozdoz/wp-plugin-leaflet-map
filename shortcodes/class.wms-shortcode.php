@@ -62,6 +62,11 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
 
     $crs = str_replace(':', '', empty($crs) ? 'EPSG:3857' : $crs);
 
+    if ($source == 'https://ows.mundialis.de/services/service?' && $layer == 'TOPO-OSM-WMS') {
+        $attribution = empty($attribution) ? '© OpenStreetMap Contributors' : $attribution;
+    }
+    $attribution = empty($attribution) ? '' : $attribution;
+
     ob_start();
     ?>/*<script>*/
 var srcUrl = atob('<?php echo base64_encode( $source ); ?>');
@@ -75,7 +80,7 @@ var wmslayer = L.tileLayer.wms(
 	{
 		layers: '<?php echo esc_js($layer); ?>',
 		crs: L.CRS['<?php echo esc_js($crs); ?>'],
-        attribution: '© OpenStreetMap Contributors'
+        attribution: <?php echo esc_js($attribution); ?>
 	}
 ).addTo( map );
 
