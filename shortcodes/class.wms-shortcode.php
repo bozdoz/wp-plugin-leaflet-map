@@ -74,7 +74,8 @@ var wmslayer = L.tileLayer.wms(
 	srcUrl, 
 	{
 		layers: '<?php echo esc_js($layer); ?>',
-		crs: L.CRS['<?php echo esc_js($crs); ?>']
+		crs: L.CRS['<?php echo esc_js($crs); ?>'],
+        attribution: '© OpenStreetMap Contributors'
 	}
 ).addTo( map );
 
