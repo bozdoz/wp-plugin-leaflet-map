@@ -46,6 +46,10 @@ class Leaflet_Map
             'file' => 'class.gpx-shortcode.php',
             'class' => 'Leaflet_Gpx_Shortcode'
         ),
+        'leaflet-wms' => array(
+            'file' => 'class.wms-shortcode.php',
+            'class' => 'Leaflet_Wms_Shortcode'
+        ),
         'leaflet-line' => array(
             'file' => 'class.line-shortcode.php',
             'class' => 'Leaflet_Line_Shortcode'
