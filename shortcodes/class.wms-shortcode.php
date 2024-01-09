@@ -76,12 +76,11 @@ var options = L.Util.extend({}, {
 var zoom = <?php echo $zoom; ?>;
 var map = window.WPLeafletMapPlugin.createMap(options).setView(L.latLng(<?php echo $lat; ?>, <?php echo $lng; ?>), zoom);
 var wmslayer = L.tileLayer.wms(
-	srcUrl, 
-	{
-		layers: '<?php echo esc_js($layer); ?>',
-		crs: L.CRS['<?php echo esc_js($crs); ?>'],
-        attribution: <?php echo esc_js($attribution); ?>
-	}
+  srcUrl, 
+  {
+    layers: '<?php echo esc_js($layer); ?>',
+    crs: L.CRS['<?php echo esc_js($crs); ?>']
+  }
 ).addTo( map );
 
 <?php

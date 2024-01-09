@@ -138,7 +138,7 @@
                     '[leaflet-video-overlay]',
                 ),
                 __("WMS Map", 'leaflet-map') => array(
-                    '[leaflet-wms zoomControl]',
+                    '[leaflet-wms zoomControl zoom=5 lat=38.9252 lng=35.33203 attribution="For Those of Us in Turkey"]',
                 ),
                 );
 
