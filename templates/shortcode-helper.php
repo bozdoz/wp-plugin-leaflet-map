@@ -71,9 +71,6 @@
                 __("Zoom Buttons", 'leaflet-map') => array(
                     '[leaflet-map zoom=10 lat=48.855 lng=2.35 zoomcontrol !detect-retina]',
                     ),
-                __("Alternate Map Tiles w/scrollwheel", 'leaflet-map') => array(
-                    '[leaflet-map zoom=2 scrollwheel lat=-2.507 lng=32.902 tileurl=https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg subdomains=a,b,c,d attribution="Map tiles by Stamen Design, under CC BY 3.0."]',
-                    ),
                 __("Marker Popup Messages (on click)", 'leaflet-map') => array(
                     '[leaflet-map lat=59.913 lng=10.739 zoom=12]',
                     '[leaflet-marker]OSLO![/leaflet-marker]',
@@ -136,6 +133,9 @@
                 __("Video Overlay Map", 'leaflet-map') => array(
                     '[leaflet-map fitbounds]',
                     '[leaflet-video-overlay]',
+                ),
+                __("WMS Map", 'leaflet-map') => array(
+                    '[leaflet-wms zoomControl zoom=5 lat=38.9252 lng=35.33203 attribution="For Those of Us in Turkey"]',
                 ),
                 );
 

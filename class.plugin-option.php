@@ -49,6 +49,14 @@ class Leaflet_Map_Plugin_Option
     public $helptext = '';
 
     /**
+     * All properties that we will be setting
+     */
+    public $display_name = '';
+    public $min = 0;
+    public $max = 0;
+    public $step = 0;
+
+    /**
      * Instantiate class
      * 
      * @param array $details A list of options

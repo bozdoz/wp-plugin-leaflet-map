@@ -13,7 +13,7 @@ services:
       MYSQL_PASSWORD: wordpress
 
   cli:
-    image: bozdoz/wordpress-initialize:2.7.1-php8.0
+    image: bozdoz/wordpress-initialize:2.9-php8.3
     depends_on:
       - mysql
     volumes:
@@ -38,7 +38,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
 
   wordpress:
-    image: wordpress:6.1.1-php8.1-apache
+    image: wordpress:6.4-php8.3-apache
     depends_on:
       - cli
     volumes:
