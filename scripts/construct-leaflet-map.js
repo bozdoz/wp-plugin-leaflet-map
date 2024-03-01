@@ -201,7 +201,7 @@
     };
 
     function trim(a) {
-      return a.trim ? a.trim() : a.replace(/^\s+|\s+$/gm, '');
+      return a.trim();
     }
 
     function addAttributionToMap(attribution, map) {

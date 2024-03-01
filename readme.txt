@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, mobile, javascript, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 6.4.2
-Version: 3.4.0
-Stable tag: 3.4.0
+Version: 3.4.1
+Stable tag: 3.4.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,10 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+
+= 3.4.0 =
+* [Update] Compatible with PHP 8.2
 
 = 3.4.0 =
 * [Feature] New [leaflet-wms] layer! Thanks @jannefleischer!
