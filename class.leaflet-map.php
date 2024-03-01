@@ -1,7 +1,7 @@
 <?php
 /**
  * Leaflet Map Class File
- * 
+ *
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -19,14 +19,14 @@ class Leaflet_Map
 
     /**
      * Leaflet version
-     * 
+     *
      * @var string major minor patch version
      */
     public static $leaflet_version = '1.9.4';
 
     /**
      * Files to include upon init
-     * 
+     *
      * @var array $_shortcodes
      */
     private $_shortcodes = array(
@@ -86,14 +86,14 @@ class Leaflet_Map
 
     /**
      * Singleton Instance of Leaflet Map
-     * 
+     *
      * @var Leaflet_Map
      **/
     private static $instance = null;
 
     /**
      * Singleton init Function
-     * 
+     *
      * @static
      */
     public static function init() {
@@ -126,12 +126,12 @@ class Leaflet_Map
 
         // Leaflet_Map_Admin
         include_once LEAFLET_MAP__PLUGIN_DIR . 'class.admin.php';
-        
+
         // init admin
         Leaflet_Map_Admin::init();
 
         add_action( 'plugins_loaded', array('Leaflet_Map', 'load_text_domain' ));
-        
+
         add_action( 'wp_enqueue_scripts', array('Leaflet_Map', 'enqueue_and_register') );
 
         $settings = self::settings();
@@ -149,7 +149,7 @@ class Leaflet_Map
     {
         // shortcodes
         $shortcode_dir = LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/';
-        
+
         foreach ($this->_shortcodes as $shortcode => $details) {
             include_once $shortcode_dir . $details['file'];
             add_shortcode($shortcode, array($details['class'], 'shortcode'));
@@ -162,7 +162,7 @@ class Leaflet_Map
     public static function uninstall()
     {
         // remove settings in db
-        // it needs to be included again because __construct 
+        // it needs to be included again because __construct
         // won't need to execute
         $settings = self::settings();
         $settings->reset();
@@ -204,7 +204,7 @@ class Leaflet_Map
 
             wp_register_script('leaflet_mapquest_plugin', $mapquest_js_url, Array('leaflet_js'), '2.0', true);
         }
-        
+
         // optional ajax geojson plugin
         wp_register_script('tmcw_togeojson', $settings->get('togeojson_url'), Array('jquery'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
@@ -217,7 +217,7 @@ class Leaflet_Map
         wp_register_script('leaflet_ajax_geojson_js', plugins_url(sprintf('scripts/leaflet-ajax-geojson%s.js', $minified), __FILE__), Array('tmcw_togeojson', 'leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
 
         wp_register_script('leaflet_svg_icon_js', plugins_url(sprintf('scripts/leaflet-svg-icon%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
-        
+
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
         wp_register_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
     }
@@ -226,7 +226,7 @@ class Leaflet_Map
      * Filter for removing nulls from array
      *
      * @param array $arr
-     * 
+     *
      * @return array with nulls removed
      */
     public function filter_null($arr)
@@ -244,7 +244,7 @@ class Leaflet_Map
      * Filter for removing empty strings from array
      *
      * @param array $arr
-     * 
+     *
      * @return array with empty strings removed
      */
     public function filter_empty_string($arr)
@@ -281,7 +281,7 @@ class Leaflet_Map
     }
 
     /**
-     * Sanitize JSON 
+     * Sanitize JSON
      *
      * Takes options for filtering/correcting inputs for use in JavaScript
      *
@@ -309,7 +309,7 @@ class Leaflet_Map
      * Takes atts for creating shapes on the map
      *
      * @param array $atts    user-input array
-     * 
+     *
      * @return array corrected for JavaScript
      */
     public function get_style_json($atts)
@@ -374,16 +374,16 @@ class Leaflet_Map
             extract($atts, EXTR_SKIP);
         }
 
-        $message = empty($message) ? 
+        $message = empty($message) ?
             (empty($content) ? '' : $content) : $message;
 
         if (empty($message)) {
             return;
         }
-        
+
         // save variable for filter
         $original = $message;
-        
+
         // execute shortcodes if present:
         // e.g. [leaflet-marker][some-shortcode][/leaflet-marker]
         $message = do_shortcode($message);
@@ -401,11 +401,11 @@ class Leaflet_Map
         $message = apply_filters('leaflet_map_popup_message', $message, $shortcoded, $original);
 
         echo "{$shape}.bindPopup({$message})";
-        
-        $visible = empty($visible) 
-            ? false 
+
+        $visible = empty($visible)
+            ? false
             : filter_var($visible, FILTER_VALIDATE_BOOLEAN);
-        
+
         if ($visible) {
             echo ".openPopup()";
         }
@@ -423,9 +423,9 @@ class Leaflet_Map
 
     /**
      * Parses liquid tags from a string
-     * 
+     *
      * @param string $str
-     * 
+     *
      * @return array|null
      */
     public function liquid ($str) {
@@ -434,11 +434,11 @@ class Leaflet_Map
         }
         $templateRegex = "/\{ *(.*?) *\}/";
         preg_match_all($templateRegex, $str, $matches);
-               
+
         if (!$matches[1]) {
             return null;
         }
-        
+
         $str = $matches[1][0];
 
         $tags = explode(' | ', $str);
@@ -467,14 +467,14 @@ class Leaflet_Map
 
     /**
      * Renders a json-like string, removing quotes for values
-     * 
-     * allows JavaScript variables to be added directly 
-     * 
+     *
+     * allows JavaScript variables to be added directly
+     *
      * @return string
      */
     public function rawDict ($arr) {
         $obj = '{';
-        
+
         foreach ($arr as $key=>$val) {
             $obj .= "\"$key\": $val,";
         }
@@ -491,10 +491,10 @@ class Leaflet_Map
     public function filter_float ($flt) {
         // make sure the value actually is a float
         $out = filter_var($flt, FILTER_VALIDATE_FLOAT);
-        
+
         // some locales seem to force commas
         $out = str_replace(',', '.', $out);
-        
+
         return $out;
     }
 
@@ -510,11 +510,11 @@ class Leaflet_Map
 
                 return array(
                     array(
-                        $this->filter_float($arr[0]), 
+                        $this->filter_float($arr[0]),
                         $this->filter_float($arr[1])
                     ),
                     array(
-                        $this->filter_float($arr[2]), 
+                        $this->filter_float($arr[2]),
                         $this->filter_float($arr[3])
                     )
                 );

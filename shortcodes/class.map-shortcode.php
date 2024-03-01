@@ -192,15 +192,16 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 
         $atts['raw_map_options'] = $this->LM->rawDict($raw_map_options);
 
-        $tile_layer_options = array(
-            'tileSize' => empty($tilesize) ? $settings->get('tilesize') : $tilesize,
-            'subdomains' => empty($subdomains) ? $settings->get('map_tile_url_subdomains') : $subdomains,
-            'id' => empty($mapid) ? $settings->get('mapid') : $mapid,
-            'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
-            'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
-            'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
-            'maxZoom' => $atts['maxZoom']
-        );
+                $tile_layer_options = array(
+                    'tileSize' => empty($tilesize) ? $settings->get('tilesize') : $tilesize,
+                    'subdomains' => empty($subdomains) ? $settings->get('map_tile_url_subdomains') : $subdomains,
+                    'id' => empty($mapid) ? $settings->get('mapid') : $mapid,
+                    'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
+                    'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
+                    'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
+                    'minZoom' => filter_var(empty($map_tile_minzoom) ? $settings->get('map_tile_minzoom') : $map_tile_minzoom, FILTER_VALIDATE_FLOAT),
+                    'maxZoom' => filter_var(empty($map_tile_maxzoom) ? $settings->get('map_tile_maxzoom') : $map_tile_maxzoom, FILTER_VALIDATE_FLOAT),
+                );
 
 
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
@@ -317,6 +318,22 @@ window.WPLeafletMapPlugin.createMap(options).setView(<?php
             echo do_shortcode('[leaflet-scale noScriptWrap]');
         }
 
+        echo '
+          window.WPLeafletMapPlugin = window.WPLeafletMapPlugin || [];
+          window.WPLeafletMapPlugin.push(function () {
+            var map = window.WPLeafletMapPlugin.getCurrentMap();
+            map.eachLayer(function(layer) {
+              if( layer instanceof L.TileLayer ) {
+                if ( map.options.minZoom < layer.options.minZoom) {
+                  map.options.minZoom = layer.options.minZoom;
+                }
+                if (map.options.maxZoom > layer.options.maxZoom) {
+                  map.options.maxZoom = layer.options.maxZoom;
+                }
+              }
+            });
+          });
+        ';
         $script = ob_get_clean();
 
         return $this->getDiv($height, $width) . $this->wrap_script($script, 'WPLeafletMapShortcode');
