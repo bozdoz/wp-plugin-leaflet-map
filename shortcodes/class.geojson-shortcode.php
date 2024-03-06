@@ -105,7 +105,7 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 function onEachFeature (feature, layer) {
     var props = feature.properties || {};
     var text;
-    if (<?php echo $table_view; ?>) {
+    if (table_view) {
         text = window.WPLeafletMapPlugin.propsToTable(props);
     } else {
         text = popup_property
@@ -152,6 +152,7 @@ var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo esc_js(
   $popup_text
 ); ?>");
 var popup_property = "<?php echo esc_js($popup_property); ?>";
+var table_view = <?php echo $table_view; ?>;
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var markerOptions = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
 layer.addTo( group );
