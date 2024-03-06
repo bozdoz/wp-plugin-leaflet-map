@@ -99,8 +99,36 @@ class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
 
         $options = $this->LM->json_sanitize($options, $args);
 
-        ob_start();
-        ?>/*<script>*/
+    // set the default for onEachFeature
+    ob_start();
+    ?>
+function onEachFeature (feature, layer) {
+    var props = feature.properties || {};
+    var text;
+    if (table_view) {
+        text = window.WPLeafletMapPlugin.propsToTable(props);
+    } else {
+        text = popup_property
+            ? props[ popup_property ]
+            : window.WPLeafletMapPlugin.template(
+                popup_text, 
+                feature.properties
+            );
+    }
+    if (text) {
+        layer.bindPopup( text );
+    }
+}
+    <?php
+    $onEachFeature = ob_get_clean();
+
+    // use with: add_filter('leaflet_map_geojson_onEachFeature', 'example_callback', 10, 3);
+    // function takes default onEachFeature
+    $onEachFeature = apply_filters('leaflet_map_geojson_onEachFeature', $onEachFeature);
+
+    // create the geojson script
+    ob_start();
+    ?>/*<script>*/
 var src = '<?php echo htmlspecialchars($src, ENT_QUOTES); ?>';
 var default_style = <?php echo $style_json; ?>;
 var rewrite_keys = {
@@ -124,6 +152,7 @@ var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo esc_js(
   $popup_text
 ); ?>");
 var popup_property = "<?php echo esc_js($popup_property); ?>";
+var table_view = <?php echo $table_view; ?>;
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
 var markerOptions = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
 layer.addTo( group );
@@ -151,23 +180,7 @@ function layerStyle (feature) {
     }
     return L.Util.extend(style, default_style);
 }
-function onEachFeature (feature, layer) {
-    var props = feature.properties || {};
-    var text;
-    if (<?php echo $table_view; ?>) {
-        text = window.WPLeafletMapPlugin.propsToTable(props);
-    } else {
-        text = popup_property
-            ? props[ popup_property ]
-            : window.WPLeafletMapPlugin.template(
-                popup_text, 
-                feature.properties
-            );
-    }
-    if (text) {
-        layer.bindPopup( text );
-    }
-}
+<?php echo $onEachFeature; ?>
 function pointToLayer (feature, latlng) {
     if (circleMarker) {
         return L.circleMarker(latlng);
