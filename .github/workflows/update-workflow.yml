@@ -20,7 +20,7 @@ on:
 jobs:
   update:
     container:
-      image: alpine:3.20
+      image: alpine:3.11
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
