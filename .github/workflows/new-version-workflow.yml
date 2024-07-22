@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     container:
-      image: node:16.13-alpine
+      image: node:20-alpine
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
     needs: test
     if: ${{ !contains(github.event.head_commit.message, 'NO_DEPLOY') }}
     container:
-      image: alpine:3.11
+      image: alpine:3.20
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

@@ -13,9 +13,9 @@ on:
 jobs:
   test:
     container:
-      image: node:16.13-alpine
+      image: node:20-alpine
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: npm ci
       - run: npm test

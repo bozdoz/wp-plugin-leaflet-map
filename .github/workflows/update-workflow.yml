@@ -2,9 +2,11 @@ name: Update Workflow
 
 on:
   push:
+    branches:
+      - master
     # only triggers on solo readme commits basically
     paths:
-      - '!.github/**'
+      - '*'
       - '!languages/**'
       - '!scripts/**'
       - '!shortcodes/**'
@@ -16,12 +18,11 @@ on:
 
 jobs:
   update:
-    if: github.event.ref == 'refs/heads/master'
     container:
-      image: alpine:3.11
+      image: alpine:3.20
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # setup
       - run: apk add --no-cache subversion nodejs npm
       - run: npm i -g minify@5.1.1
