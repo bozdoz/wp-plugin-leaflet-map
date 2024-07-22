@@ -66,7 +66,7 @@ Add a line to the map by adding `[leaflet-line]`. You can specify the postions w
 
 Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
-Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so: 
+Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so:
 
 `
 [leaflet-map fitbounds]
@@ -215,7 +215,7 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * actual bugfix to multiple or missing enqueue map scripts
 
 = 2.23.1 =
-* possible bugfix to failing to enqueue map when shortcode rendered 
+* possible bugfix to failing to enqueue map when shortcode rendered
 
 = 2.23.0 =
 * Added iconUrl to leaflet-geojson shortcode.
@@ -332,7 +332,7 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * Added string interpolation for GeoJSON popups to use feature properties (thanks to [@geraldo](https://github.com/geraldo))
 
 = 2.9.1 =
-* Fixes for PHP 7.2: made all method arguments identical 
+* Fixes for PHP 7.2: made all method arguments identical
 * Added minified JavaScript files for site speed
 
 = 2.8.6 =
@@ -393,13 +393,13 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * Added basic marker icon support (with attributes "iconUrl", "iconAnchor", etc.);
 
 = 2.6.0 =
-* Changes to map creation which may solve an occasional marker creation JavaScript error 
+* Changes to map creation which may solve an occasional marker creation JavaScript error
 * Added more attributes to marker shortcode (draggable, title, alt, opacity)
 * Added doubleClickZoom global, database option to globally disable double click zooming (by default), because it's more inline with disabling scroll zooming by default. Box zooming on the other hand is more intentional
 
 = 2.5.0 =
-* Some improvements to the codebase; 
-* added the same styling options for lines as there are for geojson; 
+* Some improvements to the codebase;
+* added the same styling options for lines as there are for geojson;
 * added popups to lines, as there are for markers;
 * added an example to the shortcode admin page for the style attributes on lines;
 * added code and another example for disabling all map interactions (all zooms, keyboard, etc);
@@ -606,7 +606,7 @@ Fixed array_filter on some older PHP versions
 Fixed possible JavaScript error "Unexpected token <"; fix was to remove spaces
 
 = 2.6.0 =
-Changes to map creation which may solve an occasional marker creation JavaScript error 
+Changes to map creation which may solve an occasional marker creation JavaScript error
 
 = 2.0.2 =
 OpenStreetMap.org has an SSL certificate (osm.org didn't)
