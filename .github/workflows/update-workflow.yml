@@ -1,12 +1,13 @@
 name: Update Workflow
 
 on:
+  workflow_dispatch:    
   push:
     branches:
       - master
     # only triggers on solo readme commits basically
     paths:
-      - '*'
+      - '*.txt'
       - '!languages/**'
       - '!scripts/**'
       - '!shortcodes/**'

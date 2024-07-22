@@ -11,7 +11,7 @@ jobs:
       image: node:20-alpine
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: npm ci
       - run: npm test
   new-version:
@@ -21,10 +21,10 @@ jobs:
       image: alpine:3.20
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # setup
       - run: apk add --no-cache subversion nodejs npm
-      - run: npm i -g minify@5.1.1
+      - run: npm i -g minify@^5.1
       - run: svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
       - run: rm -rf /repo/trunk/*
       - run: cp -r * /repo/trunk
