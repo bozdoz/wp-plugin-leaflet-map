@@ -133,7 +133,7 @@ However, you can also just give it an address, and the chosen geocoder (default:
 | `keyboard`                   | true                                                 |
 | `maxbounds`                  | null                                                 |
 | `detect-retina`              | 0 (false)                                            |
-| `tileurl`                    | 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' |
+| `tileurl`                    | 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' |
 | `subdomains`                 | 'abc'                                                |
 | `tap`                        | true                                                 |
 | `tilesize`                   | 256                                                  |
