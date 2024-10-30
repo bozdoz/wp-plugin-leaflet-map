@@ -223,7 +223,7 @@ class Leaflet_Map_Plugin_Settings
             ),
             'map_tile_url' => array(
                 'display_name'=>__('Map Tile URL', 'leaflet-map'),
-                'default'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'default'=>'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'type' => 'text',
                 'helptext' => sprintf(
                     '%1$s: <a href="http://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank"> %2$s </a>. %3$s: <a href="http://devblog.mapquest.com/2016/06/15/modernization-of-mapquest-results-in-changes-to-open-tile-access/" target="_blank"> %4$s </a>. %5$s <br/> <code>[leaflet-map tileurl=http://{s}.example.com/{z}/{x}/{y}.jpg subdomains=abcd]</code>',
