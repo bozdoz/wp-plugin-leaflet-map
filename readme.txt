@@ -475,6 +475,3 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 
 = 1.0 =
 * First Version. Basic map creation and marker creation.
-
-= 1.0 =
-First Version. Tested with 3.8.1.
