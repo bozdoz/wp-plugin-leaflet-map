@@ -4,9 +4,9 @@ Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
 Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital
 Donate link: https://www.paypal.me/bozdoz
-Tags: leaflet, map, mobile, openstreetmap, mapquest
+Tags: leaflet, map, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 6.7
+Tested up to: 6.8
 Version: 3.4.1
 Stable tag: 3.4.1
 License: GPLv2
@@ -66,7 +66,7 @@ Add a line to the map by adding `[leaflet-line]`. You can specify the postions w
 
 Add a circle to the map by adding `[leaflet-circle]`. You can specify the position using `lat` and `lng` and the radius in meters using `radius`. You can also customize the style using [Leaflet's Path options](https://leafletjs.com/reference.html#path-option). Example: `[leaflet-circle message="max distance" lng=5.117909610271454 lat=52.097914814706094 radius=17500 color="#0DC143" fillOpacity=0.1]`.
 
-Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so: 
+Or you can add a geojson shape via a url (make sure you are allowed to access it if it's not hosted on your own server): `[leaflet-geojson src="https://example.com/path/to.geojson"]`.  Add custom popups with field names; try out the default src file and fields like so:
 
 `
 [leaflet-map fitbounds]
@@ -161,7 +161,7 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * [Feature] New [leaflet-wms] layer! Thanks @jannefleischer!
 
 = 3.3.1 =
-* [Update] Default Leaflet map set at v1.9.4 
+* [Update] Default Leaflet map set at v1.9.4
 * [Security] Escapes geojson popup properties to prevent XSS attacks
 * [Bug] Updates "!attribution" or "attribution=0" attributes to actually remove attribution
 * [Bug] Switches SANITIZE_FULL with SANITIZE to to allow "German umlauts"
@@ -215,7 +215,7 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * actual bugfix to multiple or missing enqueue map scripts
 
 = 2.23.1 =
-* possible bugfix to failing to enqueue map when shortcode rendered 
+* possible bugfix to failing to enqueue map when shortcode rendered
 
 = 2.23.0 =
 * Added iconUrl to leaflet-geojson shortcode.
@@ -332,7 +332,7 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * Added string interpolation for GeoJSON popups to use feature properties (thanks to [@geraldo](https://github.com/geraldo))
 
 = 2.9.1 =
-* Fixes for PHP 7.2: made all method arguments identical 
+* Fixes for PHP 7.2: made all method arguments identical
 * Added minified JavaScript files for site speed
 
 = 2.8.6 =
@@ -393,13 +393,13 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * Added basic marker icon support (with attributes "iconUrl", "iconAnchor", etc.);
 
 = 2.6.0 =
-* Changes to map creation which may solve an occasional marker creation JavaScript error 
+* Changes to map creation which may solve an occasional marker creation JavaScript error
 * Added more attributes to marker shortcode (draggable, title, alt, opacity)
 * Added doubleClickZoom global, database option to globally disable double click zooming (by default), because it's more inline with disabling scroll zooming by default. Box zooming on the other hand is more intentional
 
 = 2.5.0 =
-* Some improvements to the codebase; 
-* added the same styling options for lines as there are for geojson; 
+* Some improvements to the codebase;
+* added the same styling options for lines as there are for geojson;
 * added popups to lines, as there are for markers;
 * added an example to the shortcode admin page for the style attributes on lines;
 * added code and another example for disabling all map interactions (all zooms, keyboard, etc);
@@ -475,3 +475,162 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 
 = 1.0 =
 * First Version. Basic map creation and marker creation.
+
+== Upgrade Notice ==
+
+= 3.3.1 =
+* Escapes geojson popup properties to prevent XSS attacks
+
+= 3.2.0 =
+* Fixes error if geocoder fails to get a lat/lng
+* Fixes deprecated warnings in php 8.1
+* Fixes detect retina and maxzoom issues
+
+= 3.1.0 =
+Reduces php warnings by checking for lat and lon in osm_geocode with isset().
+Adds min, max, step to inputs for zoom, minZoom, and maxZoom.
+Obfuscates base tileurl with base64_encode.
+Allows for comma-separated tile server subdomains.
+New: [leaflet-image-overlay] and [leaflet-video-overlay].
+
+= 3.0.5 =
+Fixes ampersands/querystrings in geojson/gpx/kml urls
+
+= 3.0.4 =
+Fixes markers so that they can accept `0` as a value for x/y and lat/lng coordinates
+
+= 3.0.3 =
+Fixes using `popupAnchor` without passing `iconUrl`
+
+= 3.0.2 =
+Another fix for commas in float coordinates. Fix validation of tile urls. Fix for php 5.6 using static function methods.
+
+= 3.0.1 =
+Fixes some issues with float coordinates that use commas instead of decimals, and fixes some quotes in addresses for geocoding
+
+= 3.0.0 =
+Fixes security issues in admin and in shortcode attributes.  Escapes and filters many inputs.
+
+= 2.23.3 =
+Changes 'leaflet_map_enqueue' action to fire for each map
+
+= 2.23.2 =
+Actual bugfix to multiple or missing enqueue map scripts
+
+= 2.23.1 =
+Possible bugfix to ensuring javascript is enqueued when map is rendered
+
+= 2.23.0 =
+Minor bugfix to number-type inputs in admin that couldn't switch types between decimals and integers
+
+= 2.21.0 =
+Fixes issues with tilelayers when min_zoom and max_zoom are identical and detect_retina is true
+
+= 2.19.1 =
+Bumps leaflet version to 1.7.1
+Removes "\r\n" from default attribution
+Uses min and max zoom in tileurl as well as map
+
+= 2.18.0 =
+Changes the way maps are rendered: Now creates map containers before creating maps, in the same order the containers are rendered. This should help with ajax, caching, and script-altering plugins.
+
+= 2.17.3 =
+Bugfix to detect retina breaking MapQuest maps since 2.17.0
+
+= 2.17.1 =
+Lazy-loading svg and geojson scripts so that it can wait for Leaflet to be loaded under some circumstances (deferred scripts)
+
+= 2.17.0 =
+Makes shortcode in excerpts conditional (enable it in admin->leaflet-map->settings)
+
+= 2.16.2 =
+Fixes missing maps by removing spaces in the JavaScript which some themes turn into paragraphs
+
+= 2.16.1 =
+Updates default Leaflet to 1.6.0
+Changes map generation from a pre-defined randomly identified div element to a JavaScript generated div which is created (insertBefore) each inserted script tag
+
+= 2.16.0 =
+Adds [leaflet-polygon]
+Allows author roles to see shortcodes page
+
+= 2.15.0 =
+Adds referer to file_get_contents, in case curl is disabled
+Updates default Leaflet to 1.5.1
+Fixes reset default values button in settings
+Requires at least WordPress 4.6
+
+= 2.12.0 =
+Fixed links in shortcode helper page; fixed issue with marker popups that had single quotes; loading leaflet scripts and styles only when a map shortcode is used
+
+= 2.11.4 =
+Fix to a race condition issue with custom scripts changing leaflet rendering methods
+
+= 2.11.3 =
+Fix for rendering circles (fix to 2.11.2)
+
+= 2.10.1 =
+Fix for plugin settings not being included (somehow)
+
+= 2.9.1 =
+Fix for PHP7.2; added minified JavaScript files
+
+= 2.8.6 =
+Added [leaflet-gpx] for GPX format
+
+= 2.8.6 =
+Fix image shortcode ratio
+
+= 2.8.5 =
+Fix to missing files in 2.8.4
+
+= 2.8.4 =
+Fixed issues with css and js CDN; removed version from querystring
+
+= 2.8.3 =
+Fixed issues with leaflet-kml
+
+= 2.8.2 =
+Fixed issues with image maps and geocoder addresses
+
+= 2.7.6 =
+added optional cURL to get geolocations if file_get_contents is not allowed on a server (cURL needs to be enabled, obviously)
+
+= 2.7.5 =
+fixed filter_var_array throwing errors in old PHP
+
+= 2.7.3 =
+Fixed array_filter on some older PHP versions
+
+= 2.7.2 =
+Fixed possible JavaScript error "Unexpected token <"; fix was to remove spaces
+
+= 2.6.0 =
+Changes to map creation which may solve an occasional marker creation JavaScript error
+
+= 2.0.2 =
+OpenStreetMap.org has an SSL certificate (osm.org didn't)
+
+= 2.0.1 =
+GeoJSON ajax requests now work with Internet Explorer (some versions)
+
+= 2.0 =
+MapQuest tiles will no longer work without an app key!
+
+= 1.15 =
+Fixed incompatibility with plugins that execute recursive shortcodes
+
+= 1.14 =
+Fixed slashes in optional map attribution
+
+= 1.12 =
+Added htmlspecialchars in admin.php, and custom attributions. Bugfix : removed position in admin menu so it doesn't overwrite or be overwritten (thanks to [@ziodave](https://github.com/ziodave))
+
+= 1.6 =
+Removed windows onload functions and created a construct and init js file for initiating the maps when Leaflet is ready (other plugins were overwriting windows.onload).
+
+= 1.5 =
+Improved stability for multiple plugins with windows onload functions.
+
+= 1.0 =
+First Version. Tested with 3.8.1.
