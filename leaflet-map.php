@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
   exit();
 }
 
-define('LEAFLET_MAP__PLUGIN_VERSION', '3.4.1');
+define('LEAFLET_MAP__PLUGIN_VERSION', '3.4.2');
 define('LEAFLET_MAP__PLUGIN_FILE', __FILE__);
 define('LEAFLET_MAP__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
