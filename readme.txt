@@ -7,8 +7,8 @@ Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 6.8
-Version: 3.4.1
-Stable tag: 3.4.1
+Version: 3.4.2
+Stable tag: 3.4.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,8 +153,10 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 
 == Changelog ==
 
+= 3.4.2 =
+* [Update] New default tile urls, removed subdomains
 
-= 3.4.0 =
+= 3.4.1 =
 * [Update] Compatible with PHP 8.2
 
 = 3.4.0 =
