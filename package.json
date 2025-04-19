@@ -4,14 +4,15 @@
   "version": "3.4.2",
   "description": "Leaflet Map WordPress Plugin",
   "scripts": {
-    "start": "docker-compose up && exit 0",
+    "start": "docker compose up && exit 0",
     "restart": "npm run destroy && npm start",
-    "destroy": "docker-compose down -v",
-    "wordpress": "docker-compose run wordpress bash",
-    "cli": "docker-compose run cli sh",
+    "destroy": "docker compose down -v",
+    "wordpress": "docker compose run wordpress bash",
+    "cli": "docker compose run cli sh",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
-    "changes": "VERSION=$(node -e \"console.log(require('./package.json').version)\") && git log v${VERSION}..HEAD --oneline",
-    "test": "jest"
+    "changes": "VERSION=$(npm pkg get version | tr -d '\"') && git log v${VERSION}..HEAD --oneline",
+    "test": "jest",
+    "minify": "rm -rf ./scripts/*.min.js; for file in ./scripts/*.js; do esbuild --minify $file --outfile=\"./scripts/$(basename $file .js).min.js\"; done"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "testEnvironment": "jsdom"
   },
   "devDependencies": {
+    "esbuild": "^0.25.2",
     "jest": "^27.0.5",
     "prettier": "^2.3.2"
   }

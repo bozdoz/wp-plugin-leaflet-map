@@ -20,20 +20,19 @@ on:
 jobs:
   update:
     container:
-      image: alpine:3.11
+      image: alpine:3.21
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       # setup
-      - run: apk add --no-cache subversion nodejs npm
-      - run: npm i -g minify@5.1.1
+      - run: apk add --no-cache subversion
       - run: svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
       - run: rm -rf /repo/trunk/*
       - run: cp -r * /repo/trunk
       - run: |
           cd /repo
           # get version
-          VERSION=$(node -p "require('./trunk/package.json').version")
+          VERSION=$(grep -m 1 Version readme.txt | cut -d' ' -f2)
           # update tagged
           svn rm tags/${VERSION}
           svn cp trunk tags/${VERSION}

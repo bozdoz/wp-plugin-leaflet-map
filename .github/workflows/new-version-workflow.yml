@@ -18,13 +18,13 @@ jobs:
     needs: test
     if: ${{ !contains(github.event.head_commit.message, 'NO_DEPLOY') }}
     container:
-      image: alpine:3.20
+      image: alpine:3.21
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       # setup
-      - run: apk add --no-cache subversion nodejs npm
-      - run: npm i -g minify@^5.1
+      - run: apk add --no-cache subversion curl
+      - run: curl -fsSL https://esbuild.github.io/dl/v0.25.0 | sh && mv esbuild /usr/bin
       - run: svn co -q https://plugins.svn.wordpress.org/leaflet-map /repo
       - run: rm -rf /repo/trunk/*
       - run: cp -r * /repo/trunk
@@ -37,7 +37,7 @@ jobs:
           cd trunk/scripts
           rm -f *.min.js
           for file in *.js; do 
-          minify $file > $(basename $file .js).min.js;
+          esbuild --minify $file --outfile="$(basename $file .js).min.js";
           done
           TAG="${{ github.ref_name }}"
           sed -i "s/{{VERSION}}/${TAG}/g" construct-leaflet-map.min.js;

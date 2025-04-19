@@ -73,7 +73,7 @@ This plugin uses Docker for development. Simply:
 1. execute this command from the repo's root directory in your terminal:
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 You can also use NPM scripts to interact with Docker, if you make changes to Docker-related files:
