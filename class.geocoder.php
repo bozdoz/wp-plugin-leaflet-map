@@ -36,15 +36,15 @@ class Leaflet_Geocoder {
         // trim all quotes (even smart) from address
         $address = trim($address, '\'"”');
         $address = urlencode( $address );
-        
+
         $geocoder = $settings->get('geocoder');
 
         $cached_address = 'leaflet_' . $geocoder . '_' . $address;
 
         /* retrieve cached geocoded location */
-        $found_cache = get_option( $cached_address );
+        $found_cache = get_transient( $cached_address );
 
-        if ( $found_cache ) {
+        if ( $found_cache !== false ) {
             $location = $found_cache;
         } else {
             // try geocoding
@@ -54,12 +54,8 @@ class Leaflet_Geocoder {
                 $location = (Object) $this->$geocoding_method( $address );
 
                 /* add location */
-                add_option($cached_address, $location);
+                set_transient( $cached_address, $location, DAY_IN_SECONDS );
 
-                /* add option key to locations for clean up purposes */
-                $locations = get_option('leaflet_geocoded_locations', array());
-                array_push($locations, $cached_address);
-                update_option('leaflet_geocoded_locations', $locations);
             } catch (Exception $e) {
                 // failed
                 $location = $this->not_found;
@@ -76,11 +72,14 @@ class Leaflet_Geocoder {
     * Removes location caches
     */
     public static function remove_caches () {
-        $addresses = get_option('leaflet_geocoded_locations', array());
-        foreach ($addresses as $address) {
-            delete_option($address);
-        }
-        delete_option('leaflet_geocoded_locations');
+        global $wpdb;
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE(%s)", '\_transient\_leaflet\_%' ) );
+				if ( $query ) {
+					foreach ( $query as $option_name ) {
+						delete_transient( str_replace( '_transient_', '', $option_name ) );
+					}
+				}
     }
 
     /**
@@ -137,21 +136,21 @@ class Leaflet_Geocoder {
         // Leaflet_Map_Plugin_Settings
         $settings = Leaflet_Map_Plugin_Settings::init();
         $key = $settings->get('google_appkey');
-        
+
         $geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s';
         $geocode_url = sprintf($geocode_url, $address, $key);
-        
+
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
 
         /* found location */
         if ($json->status == 'OK') {
-            
+
             $location = $json->results[0]->geometry->location;
 
             return (Object) $location;
         }
-        
+
         throw new Exception('No Address Found');
     }
 
@@ -180,7 +179,7 @@ class Leaflet_Geocoder {
 
     /**
      * TODO: does this still work?
-     * Danish Addresses Web Application 
+     * Danish Addresses Web Application
      * (https://dawa.aws.dk)
      *
      * @param string $address    the urlencoded address to look up
@@ -191,7 +190,7 @@ class Leaflet_Geocoder {
         $geocode_url .= $address;
         $json = $this->get_url($geocode_url);
         $json = json_decode($json);
-        
+
         /* found location */
         return (Object) array(
             'lat' => $json[0]->adgangsadresse->adgangspunkt->koordinater[1],

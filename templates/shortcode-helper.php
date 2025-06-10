@@ -1,9 +1,9 @@
 <?php
 /**
  * Shortcode Helper Page
- * 
+ *
  * PHP Version 5.5
- * 
+ *
  * @category Admin
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -19,7 +19,7 @@
       }
     }
 
-    /* wordpress messes up video tags */ 
+    /* wordpress messes up video tags */
     video {
         max-width: inherit;
     }
@@ -143,12 +143,22 @@
                 echo '<div class="list-item">';
                 echo "<h3>$title</h3>";
                 foreach ($collection as $shortcode) {
-                    echo do_shortcode($shortcode);
+                  $sc_search = array(
+                    'leaflet-map ',
+                    'leaflet-image ',
+                    'leaflet-wms ',
+                  );
+                  $replace   = array(
+                    'leaflet-map height=250 ',
+                    'leaflet-image height=250 ',
+                    'leaflet-wms height=250 ',
+                  );
+                  echo do_shortcode( str_replace( $sc_search, $replace, $shortcode ) );
                     echo "<p>$shortcode</p>";
                 }
                 echo '</div>';
             }
-            ?>    
+            ?>
             </div>
         </div>
     </div>
