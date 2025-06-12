@@ -85,8 +85,11 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             : (array_key_exists('scrollwheel', $atts)
                 ? $scrollwheel
                 : $settings->get('scroll_wheel_zoom'));
-        $atts['doubleclickzoom'] = array_key_exists('doubleclickzoom', $atts) ?
-            $doubleclickzoom : $settings->get('double_click_zoom');
+         $atts['doubleclickzoom'] = isset($doubleClickZoom)
+             ? $doubleClickZoom
+             : (array_key_exists('doubleclickzoom', $atts)
+                 ? $doubleclickzoom
+                 : $settings->get('double_click_zoom'));
 
         // @deprecated backwards-compatible fit_markers
         $atts['fit_markers'] = array_key_exists('fit_markers', $atts) ?
