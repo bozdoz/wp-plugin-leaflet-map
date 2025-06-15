@@ -112,3 +112,7 @@ p {
 .list-item p {
   font-size: 1.2em;
 }
+
+.examples .leaflet-container {
+  height: 250px !important;
+}
