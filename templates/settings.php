@@ -80,6 +80,8 @@ if (isset($_POST['submit']) && verify_nonce()) {
 }
 /** END FORM SUBMISSION */
 
+// TODO: maybe we should fetch unpkg for latest and load current and get L.version, and just inform
+
 /** CHECK LEAFLET VERSION */
 $db_js_url = $settings->get('js_url');
 $unpkg_url = "https://unpkg.com/leaflet";
