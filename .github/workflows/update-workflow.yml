@@ -32,7 +32,9 @@ jobs:
       - run: |
           cd /repo
           # get version
-          VERSION=$(grep -m 1 Version readme.txt | cut -d' ' -f2)
+          VERSION=$(grep -m 1 Version ./trunk/readme.txt | cut -d' ' -f2)
+          # stop if we didn't get the version
+          if [[ -z "$VERSION" ]]; then exit 1; fi
           # update tagged
           svn rm tags/${VERSION}
           svn cp trunk tags/${VERSION}
