@@ -36,7 +36,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
 
   wordpress:
-    image: wordpress:6.8-php8.4-apache
+    image: wordpress:6.9-php8.4-apache
     depends_on:
       - cli
     volumes:
