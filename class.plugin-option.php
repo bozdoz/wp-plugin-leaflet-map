@@ -71,16 +71,16 @@ class Leaflet_Map_Plugin_Option
 
         $option_filter = array(
             'display_name'     =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'default'          =>     null,
+            'default'          =>     FILTER_DEFAULT,
             'type'             =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'min'              =>     "",
-            'max'              =>     "",
-            'step'             =>     "",
+            'min'              =>     FILTER_DEFAULT,
+            'max'              =>     FILTER_DEFAULT,
+            'step'             =>     FILTER_DEFAULT,
             'options'          =>     array(
                 'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
                 'flags'  => FILTER_FORCE_ARRAY
             ),
-            'helptext'         =>     null
+            'helptext'         =>     FILTER_DEFAULT
         );
 
         // get matching keys only
