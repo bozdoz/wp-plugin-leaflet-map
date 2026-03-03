@@ -44,22 +44,32 @@ class Leaflet_Geocoder {
         /* retrieve cached geocoded location */
         $found_cache = get_option( $cached_address );
 
-        if ( $found_cache ) {
+        if ( $this->is_valid_cached_location( $found_cache ) ) {
             $location = $found_cache;
         } else {
+            if ( false !== $found_cache ) {
+                $this->remove_cache_key( $cached_address );
+            }
+
             // try geocoding
             $geocoding_method = $geocoder . '_geocode';
 
             try {
                 $location = (Object) $this->$geocoding_method( $address );
 
+                if ( ! $this->is_valid_cached_location( $location ) ) {
+                    throw new Exception('Invalid geocoder response');
+                }
+
                 /* add location */
                 add_option($cached_address, $location);
 
                 /* add option key to locations for clean up purposes */
                 $locations = get_option('leaflet_geocoded_locations', array());
-                array_push($locations, $cached_address);
-                update_option('leaflet_geocoded_locations', $locations);
+                if ( ! in_array( $cached_address, $locations, true ) ) {
+                    array_push($locations, $cached_address);
+                    update_option('leaflet_geocoded_locations', $locations);
+                }
             } catch (Exception $e) {
                 // failed
                 $location = $this->not_found;
@@ -81,6 +91,51 @@ class Leaflet_Geocoder {
             delete_option($address);
         }
         delete_option('leaflet_geocoded_locations');
+    }
+
+    /**
+    * Determines whether a cached geocode entry is valid.
+    *
+    * @param mixed $location Cached location value from WordPress options.
+    * @return bool
+    */
+    private function is_valid_cached_location( $location ) {
+        if ( ! is_object( $location ) ) {
+            return false;
+        }
+
+        if ( ! isset( $location->lat ) || ! isset( $location->lng ) ) {
+            return false;
+        }
+
+        return filter_var( $location->lat, FILTER_VALIDATE_FLOAT ) !== false
+            && filter_var( $location->lng, FILTER_VALIDATE_FLOAT ) !== false;
+    }
+
+    /**
+    * Removes a single geocode cache entry and its registry reference.
+    *
+    * @param string $cached_address Option key for the cached geocode.
+    * @return void
+    */
+    private function remove_cache_key( $cached_address ) {
+        delete_option( $cached_address );
+
+        $addresses = get_option( 'leaflet_geocoded_locations', array() );
+        $addresses = array_values(
+            array_filter(
+                $addresses,
+                function ( $address ) use ( $cached_address ) {
+                    return $address !== $cached_address;
+                }
+            )
+        );
+
+        if ( empty( $addresses ) ) {
+            delete_option( 'leaflet_geocoded_locations' );
+        } else {
+            update_option( 'leaflet_geocoded_locations', $addresses );
+        }
     }
 
     /**
