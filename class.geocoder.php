@@ -165,12 +165,17 @@ class Leaflet_Geocoder {
         $geocode_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=';
         $geocode_url .= $address;
 
+        $locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+        $accept_language = str_replace( '_', '-', $locale );
         $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . get_bloginfo( 'admin_email' );
 
         $response = wp_remote_get(
             $geocode_url,
             array(
-                'user-agent' => $agent
+                'user-agent' => $agent,
+                'headers' => array(
+                    'Accept-Language' => $accept_language,
+                ),
             )
         );
 
