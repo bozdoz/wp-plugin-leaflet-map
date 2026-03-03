@@ -160,6 +160,7 @@ class Leaflet_Geocoder {
     *
     * @param string $address The URL-encoded address to look up.
     * @return object Object containing lat and lng properties.
+    * @throws Exception When the request fails or no valid coordinates are returned.
     */
     private function osm_geocode( $address ) {
         $geocode_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=';
@@ -188,9 +189,9 @@ class Leaflet_Geocoder {
                     'lng' => $json[0]->lon,
                 );
             }
-        } else {
-            return false;
         }
+
+        throw new Exception('No Address Found');
     }
 
     /**
