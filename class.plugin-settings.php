@@ -346,6 +346,19 @@ class Leaflet_Map_Plugin_Settings
                 ),
                 'helptext' => __('Select the Geocoding provider to use to retrieve addresses defined in shortcode.', 'leaflet-map')
             ),
+            'nominatim_contact_email' => array(
+                'display_name'=>__('Nominatim Contact Email (optional)', 'leaflet-map'),
+                'default' => '',
+                'type' => 'text',
+                'placeholder' => sprintf(
+                    __('defaults to admin email (%s)', 'leaflet-map'),
+                    get_bloginfo('admin_email')
+                ),
+                'helptext' => __(
+                    'Optional contact email to send with OpenStreetMap Nominatim geocoding requests. If blank, the site admin email will be used.',
+                    'leaflet-map'
+                ),
+            ),
             'google_appkey' => array(
                 'display_name'=>__('Google API Key (optional)', 'leaflet-map'),
                 'default' => __('Supply a Google API Key', 'leaflet-map'),

@@ -225,7 +225,14 @@ class Leaflet_Geocoder {
 
         $locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
         $accept_language = str_replace( '_', '-', $locale );
-        $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . get_bloginfo( 'admin_email' );
+        $settings = Leaflet_Map_Plugin_Settings::init();
+        $contact_email = $settings->get( 'nominatim_contact_email' );
+
+        if ( empty( $contact_email ) ) {
+            $contact_email = get_bloginfo( 'admin_email' );
+        }
+
+        $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . $contact_email;
 
         $response = wp_remote_get(
             $request_url,
