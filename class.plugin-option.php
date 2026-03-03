@@ -55,6 +55,7 @@ class Leaflet_Map_Plugin_Option
     public $min = 0;
     public $max = 0;
     public $step = 0;
+    public $placeholder = '';
 
     /**
      * Instantiate class
@@ -76,6 +77,7 @@ class Leaflet_Map_Plugin_Option
             'min'              =>     FILTER_DEFAULT,
             'max'              =>     FILTER_DEFAULT,
             'step'             =>     FILTER_DEFAULT,
+            'placeholder'      =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'options'          =>     array(
                 'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
                 'flags'  => FILTER_FORCE_ARRAY
@@ -112,6 +114,7 @@ class Leaflet_Map_Plugin_Option
             name="<?php echo $name; ?>" 
             type="<?php echo $this->type; ?>" 
             id="<?php echo $name; ?>" 
+            placeholder="<?php echo htmlspecialchars($this->placeholder); ?>"
             value="<?php echo htmlspecialchars($value); ?>" 
             />
             <?php
