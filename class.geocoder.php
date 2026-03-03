@@ -158,21 +158,31 @@ class Leaflet_Geocoder {
     /**
     * OpenStreetMap geocoder Nominatim (https://nominatim.openstreetmap.org/)
     *
-    * @param string $address    the urlencoded address to look up
-    * @return varies object from API or null (failed)
+    * @param string $address The URL-encoded address to look up.
+    * @return object Object containing lat and lng properties.
     */
-
-    private function osm_geocode ( $address ) {
-        $geocode_url = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
+    private function osm_geocode( $address ) {
+        $geocode_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=';
         $geocode_url .= $address;
-        $json = $this->get_url($geocode_url);
-        $json = json_decode($json);
 
-        if (isset($json[0]->lat) && isset($json[0]->lon)) {
-            return (Object) array(
-                'lat' => $json[0]->lat,
-                'lng' => $json[0]->lon,
-            );
+        $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . get_bloginfo( 'admin_email' );
+
+        $response = wp_remote_get(
+            $geocode_url,
+            array(
+                'user-agent' => $agent
+            )
+        );
+
+        if ( ! is_wp_error( $response ) && isset( $response['body'] ) ) {
+            $json = json_decode( $response['body'] );
+
+            if ( isset( $json[0]->lat ) && isset( $json[0]->lon ) ) {
+                return (object) array(
+                    'lat' => $json[0]->lat,
+                    'lng' => $json[0]->lon,
+                );
+            }
         } else {
             return false;
         }
