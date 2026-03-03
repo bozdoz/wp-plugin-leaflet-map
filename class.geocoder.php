@@ -163,15 +163,17 @@ class Leaflet_Geocoder {
     * @throws Exception When the request fails or no valid coordinates are returned.
     */
     private function osm_geocode( $address ) {
-        $geocode_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=';
-        $geocode_url .= $address;
+        $request_url = sprintf(
+            'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=%s',
+            $address
+        );
 
         $locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
         $accept_language = str_replace( '_', '-', $locale );
         $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . get_bloginfo( 'admin_email' );
 
         $response = wp_remote_get(
-            $geocode_url,
+            $request_url,
             array(
                 'user-agent' => $agent,
                 'headers' => array(
