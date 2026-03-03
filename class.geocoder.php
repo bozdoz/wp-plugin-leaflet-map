@@ -232,6 +232,8 @@ class Leaflet_Geocoder {
             $contact_email = get_bloginfo( 'admin_email' );
         }
 
+        $contact_email = apply_filters( 'leaflet_map_nominatim_contact_email', $contact_email );
+
         $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . $contact_email;
 
         $response = wp_remote_get(
