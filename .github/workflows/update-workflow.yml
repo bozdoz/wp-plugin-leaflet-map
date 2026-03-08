@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+    tags-ignore:
+      - '**'
     # only triggers on solo readme commits basically
     paths:
       - '*.txt'
