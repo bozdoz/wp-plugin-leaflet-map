@@ -223,8 +223,8 @@ class Leaflet_Geocoder {
             $address
         );
 
-        $locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
-        $accept_language = str_replace( '_', '-', $locale );
+        $accept_language = str_replace( '_', '-', get_locale() );
+        
         $settings = Leaflet_Map_Plugin_Settings::init();
         $contact_email = $settings->get( 'nominatim_contact_email' );
 
