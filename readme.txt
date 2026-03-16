@@ -2,7 +2,7 @@
 Author: bozdoz
 Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital
+Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital, rtpHarry
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, openstreetmap, mapquest, interactive
 Requires at least: 4.6
