@@ -44,22 +44,32 @@ class Leaflet_Geocoder {
         /* retrieve cached geocoded location */
         $found_cache = get_option( $cached_address );
 
-        if ( $found_cache ) {
+        if ( $this->is_valid_cached_location( $found_cache ) ) {
             $location = $found_cache;
         } else {
+            if ( false !== $found_cache ) {
+                $this->remove_cache_key( $cached_address );
+            }
+
             // try geocoding
             $geocoding_method = $geocoder . '_geocode';
 
             try {
                 $location = (Object) $this->$geocoding_method( $address );
 
+                if ( ! $this->is_valid_cached_location( $location ) ) {
+                    throw new Exception('Invalid geocoder response');
+                }
+
                 /* add location */
                 add_option($cached_address, $location);
 
                 /* add option key to locations for clean up purposes */
                 $locations = get_option('leaflet_geocoded_locations', array());
-                array_push($locations, $cached_address);
-                update_option('leaflet_geocoded_locations', $locations);
+                if ( ! in_array( $cached_address, $locations, true ) ) {
+                    array_push($locations, $cached_address);
+                    update_option('leaflet_geocoded_locations', $locations);
+                }
             } catch (Exception $e) {
                 // failed
                 $location = $this->not_found;
@@ -81,6 +91,51 @@ class Leaflet_Geocoder {
             delete_option($address);
         }
         delete_option('leaflet_geocoded_locations');
+    }
+
+    /**
+    * Determines whether a cached geocode entry is valid.
+    *
+    * @param mixed $location Cached location value from WordPress options.
+    * @return bool
+    */
+    private function is_valid_cached_location( $location ) {
+        if ( ! is_object( $location ) ) {
+            return false;
+        }
+
+        if ( ! isset( $location->lat ) || ! isset( $location->lng ) ) {
+            return false;
+        }
+
+        return filter_var( $location->lat, FILTER_VALIDATE_FLOAT ) !== false
+            && filter_var( $location->lng, FILTER_VALIDATE_FLOAT ) !== false;
+    }
+
+    /**
+    * Removes a single geocode cache entry and its registry reference.
+    *
+    * @param string $cached_address Option key for the cached geocode.
+    * @return void
+    */
+    private function remove_cache_key( $cached_address ) {
+        delete_option( $cached_address );
+
+        $addresses = get_option( 'leaflet_geocoded_locations', array() );
+        $addresses = array_values(
+            array_filter(
+                $addresses,
+                function ( $address ) use ( $cached_address ) {
+                    return $address !== $cached_address;
+                }
+            )
+        );
+
+        if ( empty( $addresses ) ) {
+            delete_option( 'leaflet_geocoded_locations' );
+        } else {
+            update_option( 'leaflet_geocoded_locations', $addresses );
+        }
     }
 
     /**
@@ -158,24 +213,51 @@ class Leaflet_Geocoder {
     /**
     * OpenStreetMap geocoder Nominatim (https://nominatim.openstreetmap.org/)
     *
-    * @param string $address    the urlencoded address to look up
-    * @return varies object from API or null (failed)
+    * @param string $address The URL-encoded address to look up.
+    * @return object Object containing lat and lng properties.
+    * @throws Exception When the request fails or no valid coordinates are returned.
     */
+    private function osm_geocode( $address ) {
+        $request_url = sprintf(
+            'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=%s',
+            $address
+        );
 
-    private function osm_geocode ( $address ) {
-        $geocode_url = 'https://nominatim.openstreetmap.org/?format=json&limit=1&q=';
-        $geocode_url .= $address;
-        $json = $this->get_url($geocode_url);
-        $json = json_decode($json);
+        $accept_language = str_replace( '_', '-', get_locale() );
+        
+        $settings = Leaflet_Map_Plugin_Settings::init();
+        $contact_email = $settings->get( 'nominatim_contact_email' );
 
-        if (isset($json[0]->lat) && isset($json[0]->lon)) {
-            return (Object) array(
-                'lat' => $json[0]->lat,
-                'lng' => $json[0]->lon,
-            );
-        } else {
-            return false;
+        if ( empty( $contact_email ) ) {
+            $contact_email = get_bloginfo( 'admin_email' );
         }
+
+        $contact_email = apply_filters( 'leaflet_map_nominatim_contact_email', $contact_email );
+
+        $agent = 'Nominatim query for ' . get_bloginfo( 'url' ) . '; contact ' . $contact_email;
+
+        $response = wp_remote_get(
+            $request_url,
+            array(
+                'user-agent' => $agent,
+                'headers' => array(
+                    'Accept-Language' => $accept_language,
+                ),
+            )
+        );
+
+        if ( ! is_wp_error( $response ) && isset( $response['body'] ) ) {
+            $json = json_decode( $response['body'] );
+
+            if ( isset( $json[0]->lat ) && isset( $json[0]->lon ) ) {
+                return (object) array(
+                    'lat' => $json[0]->lat,
+                    'lng' => $json[0]->lon,
+                );
+            }
+        }
+
+        throw new Exception('No Address Found');
     }
 
     /**

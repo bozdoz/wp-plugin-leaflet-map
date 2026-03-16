@@ -28,6 +28,10 @@ Lookup an address with:
 
 `[leaflet-map address="chicago"]`
 
+When using the OpenStreetMap Nominatim geocoder, the plugin sends a contact email in the request user agent. By default this uses the site admin email, but you can override it in the plugin settings or with the `leaflet_map_nominatim_contact_email` filter.
+
+`add_filter('leaflet_map_nominatim_contact_email', function ($email) { return 'maps@example.com'; });`
+
 Know the latitude and longitude of a location? Use them (and a zoom level) with:
 
 `[leaflet-map lat=44.67 lng=-63.61 zoom=5]`
