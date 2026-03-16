@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     container:
-      image: node:20-alpine
+      image: node:22-alpine
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
