@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - wp-coding-standards
     paths:
       - '**.js'
   pull_request:
