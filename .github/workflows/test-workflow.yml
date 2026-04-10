@@ -8,7 +8,7 @@ on:
 jobs:
   wp-coding-standards:
     container:
-      image: composer:2.9.5-alpine3.22-php8.4-dev
+      image: composer:2.9.5
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
