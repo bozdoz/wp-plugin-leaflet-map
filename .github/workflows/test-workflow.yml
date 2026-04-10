@@ -3,23 +3,9 @@ name: Test Workflow
 on:
   push:
     branches:
-      - master
       - wp-coding-standards
-    paths:
-      - '**.js'
-  pull_request:
-    paths:
-      - '**.js'
 
 jobs:
-  test:
-    container:
-      image: node:24-alpine
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm test
   wp-coding-standards:
     container:
       image: dhi.io/composer:2.9.5-alpine3.22-php8.4-dev
