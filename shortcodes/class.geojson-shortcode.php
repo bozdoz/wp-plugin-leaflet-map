@@ -3,14 +3,16 @@
  * GeoJSON Shortcode
  *
  * Use with [leaflet-geojson src="..."]
- * 
+ *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
+ *
+ * @package leaflet-map
  */
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
@@ -18,177 +20,176 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 /**
  * GeoJSON Shortcode Class
  */
-class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode
-{
-    /**
-     * Default src for geoJSON
-     * 
-     * @var string $default_src
-     */
-    protected $default_src = 'https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson';
+class Leaflet_Geojson_Shortcode extends Leaflet_Shortcode {
 
-    /**
-     * How leaflet renders the src
-     * 
-     * @var string $type 
-     */
-    protected $type = 'json';
+	/**
+	 * Default src for geoJSON
+	 *
+	 * @var string $default_src
+	 */
+	protected $default_src = 'https://gist.githubusercontent.com/bozdoz/064a7101b95a324e8852fe9381ab9a18/raw/03f4f54b13a3a7e256732760a8b679818d9d36fc/map.geojson';
 
-    /**
-     * Get Script for Shortcode
-     * 
-     * @param string $atts    could be an array
-     * @param string $content
-     * 
-     * @return string HTML
-     */
-    protected function getHTML($atts='', $content=null)
-    {
-        if ($atts) {
-            extract($atts, EXTR_SKIP);
-        } 
+	/**
+	 * How leaflet renders the src
+	 *
+	 * @var string $type
+	 */
+	protected $type = 'json';
 
-        wp_enqueue_script('leaflet_ajax_geojson_js');
+	/**
+	 * Get Script for Shortcode
+	 *
+	 * @param string $atts    could be an array
+	 * @param string $content
+	 *
+	 * @return string HTML
+	 */
+	protected function getHTML( $atts = '', $content = null ) {
+		if ( $atts ) {
+			extract( $atts, EXTR_SKIP );
+		}
 
-        if ($content) {
-            $content = str_replace(array("\r\n", "\n", "\r"), '<br>', $content);
-            $content = htmlspecialchars($content);
-        }
+		wp_enqueue_script( 'leaflet_ajax_geojson_js' );
 
-        /* only required field for geojson; accept either src or source */
-        $source = empty($source) ? '' : $source;
-        $src = empty($src) ? $this->default_src : $src;
-        $src = empty($source) ? $src : $source;
+		if ( $content ) {
+			$content = str_replace( array( "\r\n", "\n", "\r" ), '<br>', $content );
+			$content = esc_html( $content );
+		}
 
-        $style_json = $this->LM->get_style_json($atts);
+		/* only required field for geojson; accept either src or source */
+		$source = empty( $source ) ? '' : $source;
+		$src    = empty( $src ) ? $this->default_src : $src;
+		$src    = empty( $source ) ? $src : $source;
 
-        $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
-        $fitbounds = filter_var($fitbounds, FILTER_VALIDATE_BOOLEAN);
-        $circleMarker = empty($circleMarker) ? 0 : $circleMarker;
-        $circleMarker = filter_var($circleMarker, FILTER_VALIDATE_BOOLEAN);
+		$style_json = $this->LM->get_style_json( $atts );
 
-        // shortcode content becomes popup text
-        $content_text = empty($content) ? '' : $content;
-        // alternatively, the popup_text attribute works as popup text
-        $popup_text = empty($popup_text) ? '' : $popup_text;
-        // choose which one takes priority (content_text)
-        $popup_text = empty($content_text) ? $popup_text : $content_text;
+		$fitbounds    = empty( $fitbounds ) ? 0 : $fitbounds;
+		$fitbounds    = filter_var( $fitbounds, FILTER_VALIDATE_BOOLEAN );
+		$circleMarker = empty( $circleMarker ) ? 0 : $circleMarker;
+		$circleMarker = filter_var( $circleMarker, FILTER_VALIDATE_BOOLEAN );
 
-        $popup_property = empty($popup_property) ? '' : $popup_property;
+		// shortcode content becomes popup text
+		$content_text = empty( $content ) ? '' : $content;
+		// alternatively, the popup_text attribute works as popup text
+		$popup_text = empty( $popup_text ) ? '' : $popup_text;
+		// choose which one takes priority (content_text)
+		$popup_text = empty( $content_text ) ? $popup_text : $content_text;
 
-        $popup_text = trim($popup_text);
+		$popup_property = empty( $popup_property ) ? '' : $popup_property;
 
-        $table_view = filter_var(empty($table_view) ? 0 : $table_view, FILTER_VALIDATE_INT);
-        
-        //options of iconUrl feature
-        $options = array(
-            'iconUrl' => isset($iconurl) ? $iconurl : null,
-            'iconSize' => isset($iconsize) ? $iconsize : null,
-            'iconAnchor' => isset($iconanchor) ? $iconanchor : null,
-            'popupAnchor' => isset($popupanchor) ? $popupanchor : null,
-            'tooltipAnchor' => isset($tooltipanchor) ? $tooltipanchor : null
-        );
+		$popup_text = trim( $popup_text );
 
-        $args = array(
-            'iconUrl' => FILTER_SANITIZE_URL,
-            'iconSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'iconAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'popupAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        );
+		$table_view = filter_var( empty( $table_view ) ? 0 : $table_view, FILTER_VALIDATE_INT );
 
-        $options = $this->LM->json_sanitize($options, $args);
+		// options of iconUrl feature
+		$options = array(
+			'iconUrl'       => isset( $iconurl ) ? $iconurl : null,
+			'iconSize'      => isset( $iconsize ) ? $iconsize : null,
+			'iconAnchor'    => isset( $iconanchor ) ? $iconanchor : null,
+			'popupAnchor'   => isset( $popupanchor ) ? $popupanchor : null,
+			'tooltipAnchor' => isset( $tooltipanchor ) ? $tooltipanchor : null,
+		);
 
-    // set the default for onEachFeature
-    ob_start();
-    ?>
+		$args = array(
+			'iconUrl'       => FILTER_SANITIZE_URL,
+			'iconSize'      => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'iconAnchor'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'popupAnchor'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+		);
+
+		$options = $this->LM->json_sanitize( $options, $args );
+
+		// set the default for onEachFeature
+		ob_start();
+		?>
 function onEachFeature (feature, layer) {
-    var props = feature.properties || {};
-    var text;
-    if (table_view) {
-        text = window.WPLeafletMapPlugin.propsToTable(props);
-    } else {
-        text = popup_property
-            ? props[ popup_property ]
-            : window.WPLeafletMapPlugin.template(
-                popup_text, 
-                feature.properties
-            );
-    }
-    if (text) {
-        layer.bindPopup( text );
-    }
+	var props = feature.properties || {};
+	var text;
+	if (table_view) {
+		text = window.WPLeafletMapPlugin.propsToTable(props);
+	} else {
+		text = popup_property
+			? props[ popup_property ]
+			: window.WPLeafletMapPlugin.template(
+				popup_text, 
+				feature.properties
+			);
+	}
+	if (text) {
+		layer.bindPopup( text );
+	}
 }
-    <?php
-    $onEachFeature = ob_get_clean();
+		<?php
+		$onEachFeature = ob_get_clean();
 
-    // use with: add_filter('leaflet_map_geojson_onEachFeature', 'example_callback', 10, 3);
-    // function takes default onEachFeature
-    $onEachFeature = apply_filters('leaflet_map_geojson_onEachFeature', $onEachFeature);
+		// use with: add_filter('leaflet_map_geojson_onEachFeature', 'example_callback', 10, 3);
+		// function takes default onEachFeature
+		$onEachFeature = apply_filters( 'leaflet_map_geojson_onEachFeature', $onEachFeature );
 
-    // create the geojson script
-    ob_start();
-    ?>/*<script>*/
-var src = '<?php echo htmlspecialchars($src, ENT_QUOTES); ?>';
-var default_style = <?php echo $style_json; ?>;
+		// create the geojson script
+		ob_start();
+		?>
+	/*<script>*/
+var src = '<?php echo esc_html( $src ); ?>';
+var default_style = <?php echo $style_json; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>;
 var rewrite_keys = {
-    stroke : 'color',
-    'stroke-width' : 'weight',
-    'stroke-opacity' : 'opacity',
-    fill : 'fillColor',
-    'fill-opacity' : 'fillOpacity',
+	stroke : 'color',
+	'stroke-width' : 'weight',
+	'stroke-opacity' : 'opacity',
+	fill : 'fillColor',
+	'fill-opacity' : 'fillOpacity',
 };
 // htmlspecialchars converts & to "&amp;"; maybe unnecessarily, and maybe 3x
 var ampersandRegex = /&(?:amp;){1,3}/g
 var layer = L.ajaxGeoJson(src.replace(ampersandRegex, '&'), {
-    type: '<?php echo $this->type; ?>',
-    style : layerStyle,
-    onEachFeature : onEachFeature,
-    pointToLayer: pointToLayer
+	type: '<?php echo esc_html( $this->type ); ?>',
+	style : layerStyle,
+	onEachFeature : onEachFeature,
+	pointToLayer: pointToLayer
 });
 var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 var circleMarker = <?php echo $circleMarker ? '1' : '0'; ?>;
-var popup_text = window.WPLeafletMapPlugin.unescape("<?php echo esc_js(
-  $popup_text
-); ?>");
-var popup_property = "<?php echo esc_js($popup_property); ?>";
-var table_view = <?php echo $table_view; ?>;
+var popup_text = window.WPLeafletMapPlugin.unescape( "<?php echo esc_js( $popup_text ); ?>");
+var popup_property = "<?php echo esc_js( $popup_property ); ?>";
+var table_view = <?php echo esc_html( $table_view ); ?>;
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var markerOptions = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
+var markerOptions = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
 layer.addTo( group );
 window.WPLeafletMapPlugin.geojsons.push( layer );
 if (fitbounds) {
-    layer.on('ready', function () {
-        this.map.fitBounds( this.getBounds() );
-    });
+	layer.on('ready', function () {
+		this.map.fitBounds( this.getBounds() );
+	});
 }
 function layerStyle (feature) {
-    var props = feature.properties || {};
-    var style = {};
-    function camelFun (_, first_letter) {
-        return first_letter.toUpperCase();
-    };
-    for (var key in props) {
-        if (key.match('-')) {
-            var camelcase = key.replace(/-(\w)/, camelFun);
-            style[ camelcase ] = props[ key ];
-        }
-        // rewrite style keys from geojson.io
-        if (rewrite_keys[ key ]) {
-            style[ rewrite_keys[ key ] ] = props[ key ];
-        }
-    }
-    return L.Util.extend(style, default_style);
+	var props = feature.properties || {};
+	var style = {};
+	function camelFun (_, first_letter) {
+		return first_letter.toUpperCase();
+	};
+	for (var key in props) {
+		if (key.match('-')) {
+			var camelcase = key.replace(/-(\w)/, camelFun);
+			style[ camelcase ] = props[ key ];
+		}
+		// rewrite style keys from geojson.io
+		if (rewrite_keys[ key ]) {
+			style[ rewrite_keys[ key ] ] = props[ key ];
+		}
+	}
+	return L.Util.extend(style, default_style);
 }
-<?php echo $onEachFeature; ?>
+		<?php echo $onEachFeature; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 function pointToLayer (feature, latlng) {
-    if (circleMarker) {
-        return L.circleMarker(latlng);
-    }
-    return L.marker(latlng, markerOptions);
-}<?php
-        $script = ob_get_clean();
+	if (circleMarker) {
+		return L.circleMarker(latlng);
+	}
+	return L.marker(latlng, markerOptions);
+}
+		<?php
+		$script = ob_get_clean();
 
-        return $this->wrap_script($script, 'WPLeaflet' . $this->type .'Shortcode');
-    }
+		return $this->wrap_script( $script, 'WPLeaflet' . $this->type . 'Shortcode' );
+	}
 }

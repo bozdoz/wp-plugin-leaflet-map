@@ -8,11 +8,12 @@
  *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
+ * @package leaflet-map
  */
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
@@ -20,308 +21,301 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 /**
  * Leaflet_Map_Shortcode Class
  */
-class Leaflet_Map_Shortcode extends Leaflet_Shortcode
-{
-    /**
-     * Instantiate class
-     */
-    public function __construct()
-    {
-        parent::__construct();
+class Leaflet_Map_Shortcode extends Leaflet_Shortcode {
 
-        $this->enqueue();
-    }
+	/**
+	 * Instantiate class
+	 */
+	public function __construct() {
+		parent::__construct();
 
-    /**
-     * Enqueue Scripts and Styles for Leaflet
-     *
-     * @return null
-     */
-    protected function enqueue()
-    {
-        wp_enqueue_style('leaflet_stylesheet');
-        wp_enqueue_script('wp_leaflet_map');
+		$this->enqueue();
+	}
 
-        if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
-            // mapquest doesn't accept direct tile access as of July 11, 2016
-            wp_enqueue_script('leaflet_mapquest_plugin');
-        }
+	/**
+	 * Enqueue Scripts and Styles for Leaflet
+	 *
+	 * @return null
+	 */
+	protected function enqueue() {
+		wp_enqueue_style( 'leaflet_stylesheet' );
+		wp_enqueue_script( 'wp_leaflet_map' );
 
-        // enqueue user-defined scripts
-        // ! will fire for each map
-        do_action('leaflet_map_enqueue');
-    }
+		if ( wp_script_is( 'leaflet_mapquest_plugin', 'registered' ) ) {
+			// mapquest doesn't accept direct tile access as of July 11, 2016
+			wp_enqueue_script( 'leaflet_mapquest_plugin' );
+		}
 
-    /**
-     * Merge shortcode options with default options
-     *
-     * @param array|string $atts    key value pairs from shortcode
-     *
-     * @return array new atts, which is actually an array
-     */
-    protected function getAtts($atts='')
-    {
-        $atts = (array) $atts;
-        extract($atts, EXTR_SKIP);
+		// enqueue user-defined scripts
+		// ! will fire for each map
+		do_action( 'leaflet_map_enqueue' );
+	}
 
-        $settings = Leaflet_Map_Plugin_Settings::init();
+	/**
+	 * Merge shortcode options with default options
+	 *
+	 * @param array|string $atts    key value pairs from shortcode
+	 *
+	 * @return array new atts, which is actually an array
+	 */
+	protected function getAtts( $atts = '' ) {
+		$atts = (array) $atts;
+		extract( $atts, EXTR_SKIP );
 
-        $atts['zoom'] = array_key_exists('zoom', $atts) ?
-            $zoom : $settings->get('default_zoom');
-        $atts['height'] = empty($height) ?
-            $settings->get('default_height') : $height;
-        $atts['width'] = empty($width) ? $settings->get('default_width') : $width;
-        $atts['zoomcontrol'] = isset($zoomControl)
-            ? $zoomControl
-            : (array_key_exists('zoomcontrol', $atts)
-                ? $zoomcontrol
-                : $settings->get('show_zoom_controls'));
-        $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ?
-            $min_zoom : $settings->get('default_min_zoom');
-        $atts['max_zoom'] = empty($max_zoom) ?
-            $settings->get('default_max_zoom') : $max_zoom;
-        $atts['scrollwheel'] = isset($scrollWheelZoom)
-            ? $scrollWheelZoom
-            : (array_key_exists('scrollwheel', $atts)
-                ? $scrollwheel
-                : $settings->get('scroll_wheel_zoom'));
-         $atts['doubleclickzoom'] = isset($doubleClickZoom)
-             ? $doubleClickZoom
-             : (array_key_exists('doubleclickzoom', $atts)
-                 ? $doubleclickzoom
-                 : $settings->get('double_click_zoom'));
+		$settings = Leaflet_Map_Plugin_Settings::init();
 
-        // @deprecated backwards-compatible fit_markers
-        $atts['fit_markers'] = array_key_exists('fit_markers', $atts) ?
-            $fit_markers : $settings->get('fit_markers');
+		$atts['zoom']            = array_key_exists( 'zoom', $atts ) ?
+			$zoom : $settings->get( 'default_zoom' );
+		$atts['height']          = empty( $height ) ?
+			$settings->get( 'default_height' ) : $height;
+		$atts['width']           = empty( $width ) ? $settings->get( 'default_width' ) : $width;
+		$atts['zoomcontrol']     = isset( $zoomControl )
+			? $zoomControl
+			: ( array_key_exists( 'zoomcontrol', $atts )
+				? $zoomcontrol
+				: $settings->get( 'show_zoom_controls' ) );
+		$atts['min_zoom']        = array_key_exists( 'min_zoom', $atts ) ?
+			$min_zoom : $settings->get( 'default_min_zoom' );
+		$atts['max_zoom']        = empty( $max_zoom ) ?
+			$settings->get( 'default_max_zoom' ) : $max_zoom;
+		$atts['scrollwheel']     = isset( $scrollWheelZoom )
+			? $scrollWheelZoom
+			: ( array_key_exists( 'scrollwheel', $atts )
+				? $scrollwheel
+				: $settings->get( 'scroll_wheel_zoom' ) );
+		$atts['doubleclickzoom'] = isset( $doubleClickZoom )
+			? $doubleClickZoom
+			: ( array_key_exists( 'doubleclickzoom', $atts )
+				? $doubleclickzoom
+				: $settings->get( 'double_click_zoom' ) );
 
-        // fitbounds is what it should be called @since v2.12.0
-        $atts['fitbounds'] = array_key_exists('fitbounds', $atts) ?
-            $fitbounds : $atts['fit_markers'];
+		// @deprecated backwards-compatible fit_markers
+		$atts['fit_markers'] = array_key_exists( 'fit_markers', $atts ) ?
+			$fit_markers : $settings->get( 'fit_markers' );
 
-        /* allow percent, but add px for ints */
-        $atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
-        $atts['width'] .= is_numeric($atts['width']) ? 'px' : '';
+		// fitbounds is what it should be called @since v2.12.0
+		$atts['fitbounds'] = array_key_exists( 'fitbounds', $atts ) ?
+			$fitbounds : $atts['fit_markers'];
 
-        /*
-        need to allow 0 or empty for removal of attribution
-        */
-        if (!array_key_exists('attribution', $atts)) {
-            $atts['attribution'] = $settings->get('default_attribution');
-        }
+		/* allow percent, but add px for ints */
+		$atts['height'] .= is_numeric( $atts['height'] ) ? 'px' : '';
+		$atts['width']  .= is_numeric( $atts['width'] ) ? 'px' : '';
 
-        /* allow a bunch of other (boolean) options */
-        // http://leafletjs.com/reference.html#map
-        $map_options = array(
-            'closePopupOnClick' => isset($closePopupOnClick)
-                ? $closePopupOnClick
-                : (isset($closepopuponclick)
-                    ? $closepopuponclick
-                    : null),
-            'trackResize' => isset($trackResize)
-                ? $trackResize
-                : (isset($trackresize)
-                    ? $trackresize
-                    : null),
-            'boxZoom' => isset($boxzoom)
-                ? $boxzoom
-                : (isset($boxZoom)
-                    ? $boxZoom
-                    : null),
-            'touchZoom' => isset($touchZoom) ? $touchZoom : null,
-            'dragging' => isset($dragging) ? $dragging : null,
-            'keyboard' => isset($keyboard) ? $keyboard : null,
-            'zoomAnimation' => isset($zoomAnimation) ?  $zoomAnimation : null,
-            'fadeAnimation' => isset($fadeAnimation) ?  $fadeAnimation : null,
-            'markerZoomAnimation' => isset($markerZoomAnimation) ?  $markerZoomAnimation : null,
-            'inertia' => isset($inertia) ?  $inertia : null,
-            'worldCopyJump' => isset($worldCopyJump) ?  $worldCopyJump : null,
-            'tap' => isset($tap) ? $tap : null,
-            'bounceAtZoomLimits' => isset($bounceAtZoomLimits) ? $bounceAtZoomLimits : null,
-            // defined above, but can be validated here
-            'zoomControl' => $atts['zoomcontrol'],
-            'scrollWheelZoom' => $atts['scrollwheel'],
-            'doubleClickZoom' => $atts['doubleclickzoom']
-        );
+		/*
+		need to allow 0 or empty for removal of attribution
+		*/
+		if ( ! array_key_exists( 'attribution', $atts ) ) {
+			$atts['attribution'] = $settings->get( 'default_attribution' );
+		}
 
-        // filter out nulls
-        $map_options = $this->LM->filter_null($map_options);
+		/*
+		allow a bunch of other (boolean) options */
+		// http://leafletjs.com/reference.html#map
+		$map_options = array(
+			'closePopupOnClick'   => isset( $closePopupOnClick )
+				? $closePopupOnClick
+				: ( isset( $closepopuponclick )
+					? $closepopuponclick
+					: null ),
+			'trackResize'         => isset( $trackResize )
+				? $trackResize
+				: ( isset( $trackresize )
+					? $trackresize
+					: null ),
+			'boxZoom'             => isset( $boxzoom )
+				? $boxzoom
+				: ( isset( $boxZoom )
+					? $boxZoom
+					: null ),
+			'touchZoom'           => isset( $touchZoom ) ? $touchZoom : null,
+			'dragging'            => isset( $dragging ) ? $dragging : null,
+			'keyboard'            => isset( $keyboard ) ? $keyboard : null,
+			'zoomAnimation'       => isset( $zoomAnimation ) ? $zoomAnimation : null,
+			'fadeAnimation'       => isset( $fadeAnimation ) ? $fadeAnimation : null,
+			'markerZoomAnimation' => isset( $markerZoomAnimation ) ? $markerZoomAnimation : null,
+			'inertia'             => isset( $inertia ) ? $inertia : null,
+			'worldCopyJump'       => isset( $worldCopyJump ) ? $worldCopyJump : null,
+			'tap'                 => isset( $tap ) ? $tap : null,
+			'bounceAtZoomLimits'  => isset( $bounceAtZoomLimits ) ? $bounceAtZoomLimits : null,
+			// defined above, but can be validated here
+			'zoomControl'         => $atts['zoomcontrol'],
+			'scrollWheelZoom'     => $atts['scrollwheel'],
+			'doubleClickZoom'     => $atts['doubleclickzoom'],
+		);
 
-        // custom field for moving to JavaScript
-        $map_options['fitBounds'] = $atts['fitbounds'];
+		// filter out nulls
+		$map_options = $this->LM->filter_null( $map_options );
 
-        // change string booleans to booleans
-        $map_options = filter_var_array($map_options, FILTER_VALIDATE_BOOLEAN);
+		// custom field for moving to JavaScript
+		$map_options['fitBounds'] = $atts['fitbounds'];
 
-        // add min/max zoom validations
-        $zoom_options = array(
-            'minZoom' => $atts['min_zoom'],
-            'maxZoom' => $atts['max_zoom']
-        );
+		// change string booleans to booleans
+		$map_options = filter_var_array( $map_options, FILTER_VALIDATE_BOOLEAN );
 
-        $zoom_options = filter_var_array($zoom_options, FILTER_VALIDATE_FLOAT);
+		// add min/max zoom validations
+		$zoom_options = array(
+			'minZoom' => $atts['min_zoom'],
+			'maxZoom' => $atts['max_zoom'],
+		);
 
-        $map_options = array_merge(
-            $map_options,
-            $zoom_options
-        );
+		$zoom_options = filter_var_array( $zoom_options, FILTER_VALIDATE_FLOAT );
 
-        // update atts too
-        $atts['minZoom'] = $zoom_options['minZoom'];
-        $atts['maxZoom'] = $zoom_options['maxZoom'];
-        $map_options['maxBounds'] = isset($maxbounds) ? $this->LM->convert_bounds_str_to_arr($maxbounds) : null;
+		$map_options = array_merge(
+			$map_options,
+			$zoom_options
+		);
 
-        // custom field for moving to javascript
-        // filter out any unwanted HTML tags (including img)
-        if ($atts['attribution'] !== 0) {
-            $map_options['attribution'] = wp_kses_post($atts['attribution']);
-        }
+		// update atts too
+		$atts['minZoom']          = $zoom_options['minZoom'];
+		$atts['maxZoom']          = $zoom_options['maxZoom'];
+		$map_options['maxBounds'] = isset( $maxbounds ) ? $this->LM->convert_bounds_str_to_arr( $maxbounds ) : null;
 
-        // wrap as JSON
-        $atts['map_options'] = json_encode($map_options);
+		// custom field for moving to javascript
+		// filter out any unwanted HTML tags (including img)
+		if ( $atts['attribution'] !== 0 ) {
+			$map_options['attribution'] = wp_kses_post( html_entity_decode( $atts['attribution'] ) );
+		}
 
-        // get raw variables, allowing for JavaScript variables in values
-        $raw_map_options = array();
-        foreach($map_options as $key=>$val) {
-            $original_value = isset($atts[$key]) ? $atts[$key] : null;
+		// wrap as JSON
+		$atts['map_options'] = wp_json_encode( $map_options );
 
-            $liquid = $this->LM->liquid($original_value);
+		// get raw variables, allowing for JavaScript variables in values
+		$raw_map_options = array();
+		foreach ( $map_options as $key => $val ) {
+			$original_value = isset( $atts[ $key ] ) ? $atts[ $key ] : null;
 
-            if ($liquid && isset($liquid['raw']) && $liquid['raw']) {
-                // raw leaves original value un-quoted
-                $raw_map_options[$key] = $liquid['original'];
-            }
-        }
+			$liquid = $this->LM->liquid( $original_value );
 
-        $atts['raw_map_options'] = $this->LM->rawDict($raw_map_options);
+			if ( $liquid && isset( $liquid['raw'] ) && $liquid['raw'] ) {
+				// raw leaves original value un-quoted
+				$raw_map_options[ $key ] = $liquid['original'];
+			}
+		}
 
-        $tile_layer_options = array(
-            'tileSize' => empty($tilesize) ? $settings->get('tilesize') : $tilesize,
-            'subdomains' => empty($subdomains) ? $settings->get('map_tile_url_subdomains') : $subdomains,
-            'id' => empty($mapid) ? $settings->get('mapid') : $mapid,
-            'accessToken' => empty($accesstoken) ? $settings->get('accesstoken') : $accesstoken,
-            'zoomOffset' => empty($zoomoffset) ? $settings->get('zoomoffset') : $zoomoffset,
-            'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
-            'maxZoom' => $atts['maxZoom']
-        );
+		$atts['raw_map_options'] = $this->LM->rawDict( $raw_map_options );
 
+		$tile_layer_options = array(
+			'tileSize'    => empty( $tilesize ) ? $settings->get( 'tilesize' ) : $tilesize,
+			'subdomains'  => empty( $subdomains ) ? $settings->get( 'map_tile_url_subdomains' ) : $subdomains,
+			'id'          => empty( $mapid ) ? $settings->get( 'mapid' ) : $mapid,
+			'accessToken' => empty( $accesstoken ) ? $settings->get( 'accesstoken' ) : $accesstoken,
+			'zoomOffset'  => empty( $zoomoffset ) ? $settings->get( 'zoomoffset' ) : $zoomoffset,
+			'noWrap'      => filter_var( empty( $nowrap ) ? $settings->get( 'tile_no_wrap' ) : $nowrap, FILTER_VALIDATE_BOOLEAN ),
+			'maxZoom'     => $atts['maxZoom'],
+		);
 
-        $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
-        $tile_layer_options = $this->LM->filter_null($tile_layer_options);
+		$tile_layer_options = $this->LM->filter_empty_string( $tile_layer_options );
+		$tile_layer_options = $this->LM->filter_null( $tile_layer_options );
 
-        if (isset($tile_layer_options['subdomains']) && strpos($tile_layer_options['subdomains'], ',') !== false) {
-            // subdomains can be comma-separated
-            $tile_layer_options['subdomains'] = explode(',', $tile_layer_options['subdomains']);
-        }
+		if ( isset( $tile_layer_options['subdomains'] ) && strpos( $tile_layer_options['subdomains'], ',' ) !== false ) {
+			// subdomains can be comma-separated
+			$tile_layer_options['subdomains'] = explode( ',', $tile_layer_options['subdomains'] );
+		}
 
-        $atts['tile_layer_options'] = json_encode($tile_layer_options, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
+		$atts['tile_layer_options'] = wp_json_encode( $tile_layer_options, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES );
 
-        // TODO: find a better way to do this
-        $validations = array(
-            'detect_retina' => FILTER_VALIDATE_BOOLEAN,
-            'zoom' => FILTER_VALIDATE_FLOAT,
-            'fitBounds' => FILTER_VALIDATE_BOOLEAN
-        );
+		// TODO: find a better way to do this
+		$validations = array(
+			'detect_retina' => FILTER_VALIDATE_BOOLEAN,
+			'zoom'          => FILTER_VALIDATE_FLOAT,
+			'fitBounds'     => FILTER_VALIDATE_BOOLEAN,
+		);
 
-        $atts = $this->LM->sanitize_inclusive($atts, $validations);
+		$atts = $this->LM->sanitize_inclusive( $atts, $validations );
 
-        return $atts;
-    }
+		return $atts;
+	}
 
-    /**
-     * Get the div tag for the map to instantiate
-     *
-     * @param string $height
-     * @param string $width
-     *
-     * @return string HTML div element
-     */
-    protected function getDiv($height, $width) {
-        // div does not get wrapped in script tags
-        ob_start();
-        ?>
-<div class="leaflet-map WPLeafletMap" style="height:<?php
-    echo htmlspecialchars($height);
-?>; width:<?php
-    echo htmlspecialchars($width);
-?>;"></div><?php
-        return ob_get_clean();
-    }
+	/**
+	 * Get the div tag for the map to instantiate
+	 *
+	 * @param string $height
+	 * @param string $width
+	 *
+	 * @return string HTML div element
+	 */
+	protected function getDiv( $height, $width ) {
+		// div does not get wrapped in script tags
+		ob_start();
+		?>
+<div class="leaflet-map WPLeafletMap" style="height:<?php echo esc_html( $height ); ?>; width:<?php echo esc_html( $width ); ?>;"></div>
+		<?php
+		return ob_get_clean();
+	}
 
-    /**
-     * Get script for shortcode
-     *
-     * @param array  $atts    sometimes this is null
-     * @param string $content anything within a shortcode
-     *
-     * @return string HTML
-     */
-    protected function getHTML($atts='', $content=null)
-    {
-        extract($this->getAtts($atts));
+	/**
+	 * Get script for shortcode
+	 *
+	 * @param array  $atts    sometimes this is null
+	 * @param string $content anything within a shortcode
+	 *
+	 * @return string HTML
+	 */
+	protected function getHTML( $atts = '', $content = null ) {
+		extract( $this->getAtts( $atts ) );
 
-        if (!empty($address)) {
-            /* try geocoding */
-            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
-            $location = new Leaflet_Geocoder($address);
-            $lat = $location->lat;
-            $lng = $location->lng;
-        }
+		if ( ! empty( $address ) ) {
+			/* try geocoding */
+			include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+			$location = new Leaflet_Geocoder( $address );
+			$lat      = $location->lat;
+			$lng      = $location->lng;
+		}
 
-        $settings = Leaflet_Map_Plugin_Settings::init();
+		$settings = Leaflet_Map_Plugin_Settings::init();
 
-        // map uses lat/lng
-        $lat = isset($lat) ? $lat : $settings->get('default_lat');
-        $lng = isset($lng) ? $lng : $settings->get('default_lng');
+		// map uses lat/lng
+		$lat = isset( $lat ) ? $lat : $settings->get( 'default_lat' );
+		$lng = isset( $lng ) ? $lng : $settings->get( 'default_lng' );
 
-        // validate lat/lng
-        $lat = $this->LM->filter_float($lat);
-        $lng = $this->LM->filter_float($lng);
+		// validate lat/lng
+		$lat = $this->LM->filter_float( $lat );
+		$lng = $this->LM->filter_float( $lng );
 
-        /*
-        mapquest doesn't need tile urls
-        */
-        if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
-            $tileurl = '';
-        } else {
-            $tileurl = empty($tileurl) ? $settings->get('map_tile_url') : $tileurl;
-        }
+		/*
+		mapquest doesn't need tile urls
+		*/
+		if ( wp_script_is( 'leaflet_mapquest_plugin', 'registered' ) ) {
+			$tileurl = '';
+		} else {
+			$tileurl = empty( $tileurl ) ? $settings->get( 'map_tile_url' ) : $tileurl;
+		}
 
-        $detect_retina = empty($detect_retina) ? $settings->get('detect_retina') : $detect_retina;
+		$detect_retina = empty( $detect_retina ) ? $settings->get( 'detect_retina' ) : $detect_retina;
 
-        $detect_retina = filter_var($detect_retina, FILTER_VALIDATE_BOOLEAN);
+		$detect_retina = filter_var( $detect_retina, FILTER_VALIDATE_BOOLEAN );
 
-        /* should be iterated for multiple maps */
-        ob_start();
-        ?>/*<script>*/
-var baseUrl = atob('<?php echo base64_encode(filter_var($tileurl, FILTER_SANITIZE_URL)); ?>');
+		/* should be iterated for multiple maps */
+		ob_start();
+		?>
+		/*<script>*/
+var baseUrl = atob('<?php echo base64_encode( filter_var( $tileurl, FILTER_SANITIZE_URL ) ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode ?>');
 var base = (!baseUrl && window.MQ) ?
-    window.MQ.mapLayer() : L.tileLayer(baseUrl,
-        L.Util.extend({}, {
-            detectRetina: <?php echo $detect_retina ? '1' : '0'; ?>,
-        },
-        <?php echo $tile_layer_options; ?>
-        )
-    );
-    var options = L.Util.extend({}, {
-        layers: [base],
-        attributionControl: false
-    },
-    <?php echo $map_options; ?>,
-    <?php echo $raw_map_options; ?>
+	window.MQ.mapLayer() : L.tileLayer(baseUrl,
+		L.Util.extend({}, {
+			detectRetina: <?php echo $detect_retina ? '1' : '0'; ?>,
+		},
+		<?php echo $tile_layer_options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		)
+	);
+	var options = L.Util.extend({}, {
+		layers: [base],
+		attributionControl: false
+	},
+		<?php echo $map_options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>,
+		<?php echo $raw_map_options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 );
-window.WPLeafletMapPlugin.createMap(options).setView(<?php
-    echo '[' . $lat . ',' . $lng . '],' . $zoom;
-?>);<?php
+window.WPLeafletMapPlugin.createMap(options).setView(<?php echo '[' . esc_html( $lat ) . ',' . esc_html( $lng ) . '],' . esc_html( $zoom ); ?>);
+		<?php
 
-        $show_scale = isset($show_scale) ? $show_scale : $settings->get('show_scale');
+		$show_scale = isset( $show_scale ) ? $show_scale : $settings->get( 'show_scale' );
 
-        if ($show_scale) {
-            echo do_shortcode('[leaflet-scale noScriptWrap]');
-        }
+		if ( $show_scale ) {
+			echo do_shortcode( '[leaflet-scale noScriptWrap]' );
+		}
 
-        $script = ob_get_clean();
+		$script = ob_get_clean();
 
-        return $this->getDiv($height, $width) . $this->wrap_script($script, 'WPLeafletMapShortcode');
-    }
+		return $this->getDiv( $height, $width ) . $this->wrap_script( $script, 'WPLeafletMapShortcode' );
+	}
 }
