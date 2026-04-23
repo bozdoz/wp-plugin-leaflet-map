@@ -14,7 +14,7 @@ $version = $plugin_data['Version'];
 ?>
 <div class="wrap">
 
-<h1><?php echo $title; ?> <small>version: <?php echo $version; ?></small></h1>
+<h1><?php echo esc_html($title); ?> <small>version: <?php echo esc_html($version); ?></small></h1>
 
 <?php
 /** START FORM SUBMISSION */
@@ -98,7 +98,7 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
 /** END LEAFLET VERSION */
 ?>
 
-<p><?php echo $description; ?></p>
+<p><?php echo esc_html($description); ?></p>
 <h3><?php _e('Found an issue?', 'leaflet-map') ?></h3>
 <p><?php _e('Post it to ', 'leaflet-map') ?><b><?php _e('WordPress Support', 'leaflet-map') ?></b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
 <p><?php _e('Add an issue on ', 'leaflet-map') ?><b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
@@ -117,7 +117,7 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
     ?>
     <div class="container">
         <label>
-            <span class="label"><?php echo $option->display_name; ?></span>
+            <span class="label"><?php echo esc_html($option->display_name); ?></span>
             <span class="input-group">
             <?php
             $option->widget($name, $settings->get($name));
@@ -129,7 +129,7 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
         if ($option->helptext) {
         ?>
         <div class="helptext">
-            <p class="description"><?php echo $option->helptext; ?></p>
+            <p class="description"><?php echo esc_html($option->helptext); ?></p>
         </div>
         <?php
         }

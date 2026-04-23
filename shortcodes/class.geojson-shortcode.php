@@ -129,7 +129,7 @@ function onEachFeature (feature, layer) {
     // create the geojson script
     ob_start();
     ?>/*<script>*/
-var src = '<?php echo htmlspecialchars($src, ENT_QUOTES); ?>';
+var src = '<?php echo esc_js(esc_url($src)); ?>';
 var default_style = <?php echo $style_json; ?>;
 var rewrite_keys = {
     stroke : 'color',
