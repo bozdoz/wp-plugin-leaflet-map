@@ -99,6 +99,18 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
 ?>
 
 <p><?php echo esc_html($description); ?></p>
+
+<?php
+/** FILTERS for helptext */
+$allowed_helptext_tags = [
+    'a'      => [ 'href' => [], 'title' => [], 'target' => [] ],
+    'code' => [],
+    'br'     => [],
+    'p'     => [],
+    'b'     => [],
+];
+?>
+
 <h3><?php _e('Found an issue?', 'leaflet-map') ?></h3>
 <p><?php _e('Post it to ', 'leaflet-map') ?><b><?php _e('WordPress Support', 'leaflet-map') ?></b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
 <p><?php _e('Add an issue on ', 'leaflet-map') ?><b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
@@ -129,7 +141,9 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
         if ($option->helptext) {
         ?>
         <div class="helptext">
-            <p class="description"><?php echo esc_html($option->helptext); ?></p>
+            <p class="description"><?php 
+                echo wp_kses( $option->helptext, $allowed_helptext_tags );
+            ?></p>
         </div>
         <?php
         }
