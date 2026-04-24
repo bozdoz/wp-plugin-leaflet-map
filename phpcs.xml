@@ -6,6 +6,9 @@
     <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
     <exclude name="WordPress.NamingConventions" />
     <exclude name="WordPress.Arrays.ArrayIndentation" />
+    <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+    <exclude name="WordPress.PHP.DontExtract.extract_extract" />
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
   </rule>
   <rule ref="PSR1">
     <exclude name="PSR1" />
@@ -30,5 +33,9 @@
   </rule>
   <rule ref="Universal">
     <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+    <exclude name="Universal.PHP.RequireExitDieParentheses.Missing" />
+    <exclude name="Universal.PHP.DisallowExitDieParentheses.Found" />
+    <exclude name="Universal.ControlStructures.IfElseDeclaration.NoNewLine" />
+    <exclude name="Universal.Classes.RequireFinalClass.NonFinalClassFound" />
   </rule>
 </ruleset>
