@@ -3,16 +3,14 @@
  * Line Shortcode
  *
  * Use with [leaflet-line ...]
- *
+ * 
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
- *
- * @package leaflet-map
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
@@ -20,95 +18,95 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 /**
  * Leaflet Line Shortcode Class
  */
-class Leaflet_Line_Shortcode extends Leaflet_Shortcode {
+class Leaflet_Line_Shortcode extends Leaflet_Shortcode
+{
+    /**
+     * How leaflet renders the shape
+     * 
+     * @var string $type 
+     */
+    protected $type = 'line';
 
-	/**
-	 * How leaflet renders the shape
-	 *
-	 * @var string $type
-	 */
-	protected $type = 'line';
+    /**
+     * Get Script for Shortcode
+     * 
+     * @param string $atts    shortcode attributes
+     * @param string $content optional
+     * 
+     * @return string HTML
+     */
+    protected function getHTML($atts='', $content=null)
+    {
+        if (!empty($atts)) {
+            extract($atts, EXTR_SKIP);
+        }
+        
+        $style_json = $this->LM->get_style_json($atts);
 
-	/**
-	 * Get Script for Shortcode
-	 *
-	 * @param string $atts    shortcode attributes
-	 * @param string $content optional
-	 *
-	 * @return string HTML
-	 */
-	protected function getHTML( $atts = '', $content = null ) {
-		if ( ! empty( $atts ) ) {
-			extract( $atts, EXTR_SKIP );
-		}
+        $fitbounds = empty($fitbounds) ? 0 : $fitbounds;
 
-		$style_json = $this->LM->get_style_json( $atts );
+        // backwards compatible `fitline`
+        if (!empty($fitline)) {
+            $fitbounds = $fitline;
+        }
 
-		$fitbounds = empty( $fitbounds ) ? 0 : $fitbounds;
+        $fitbounds = filter_var($fitbounds, FILTER_VALIDATE_BOOLEAN);
 
-		// backwards compatible `fitline`
-		if ( ! empty( $fitline ) ) {
-			$fitbounds = $fitline;
-		}
+        $locations = Array();
 
-		$fitbounds = filter_var( $fitbounds, FILTER_VALIDATE_BOOLEAN );
+        if (!empty($addresses)) {
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+            $addresses = preg_split('/\s?[;|\/]\s?/', $addresses);
+            foreach ($addresses as $address) {
+                if (trim($address)) {
+                    $location = new Leaflet_Geocoder($address);
+                    $locations[] = Array($location->lat, $location->lng);
+                }
+            }
+        } else if (!empty($latlngs)) {
+            $latlngs = preg_split('/\s?[;|\/]\s?/', $latlngs);
+            foreach ($latlngs as $latlng) {
+                if (trim($latlng)) {
+                    $locations[] = array_map('floatval', preg_split('/\s?,\s?/', $latlng));
+                }
+            }
+        } else if (!empty($coordinates)) {
+            $coordinates = preg_split('/\s?[;|\/]\s?/', $coordinates);
+            foreach ($coordinates as $xy) {
+                if (trim($xy)) {
+                    $locations[] = array_map('floatval', preg_split('/\s?,\s?/', $xy));
+                }
+            }
+        }
 
-		$locations = array();
+        $location_json = json_encode($locations);
 
-		if ( ! empty( $addresses ) ) {
-			include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
-			$addresses = preg_split( '/\s?[;|\/]\s?/', $addresses );
-			foreach ( $addresses as $address ) {
-				if ( trim( $address ) ) {
-					$location    = new Leaflet_Geocoder( $address );
-					$locations[] = array( $location->lat, $location->lng );
-				}
-			}
-		} elseif ( ! empty( $latlngs ) ) {
-			$latlngs = preg_split( '/\s?[;|\/]\s?/', $latlngs );
-			foreach ( $latlngs as $latlng ) {
-				if ( trim( $latlng ) ) {
-					$locations[] = array_map( 'floatval', preg_split( '/\s?,\s?/', $latlng ) );
-				}
-			}
-		} elseif ( ! empty( $coordinates ) ) {
-			$coordinates = preg_split( '/\s?[;|\/]\s?/', $coordinates );
-			foreach ( $coordinates as $xy ) {
-				if ( trim( $xy ) ) {
-					$locations[] = array_map( 'floatval', preg_split( '/\s?,\s?/', $xy ) );
-				}
-			}
-		}
+        $js_factory = 'L.polyline';
+        $collection = 'lines';
+        
+        if ($this->type == 'polygon') {
+            $js_factory = 'L.polygon';
+            $locations = "[$location_json]";
+            $collection = 'polygons';
+        }
 
-		$location_json = wp_json_encode( $locations );
-
-		$js_factory = 'L.polyline';
-		$collection = 'lines';
-
-		if ( $this->type == 'polygon' ) {
-			$js_factory = 'L.polygon';
-			$locations  = "[$location_json]";
-			$collection = 'polygons';
-		}
-
-		ob_start();
-		?>/*<script>*/
+        ob_start();
+        ?>/*<script>*/
 var previous_map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var shape = <?php echo $js_factory; ?>(<?php echo $location_json; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>, <?php echo $style_json; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
+var shape = <?php echo $js_factory; ?>(<?php echo $location_json; ?>, <?php echo $style_json; ?>);
 var fitbounds = <?php echo $fitbounds ? '1' : '0'; ?>;
 shape.addTo( group );
 if (fitbounds) {
-	// zoom the map to the shape
-	previous_map.fitBounds( shape.getBounds() );
+    // zoom the map to the shape
+    previous_map.fitBounds( shape.getBounds() );
 }
-		<?php
-		$this->LM->add_popup_to_shape( $atts, $content, 'shape' );
-		?>
-window.WPLeafletMapPlugin.<?php echo $collection; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>.push( shape );
-		<?php
-		$script = ob_get_clean();
+<?php 
+    $this->LM->add_popup_to_shape($atts, $content, 'shape'); 
+?>
+window.WPLeafletMapPlugin.<?php echo $collection; ?>.push( shape );<?php
+        $script = ob_get_clean();
 
-		return $this->wrap_script( $script, 'WPLeafletLineShortcode' );
-	}
+        return $this->wrap_script($script, 'WPLeafletLineShortcode');
+    }
 }

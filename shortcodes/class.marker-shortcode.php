@@ -6,13 +6,11 @@
  *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
- *
- * @package leaflet-map
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
@@ -20,132 +18,133 @@ require_once LEAFLET_MAP__PLUGIN_DIR . 'shortcodes/class.shortcode.php';
 /**
  * Leaflet Marker Shortcode Class
  */
-class Leaflet_Marker_Shortcode extends Leaflet_Shortcode {
+class Leaflet_Marker_Shortcode extends Leaflet_Shortcode
+{
+    /**
+     * Get Script for Shortcode
+     *
+     * @param string $atts    could be an array
+     * @param string $content optional
+     *
+     * @return null
+     */
+    protected function getHTML($atts='', $content=null)
+    {
+        if (!empty($atts)) {
+            extract($atts, EXTR_SKIP);
+        }
 
-	/**
-	 * Get Script for Shortcode
-	 *
-	 * @param string $atts    could be an array
-	 * @param string $content optional
-	 *
-	 * @return null
-	 */
-	protected function getHTML( $atts = '', $content = null ) {
-		if ( ! empty( $atts ) ) {
-			extract( $atts, EXTR_SKIP );
-		}
+        if (!empty($address)) {
+            include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
+            $location = new Leaflet_Geocoder( $address );
+            $lat = $location->lat;
+            $lng = $location->lng;
+        }
 
-		if ( ! empty( $address ) ) {
-			include_once LEAFLET_MAP__PLUGIN_DIR . 'class.geocoder.php';
-			$location = new Leaflet_Geocoder( $address );
-			$lat      = $location->lat;
-			$lng      = $location->lng;
-		}
+        $lat_set = isset($lat) || isset($y);
+        $lng_set = isset($lng) || isset($x);
 
-		$lat_set = isset( $lat ) || isset( $y );
-		$lng_set = isset( $lng ) || isset( $x );
+        $lat = empty($lat) ? ( empty($y) ? '0' : $y ) : $lat;
+        $lng = empty($lng) ? ( empty($x) ? '0' : $x ) : $lng;
 
-		$lat = empty( $lat ) ? ( empty( $y ) ? '0' : $y ) : $lat;
-		$lng = empty( $lng ) ? ( empty( $x ) ? '0' : $x ) : $lng;
+        // validate lat/lng
+        $lat = $this->LM->filter_float($lat);
+        $lng = $this->LM->filter_float($lng);
 
-		// validate lat/lng
-		$lat = $this->LM->filter_float( $lat );
-		$lng = $this->LM->filter_float( $lng );
+        $default_marker = 'L.marker';
 
-		$default_marker = 'L.marker';
+        if (isset($svg)) {
+            $svg = filter_var($svg, FILTER_VALIDATE_BOOLEAN);
+            if ($svg) {
+                wp_enqueue_script('leaflet_svg_icon_js');
+                $default_marker = 'new L.SVGMarker';
+            }
+        }
 
-		if ( isset( $svg ) ) {
-			$svg = filter_var( $svg, FILTER_VALIDATE_BOOLEAN );
-			if ( $svg ) {
-				wp_enqueue_script( 'leaflet_svg_icon_js' );
-				$default_marker = 'new L.SVGMarker';
-			}
-		}
+        // optional pluggable marker
+        $default_marker = apply_filters('leaflet_map_marker', $default_marker);
 
-		// optional pluggable marker
-		$default_marker = apply_filters( 'leaflet_map_marker', $default_marker );
+        $options = array(
+            'draggable' => isset($draggable) ? $draggable : null,
+            'title' => isset($title) ? $title : null,
+            'alt' => isset($alt) ? $alt : null,
+            'zIndexOffset' => isset($zindexoffset) ? $zindexoffset : null,
+            'opacity' => isset($opacity) ? $opacity : null,
+            'iconUrl' => isset($iconurl) ? $iconurl : null,
+            'iconSize' => isset($iconsize) ? $iconsize : null,
+            'iconAnchor' => isset($iconanchor) ? $iconanchor : null,
+            'shadowUrl' => isset($shadowurl) ? $shadowurl : null,
+            'shadowSize' => isset($shadowsize) ? $shadowsize : null,
+            'shadowAnchor' => isset($shadowanchor) ? $shadowanchor : null,
+            'popupAnchor' => isset($popupanchor) ? $popupanchor : null,
+            'tooltipAnchor' => isset($tooltipanchor) ? $tooltipanchor : null,
+            'svg' => isset($svg) ? $svg : null,
+            'background' => isset($background) ? $background : null,
+            'iconClass' => isset($iconclass) ? $iconclass : null,
+            'color' => isset($color) ? $color : null
+        );
 
-		$options = array(
-			'draggable'     => isset( $draggable ) ? $draggable : null,
-			'title'         => isset( $title ) ? $title : null,
-			'alt'           => isset( $alt ) ? $alt : null,
-			'zIndexOffset'  => isset( $zindexoffset ) ? $zindexoffset : null,
-			'opacity'       => isset( $opacity ) ? $opacity : null,
-			'iconUrl'       => isset( $iconurl ) ? $iconurl : null,
-			'iconSize'      => isset( $iconsize ) ? $iconsize : null,
-			'iconAnchor'    => isset( $iconanchor ) ? $iconanchor : null,
-			'shadowUrl'     => isset( $shadowurl ) ? $shadowurl : null,
-			'shadowSize'    => isset( $shadowsize ) ? $shadowsize : null,
-			'shadowAnchor'  => isset( $shadowanchor ) ? $shadowanchor : null,
-			'popupAnchor'   => isset( $popupanchor ) ? $popupanchor : null,
-			'tooltipAnchor' => isset( $tooltipanchor ) ? $tooltipanchor : null,
-			'svg'           => isset( $svg ) ? $svg : null,
-			'background'    => isset( $background ) ? $background : null,
-			'iconClass'     => isset( $iconclass ) ? $iconclass : null,
-			'color'         => isset( $color ) ? $color : null,
-		);
+        $args = array(
+            'draggable' => FILTER_VALIDATE_BOOLEAN,
+            'title' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'alt' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'zIndexOffset' => FILTER_VALIDATE_INT,
+            'opacity' => FILTER_VALIDATE_FLOAT,
+            'iconUrl' => FILTER_SANITIZE_URL,
+            'shadowUrl' => FILTER_SANITIZE_URL,
+            'iconSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'iconAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'shadowSize' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'shadowAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'popupAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'svg' => FILTER_VALIDATE_BOOLEAN,
+            'background' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'iconClass' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'color' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        );
 
-		$args = array(
-			'draggable'     => FILTER_VALIDATE_BOOLEAN,
-			'title'         => FILTER_SANITIZE_SPECIAL_CHARS,
-			'alt'           => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'zIndexOffset'  => FILTER_VALIDATE_INT,
-			'opacity'       => FILTER_VALIDATE_FLOAT,
-			'iconUrl'       => FILTER_SANITIZE_URL,
-			'shadowUrl'     => FILTER_SANITIZE_URL,
-			'iconSize'      => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'iconAnchor'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'shadowSize'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'shadowAnchor'  => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'popupAnchor'   => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'tooltipAnchor' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'svg'           => FILTER_VALIDATE_BOOLEAN,
-			'background'    => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'iconClass'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-			'color'         => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-		);
+        $options = $this->LM->json_sanitize($options, $args);
 
-		$options = $this->LM->json_sanitize( $options, $args );
-
-		ob_start();
-		?>/*<script>*/
+        ob_start();
+        ?>/*<script>*/
 var map = window.WPLeafletMapPlugin.getCurrentMap();
 var group = window.WPLeafletMapPlugin.getCurrentGroup();
-var marker_options = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
-var marker = <?php echo $default_marker;  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>(
-	[<?php echo esc_html( $lat ) . ',' . esc_html( $lng ); ?>],
-	marker_options
+var marker_options = window.WPLeafletMapPlugin.getIconOptions(<?php echo $options; ?>);
+var marker = <?php echo $default_marker; ?>(
+    [<?php echo $lat . ',' . $lng; ?>],
+    marker_options
 );
 var is_image = map.is_image_map;
-		<?php
-		if ( ! $lat_set && ! $lng_set ) {
-			/* update lat lng to previous map's center */
-			?>
-	marker.setLatLng( map.getCenter() );
-			<?php
-		}
-		?>
+<?php
+if (!$lat_set && !$lng_set) {
+    /* update lat lng to previous map's center */
+?>
+    marker.setLatLng( map.getCenter() );
+<?php
+}
+?>
 if (marker_options.draggable) {
-	marker.on('dragend', function () {
-		var latlng = this.getLatLng();
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		if (is_image) {
-			console.log('leaflet-marker y=' + lat + ' x=' + lng);
-		} else {
-			console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
-		}
-	});
+    marker.on('dragend', function () {
+        var latlng = this.getLatLng();
+        var lat = latlng.lat;
+        var lng = latlng.lng;
+        if (is_image) {
+            console.log('leaflet-marker y=' + lat + ' x=' + lng);
+        } else {
+            console.log('leaflet-marker lat=' + lat + ' lng=' + lng);
+        }
+    });
 }
 marker.addTo( group );
-		<?php
-		$this->LM->add_popup_to_shape( $atts, $content, 'marker' );
-		?>
+<?php
+    $this->LM->add_popup_to_shape($atts, $content, 'marker');
+?>
 window.WPLeafletMapPlugin.markers.push( marker );
-		<?php
+        <?php
 
-		$script = ob_get_clean();
+        $script = ob_get_clean();
 
-		return $this->wrap_script( $script, 'WPLeafletMarkerShortcode' );
-	}
+        return $this->wrap_script($script, 'WPLeafletMarkerShortcode');
+    }
 }
