@@ -66,38 +66,42 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 
         $settings = Leaflet_Map_Plugin_Settings::init();
 
-        $atts['zoom'] = array_key_exists('zoom', $atts) ?
-            $zoom : $settings->get('default_zoom');
-        $atts['height'] = empty($height) ?
-            $settings->get('default_height') : $height;
-        $atts['width'] = empty($width) ? $settings->get('default_width') : $width;
-        $atts['zoomcontrol'] = isset($zoomControl)
-            ? $zoomControl
-            : (array_key_exists('zoomcontrol', $atts)
+		$atts['zoom']            = array_key_exists( 'zoom', $atts ) ?
+			(float) $zoom : $settings->get( 'default_zoom' );
+		$atts['height']          = empty( $height ) ?
+			$settings->get( 'default_height' ) : $height;
+		$atts['width']           = empty( $width ) ? $settings->get( 'default_width' ) : $width;
+		$atts['zoomcontrol']     = isset( $zoomControl )
+			? (bool) $zoomControl
+			: ( array_key_exists( 'zoomcontrol', $atts )
                 ? $zoomcontrol
-                : $settings->get('show_zoom_controls'));
-        $atts['min_zoom'] = array_key_exists('min_zoom', $atts) ?
-            $min_zoom : $settings->get('default_min_zoom');
-        $atts['max_zoom'] = empty($max_zoom) ?
-            $settings->get('default_max_zoom') : $max_zoom;
-        $atts['scrollwheel'] = isset($scrollWheelZoom)
+				: $settings->get( 'show_zoom_controls' ) );
+		$atts['min_zoom']        = array_key_exists( 'min_zoom', $atts ) ?
+			(float) $min_zoom : $settings->get( 'default_min_zoom' );
+		$atts['max_zoom']        = empty( $max_zoom ) ?
+			$settings->get( 'default_max_zoom' ) : (float) $max_zoom;
+		$atts['scrollwheel']     = isset( $scrollWheelZoom )
             ? $scrollWheelZoom
-            : (array_key_exists('scrollwheel', $atts)
-                ? $scrollwheel
-                : $settings->get('scroll_wheel_zoom'));
-         $atts['doubleclickzoom'] = isset($doubleClickZoom)
-             ? $doubleClickZoom
-             : (array_key_exists('doubleclickzoom', $atts)
-                 ? $doubleclickzoom
-                 : $settings->get('double_click_zoom'));
+			: ( array_key_exists( 'scrollwheel', $atts )
+				? (bool) $scrollwheel
+				: $settings->get( 'scroll_wheel_zoom' ) );
+		$atts['doubleclickzoom'] = isset( $doubleClickZoom )
+			? (bool) $doubleClickZoom
+			: ( array_key_exists( 'doubleclickzoom', $atts )
+				? (bool) $doubleclickzoom
+				: $settings->get( 'double_click_zoom' ) );
+
+		$atts['dragging'] = isset( $dragging )
+			? (bool) $dragging
+			: true;
 
         // @deprecated backwards-compatible fit_markers
-        $atts['fit_markers'] = array_key_exists('fit_markers', $atts) ?
-            $fit_markers : $settings->get('fit_markers');
+		$atts['fit_markers'] = array_key_exists( 'fit_markers', $atts ) ?
+			(bool) $fit_markers : $settings->get( 'fit_markers' );
 
         // fitbounds is what it should be called @since v2.12.0
-        $atts['fitbounds'] = array_key_exists('fitbounds', $atts) ?
-            $fitbounds : $atts['fit_markers'];
+		$atts['fitbounds'] = array_key_exists( 'fitbounds', $atts ) ?
+			(bool) $fitbounds : $atts['fit_markers'];
 
         /* allow percent, but add px for ints */
         $atts['height'] .= is_numeric($atts['height']) ? 'px' : '';
@@ -113,35 +117,35 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         /* allow a bunch of other (boolean) options */
         // http://leafletjs.com/reference.html#map
         $map_options = array(
-            'closePopupOnClick' => isset($closePopupOnClick)
-                ? $closePopupOnClick
-                : (isset($closepopuponclick)
-                    ? $closepopuponclick
-                    : null),
-            'trackResize' => isset($trackResize)
-                ? $trackResize
-                : (isset($trackresize)
-                    ? $trackresize
-                    : null),
-            'boxZoom' => isset($boxzoom)
-                ? $boxzoom
-                : (isset($boxZoom)
-                    ? $boxZoom
-                    : null),
-            'touchZoom' => isset($touchZoom) ? $touchZoom : null,
-            'dragging' => isset($dragging) ? $dragging : null,
-            'keyboard' => isset($keyboard) ? $keyboard : null,
-            'zoomAnimation' => isset($zoomAnimation) ?  $zoomAnimation : null,
-            'fadeAnimation' => isset($fadeAnimation) ?  $fadeAnimation : null,
-            'markerZoomAnimation' => isset($markerZoomAnimation) ?  $markerZoomAnimation : null,
-            'inertia' => isset($inertia) ?  $inertia : null,
-            'worldCopyJump' => isset($worldCopyJump) ?  $worldCopyJump : null,
-            'tap' => isset($tap) ? $tap : null,
-            'bounceAtZoomLimits' => isset($bounceAtZoomLimits) ? $bounceAtZoomLimits : null,
+			'closePopupOnClick'   => isset( $closePopupOnClick )
+				? (bool) $closePopupOnClick
+				: ( isset( $closepopuponclick )
+					? (bool) $closepopuponclick
+					: null ),
+			'trackResize'         => isset( $trackResize )
+				? (bool) $trackResize
+				: ( isset( $trackresize )
+					? (bool) $trackresize
+					: null ),
+			'boxZoom'             => isset( $boxzoom )
+				? (bool) $boxzoom
+				: ( isset( $boxZoom )
+					? (bool) $boxZoom
+					: null ),
+			'touchZoom'           => isset( $touchZoom ) ? (bool) $touchZoom : null,
+			'dragging'            => isset( $dragging ) ? (bool) $dragging : null,
+			'keyboard'            => isset( $keyboard ) ? (bool) $keyboard : null,
+			'zoomAnimation'       => isset( $zoomAnimation ) ? (bool) $zoomAnimation : null,
+			'fadeAnimation'       => isset( $fadeAnimation ) ? (bool) $fadeAnimation : null,
+			'markerZoomAnimation' => isset( $markerZoomAnimation ) ? (bool) $markerZoomAnimation : null,
+			'inertia'             => isset( $inertia ) ? (bool) $inertia : null,
+			'worldCopyJump'       => isset( $worldCopyJump ) ? (bool) $worldCopyJump : null,
+			'tap'                 => isset( $tap ) ? (bool) $tap : null,
+			'bounceAtZoomLimits'  => isset( $bounceAtZoomLimits ) ? (bool) $bounceAtZoomLimits : null,
             // defined above, but can be validated here
-            'zoomControl' => $atts['zoomcontrol'],
-            'scrollWheelZoom' => $atts['scrollwheel'],
-            'doubleClickZoom' => $atts['doubleclickzoom']
+			'zoomControl'         => (bool) $atts['zoomcontrol'],
+			'scrollWheelZoom'     => (bool) $atts['scrollwheel'],
+			'doubleClickZoom'     => (bool) $atts['doubleclickzoom'],
         );
 
         // filter out nulls
@@ -174,26 +178,11 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         // custom field for moving to javascript
         // filter out any unwanted HTML tags (including img)
         if ($atts['attribution'] !== 0) {
-            $map_options['attribution'] = wp_kses_post($atts['attribution']);
+            $map_options['attribution'] = wp_kses_post( html_entity_decode( $atts['attribution'] ) );
         }
 
         // wrap as JSON
         $atts['map_options'] = json_encode($map_options);
-
-        // get raw variables, allowing for JavaScript variables in values
-        $raw_map_options = array();
-        foreach($map_options as $key=>$val) {
-            $original_value = isset($atts[$key]) ? $atts[$key] : null;
-
-            $liquid = $this->LM->liquid($original_value);
-
-            if ($liquid && isset($liquid['raw']) && $liquid['raw']) {
-                // raw leaves original value un-quoted
-                $raw_map_options[$key] = $liquid['original'];
-            }
-        }
-
-        $atts['raw_map_options'] = $this->LM->rawDict($raw_map_options);
 
         $tile_layer_options = array(
             'tileSize' => empty($tilesize) ? $settings->get('tilesize') : $tilesize,
@@ -204,7 +193,6 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
             'noWrap' => filter_var(empty($nowrap) ? $settings->get('tile_no_wrap') : $nowrap, FILTER_VALIDATE_BOOLEAN),
             'maxZoom' => $atts['maxZoom']
         );
-
 
         $tile_layer_options = $this->LM->filter_empty_string($tile_layer_options);
         $tile_layer_options = $this->LM->filter_null($tile_layer_options);
@@ -308,7 +296,6 @@ var base = (!baseUrl && window.MQ) ?
         attributionControl: false
     },
     <?php echo $map_options; ?>,
-    <?php echo $raw_map_options; ?>
 );
 window.WPLeafletMapPlugin.createMap(options).setView(<?php
     echo '[' . $lat . ',' . $lng . '],' . $zoom;

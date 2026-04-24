@@ -1,11 +1,11 @@
 <?php
-/** 
+/**
  * Leaflet_Map_Plugin_Option
- * 
+ *
  * Store values; render widgets
- * 
+ *
  * PHP Version 5.5
- * 
+ *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -22,28 +22,28 @@ class Leaflet_Map_Plugin_Option
 {
     /**
      * Default Value
-     * 
+     *
      * @var varies $default
      */
     public $default = '';
-    
+
     /**
      * Input type ex: ('text', 'select', 'checkbox')
-     * 
-     * @var string $type 
+     *
+     * @var string $type
      */
     public $type;
-    
+
     /**
      * Optional used for select; maybe checkbox/radio
-     * 
+     *
      * @var array $options
      */
     public $options = array();
 
     /**
      * Optional used for label under input
-     * 
+     *
      * @var string $helptext
      */
     public $helptext = '';
@@ -59,7 +59,7 @@ class Leaflet_Map_Plugin_Option
 
     /**
      * Instantiate class
-     * 
+     *
      * @param array $details A list of options
      */
     function __construct($details = array())
@@ -71,18 +71,33 @@ class Leaflet_Map_Plugin_Option
         }
 
         $option_filter = array(
-            'display_name'     =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'default'          =>     FILTER_DEFAULT,
-            'type'             =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'min'              =>     FILTER_DEFAULT,
-            'max'              =>     FILTER_DEFAULT,
-            'step'             =>     FILTER_DEFAULT,
-            'placeholder'      =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'options'          =>     array(
-                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-                'flags'  => FILTER_FORCE_ARRAY
-            ),
-            'helptext'         =>     FILTER_DEFAULT
+          'display_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+          // 'default'      => FILTER_DEFAULT,
+          'default'      => array(
+            'filter'  => FILTER_CALLBACK,
+            'options' => function ( $value ) {
+              return wp_kses_post( $value );
+             },
+           ),
+           'type'         => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+           'min'          => FILTER_DEFAULT,
+           'max'          => FILTER_DEFAULT,
+           'step'         => FILTER_DEFAULT,
+           'placeholder'  => array(
+             'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+             'flags'  => FILTER_NULL_ON_FAILURE,
+           ),
+           'options'      => array(
+             'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+             'flags'  => FILTER_FORCE_ARRAY,
+           ),
+           // 'helptext'     => FILTER_DEFAULT,
+           'helptext'     => array(
+             'filter'  => FILTER_CALLBACK,
+             'options' => function ( $value ) {
+               return wp_kses_post( $value );
+             },
+           ),
         );
 
         // get matching keys only
@@ -98,88 +113,97 @@ class Leaflet_Map_Plugin_Option
 
     /**
      * Renders a widget
-     * 
+     *
      * @param string $name  widget name
      * @param varies $value widget value
-     * 
+     *
      * @return HTML
      */
-    function widget ($name, $value) 
+    function widget ($name, $value)
     {
         switch ($this->type) {
         case 'text':
-            ?>
-        <input 
-            class="full-width" 
-            name="<?php echo $name; ?>" 
-            type="<?php echo $this->type; ?>" 
-            id="<?php echo $name; ?>" 
-            placeholder="<?php echo htmlspecialchars($this->placeholder); ?>"
-            value="<?php echo htmlspecialchars($value); ?>" 
+        case 'email':
+        ?>
+        <input
+            class="full-width"
+            name="<?php echo esc_html( $name ); ?>"
+            type="<?php echo esc_html( $this->type ); ?>"
+            id="<?php echo esc_html( $name ); ?>"
+            placeholder="<?php echo esc_html( $this->placeholder ); ?>"
+            value="<?php echo esc_html( $value ); ?>"
             />
             <?php
             break;
 
-        
+
         case 'number':
             ?>
-        <input 
-            class="full-width" 
-            min="<?php echo isset($this->min) ? $this->min : ""; ?>"
-            max="<?php echo isset($this->max) ? $this->max : ""; ?>"
-            step="<?php echo isset($this->step) ? $this->step : "any"; ?>"
-            name="<?php echo $name; ?>" 
-            type="<?php echo $this->type; ?>" 
-            id="<?php echo $name; ?>" 
-            value="<?php echo htmlspecialchars($value); ?>" 
+        <input
+            class="full-width"
+            min="<?php echo isset( $this->min ) ? esc_html( $this->min ) : ''; ?>"
+            max="<?php echo isset( $this->max ) ? esc_html( $this->max ) : ''; ?>"
+            step="<?php echo isset( $this->step ) ? esc_html( $this->step ) : 'any'; ?>"
+            name="<?php echo esc_html( $name ); ?>"
+            type="<?php echo esc_html( $this->type ); ?>"
+            id="<?php echo esc_html( $name ); ?>"
+            value="<?php echo esc_html( $value ); ?>"
             />
             <?php
             break;
-            
+
         case 'textarea':
             ?>
 
-        <textarea 
-            id="<?php echo $name; ?>"
-            class="full-width" 
-            name="<?php echo $name; ?>"><?php echo htmlspecialchars($value); ?></textarea>
+        <textarea
+            id="<?php echo esc_html( $name ); ?>"
+            class="full-width"
+            name="<?php echo esc_html( $name ); ?>"><?php echo esc_textarea( $value ); ?></textarea>
 
             <?php
             break;
 
         case 'checkbox':
-            ?>
+          ?>
 
-        <input 
-            class="checkbox" 
-            name="<?php echo $name; ?>" 
-            type="checkbox" 
-            id="<?php echo $name; ?>"
-            <?php if ($value) echo ' checked="checked"' ?> 
+        <input
+            class="checkbox"
+            name="<?php echo esc_html( $name ); ?>"
+            type="checkbox"
+            id="<?php echo esc_html( $name ); ?>"
+            <?php
+            if ( $value ) {
+            echo ' checked="checked"';}
+            ?>
             />
             <?php
             break;
 
         case 'select':
             ?>
-        <select id="<?php echo $name; ?>"
-            name="<?php echo $name; ?>"
+            <select id="<?php echo esc_html( $name ); ?>"
+            name="<?php echo esc_html( $name ); ?>"
             class="full-width">
-        <?php
-        foreach ($this->options as $o => $n) {
-        ?>
-            <option value="<?php echo $o; ?>"<?php if ($value == $o) echo ' selected' ?>>
-                <?php echo $n; ?>
+            <?php
+            foreach ($this->options as $o => $n) {
+            ?>
+            <option value="<?php echo esc_html( $o ); ?>"
+            <?php
+            if ( $value === $o ) {
+              echo ' selected';}
+            ?>
+            >
+            <?php echo esc_html( $n ); ?>
             </option>
-        <?php
-        }
-        ?>
-        </select>
-                <?php
+            <?php
+            }
+            ?>
+            </select>
+            <?php
             break;
         default:
             ?>
-        <div>No option type chosen for <?php echo $name; ?> with value <?php echo htmlspecialchars($value); ?></div>
+            <div>No option type chosen for <?php echo esc_html( $name ); ?> with value <?php echo esc_html( $value ); ?></div>
             <?php
             break;
         }
