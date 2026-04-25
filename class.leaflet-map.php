@@ -391,37 +391,8 @@ class Leaflet_Map
         // save variable for filter
         $shortcoded = $message;
 
-        $allowed = [
-            'img' => [
-                'src'    => [],
-                'alt'    => [],
-                'width'  => [],
-                'height' => [],
-                'title'  => [],
-            ],
-            'a'      => [ 
-                'href' => [], 
-                'title' => [], 
-                'target' => [], 
-                'rel' => [] 
-            ],
-            'h1'     => [],
-            'h2'     => [],
-            'h3'     => [],
-            'h4'     => [],
-            'h5'     => [],
-            'h6'     => [],
-            'p'      => [],
-            'br'     => [],
-            'strong' => [],
-            'em'     => [],
-            'ul'     => [],
-            'ol'     => [],
-            'li'     => [],
-        ];
-
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
-        $message = wp_kses( $message, $allowed );
+        $message = wp_kses_post( $message );
         $message = esc_html( $message );
 
         $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
