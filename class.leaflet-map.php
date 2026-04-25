@@ -391,10 +391,40 @@ class Leaflet_Map
         // save variable for filter
         $shortcoded = $message;
 
+        $allowed = [
+            'img' => [
+                'src'    => [],
+                'alt'    => [],
+                'width'  => [],
+                'height' => [],
+                'title'  => [],
+            ],
+            'a'      => [ 
+                'href' => [], 
+                'title' => [], 
+                'target' => [], 
+                'rel' => [] 
+            ],
+            'h1'     => [],
+            'h2'     => [],
+            'h3'     => [],
+            'h4'     => [],
+            'h5'     => [],
+            'h6'     => [],
+            'p'      => [],
+            'br'     => [],
+            'strong' => [],
+            'em'     => [],
+            'ul'     => [],
+            'ol'     => [],
+            'li'     => [],
+        ];
+
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
-        // Use WordPress esc_js() for safe JS string escaping instead of
-        // addslashes() which is insufficient against XSS in JS context
-        $message = "window.WPLeafletMapPlugin.unescape('" . esc_js($message) . "')";
+        $message = wp_kses( $message, $allowed );
+        $message = esc_html( $message );
+
+        $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
 
         // use with: add_filter('leaflet_map_popup_message', 'example_callback', 10, 3);
         // function takes default message, message after do_shortcode, and original/raw
