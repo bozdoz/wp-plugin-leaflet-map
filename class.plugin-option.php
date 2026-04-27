@@ -72,7 +72,6 @@ class Leaflet_Map_Plugin_Option
 
         $option_filter = array(
           'display_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-          // 'default'      => FILTER_DEFAULT,
           'default'      => array(
             'filter'  => FILTER_CALLBACK,
             'options' => function ( $value ) {
@@ -91,7 +90,6 @@ class Leaflet_Map_Plugin_Option
              'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
              'flags'  => FILTER_FORCE_ARRAY,
            ),
-           // 'helptext'     => FILTER_DEFAULT,
            'helptext'     => array(
              'filter'  => FILTER_CALLBACK,
              'options' => function ( $value ) {
@@ -136,7 +134,6 @@ class Leaflet_Map_Plugin_Option
             <?php
             break;
 
-
         case 'number':
             ?>
         <input
@@ -164,7 +161,7 @@ class Leaflet_Map_Plugin_Option
             break;
 
         case 'checkbox':
-          ?>
+            ?>
 
         <input
             class="checkbox"
@@ -173,7 +170,8 @@ class Leaflet_Map_Plugin_Option
             id="<?php echo esc_html( $name ); ?>"
             <?php
             if ( $value ) {
-            echo ' checked="checked"';}
+            echo ' checked="checked"';
+            }
             ?>
             />
             <?php
@@ -190,7 +188,8 @@ class Leaflet_Map_Plugin_Option
             <option value="<?php echo esc_html( $o ); ?>"
             <?php
             if ( $value === $o ) {
-              echo ' selected';}
+              echo ' selected';
+            }
             ?>
             >
             <?php echo esc_html( $n ); ?>
