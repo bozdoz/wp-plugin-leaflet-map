@@ -477,7 +477,9 @@ class Leaflet_Map
         $obj = '{';
         
         foreach ($arr as $key=>$val) {
-            $obj .= "\"$key\": $val,";
+            // removes any JS function calls
+            $safe_val = preg_replace('/[^a-zA-Z0-9_$.!]/', '', $val);
+            $obj .= "\"$key\": $safe_val,";
         }
 
         $obj .= '}';
