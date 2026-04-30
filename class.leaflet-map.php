@@ -392,9 +392,10 @@ class Leaflet_Map
         $shortcoded = $message;
 
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
-        // Use WordPress esc_js() for safe JS string escaping instead of
-        // addslashes() which is insufficient against XSS in JS context
-        $message = "window.WPLeafletMapPlugin.unescape('" . esc_js($message) . "')";
+        $message = wp_kses_post( $message );
+        $message = esc_html( $message );
+
+        $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
 
         // use with: add_filter('leaflet_map_popup_message', 'example_callback', 10, 3);
         // function takes default message, message after do_shortcode, and original/raw
@@ -476,11 +477,9 @@ class Leaflet_Map
         $obj = '{';
         
         foreach ($arr as $key=>$val) {
-            $safe_key = preg_replace('/[^a-zA-Z0-9_]/', '', $key);
-            if (!preg_match('/^[a-zA-Z0-9_.,()\[\] +-]+$/', $val)) {
-                continue;
-            }
-            $obj .= "\"$safe_key\": $val,";
+            // removes any JS function calls
+            $safe_val = preg_replace('/[^a-zA-Z0-9_$.!]/', '', $val);
+            $obj .= "\"$key\": $safe_val,";
         }
 
         $obj .= '}';

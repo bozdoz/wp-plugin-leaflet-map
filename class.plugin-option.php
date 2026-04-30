@@ -82,7 +82,7 @@ class Leaflet_Map_Plugin_Option
                 'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
                 'flags'  => FILTER_FORCE_ARRAY
             ),
-            'helptext'         =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS
+            'helptext'         =>     FILTER_DEFAULT
         );
 
         // get matching keys only
