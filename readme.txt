@@ -2,13 +2,13 @@
 Author: bozdoz
 Author URI: https://bozdoz.com
 Plugin URI: https://wordpress.org/plugins/leaflet-map/
-Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital, rtpHarry
+Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault-barrat, sardylan, AK-digital, rtpHarry, mtanatinnyonja
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, openstreetmap, mapquest, interactive
 Requires at least: 4.6
 Tested up to: 6.9
-Version: 3.4.4
-Stable tag: 3.4.4
+Version: 3.4.5
+Stable tag: 3.4.5
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.4.5 =
+* [Bugfix] Numerous fixes to prevent XSS.
 
 = 3.4.4 =
 * [Bugfix] Fix to Nominatim returning 404's
@@ -489,6 +492,9 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 * First Version. Basic map creation and marker creation.
 
 == Upgrade Notice ==
+
+= 3.4.5 =
+* [Bugfix] Numerous fixes to prevent XSS.
 
 = 3.4.4 =
 * [Bugfix] Fix to Nominatim returning 404's
