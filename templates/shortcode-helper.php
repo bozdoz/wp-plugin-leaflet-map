@@ -38,12 +38,12 @@
         ?>
         <div class="wrap">
             <hr>
-            <h2><?php _e('Interactive Shortcodes:', 'leaflet-map'); ?></h2>
-            <p class="description"><?php _e('Move the map and the marker to generate shortcodes below:', 'leaflet-map'); ?></p>
-            <div class="flex"><label class="h3" for="map-shortcode"><?php _e('Map Shortcode', 'leaflet-map'); ?></label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
-            <div class="flex"><label class="h3" for="marker-shortcode"><?php _e('Marker Shortcode', 'leaflet-map'); ?></label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
+            <h2><?php esc_html_e('Interactive Shortcodes:', 'leaflet-map'); ?></h2>
+            <p class="description"><?php esc_html_e('Move the map and the marker to generate shortcodes below:', 'leaflet-map'); ?></p>
+            <div class="flex"><label class="h3" for="map-shortcode"><?php esc_html_e('Map Shortcode', 'leaflet-map'); ?></label> <input type="text" id="map-shortcode" readonly="readonly" /></div>
+            <div class="flex"><label class="h3" for="marker-shortcode"><?php esc_html_e('Marker Shortcode', 'leaflet-map'); ?></label> <input type="text" id="marker-shortcode" readonly="readonly" /></div>
             <hr>
-            <h2><?php _e('Examples', 'leaflet-map'); ?>:</h2>
+            <h2><?php esc_html_e('Examples', 'leaflet-map'); ?>:</h2>
             <div class="examples">
             <?php
             $examples = array(
