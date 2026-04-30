@@ -241,9 +241,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
         ob_start();
         ?>
 <div class="leaflet-map WPLeafletMap" style="height:<?php
-    echo htmlspecialchars($height);
+    echo esc_attr($height);
 ?>; width:<?php
-    echo htmlspecialchars($width);
+    echo esc_attr($width);
 ?>;"></div><?php
         return ob_get_clean();
     }
