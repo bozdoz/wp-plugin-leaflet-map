@@ -1,3 +1,5 @@
+// TODO: needs leaflet v2 proxy:
+// https://codepen.io/bozdoz/pen/EaVOegY?editors=0010
 (function () {
   // holds a function queue to call once page is loaded
   function Main() {

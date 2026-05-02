@@ -43,7 +43,7 @@ class Leaflet_Image_Shortcode extends Leaflet_Map_Shortcode
         $source = empty($src) ? $source : $src;
 
         ob_start(); ?>/*<script>*/
-var options = L.Util.extend({}, {
+var options = Object.assign({}, {
         attributionControl: false
     }, <?php echo $map_options; ?>, {
         crs: L.CRS.Simple

@@ -40,6 +40,7 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     protected function enqueue()
     {
         wp_enqueue_style('leaflet_stylesheet');
+        // TODO needs to load leaflet_js first as module
         wp_enqueue_script('wp_leaflet_map');
 
         if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
@@ -297,13 +298,13 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
 var baseUrl = atob('<?php echo base64_encode(filter_var($tileurl, FILTER_SANITIZE_URL)); ?>');
 var base = (!baseUrl && window.MQ) ?
     window.MQ.mapLayer() : L.tileLayer(baseUrl,
-        L.Util.extend({}, {
+        Object.assign({}, {
             detectRetina: <?php echo $detect_retina ? '1' : '0'; ?>,
         },
         <?php echo $tile_layer_options; ?>
         )
     );
-    var options = L.Util.extend({}, {
+    var options = Object.assign({}, {
         layers: [base],
         attributionControl: false
     },

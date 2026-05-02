@@ -304,6 +304,7 @@ class Leaflet_Map_Plugin_Settings
                     $foreachmap
                 )
             ),
+            // TODO default needs to be "global"
             'js_url' => array(
                 'display_name'=>__('JavaScript URL', 'leaflet-map'),
                 'default' => sprintf('https://unpkg.com/leaflet@%s/dist/leaflet.js', $leaflet_version),
