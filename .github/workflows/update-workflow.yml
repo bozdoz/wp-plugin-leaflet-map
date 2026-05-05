@@ -1,5 +1,9 @@
 name: Update Workflow
 
+concurrency:
+  group: deployments
+  cancel-in-progress: false
+
 on:
   workflow_dispatch:    
   push:
