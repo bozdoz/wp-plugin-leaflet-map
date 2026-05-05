@@ -44,6 +44,7 @@ code {
 
 .input-group input[type='number'],
 .input-group input[type='text'],
+.input-group input[type='email'],
 .input-group textarea,
 .input-group select {
   width: 100%;
@@ -61,7 +62,7 @@ code {
   float: right;
 }
 
-/* 
+/*
 * For Flexbox Support
 */
 
