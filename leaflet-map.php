@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Leaflet Map Github
+ * Plugin Name: Leaflet Map
  * Plugin URI: https://wordpress.org/plugins/leaflet-map/
  * Description: A plugin for creating a Leaflet JS map with a shortcode. Boasts two free map tile services and three free geocoders.
  * Author: bozdoz
