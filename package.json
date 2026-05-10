@@ -11,8 +11,7 @@
     "cli": "docker compose run cli sh",
     "translate": "cd ./languages && sudo php ../../wp-trunk/tools/i18n/makepot.php wp-plugin ../",
     "changes": "VERSION=$(npm pkg get version | tr -d '\"') && git log v${VERSION}..HEAD --oneline",
-    "test": "jest",
-    "minify": "rm -rf ./scripts/*.min.js; for file in ./scripts/*.js; do esbuild --minify $file --outfile=\"./scripts/$(basename $file .js).min.js\"; done"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -33,8 +32,7 @@
     "testEnvironment": "jsdom"
   },
   "devDependencies": {
-    "esbuild": "^0.25.2",
-    "jest": "^27.0.5",
-    "prettier": "^2.3.2"
+    "jest": "^27.5.1",
+    "prettier": "^2.8.8"
   }
 }
