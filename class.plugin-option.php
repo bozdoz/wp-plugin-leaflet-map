@@ -55,6 +55,7 @@ class Leaflet_Map_Plugin_Option
     public $min = 0;
     public $max = 0;
     public $step = 0;
+    public $placeholder = '';
 
     /**
      * Instantiate class
@@ -71,16 +72,17 @@ class Leaflet_Map_Plugin_Option
 
         $option_filter = array(
             'display_name'     =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'default'          =>     null,
+            'default'          =>     FILTER_DEFAULT,
             'type'             =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'min'              =>     "",
-            'max'              =>     "",
-            'step'             =>     "",
+            'min'              =>     FILTER_DEFAULT,
+            'max'              =>     FILTER_DEFAULT,
+            'step'             =>     FILTER_DEFAULT,
+            'placeholder'      =>     FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'options'          =>     array(
                 'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
                 'flags'  => FILTER_FORCE_ARRAY
             ),
-            'helptext'         =>     null
+            'helptext'         =>     FILTER_DEFAULT
         );
 
         // get matching keys only
@@ -109,10 +111,11 @@ class Leaflet_Map_Plugin_Option
             ?>
         <input 
             class="full-width" 
-            name="<?php echo $name; ?>" 
-            type="<?php echo $this->type; ?>" 
-            id="<?php echo $name; ?>" 
-            value="<?php echo htmlspecialchars($value); ?>" 
+            name="<?php echo esc_attr( $name ); ?>" 
+            type="<?php echo esc_attr( $this->type ); ?>" 
+            id="<?php echo esc_attr( $name ); ?>" 
+            placeholder="<?php echo esc_attr( $this->placeholder ); ?>"
+            value="<?php echo esc_attr( $value ); ?>" 
             />
             <?php
             break;
@@ -122,13 +125,13 @@ class Leaflet_Map_Plugin_Option
             ?>
         <input 
             class="full-width" 
-            min="<?php echo isset($this->min) ? $this->min : ""; ?>"
-            max="<?php echo isset($this->max) ? $this->max : ""; ?>"
-            step="<?php echo isset($this->step) ? $this->step : "any"; ?>"
-            name="<?php echo $name; ?>" 
-            type="<?php echo $this->type; ?>" 
-            id="<?php echo $name; ?>" 
-            value="<?php echo htmlspecialchars($value); ?>" 
+            min="<?php echo isset($this->min) ? esc_attr( $this->min ) : ""; ?>"
+            max="<?php echo isset($this->max) ? esc_attr( $this->max ) : ""; ?>"
+            step="<?php echo isset($this->step) ? esc_attr( $this->step ) : "any"; ?>"
+            name="<?php echo esc_attr( $name ); ?>" 
+            type="<?php echo esc_attr( $this->type ); ?>" 
+            id="<?php echo esc_attr( $name ); ?>" 
+            value="<?php echo esc_attr( $value ); ?>" 
             />
             <?php
             break;
@@ -137,9 +140,9 @@ class Leaflet_Map_Plugin_Option
             ?>
 
         <textarea 
-            id="<?php echo $name; ?>"
+            id="<?php echo esc_attr( $name ); ?>"
             class="full-width" 
-            name="<?php echo $name; ?>"><?php echo htmlspecialchars($value); ?></textarea>
+            name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
 
             <?php
             break;
@@ -149,9 +152,9 @@ class Leaflet_Map_Plugin_Option
 
         <input 
             class="checkbox" 
-            name="<?php echo $name; ?>" 
+            name="<?php echo esc_attr( $name ); ?>" 
             type="checkbox" 
-            id="<?php echo $name; ?>"
+            id="<?php echo esc_attr( $name ); ?>"
             <?php if ($value) echo ' checked="checked"' ?> 
             />
             <?php
@@ -159,13 +162,13 @@ class Leaflet_Map_Plugin_Option
 
         case 'select':
             ?>
-        <select id="<?php echo $name; ?>"
-            name="<?php echo $name; ?>"
+        <select id="<?php echo esc_attr( $name ); ?>"
+            name="<?php echo esc_attr( $name ); ?>"
             class="full-width">
         <?php
         foreach ($this->options as $o => $n) {
         ?>
-            <option value="<?php echo $o; ?>"<?php if ($value == $o) echo ' selected' ?>>
+            <option value="<?php echo esc_attr( $o ); ?>"<?php if ($value == $o) echo ' selected' ?>>
                 <?php echo $n; ?>
             </option>
         <?php
@@ -176,7 +179,7 @@ class Leaflet_Map_Plugin_Option
             break;
         default:
             ?>
-        <div>No option type chosen for <?php echo $name; ?> with value <?php echo htmlspecialchars($value); ?></div>
+        <div>No option type chosen for <?php echo esc_html( $name ); ?> with value <?php echo esc_html($value); ?></div>
             <?php
             break;
         }

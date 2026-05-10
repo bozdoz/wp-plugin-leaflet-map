@@ -392,8 +392,9 @@ class Leaflet_Map
         $shortcoded = $message;
 
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
-        $message = addslashes($message);
-        $message = htmlspecialchars($message);
+        $message = wp_kses_post( $message );
+        $message = esc_html( $message );
+
         $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
 
         // use with: add_filter('leaflet_map_popup_message', 'example_callback', 10, 3);
@@ -476,7 +477,9 @@ class Leaflet_Map
         $obj = '{';
         
         foreach ($arr as $key=>$val) {
-            $obj .= "\"$key\": $val,";
+            // removes any JS function calls
+            $safe_val = preg_replace('/[^a-zA-Z0-9_$.!]/', '', $val);
+            $obj .= "\"$key\": $safe_val,";
         }
 
         $obj .= '}';

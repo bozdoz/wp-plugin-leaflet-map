@@ -14,7 +14,7 @@ $version = $plugin_data['Version'];
 ?>
 <div class="wrap">
 
-<h1><?php echo $title; ?> <small>version: <?php echo $version; ?></small></h1>
+<h1><?php echo esc_html($title); ?> <small>version: <?php echo esc_html($version); ?></small></h1>
 
 <?php
 /** START FORM SUBMISSION */
@@ -33,7 +33,7 @@ function verify_nonce () {
         // side-effects can be fun?
         ?>
         <div class="notice notice-error is-dismissible">
-            <p><?php _e('Sorry, your nonce did not verify', 'leaflet-map'); ?></p>
+            <p><?php esc_html_e('Sorry, your nonce did not verify', 'leaflet-map'); ?></p>
         </div>
         <?php
     }
@@ -59,14 +59,14 @@ if (isset($_POST['submit']) && verify_nonce()) {
     }
 ?>
 <div class="notice notice-success is-dismissible">
-    <p><?php _e('Options Updated!', 'leaflet-map'); ?></p>
+    <p><?php esc_html_e('Options Updated!', 'leaflet-map'); ?></p>
 </div>
 <?php
 } elseif (isset($_POST['reset']) && verify_nonce()) {
     $settings->reset();
 ?>
 <div class="notice notice-success is-dismissible">
-    <p><?php _e('Options have been reset to default values!', 'leaflet-map'); ?></p>
+    <p><?php esc_html_e('Options have been reset to default values!', 'leaflet-map'); ?></p>
 </div>
 <?php
 } elseif (isset($_POST['clear-geocoder-cache']) && verify_nonce()) {
@@ -74,7 +74,7 @@ if (isset($_POST['submit']) && verify_nonce()) {
     Leaflet_Geocoder::remove_caches();
 ?>
 <div class="notice notice-success is-dismissible">
-    <p><?php _e('Location caches have been cleared!', 'leaflet-map'); ?></p>
+    <p><?php esc_html_e('Location caches have been cleared!', 'leaflet-map'); ?></p>
 </div>
 <?php
 }
@@ -91,7 +91,7 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
 ?>
     <div class="notice notice-info is-dismissible">
         <p><?php 
-        _e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map'); 
+        esc_html_e('Info: your leaflet version may be out-of-sync with the latest default version: ', 'leaflet-map'); 
         echo Leaflet_Map::$leaflet_version;
         ?></p>
     </div>
@@ -100,17 +100,28 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
 /** END LEAFLET VERSION */
 ?>
 
-<p><?php echo $description; ?></p>
-<h3><?php _e('Found an issue?', 'leaflet-map') ?></h3>
-<p><?php _e('Post it to ', 'leaflet-map') ?><b><?php _e('WordPress Support', 'leaflet-map') ?></b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
-<p><?php _e('Add an issue on ', 'leaflet-map') ?><b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
+<p><?php echo esc_html($description); ?></p>
+<?php
+/** FILTERS for helptext */
+$allowed_helptext_tags = [
+    'a'      => [ 'href' => [], 'title' => [], 'target' => [] ],
+    'code' => [],
+    'br'     => [],
+    'p'     => [],
+    'b'     => [],
+];
+?>
+
+<h3><?php esc_html_e('Found an issue?', 'leaflet-map') ?></h3>
+<p><?php esc_html_e('Post it to ', 'leaflet-map') ?><b><?php esc_html_e('WordPress Support', 'leaflet-map') ?></b>: <a href="https://wordpress.org/support/plugin/leaflet-map/" target="_blank">Leaflet Map (WordPress)</a></p>
+<p><?php esc_html_e('Add an issue on ', 'leaflet-map') ?><b>GitHub</b>: <a href="https://github.com/bozdoz/wp-plugin-leaflet-map/issues" target="_blank">Leaflet Map (GitHub)</a></p>
 
 <div class="wrap">
     <div class="wrap">
     <form method="post">
         <?php wp_nonce_field(NONCE_ACTION, NONCE_NAME); ?>
         <div class="container">
-            <h2><?php _e('Settings', 'leaflet-map'); ?></h2>
+            <h2><?php esc_html_e('Settings', 'leaflet-map'); ?></h2>
             <hr>
         </div>
     <?php
@@ -119,7 +130,7 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
     ?>
     <div class="container">
         <label>
-            <span class="label"><?php echo $option->display_name; ?></span>
+            <span class="label"><?php echo esc_html($option->display_name); ?></span>
             <span class="input-group">
             <?php
             $option->widget($name, $settings->get($name));
@@ -131,7 +142,9 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
         if ($option->helptext) {
         ?>
         <div class="helptext">
-            <p class="description"><?php echo $option->helptext; ?></p>
+            <p class="description"><?php 
+                echo wp_kses( $option->helptext, $allowed_helptext_tags );
+            ?></p>
         </div>
         <?php
         }
@@ -145,23 +158,23 @@ if ($is_unpkg_url && $db_js_url !== $settings->options[ 'js_url' ]->default) {
             name="submit" 
             id="submit" 
             class="button button-primary" 
-            value="<?php _e('Save Changes', 'leaflet-map'); ?>">
+            value="<?php esc_html_e('Save Changes', 'leaflet-map'); ?>">
         <input type="submit" 
             name="reset" 
             id="reset" 
             class="button button-secondary" 
-            value="<?php _e('Reset to Defaults', 'leaflet-map'); ?>">
+            value="<?php esc_html_e('Reset to Defaults', 'leaflet-map'); ?>">
         <input type="submit" 
             name="clear-geocoder-cache" 
             id="clear-geocoder-cache" 
             class="button button-secondary" 
-            value="<?php _e('Clear Geocoder Cache', 'leaflet-map'); ?>">
+            value="<?php esc_html_e('Clear Geocoder Cache', 'leaflet-map'); ?>">
     </div>
 
     </form>
 
     <div>
-        <p><?php _e('Leaf icon provided by ', 'leaflet-map') ?><a href="https://fontawesome.com/" target="_blank">Font Awesome</a><?php _e( ', under their free license.', 'leaflet-map' ) ?></p>
+        <p><?php esc_html_e('Leaf icon provided by ', 'leaflet-map') ?><a href="https://fontawesome.com/" target="_blank">Font Awesome</a><?php esc_html_e( ', under their free license.', 'leaflet-map' ) ?></p>
     </div>
 
     </div>
