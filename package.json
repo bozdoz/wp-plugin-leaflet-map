@@ -32,7 +32,7 @@
     "testEnvironment": "jsdom"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
+    "jest": "^30.4.2",
     "prettier": "^2.8.8"
   }
 }
