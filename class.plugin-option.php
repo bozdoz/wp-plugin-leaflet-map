@@ -1,11 +1,11 @@
 <?php
-/** 
+/**
  * Leaflet_Map_Plugin_Option
- * 
+ *
  * Store values; render widgets
- * 
+ *
  * PHP Version 5.5
- * 
+ *
  * @category Shortcode
  * @author   Benjamin J DeLong <ben@bozdoz.com>
  */
@@ -22,28 +22,28 @@ class Leaflet_Map_Plugin_Option
 {
     /**
      * Default Value
-     * 
+     *
      * @var varies $default
      */
     public $default = '';
-    
+
     /**
      * Input type ex: ('text', 'select', 'checkbox')
-     * 
-     * @var string $type 
+     *
+     * @var string $type
      */
     public $type;
-    
+
     /**
      * Optional used for select; maybe checkbox/radio
-     * 
+     *
      * @var array $options
      */
     public $options = array();
 
     /**
      * Optional used for label under input
-     * 
+     *
      * @var string $helptext
      */
     public $helptext = '';
@@ -59,7 +59,7 @@ class Leaflet_Map_Plugin_Option
 
     /**
      * Instantiate class
-     * 
+     *
      * @param array $details A list of options
      */
     function __construct($details = array())
@@ -98,51 +98,52 @@ class Leaflet_Map_Plugin_Option
 
     /**
      * Renders a widget
-     * 
+     *
      * @param string $name  widget name
      * @param varies $value widget value
-     * 
+     *
      * @return HTML
      */
-    function widget ($name, $value) 
+    function widget ($name, $value)
     {
         switch ($this->type) {
         case 'text':
+        case 'email':
             ?>
-        <input 
-            class="full-width" 
-            name="<?php echo esc_attr( $name ); ?>" 
-            type="<?php echo esc_attr( $this->type ); ?>" 
-            id="<?php echo esc_attr( $name ); ?>" 
+        <input
+            class="full-width"
+            name="<?php echo esc_attr( $name ); ?>"
+            type="<?php echo esc_attr( $this->type ); ?>"
+            id="<?php echo esc_attr( $name ); ?>"
             placeholder="<?php echo esc_attr( $this->placeholder ); ?>"
-            value="<?php echo esc_attr( $value ); ?>" 
+            value="<?php echo esc_attr( $value ); ?>"
             />
             <?php
             break;
 
-        
+
         case 'number':
             ?>
-        <input 
-            class="full-width" 
+        <input
+            class="full-width"
             min="<?php echo isset($this->min) ? esc_attr( $this->min ) : ""; ?>"
             max="<?php echo isset($this->max) ? esc_attr( $this->max ) : ""; ?>"
             step="<?php echo isset($this->step) ? esc_attr( $this->step ) : "any"; ?>"
-            name="<?php echo esc_attr( $name ); ?>" 
-            type="<?php echo esc_attr( $this->type ); ?>" 
-            id="<?php echo esc_attr( $name ); ?>" 
-            value="<?php echo esc_attr( $value ); ?>" 
+            name="<?php echo esc_attr( $name ); ?>"
+            type="<?php echo esc_attr( $this->type ); ?>"
+            id="<?php echo esc_attr( $name ); ?>"
+            value="<?php echo esc_attr( $value ); ?>"
             />
             <?php
             break;
-            
+
         case 'textarea':
             ?>
 
-        <textarea 
+        <textarea
             id="<?php echo esc_attr( $name ); ?>"
-            class="full-width" 
-            name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
+            class="full-width"
+            name="<?php echo esc_attr( $name ); ?>"><?php echo esc_textarea( $value ); ?></textarea>
 
             <?php
             break;
@@ -150,12 +151,12 @@ class Leaflet_Map_Plugin_Option
         case 'checkbox':
             ?>
 
-        <input 
-            class="checkbox" 
-            name="<?php echo esc_attr( $name ); ?>" 
-            type="checkbox" 
+        <input
+            class="checkbox"
+            name="<?php echo esc_attr( $name ); ?>"
+            type="checkbox"
             id="<?php echo esc_attr( $name ); ?>"
-            <?php if ($value) echo ' checked="checked"' ?> 
+            <?php if ($value) echo ' checked="checked"' ?>
             />
             <?php
             break;
