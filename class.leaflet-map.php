@@ -181,6 +181,14 @@ class Leaflet_Map
     }
 
     /**
+     * Whether the configured Leaflet runtime uses ESM modules
+     */
+    public static function uses_esm()
+    {
+        return self::settings()->get('leaflet_version') === 'v2';
+    }
+
+    /**
      * Enqueue and register styles and scripts (called in __construct)
      */
     public static function enqueue_and_register()
@@ -190,9 +198,22 @@ class Leaflet_Map
 
         $js_url = $settings->get('js_url');
         $css_url = $settings->get('css_url');
+        $uses_esm = self::uses_esm();
 
         wp_register_style('leaflet_stylesheet', $css_url, Array(), null, false);
-        wp_register_script('leaflet_js', $js_url, Array(), null, true);
+        if ($uses_esm && function_exists('wp_register_script_module')) {
+            wp_register_script_module(
+                'leaflet_js_esm',
+                $js_url,
+                Array(),
+                null,
+                Array(),
+            );
+        } else {
+            wp_register_script('leaflet_js', $js_url, Array(), null, true);
+        }
+
+        $leaflet_dependencies = $uses_esm ? Array() : Array('leaflet_js');
 
         // new required MapQuest javascript file
         $tiling_service = $settings->get('default_tiling_service');
@@ -202,7 +223,7 @@ class Leaflet_Map
             $mq_appkey = $settings->get('mapquest_appkey');
             $mapquest_js_url = sprintf($mapquest_js_url, $mq_appkey);
 
-            wp_register_script('leaflet_mapquest_plugin', $mapquest_js_url, Array('leaflet_js'), '2.0', true);
+            wp_register_script('leaflet_mapquest_plugin', $mapquest_js_url, $leaflet_dependencies, '2.0', true);
         }
         
         // optional ajax geojson plugin
@@ -214,12 +235,21 @@ class Leaflet_Map
             $minified = '.min';
         }
 
-        wp_register_script('leaflet_ajax_geojson_js', plugins_url(sprintf('scripts/leaflet-ajax-geojson%s.js', $minified), __FILE__), Array('tmcw_togeojson', 'leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('leaflet_ajax_geojson_js', plugins_url(sprintf('scripts/leaflet-ajax-geojson%s.js', $minified), __FILE__), array_merge(Array('tmcw_togeojson'), $leaflet_dependencies), LEAFLET_MAP__PLUGIN_VERSION, false);
 
-        wp_register_script('leaflet_svg_icon_js', plugins_url(sprintf('scripts/leaflet-svg-icon%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('leaflet_svg_icon_js', plugins_url(sprintf('scripts/leaflet-svg-icon%s.js', $minified), __FILE__), $leaflet_dependencies, LEAFLET_MAP__PLUGIN_VERSION, false);
+
+        if ($uses_esm && function_exists('wp_register_script_module')) {
+            wp_register_script_module(
+                'leaflet_esm_proxy',
+                plugins_url(sprintf('scripts/leaflet-esm-proxy%s.js', $minified), __FILE__),
+                [['id' => 'leaflet_js_esm', 'import' => 'static']],
+                filemtime(plugin_dir_path(__FILE__) . sprintf('scripts/leaflet-esm-proxy%s.js', $minified)),
+            );
+        }
         
         /* run a construct function in the document head for subsequent functions to use (it is lightweight) */
-        wp_register_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), Array('leaflet_js'), LEAFLET_MAP__PLUGIN_VERSION, false);
+        wp_register_script('wp_leaflet_map', plugins_url(sprintf('scripts/construct-leaflet-map%s.js', $minified), __FILE__), $leaflet_dependencies, LEAFLET_MAP__PLUGIN_VERSION, false);
     }
 
     /**

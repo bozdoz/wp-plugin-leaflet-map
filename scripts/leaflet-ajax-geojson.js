@@ -3,17 +3,7 @@
   window.WPLeafletMapPlugin.unshift(initAjaxGeoJSON);
 
   function initAjaxGeoJSON() {
-    L.AjaxGeoJSON = L.GeoJSON.extend({
-      options: {
-        type: 'json', // 'json|kml|gpx'
-      },
-
-      initialize: function (url, options) {
-        L.setOptions(this, options);
-        this._url = url;
-        this.layer = L.geoJson(null, this.options);
-      },
-
+    var methods = {
       onAdd: function (map) {
         var _this = this;
         var type = this.options.type;
@@ -59,15 +49,49 @@
         this.layer.resetStyle(layer);
       },
 
-      onRemove: function (map) {
+      onRemove: function () {
         this.map.removeLayer(this.layer);
       },
 
       getBounds: function () {
         return this.layer.getBounds();
       },
-    });
+    };
 
+    var AjaxGeoJSON;
+
+    if (typeof L.GeoJSON.extend === 'function') {
+      AjaxGeoJSON = L.GeoJSON.extend(
+        Object.assign(
+          {
+            options: {
+              type: 'json', // 'json|kml|gpx'
+            },
+
+            initialize: function (url, options) {
+              L.setOptions(this, options);
+              this._url = url;
+              this.layer = L.geoJson(null, this.options);
+            },
+          },
+          methods
+        )
+      );
+    } else {
+      class AjaxGeoJSONV2 extends L.GeoJSON {
+        constructor(url, options) {
+          var mergedOptions = Object.assign({ type: 'json' }, options || {});
+          super(null, mergedOptions);
+          this._url = url;
+          this.layer = new L.GeoJSON(null, this.options);
+        }
+      }
+
+      Object.assign(AjaxGeoJSONV2.prototype, methods);
+      AjaxGeoJSON = AjaxGeoJSONV2;
+    }
+
+    L.AjaxGeoJSON = AjaxGeoJSON;
     L.ajaxGeoJson = function (url, options) {
       return new L.AjaxGeoJSON(url, options);
     };

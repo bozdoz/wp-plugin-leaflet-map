@@ -178,7 +178,7 @@ function layerStyle (feature) {
             style[ rewrite_keys[ key ] ] = props[ key ];
         }
     }
-    return L.Util.extend(style, default_style);
+    return Object.assign(style, default_style);
 }
 <?php echo $onEachFeature; ?>
 function pointToLayer (feature, latlng) {

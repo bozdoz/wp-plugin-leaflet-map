@@ -306,6 +306,17 @@ class Leaflet_Map_Plugin_Settings
                     $foreachmap
                 )
             ),
+            // TODO default needs to be "global"
+            'leaflet_version' => array(
+                'display_name' => __('Leaflet Version', 'leaflet-map'),
+                'default' => 'v1',
+                'type' => 'select',
+                'options' => array(
+                    'v1' => __('Leaflet 1 (classic)', 'leaflet-map'),
+                    'v2' => __('Leaflet 2 (ESM)', 'leaflet-map'),
+                ),
+                'helptext' => __('Choose the API and script-loading mode used by the plugin. The JavaScript URL must match this choice.', 'leaflet-map'),
+            ),
             'js_url' => array(
                 'display_name'=>__('JavaScript URL', 'leaflet-map'),
                 'default' => sprintf('https://unpkg.com/leaflet@%s/dist/leaflet.js', $leaflet_version),

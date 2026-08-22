@@ -170,7 +170,7 @@ class Leaflet_Map_Plugin_Option
         foreach ($this->options as $o => $n) {
         ?>
             <option value="<?php echo esc_attr( $o ); ?>"<?php if ($value == $o) echo ' selected' ?>>
-                <?php echo $n; ?>
+                <?php echo esc_html($n); ?>
             </option>
         <?php
         }

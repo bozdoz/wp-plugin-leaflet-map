@@ -70,7 +70,7 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
     ob_start();
     ?>/*<script>*/
 var srcUrl = atob('<?php echo base64_encode( $source ); ?>');
-var options = L.Util.extend({}, {
+var options = Object.assign({}, {
         attributionControl: false
     }, <?php echo $map_options; ?>);
 var zoom = <?php echo $zoom; ?>;

@@ -49,6 +49,7 @@ class Leaflet_Map_Admin
         add_action('admin_init', array($this, 'admin_init'));
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_enqueue_scripts', array('Leaflet_Map', 'enqueue_and_register'));
+        add_action('wp_ajax_leaflet_map_reset_setting', array($this, 'ajax_reset_setting'));
 
         /* add settings to plugin page */
         add_filter('plugin_action_links_' . plugin_basename(LEAFLET_MAP__PLUGIN_FILE), array($this, 'plugin_action_links'));
@@ -86,6 +87,37 @@ class Leaflet_Map_Admin
     }
 
     /**
+     * AJAX handler for resetting a single setting option
+     */
+    public function ajax_reset_setting()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => __('Insufficient permissions.', 'leaflet-map')), 403);
+        }
+
+        check_ajax_referer('leaflet-map-reset-setting', 'security');
+
+        if (empty($_POST['setting'])) {
+            wp_send_json_error(array('message' => __('Missing setting name.', 'leaflet-map')), 400);
+        }
+
+        $name = sanitize_text_field($_POST['setting']);
+        $settings = Leaflet_Map_Plugin_Settings::init();
+
+        if (!isset($settings->options[$name])) {
+            wp_send_json_error(array('message' => __('Unknown setting.', 'leaflet-map')), 404);
+        }
+
+        $option = $settings->options[$name];
+        if (property_exists($option, 'noreset') && $option->noreset == true) {
+            wp_send_json_error(array('message' => __('This option cannot be reset individually.', 'leaflet-map')), 400);
+        }
+
+        $settings->delete($name);
+        wp_send_json_success(array('default' => $settings->get($name)));
+    }
+
+    /**
      * Main settings page includes form inputs
      */
     public function settings_page()
@@ -110,7 +142,13 @@ class Leaflet_Map_Admin
             $minified = '.min';
         }
 
-        wp_enqueue_script('custom_plugin_js', plugins_url(sprintf('scripts/shortcode-helper%s.js', $minified), LEAFLET_MAP__PLUGIN_FILE), Array('leaflet_js'), false);
+        $dependencies = Array('leaflet_js');
+        if (Leaflet_Map::uses_esm() && function_exists('wp_enqueue_script_module')) {
+            wp_enqueue_script_module('leaflet_esm_proxy');
+            $dependencies = Array();
+        }
+
+        wp_enqueue_script('custom_plugin_js', plugins_url(sprintf('scripts/shortcode-helper%s.js', $minified), LEAFLET_MAP__PLUGIN_FILE), $dependencies, false);
 
         include 'templates/shortcode-helper.php';
     }
