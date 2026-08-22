@@ -138,6 +138,16 @@ $allowed_helptext_tags = [
             </span>
         </label>
 
+        <?php if (!property_exists($option, 'noreset') || $option->noreset != true) : ?>
+        <div class="reset-option">
+            <button type="button"
+                class="button button-secondary reset-field-button"
+                data-setting-name="<?php echo esc_attr($name); ?>"
+            ><?php esc_html_e('Reset', 'leaflet-map'); ?></button>
+            <span class="reset-feedback" aria-live="polite"></span>
+        </div>
+        <?php endif; ?>
+
         <?php
         if ($option->helptext) {
         ?>
@@ -172,6 +182,87 @@ $allowed_helptext_tags = [
     </div>
 
     </form>
+
+    <script type="text/javascript">
+    (function () {
+        var resetNonce = '<?php echo esc_js( wp_create_nonce('leaflet-map-reset-setting') ); ?>';
+
+        function updateFieldValue(name, value) {
+            var field = document.querySelector('[name="' + name + '"]');
+            if (!field) {
+                return;
+            }
+
+            if (field.type === 'checkbox') {
+                field.checked = value == 1 || value === '1';
+                return;
+            }
+
+            if (field.tagName.toLowerCase() === 'select' || field.tagName.toLowerCase() === 'textarea' || field.type === 'text' || field.type === 'number') {
+                field.value = value;
+            }
+        }
+
+        function showFeedback(button, message, isError) {
+            var feedback = button.parentNode.querySelector('.reset-feedback');
+            if (!feedback) {
+                return;
+            }
+            feedback.textContent = message;
+            feedback.style.color = isError ? '#a00' : '#080';
+            setTimeout(function () {
+                feedback.textContent = '';
+            }, 4000);
+        }
+
+        document.addEventListener('click', function (event) {
+            var button = event.target.closest('.reset-field-button');
+            if (!button) {
+                return;
+            }
+
+            event.preventDefault();
+            var settingName = button.getAttribute('data-setting-name');
+            if (!settingName) {
+                return;
+            }
+
+            button.disabled = true;
+
+            var data = new URLSearchParams();
+            data.append('action', 'leaflet_map_reset_setting');
+            data.append('security', resetNonce);
+            data.append('setting', settingName);
+
+            fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: data.toString()
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (result) {
+                if (!result.success) {
+                    showFeedback(button, result.data && result.data.message ? result.data.message : 'Reset failed.', true);
+                    return;
+                }
+
+                updateFieldValue(settingName, result.data.default);
+                showFeedback(button, '<?php echo esc_js( __( 'Reset to default.', 'leaflet-map' ) ); ?>', false);
+            })
+            .catch(function () {
+                showFeedback(button, '<?php echo esc_js( __( 'Request failed.', 'leaflet-map' ) ); ?>', true);
+            })
+            .finally(function () {
+                button.disabled = false;
+            });
+        });
+    })();
+    </script>
 
     <div>
         <p><?php esc_html_e('Leaf icon provided by ', 'leaflet-map') ?><a href="https://fontawesome.com/" target="_blank">Font Awesome</a><?php esc_html_e( ', under their free license.', 'leaflet-map' ) ?></p>

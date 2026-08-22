@@ -40,7 +40,9 @@ class Leaflet_Map_Shortcode extends Leaflet_Shortcode
     protected function enqueue()
     {
         wp_enqueue_style('leaflet_stylesheet');
-        // TODO needs to load leaflet_js first as module
+        if (Leaflet_Map::uses_esm() && function_exists('wp_enqueue_script_module')) {
+            wp_enqueue_script_module('leaflet_esm_proxy');
+        }
         wp_enqueue_script('wp_leaflet_map');
 
         if (wp_script_is('leaflet_mapquest_plugin', 'registered')) {
