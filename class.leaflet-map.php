@@ -393,9 +393,8 @@ class Leaflet_Map
 
         $message = str_replace(array("\r\n", "\n", "\r"), '<br>', $message);
         $message = wp_kses_post( $message );
-        $message = esc_html( $message );
-
-        $message = "window.WPLeafletMapPlugin.unescape('{$message}')";
+        // Encode sanitized HTML as a JavaScript value without decoding it again.
+        $message = wp_json_encode( $message, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT );
 
         // use with: add_filter('leaflet_map_popup_message', 'example_callback', 10, 3);
         // function takes default message, message after do_shortcode, and original/raw

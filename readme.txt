@@ -6,9 +6,9 @@ Contributors: bozdoz, hupe13, jannefleischer, remigr, gerital, sal0max, thibault
 Donate link: https://www.paypal.me/bozdoz
 Tags: leaflet, map, openstreetmap, mapquest, interactive
 Requires at least: 4.6
-Tested up to: 7.1
-Version: 3.4.7
-Stable tag: 3.4.7
+Tested up to: 7.1.3
+Version: 3.4.8
+Stable tag: 3.4.8
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,8 @@ Sure!? Use the same attributes as leaflet-geojson (above), but use the `[leaflet
 
 Sure. Use the same attributes as leaflet-map, but use the `[leaflet-wms]` shortcode; attributes include: `src`, `layer`, and `crs`.
 
+By default, it uses NASA GIBS Blue Marble imagery with shaded relief and bathymetry.
+
 = Can I add a message to a marker? =
 
 Yes: `[leaflet-marker visible]Hello there![/leaflet-marker]`, where visible designates if it is visible on page load. Otherwise it is only visible when clicked.
@@ -156,6 +158,11 @@ For more FAQs, please visit the [FAQ section on GitHub here](https://github.com/
 8. MapQuest requires an app key, get it from their website; alternatively, you can use OpenStreetMap as a free tile service (remember to add an attribution where necessary).
 
 == Changelog ==
+
+= 3.4.8 =
+* [Security] Fix stored cross-site scripting in shortcode popup content. Thanks to Athiwat Tiprasaharn (Jitlada) and Wordfence for the report.
+* [Bugfix] Replace the unavailable default WMS source with NASA GIBS Blue Marble imagery.
+* Tested with WordPress 7.1.3
 
 = 3.4.7 =
 * Tested with WordPress 7.1
