@@ -190,6 +190,10 @@ Then in the console, check the coordinates when you move the marker (should only
 Much the same as leaflet-map above, but for wms services and uses `src` for the service url, 
 `layer` for the layer name and `crs` for the coordination system (only supported by 
 leaflet: EPSG:3857 and EPSG:4326).
+
+The default source is [NASA GIBS](https://nasa-gibs.github.io/gibs-api-docs/access-basics/),
+using Blue Marble imagery with shaded relief and bathymetry.
+
 ```
 [leaflet-wms source="https://your/wms/service?" layer="yourLayer" crs="EPSG:3857" zoom=1]
 ```
@@ -198,8 +202,8 @@ leaflet: EPSG:3857 and EPSG:4326).
 
 | Option            | Default                                   |
 | ----------------- | ----------------------------------------- |
-| `src`             | https://ows.mundialis.de/services/service? |
-| `layer `          | TOPO-OSM-WMS                              |
+| `src`             | https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi? |
+| `layer `          | BlueMarble_ShadedRelief_Bathymetry          |
 | `crs `            | EPSG:3857                                 |
 | `zoom`            | 12                                        |
 | `height`          | 250                                       |
@@ -210,7 +214,7 @@ leaflet: EPSG:3857 and EPSG:4326).
 | `doubleclickzoom` | 0 (false)                                 |
 | `min_zoom`        | 0                                         |
 | `max_zoom`        | 20                                        |
-| `attribution`     | ©Leaflet ©OpenStreetMap                   |
+| `attribution`     | NASA GIBS (for the default source and layer) |
 | `lat`             | 0                                         |
 | `lng`             | 0                                         |
 

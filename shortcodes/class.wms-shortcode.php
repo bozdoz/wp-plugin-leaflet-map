@@ -32,6 +32,23 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
    */
   protected function getHTML($atts = '', $content = null)
   {
+    $atts = (array) $atts;
+    $default_source = 'https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi?';
+    $default_layer = 'BlueMarble_ShadedRelief_Bathymetry';
+    $source = empty($atts['src'])
+      ? (empty($atts['source']) ? $default_source : $atts['source'])
+      : $atts['src'];
+    $atts['source'] = filter_var($source, FILTER_SANITIZE_URL);
+    $atts['layer'] = empty($atts['layer']) ? $default_layer : $atts['layer'];
+
+    if (
+      $atts['source'] === $default_source &&
+      $atts['layer'] === $default_layer &&
+      !array_key_exists('attribution', $atts)
+    ) {
+      $atts['attribution'] = 'NASA GIBS';
+    }
+
     extract($this->getAtts($atts));
 
     if (!empty($address)) {
@@ -51,21 +68,7 @@ class Leaflet_Wms_Shortcode extends Leaflet_Map_Shortcode
     $lat = $this->LM->filter_float($lat);
     $lng = $this->LM->filter_float($lng);
 
-    /* only required field for image map (src/source) */
-    $src = empty($src) ? '' : $src;
-    $source = empty($source)
-      ? 'https://ows.mundialis.de/services/service?'
-      : $source;
-    $source = filter_var(empty($src) ? $source : $src, FILTER_SANITIZE_URL);
-
-    $layer = empty($layer) ? 'TOPO-OSM-WMS' : $layer;
-
     $crs = str_replace(':', '', empty($crs) ? 'EPSG:3857' : $crs);
-
-    if ($source == 'https://ows.mundialis.de/services/service?' && $layer == 'TOPO-OSM-WMS') {
-        $attribution = empty($attribution) ? '© OpenStreetMap Contributors' : $attribution;
-    }
-    $attribution = empty($attribution) ? '' : $attribution;
 
     ob_start();
     ?>/*<script>*/
